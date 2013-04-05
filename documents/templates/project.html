@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="span8">
+        <div class="widget">
+            <div class="widget-header">
+                <i class="icon-edit"></i>
+
+                <h3 style="font-size: 12px;">{{ project.name }}</h3>
+            </div>
+            <!-- /widget-header -->
+            <div class="widget-content">
+                {% for document in documents %}
+                    <h2>{{ document.get_latest.name }}</h2>
+                    <ul>
+                        {% for version in document.list_versions %}
+                            <li>{{ version }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </div>
+            <!-- /widget-content -->
+        </div>
+        <!-- /widget -->
+    </div>
+    <div class="span4">
+        <div class="widget">
+            <div class="widget-header">
+                <i class="icon-cog"></i>
+
+                <h3>Options</h3>
+            </div>
+            <!-- /widget-header -->
+            <div class="widget-content">
+
+            </div>
+            <!-- /widget-content -->
+        </div>
+        <!-- /widget -->
+    </div>
+{% endblock content %}

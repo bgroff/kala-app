@@ -1,0 +1,317 @@
+{% load static %}
+{% load kala_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Kala - Document Management</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-responsive.min.css' %}" rel="stylesheet">
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
+    <link href="{% static 'css/font-awesome.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/base-admin.css' %}" rel="stylesheet">
+    <link href="{% static 'css/base-admin-responsive.css' %}" rel="stylesheet">
+
+    <link href="{% static 'css/pages/dashboard.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="{% static 'img/kala-favicon.png' %}">
+
+        {% block addditional_style %}
+
+        {% endblock addditional_style %}
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+{% block nav-bar %}
+<div class="navbar navbar-fixed-top">
+
+    <div class="navbar-inner">
+
+        <div class="container">
+
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+
+            <a class="brand" href="./">
+                Kala - Document Management
+            </a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                    <li class="dropdown">
+
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-cog"></i>
+                            Settings
+                            <b class="caret"></b>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:;">Account Settings</a></li>
+                            <li><a href="javascript:;">Privacy Settings</a></li>
+                            <li class="divider"></li>
+                            <li><a href="javascript:;">Help</a></li>
+                        </ul>
+
+                    </li>
+
+                    <li class="dropdown">
+
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <i class="icon-user"></i>
+                            {{ request.user|pretty_user }}
+                            <b class="caret"></b>
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li><a href="javascript:;">My Profile</a></li>
+                            <li><a href="javascript:;">My Groups</a></li>
+                            <li class="divider"></li>
+                            <li><a href="{% url 'logout' %}">Logout</a></li>
+                        </ul>
+
+                    </li>
+                </ul>
+
+                <form class="navbar-search pull-right">
+                    <input type="text" class="search-query" placeholder="Search">
+                </form>
+
+            </div>
+            <!--/.nav-collapse -->
+
+        </div>
+        <!-- /container -->
+
+    </div>
+    <!-- /navbar-inner -->
+
+</div>
+<!-- /navbar -->
+{% endblock nav-bar %}
+
+{% block sub-nav-bar %}
+<div class="subnavbar">
+
+    <div class="subnavbar-inner">
+
+        <div class="container">
+
+            <ul class="mainnav">
+
+                <li class="active">
+                    <a href="{% url 'home' %}">
+                        <i class="icon-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{% url 'projects' %}">
+                        <i class="icon-edit"></i>
+                        <span>Projects</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="./pricing.html" class="dropdown-toggle">
+                        <i class="icon-book"></i>
+                        <span>Documents</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="./reports.html">
+                        <i class="icon-group"></i>
+                        <span>People</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="./guidely.html">
+                        <i class="icon-facetime-video"></i>
+                        <span>Guided Tour</span>
+                    </a>
+                </li>
+
+                <li class="dropdown">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="icon-share-alt"></i>
+                        <span>More Pages</span>
+                        <b class="caret"></b>
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li><a href="./charts.html">Charts</a></li>
+                        <li><a href="./account.html">User Account</a></li>
+                        <li class="divider"></li>
+                        <li><a href="./login.html">Login</a></li>
+                        <li><a href="./signup.html">Signup</a></li>
+                        <li><a href="./error.html">Error</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+
+        </div>
+        <!-- /container -->
+
+    </div>
+    <!-- /subnavbar-inner -->
+
+</div>
+<!-- /subnavbar -->
+{% endblock sub-nav-bar %}
+
+<div class="main">
+
+<div class="main-inner">
+
+<div class="container">
+
+<div class="row">
+
+
+{% block content %}
+
+{% endblock content %}
+
+</div>
+<!-- /row -->
+
+</div>
+<!-- /container -->
+
+</div>
+<!-- /main-inner -->
+
+</div>
+<!-- /main -->
+
+{% block extra %}
+<div class="extra">
+
+    <div class="extra-inner">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="span3">
+
+                    <h4>About</h4>
+
+                    <ul>
+                        <li><a href="javascript:;">About Us</a></li>
+                        <li><a href="javascript:;">Twitter</a></li>
+                        <li><a href="javascript:;">Facebook</a></li>
+                        <li><a href="javascript:;">Google+</a></li>
+                    </ul>
+
+                </div>
+                <!-- /span3 -->
+
+                <div class="span3">
+
+                    <h4>Support</h4>
+
+                    <ul>
+                        <li><a href="javascript:;">Frequently Asked Questions</a></li>
+                        <li><a href="javascript:;">Ask a Question</a></li>
+                        <li><a href="javascript:;">Video Tutorial</a></li>
+                        <li><a href="javascript:;">Feedback</a></li>
+                    </ul>
+
+                </div>
+                <!-- /span3 -->
+
+                <div class="span3">
+
+                    <h4>Legal</h4>
+
+                    <ul>
+                        <li><a href="javascript:;">License</a></li>
+                        <li><a href="javascript:;">Terms of Use</a></li>
+                        <li><a href="javascript:;">Privacy Policy</a></li>
+                        <li><a href="javascript:;">Security</a></li>
+                    </ul>
+
+                </div>
+                <!-- /span3 -->
+
+                <div class="span3">
+
+                    <h4>Settings</h4>
+
+                    <ul>
+                        <li><a href="javascript:;">Consectetur adipisicing</a></li>
+                        <li><a href="javascript:;">Eiusmod tempor </a></li>
+                        <li><a href="javascript:;">Fugiat nulla pariatur</a></li>
+                        <li><a href="javascript:;">Officia deserunt</a></li>
+                    </ul>
+
+                </div>
+                <!-- /span3 -->
+
+            </div>
+            <!-- /row -->
+
+        </div>
+        <!-- /container -->
+
+    </div>
+    <!-- /extra-inner -->
+
+</div>
+<!-- /extra -->
+{% endblock extra %}
+
+{% block footer %}
+<div class="footer">
+
+    <div class="footer-inner">
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="span12">
+                    &copy; 2012 <a href="http://bootstrapadmin.com">Base Admin</a>.
+                </div>
+                <!-- /span12 -->
+
+            </div>
+            <!-- /row -->
+
+        </div>
+        <!-- /container -->
+
+    </div>
+    <!-- /footer-inner -->
+
+</div>
+<!-- /footer -->
+{% endblock footer %}
+
+
+{% block additional_script %}
+{% endblock additional_script %}
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="{% static 'js/jquery-1.7.2.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.js' %}"></script>
+
+</body>
+</html>

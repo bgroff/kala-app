@@ -1,0 +1,4 @@
+ - When importing attachments, if the user has already been delete from your basecamp account, then there is no way to
+associate a user with an attachment.
+
+- When redoing import, make sure that the autonow stuff is off.

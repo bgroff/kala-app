@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="span8">
+        <div class="widget">
+            <div class="widget-header">
+                <i class="icon-edit"></i>
+
+                <h3 style="font-size: 12px;">Your Projects</h3>
+            </div>
+            <!-- /widget-header -->
+            <div class="widget-content">
+                {% for company in companies %}
+                    <h2>{{ company.name }}</h2>
+                    <ul>
+                        {% for project in company.get_project_list %}
+                            <li><a href="{% url 'project' project.pk %}">{{ project }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endfor %}
+            </div>
+            <!-- /widget-content -->
+        </div>
+        <!-- /widget -->
+    </div>
+    <div class="span4">
+        <div class="widget">
+            <div class="widget-header">
+                <i class="icon-edit"></i>
+
+                <h3>New Project</h3>
+            </div>
+            <!-- /widget-header -->
+            <div class="widget-content">
+
+            </div>
+            <!-- /widget-content -->
+        </div>
+        <!-- /widget -->
+    </div>
+{% endblock content %}
