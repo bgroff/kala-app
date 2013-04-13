@@ -7,9 +7,11 @@
 
 
 {% block content %}
-    <div class="breadcrumb" style="margin-left: 30px;">
-        <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
-        <li class="active">People</li>
+    <div class="span12">
+        <div class="breadcrumb">
+            <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
+            <li class="active">People</li>
+        </div>
     </div>
 
     <div class="{% if request.user.is_admin %}span8{% else %}span12{% endif %}">
@@ -23,15 +25,15 @@
             <div class="widget-content">
                 {% for company in companies %}
                     <div style="clear: both;">
-                        <h2 {% if not forloop.first %}style="padding-top: 20px;"{% endif %}>
-                            {% if request.user.is_admin %}<a href="{% url 'company' company.pk %}">{{ company.name }} -
-                                Edit</a>{% else %}{{ company }}{% endif %}</h2>
+                        <h3 {% if not forloop.first %}style="padding-top: 20px;"{% endif %}>
+                            {% if request.user.is_admin %}{{ company.name }} -<a href="{% url 'company' company.pk %}">
+                                Edit</a>{% else %}{{ company }}{% endif %}</h3>
                         <ul>
                             {% for person in company.get_people_list %}
                                 <div class="span3" style="margin-top: 12px;">
                                     <ul style="list-style: none">
                                         <li><h4>{% if request.user.is_admin %}
-                                            <a href="{% url 'edit_profile' person.pk %}">{{ person|pretty_user }} - Edit
+                                            {{ person|pretty_user }} - <a href="{% url 'edit_profile' person.pk %}">Edit
                                             </a>{% else %}{{ person|pretty_user }}{% endif %}</h4></li>
                                         {% if person.title %}
                                             <li>{{ person.title }}</li>{% endif %}

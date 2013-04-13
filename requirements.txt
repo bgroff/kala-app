@@ -1,0 +1,14 @@
+Django==1.5.1
+argparse==1.2.1
+django-audit-log==0.2.3
+-e git://github.com/tgdn/django-bootstrap-pagination.git@503261acb2fb5a39354a0c8a5af9da73dbcfbb73#egg=django_bootstrap_pagination-dev
+django-countries==1.5
+django-localflavor-us==1.0
+django-pagination==1.0.7
+django-timezone-field==0.4
+django-uuidfield==0.4.0
+ipython==0.13.1
+psycopg2==2.4.6
+pytz==2013b
+requests==1.2.0
+wsgiref==0.1.2

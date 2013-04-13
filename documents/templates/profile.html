@@ -6,10 +6,12 @@
 
 {% block content %}
     {% if request.user != person %}
-        <div class="breadcrumb" style="margin-left: 30px;">
-            <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
-            <li><a href="{% url 'people' %}">People</a> <span class="divider">/</span></li>
-            <li class="active">{{ person|pretty_user }}</li>
+        <div class="span12">
+            <div class="breadcrumb">
+                <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
+                <li><a href="{% url 'people' %}">People</a> <span class="divider">/</span></li>
+                <li class="active">{{ person|pretty_user }}</li>
+            </div>
         </div>
     {% endif %}
 
