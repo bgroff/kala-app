@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block people_class %}active{% endblock %}
+
+{% block content %}
+    <div class="breadcrumb" style="margin-left: 30px;">
+        <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
+        <li><a href="{% url 'people' %}">People</a> <span class="divider">/</span></li>
+        <li class="active">{{ company }}</li>
+    </div>
+
+    <div class="span8">
+
+        <div class="widget stacked ">
+
+            <div class="widget-header">
+                <i class="icon-building"></i>
+
+                <h3>Company Details</h3>
+            </div>
+            <!-- /widget-header -->
+
+            <div class="widget-content">
+                <form class="form-horizontal" method="post" action="{% url 'company' company.pk %}">
+                    {% csrf_token %}
+                    <fieldset>
+
+                        <div class="control-group">
+                            <label class="control-label" for="id_name">Name</label>
+
+                            <div class="controls">
+                                {{ form.name }}
+                            </div>
+                            <label class="control-label" for="id_website">Website</label>
+
+                            <div class="controls">
+                                {{ form.website }}
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control-label" for="id_address">Address</label>
+
+                            <div class="controls">
+                                {{ form.address }}
+                            </div>
+                            <label class="control-label" for="id_address1">Address 2</label>
+
+                            <div class="controls">
+                                {{ form.address1 }}
+                            </div>
+
+                            <label class="control-label" for="id_city">City</label>
+
+                            <div class="controls">
+                                {{ form.city }}
+                            </div>
+
+                            <label class="control-label" for="id_state">State</label>
+
+                            <div class="controls">
+                                {{ form.state }}
+                            </div>
+
+                            <label class="control-label" for="id_zip">Zip</label>
+
+                            <div class="controls">
+                                {{ form.zip }}
+                            </div>
+
+                            <label class="control-label" for="id_country">Country</label>
+
+                            <div class="controls">
+                                {{ form.country }}
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="id_phone">Phone</label>
+
+                            <div class="controls">
+                                {{ form.phone }}
+                            </div>
+
+                            <label class="control-label" for="id_fax">Fax</label>
+
+                            <div class="controls">
+                                {{ form.fax }}
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control-label" for="id_locale">Locale</label>
+
+                            <div class="controls">
+                                {{ form.locale }}
+                            </div>
+
+                            <label class="control-label" for="id_timezone">Timezone</label>
+
+                            <div class="controls">
+                                {{ form.timezone }}
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="button btn btn-primary btn-large">Update Company Details
+                            </button>
+                        </div>
+                </form>
+            </div>
+            <!-- /widget-content -->
+        </div>
+        <!-- /widget -->
+    </div> <!-- /span8 -->
+
+
+    <div class="span4">
+
+
+        <div class="widget stacked widget-box">
+
+            <div class="widget-header">
+                <h3>Delete Company</h3>
+            </div>
+            <!-- /widget-header -->
+
+            <div class="widget-content">
+                <form method="post" action="{% url 'company' company.pk %}">
+                    {% csrf_token %}
+                    <p>To remove the company and all of it's people, projects and documents, click the button below. You
+                        can recover the company from the history if you choose to do so later, but note that all of the
+                        people and resources will be unavailable until you do so.</p>
+
+                    <div class="form-actions">
+                        <button type="submit" class="button btn btn-danger btn-large" name="delete">Delete Company
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- /widget-content -->
+
+        </div>
+        <!-- /widget-box -->
+
+    </div> <!-- /span4 -->
+
+{% endblock content %}

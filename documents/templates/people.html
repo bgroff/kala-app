@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load kala_tags %}
+
+{% block people_class %}active{% endblock %}
+
+
+
+{% block content %}
+    <div class="breadcrumb" style="margin-left: 30px;">
+        <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
+        <li class="active">People</li>
+    </div>
+
+    <div class="{% if request.user.is_admin %}span8{% else %}span12{% endif %}">
+        <div class="widget">
+            <div class="widget-header">
+                <i class="icon-user"></i>
+
+                <h3>People</h3>
+            </div>
+            <!-- /widget-header -->
+            <div class="widget-content">
+                {% for company in companies %}
+                    <div style="clear: both;">
+                        <h2 {% if not forloop.first %}style="padding-top: 20px;"{% endif %}>
+                            {% if request.user.is_admin %}<a href="{% url 'company' company.pk %}">{{ company.name }} -
+                                Edit</a>{% else %}{{ company }}{% endif %}</h2>
+                        <ul>
+                            {% for person in company.get_people_list %}
+                                <div class="span3" style="margin-top: 12px;">
+                                    <ul style="list-style: none">
+                                        <li><h4>{% if request.user.is_admin %}
+                                            <a href="{% url 'edit_profile' person.pk %}">{{ person|pretty_user }} - Edit
+                                            </a>{% else %}{{ person|pretty_user }}{% endif %}</h4></li>
+                                        {% if person.title %}
+                                            <li>{{ person.title }}</li>{% endif %}
+                                        <li>{{ person.email }}</li>
+                                    </ul>
+
+                                </div>
+                            {% empty %}
+                                <div class="span6">This organization does not have anyone assigned to it.</div>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endfor %}
+            </div>
+            <!-- /widget-content -->
+        </div>
+        <!-- /widget -->
+    </div>
+
+    {% if request.user.is_admin %}
+        <div class="span4">
+            <div class="widget">
+                <div class="widget-header">
+                    <i class="icon-cog"></i>
+
+                    <h3>Administration</h3>
+
+                </div>
+                <!-- /widget-header -->
+                <div class="widget-content">
+                    <form action="{% url 'people' %}" method="post">
+                        {% csrf_token %}
+                        {{ company_form.as_table }}
+                        <button type="submit" class="button btn btn-primary btn-large" name="create_company">Create
+                            Company
+                        </button>
+                    </form>
+
+                    <div class="divider"></div>
+
+                    <form action="{% url 'people' %}" method="post">
+                        {% csrf_token %}
+                        {{ person_form.as_table }}
+                        <button type="submit" class="button btn btn-primary btn-large" name="create_person">Create
+                            Person
+                        </button>
+                    </form>
+
+                </div>
+                <!-- /widget-content -->
+            </div>
+            <!-- /widget -->
+        </div>
+        <script type="text/javascript">
+            function uploadClicked() {
+                $("#upload").attr("disabled", "disabled");
+                $("#upload").text('Uploading...')
+                $("#upload_form").submit()
+            }
+        </script>
+    {% endif %}
+{% endblock content %}

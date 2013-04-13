@@ -39,59 +39,10 @@
 
         <div class="container">
 
-            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
+            <a class="brand" href="{% url 'home' %}">
+                <img src="{% static 'img/kala-logo.png' %}"alt="Kala - Document Management Logo">
+                <span style="margin-left: 10px;">Kala Document Management</span>
             </a>
-
-            <a class="brand" href="./">
-                Kala - Document Management
-            </a>
-
-            <div class="nav-collapse">
-                <ul class="nav pull-right">
-                    <li class="dropdown">
-
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="icon-cog"></i>
-                            Settings
-                            <b class="caret"></b>
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a href="javascript:;">Account Settings</a></li>
-                            <li><a href="javascript:;">Privacy Settings</a></li>
-                            <li class="divider"></li>
-                            <li><a href="javascript:;">Help</a></li>
-                        </ul>
-
-                    </li>
-
-                    <li class="dropdown">
-
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="icon-user"></i>
-                            {{ request.user|pretty_user }}
-                            <b class="caret"></b>
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a href="javascript:;">My Profile</a></li>
-                            <li><a href="javascript:;">My Groups</a></li>
-                            <li class="divider"></li>
-                            <li><a href="{% url 'logout' %}">Logout</a></li>
-                        </ul>
-
-                    </li>
-                </ul>
-
-                <form class="navbar-search pull-right">
-                    <input type="text" class="search-query" placeholder="Search">
-                </form>
-
-            </div>
-            <!--/.nav-collapse -->
 
         </div>
         <!-- /container -->
@@ -112,55 +63,44 @@
 
             <ul class="mainnav">
 
-                <li class="active">
+                <li class="{% block home_class %}{% endblock %}">
                     <a href="{% url 'home' %}">
                         <i class="icon-home"></i>
                         <span>Home</span>
                     </a>
                 </li>
 
-                <li>
+                <li class="{% block projects_class %}{% endblock %}">
                     <a href="{% url 'projects' %}">
                         <i class="icon-edit"></i>
                         <span>Projects</span>
                     </a>
                 </li>
 
-                <li>
-                    <a href="./pricing.html" class="dropdown-toggle">
-                        <i class="icon-book"></i>
-                        <span>Documents</span>
-                    </a>
-                </li>
-
-                <li>
-                    <a href="./reports.html">
+                <li class="{% block people_class %}{% endblock %}">
+                    <a href="{% url 'people' %}">
                         <i class="icon-group"></i>
                         <span>People</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="./guidely.html">
+                    <a href="#guided-tour">
                         <i class="icon-facetime-video"></i>
                         <span>Guided Tour</span>
                     </a>
                 </li>
 
-                <li class="dropdown">
+                <li class="dropdown {% block account_class %}{% endblock %}">
                     <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="icon-share-alt"></i>
-                        <span>More Pages</span>
+                        <i class="icon-user"></i>
+                        <span>My Account</span>
                         <b class="caret"></b>
                     </a>
 
                     <ul class="dropdown-menu">
-                        <li><a href="./charts.html">Charts</a></li>
-                        <li><a href="./account.html">User Account</a></li>
-                        <li class="divider"></li>
-                        <li><a href="./login.html">Login</a></li>
-                        <li><a href="./signup.html">Signup</a></li>
-                        <li><a href="./error.html">Error</a></li>
+                        <li><a href="{% url 'edit_profile' request.user.pk %}">Edit Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
                     </ul>
                 </li>
 
@@ -307,11 +247,11 @@
 {% endblock footer %}
 
 
-{% block additional_script %}
-{% endblock additional_script %}
+
 <!-- Placed at the end of the document so the pages load faster -->
 <script src="{% static 'js/jquery-1.7.2.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.js' %}"></script>
-
+{% block additional_script %}
+{% endblock additional_script %}
 </body>
 </html>

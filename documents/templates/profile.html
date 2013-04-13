@@ -1,201 +1,229 @@
 {% extends 'base.html' %}
+{% load kala_tags %}
+
+{% block account_class %}{% if request.user == person %}active{% endif %}{% endblock %}
+{% block people_class %}{% if request.user != person %}active{% endif %}{% endblock %}
 
 {% block content %}
+    {% if request.user != person %}
+        <div class="breadcrumb" style="margin-left: 30px;">
+            <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
+            <li><a href="{% url 'people' %}">People</a> <span class="divider">/</span></li>
+            <li class="active">{{ person|pretty_user }}</li>
+        </div>
+    {% endif %}
+
     <div class="span8">
     <div class="widget stacked ">
 
-        <div class="widget-header">
-            <i class="icon-user"></i>
+    <div class="widget-header">
+        <i class="icon-user"></i>
 
-            <h3>Your Account</h3>
-        </div>
-        <!-- /widget-header -->
+        <h3>{% if person.pk == request.user.pk %}Your Profile
+            {% else %}{{ person|pretty_user }}{% if person.last_name|slice:"-1:" == 's' %}'{% else %}'s
+            {% endif %} Profile{% endif %}</h3>
+    </div>
+    <!-- /widget-header -->
+    {{ form.errors }}
+    <div class="widget-content">
 
-        <div class="widget-content">
 
+        <div class="tabbable">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#profile" data-toggle="tab">Profile</a>
+                </li>
+                <li><a href="#settings" data-toggle="tab">Settings</a></li>
+            </ul>
 
-            <div class="tabbable">
-                <ul class="nav nav-tabs">
-                    <li class="active">
-                        <a href="#profile" data-toggle="tab">Profile</a>
-                    </li>
-                    <li><a href="#settings" data-toggle="tab">Settings</a></li>
-                </ul>
+            <br>
 
-                <br>
+            <div class="tab-content">
+                <div class="tab-pane active" id="profile">
+                    <form id="edit-profile" class="form-horizontal" method="post"
+                          action="{% url 'edit_profile' person.pk %}">
+                        {% csrf_token %}
+                        <fieldset>
 
-                <div class="tab-content">
-                    <div class="tab-pane active" id="profile">
-                        <form id="edit-profile" class="form-horizontal">
-                            <fieldset>
+                            <div class="control-group">
+                                <label class="control-label" for="username">Username</label>
 
-                                <div class="control-group">
-                                    <label class="control-label" for="username">Username</label>
+                                <div class="controls">
 
-                                    <div class="controls">
-                                        <input type="text" class="input-medium disabled" id="username"
-                                               value="jumpstartui" disabled>
+                                    <input type="text" class="disabled input-medium" id="username"
+                                           value="{{ person.username }}" disabled>
 
-                                        <p class="help-block">Your username is for logging in and cannot be changed.</p>
-                                    </div>
-                                    <!-- /controls -->
+                                    <p class="help-block">Your username is for logging in and cannot be
+                                        changed.</p>
                                 </div>
-                                <!-- /control-group -->
+                                <!-- /controls -->
+                            </div>
+                            <!-- /control-group -->
+                            <div class="control-group">
+                                <label class="control-label" for="company">Company</label>
 
-                                <div class="control-group">
-                                    <label class="control-label" for="firstname">First Name</label>
 
-                                    <div class="controls">
-                                        <input type="text" class="input-medium" id="firstname" value="Rod">
-                                    </div>
-                                    <!-- /controls -->
+                                <div class="controls">
+                                    <input type="text" class="span4 disabled" id="company"
+                                           value="{{ person.company }}" disabled>
                                 </div>
-                                <!-- /control-group -->
+                            </div>
 
+                            <div class="control-group">
+                                <label class="control-label" for="id_first_name">First Name</label>
 
-                                <div class="control-group">
-                                    <label class="control-label" for="lastname">Last Name</label>
-
-                                    <div class="controls">
-                                        <input type="text" class="input-medium" id="lastname" value="Howard">
-                                    </div>
-                                    <!-- /controls -->
+                                <div class="controls">
+                                    {{ form.first_name }}
                                 </div>
-                                <!-- /control-group -->
+                                <!-- /controls -->
+                            </div>
+                            <!-- /control-group -->
 
 
-                                <div class="control-group">
-                                    <label class="control-label" for="email">Email Address</label>
+                            <div class="control-group">
+                                <label class="control-label" for="id_last_name">Last Name</label>
 
-                                    <div class="controls">
-                                        <input type="text" class="input-large" id="email"
-                                               value="rod.howard@example.com">
-                                    </div>
-                                    <!-- /controls -->
+                                <div class="controls">
+                                    {{ form.last_name }}
                                 </div>
-                                <!-- /control-group -->
+                                <!-- /controls -->
+                            </div>
+                            <!-- /control-group -->
 
 
-                                <br/><br/>
+                            <div class="control-group">
+                                <label class="control-label" for="id_email">Email Address</label>
 
-                                <div class="control-group">
-                                    <label class="control-label" for="password1">Password</label>
-
-                                    <div class="controls">
-                                        <input type="password" class="input-medium" id="password1" value="password">
-                                    </div>
-                                    <!-- /controls -->
+                                <div class="controls">
+                                    {{ form.email }}
                                 </div>
-                                <!-- /control-group -->
+                                <!-- /controls -->
+                            </div>
+                            <!-- /control-group -->
 
 
-                                <div class="control-group">
-                                    <label class="control-label" for="password2">Confirm</label>
+                            <br/><br/>
 
-                                    <div class="controls">
-                                        <input type="password" class="input-medium" id="password2" value="password">
-                                    </div>
-                                    <!-- /controls -->
+                            <div class="control-group">
+                                <label class="control-label" for="id_password">Password</label>
+
+                                <div class="controls">
+                                    {{ form.password }}
                                 </div>
-                                <!-- /control-group -->
+                                <!-- /controls -->
+                            </div>
+                            <!-- /control-group -->
 
 
-                                <br/>
+                            <div class="control-group">
+                                <label class="control-label" for="id_confirm">Confirm</label>
 
-
-                                <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                    <button class="btn">Cancel</button>
+                                <div class="controls">
+                                    {{ form.confirm }}
                                 </div>
-                                <!-- /form-actions -->
-                            </fieldset>
-                        </form>
-                    </div>
-
-                    <div class="tab-pane" id="settings">
-                        <form id="edit-profile2" class="form-horizontal">
-                            <fieldset>
+                                <!-- /controls -->
+                            </div>
+                            <!-- /control-group -->
 
 
-                                <div class="control-group">
-                                    <label class="control-label" for="accounttype">Account Type</label>
-
-                                    <div class="controls">
-                                        <label class="radio">
-                                            <input type="radio" name="accounttype" value="option1" checked="checked"
-                                                   id="accounttype">
-                                            POP3
-                                        </label>
-                                        <label class="radio">
-                                            <input type="radio" name="accounttype" value="option2">
-                                            IMAP
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="accountusername">Account Username</label>
-
-                                    <div class="controls">
-                                        <input type="text" class="input-large" id="accountusername"
-                                               value="rod.howard@example.com">
-
-                                        <p class="help-block">Leave blank to use your profile email address.</p>
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="emailserver">Email Server</label>
-
-                                    <div class="controls">
-                                        <input type="text" class="input-large" id="emailserver"
-                                               value="mail.example.com">
-                                    </div>
-                                </div>
-                                <div class="control-group">
-                                    <label class="control-label" for="accountpassword">Password</label>
-
-                                    <div class="controls">
-                                        <input type="text" class="input-large" id="accountpassword" value="password">
-                                    </div>
-                                </div>
+                            <br/>
 
 
-                                <div class="control-group">
-                                    <label class="control-label" for="accountadvanced">Advanced Settings</label>
-
-                                    <div class="controls">
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="accountadvanced" value="option1"
-                                                   checked="checked" id="accountadvanced">
-                                            User encrypted connection when accessing this server
-                                        </label>
-                                        <label class="checkbox">
-                                            <input type="checkbox" name="accounttype" value="option2">
-                                            Download all message on connection
-                                        </label>
-                                    </div>
-                                </div>
-
-
-                                <br/>
-
-                                <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary">Save</button>
-                                    <button class="btn">Cancel</button>
-                                </div>
-                            </fieldset>
-                        </form>
-                    </div>
-
+                            <div class="form-actions">
+                                <button type="submit" class="button btn btn-primary btn-large">Update Profile
+                                </button>
+                            </div>
+                            <!-- /form-actions -->
+                        </fieldset>
+                    </form>
                 </div>
 
+                <div class="tab-pane" id="settings">
+                    <form id="edit-profile2" class="form-horizontal">
+                        <fieldset>
+
+
+                            <div class="control-group">
+                                <label class="control-label" for="accounttype">Account Type</label>
+
+                                <div class="controls">
+                                    <label class="radio">
+                                        <input type="radio" name="accounttype" value="option1" checked="checked"
+                                               id="accounttype">
+                                        POP3
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="accounttype" value="option2">
+                                        IMAP
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="accountusername">Account Username</label>
+
+                                <div class="controls">
+                                    <input type="text" class="input-large" id="accountusername"
+                                           value="rod.howard@example.com">
+
+                                    <p class="help-block">Leave blank to use your profile email address.</p>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="emailserver">Email Server</label>
+
+                                <div class="controls">
+                                    <input type="text" class="input-large" id="emailserver"
+                                           value="mail.example.com">
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label" for="accountpassword">Password</label>
+
+                                <div class="controls">
+                                    <input type="text" class="input-large" id="accountpassword"
+                                           value="password">
+                                </div>
+                            </div>
+
+
+                            <div class="control-group">
+                                <label class="control-label" for="accountadvanced">Advanced Settings</label>
+
+                                <div class="controls">
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="accountadvanced" value="option1"
+                                               checked="checked" id="accountadvanced">
+                                        User encrypted connection when accessing this server
+                                    </label>
+                                    <label class="checkbox">
+                                        <input type="checkbox" name="accounttype" value="option2">
+                                        Download all message on connection
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <br/>
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                                <button class="btn">Cancel</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
 
             </div>
 
 
         </div>
-        <!-- /widget-content -->
 
-    </div> <!-- /widget -->
+
+    </div>
+    <!-- /widget-content -->
+
+    </div>
+    <!-- /widget -->
 
     </div> <!-- /span8 -->
 

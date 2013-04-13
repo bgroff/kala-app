@@ -8,6 +8,6 @@ urlpatterns = patterns('',
     url(r'^login$', login, {'template_name': 'login.html'}, name='login'),
     url(r'^logout$', logout_then_login, {'login_url': '/login'}, name='logout'),
     url(r'^create_account$', CreateAccount.as_view(), name='create_account'),
-    url(r'^edit_profile$', login_required(EditProfile.as_view()), name='edit_profile'),
+    url(r'^edit_profile/(?P<pk>\d+)$', login_required(EditProfile.as_view()), name='edit_profile'),
     url(r'^', include('documents.urls')),
 )
