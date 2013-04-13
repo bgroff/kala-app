@@ -6,7 +6,7 @@ from django.db import models
 from django.http import HttpResponse
 from django_localflavor_us.models import USPostalCodeField, USStateField, PhoneNumberField
 from django_countries import CountryField
-from documents.defs import get_icon_for_mime
+from documents.defs import get_icon_for_mime, get_alt_for_mime
 from timezone_field import TimeZoneField
 from uuidfield import UUIDField
 
@@ -190,12 +190,7 @@ class DocumentVersion(models.Model):
         return get_icon_for_mime(self.mime)
 
     def get_alt(self):
-        extension = self.bc_url.split('/')[-1].split('.')[-1]
-        if extension is 'doc' or 'docx': return 'Word Document'
-        if extension is 'ppt' or 'pptx': return 'Power Point'
-        if extension is 'pdf': return 'PDF Document'
-        if extension is 'xls' or 'xlsx': return 'Excel Document'
-        return 'Unkwown Document'
+        return get_alt_for_mime(self.mime)
 
     def __str__(self):
         return self.name.encode('utf-8')

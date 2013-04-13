@@ -31,10 +31,11 @@
                 {% for document in documents %}
                     <div>
                         <div style="float: left">
-                            <img src="{% static document.get_icon %}" alt="{{ document.get_alt }}"/>
+                            <img src="{% static document.get_icon %}" alt="{{ document.get_alt }}"
+                                    style="width: 64px; height: 64px;"/>
                         </div>
 
-                        <div style="margin-left: 40px;">
+                        <div style="margin-left: 75px;">
                             <h3>
                                 {{ document.name }}
                                 <a href="{% url 'download_document' document.uuid %}">
