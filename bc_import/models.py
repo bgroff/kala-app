@@ -1,8 +1,11 @@
 from django.db import models
-from documents.models import DocumentVersion, Company, Person, Project
+from documents.models import DocumentVersion
+from people.models import People
+from projects.models import Projects
+from companies.models import Companies
 
 
-class BCCompany(Company):
+class BCCompany(Companies):
     # remove when done
     bc_id = models.IntegerField()
 
@@ -21,15 +24,14 @@ class BCDocumentVersion(DocumentVersion):
     bc_size = models.IntegerField()
     bc_collection = models.IntegerField()
     bc_id = models.IntegerField()
-    bc_project = models.ForeignKey(Project)
     bc_category = models.IntegerField(null=True, blank=True)
     bc_url = models.URLField(max_length=400)
 
 
 #should probably use AbstractBaseUser as the 30 char limit on users names is difficult.
-class BCPerson(Person):
+class BCPerson(People):
     bc_id = models.IntegerField(null=True, blank=True)
 
 
-class BCProject(Project):
+class BCProject(Projects):
     bc_id = models.IntegerField()

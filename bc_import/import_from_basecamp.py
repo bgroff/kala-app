@@ -2,7 +2,8 @@ from datetime import datetime
 import urllib
 from bc_import.models import BCPerson, BCCompany, BCProject, BCDocumentVersion
 from django.conf import settings
-from documents.models import Company, Person, Project, DocumentVersion, Document
+from documents.models import Documents
+
 import requests
 import xml.etree.ElementTree as ET
 
@@ -94,7 +95,7 @@ def import_projects():
             p.changed = datetime.strptime(project.find('last-changed-on').text, '%Y-%m-%dT%H:%M:%SZ')
         p.created = datetime.strptime(project.find('created-on').text, '%Y-%m-%d')
         p.is_active = project.find('status').text
-        p.owner = BCCompany.objects.get(bc_id=project.find('company').find('id').text)
+        p.company = BCCompany.objects.get(bc_id=project.find('company').find('id').text)
         p.save()
 
 
@@ -119,9 +120,9 @@ def import_documents(project_id):
             d.name = document.find('name').text
             try:
                 d.person = BCPerson.objects.get(bc_id=document.find('person-id').text)
-            except Person.DoesNotExist:
+            except BCPerson.DoesNotExist:
                 d.person = None
-            d.bc_project = BCProject.objects.get(bc_id=document.find('project-id').text)
+            d.project = BCProject.objects.get(bc_id=document.find('project-id').text)
             d.bc_url = document.find('download-url').text
             d.save(save_document=False)
 
@@ -143,7 +144,7 @@ def import_file(url, uuid):
 
 def create_document_from_document_version(document_version):
     assert type(document_version) is BCDocumentVersion, 'The parameter must be of type DocumentVersion'
-    document = Document.objects.create(name=document_version.name, project=document_version.bc_project, date=document_version.created)
+    document = Documents.objects.create(name=document_version.name, project=document_version.project, date=document_version.created)
     for document_version in BCDocumentVersion.objects.filter(bc_collection=document_version.bc_collection):
         document_version.document = document
         document_version.save()

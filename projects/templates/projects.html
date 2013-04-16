@@ -20,7 +20,7 @@
             </div>
             <!-- /widget-header -->
             <div class="widget-content">
-                <ul class="news-items">
+                <ul id="projects" class="news-items">
                     {% for company in companies %}
                         <li class="span6">
                             <div class="news-item-detail">
@@ -37,6 +37,10 @@
                                 </p>
                             </div>
                         </li>
+                    {% empty %}
+                        You organization does not currently have any projects, if you are an administrator you may
+                        create a new project with the form provided, otherwise you will have to contact an
+                        administrator to create a project on your behalf.
                     {% endfor %}
                 </ul>
             </div>
@@ -54,11 +58,12 @@
                 <h3>New Project</h3>
             </div>
             <!-- /widget-header -->
-            <div class="widget-content">
+            <div id="project-form" class="widget-content">
                 <form method="post" action="{% url 'projects' %}">
                     {% csrf_token %}
                     {{ form.as_table }}
-                    <button type="submit" class="button btn btn-primary btn-large">Create Project</button>
+                    <button id="create-button" type="submit" class="button btn btn-primary btn-large">Create Project
+                    </button>
                 </form>
             </div>
             <!-- /widget-content -->
@@ -67,3 +72,33 @@
     {% endif %}
 </div>
 {% endblock content %}
+
+{% block tour %}
+    <ol id="joyRideContent">
+        <li data-id="projects">
+            <p>If you are assigned to any projects, you can accesses them with the list below.</p>
+                <p>Click on the name of the
+                project, which should be colored blue. This will take you to the project page, where you can upload,
+                download, and alter documents.
+            </p>
+            <p>
+                If you are not assigned to any projects you will not see a list of projects.
+            </p>
+        </li>
+        {% if request.user.is_admin %}
+            <li data-id="project-form">
+                <p>To create a new project, use the form provided above.</p>
+            </li>
+            <li data-id="id_name">
+                <p>The name field will be the name of the new project.</p>
+            </li>
+            <li data-id="id_company">
+                <p>You can choose which company the project will be under with the company select box.</p>
+            </li>
+            <li data-id="create-button">
+                <p>When you are ready to create a new project, click the Create Project button and the project will be
+                    created. You will come back to this page once the project has been created.</p>
+            </li>
+        {% endif %}
+    </ol>
+{% endblock tour %}

@@ -30,7 +30,7 @@
                             <td style="text-align: center;"><img src="{% static document.get_icon %}"
                                                                  alt="{{ document.get_alt }}"
                                     style="width: 64px; height: 64px;"/></td>
-                            <td><a href="">{{ document.name }}</a></td>
+                            <td><a href="{% url 'document' document.pk %}">{{ document.name }}</a></td>
                             <td>{{ document.person|pretty_user }}</td>
                             <td style="text-align: center;">{{ document.created|date:"M j" }}</td>
                         </tr>

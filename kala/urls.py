@@ -1,13 +1,50 @@
 from django.conf.urls import patterns, include, url
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import login, logout_then_login
-from documents.views import Home, CreateAccount, EditProfile
+from kala.views import Home
+from people.views import EditProfile
 
 urlpatterns = patterns('',
-    url(r'^$', login_required(Home.as_view()), name='home'),
-    url(r'^login$', login, {'template_name': 'login.html'}, name='login'),
-    url(r'^logout$', logout_then_login, {'login_url': '/login'}, name='logout'),
-    url(r'^create_account$', CreateAccount.as_view(), name='create_account'),
-    url(r'^edit_profile/(?P<pk>\d+)$', login_required(EditProfile.as_view()), name='edit_profile'),
-    url(r'^', include('documents.urls')),
+                       url(
+                           regex=r'^$',
+                           view=Home.as_view(),
+                           name='home'
+                       ),
+
+                       url(
+                           regex=r'^login$', view=login,
+                           kwargs={'template_name': 'login.html'},
+                           name='login'
+                       ),
+                       url(
+                           regex=r'^logout$',
+                           view=logout_then_login,
+                           kwargs={'login_url': '/login'},
+                           name='logout'
+                       ),
+                       #    url(r'^create_account$', CreateAccount.as_view(), name='create_account'),
+                       url(
+                           regex=r'^edit_profile/(?P<pk>\d+)$',
+                           view=EditProfile.as_view(),
+                           name='edit_profile'
+                       ),
+
+                       url(
+                           r'^companies/',
+                           include('companies.urls'),
+                       ),
+
+                       url(
+                           r'^documents/',
+                           include('documents.urls'),
+                       ),
+
+                       url(
+                           r'^people/',
+                           include('people.urls'),
+                       ),
+
+                       url(
+                           r'^projects/',
+                           include('projects.urls'),
+                       ),
 )
