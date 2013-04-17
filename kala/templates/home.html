@@ -8,7 +8,7 @@
     <div class="span8">
         <div class="widget widget-table action-table">
             <div class="widget-header">
-                <i class="icon-star"></i>
+                <i class="icon-book"></i>
 
                 <h3>Current Documents</h3>
             </div>
@@ -29,7 +29,7 @@
                         <tr>
                             <td style="text-align: center;"><img src="{% static document.get_icon %}"
                                                                  alt="{{ document.get_alt }}"
-                                    style="width: 64px; height: 64px;"/></td>
+                                                                 style="width: 64px; height: 64px;"/></td>
                             <td><a href="{% url 'document' document.pk %}">{{ document.name }}</a></td>
                             <td>{{ document.person|pretty_user }}</td>
                             <td style="text-align: center;">{{ document.created|date:"M j" }}</td>
@@ -43,8 +43,7 @@
                     </tbody>
                 </table>
             </div>
-            <!-- /widget-content -->
-        </div>
+         </div>
     </div>
 
     <div class="span4">
@@ -57,16 +56,18 @@
             <!-- /widget-header -->
             <div class="widget-content">
                 <ul class="news-items">
-                {% for company in companies %}
-                    <li class="span3" style="margin-left: 10px;">
-                        <h4>{{ company.name }}</h4>
-                        {% for project in company|users_projects:request.user %}
-                            <p style="margin-left: 15px; margin-top: 2px; margin-bottom: 2px;"><a href="{% url 'project' project.pk %}">{{ project.name }}</a></p>
-                        {% empty %}
-                            <p style="margin-left: 15px;">You are not assigned to any projects by this organization.</p>
-                        {% endfor %}
-                    </li>
-                {% endfor %}
+                    {% for company in companies %}
+                        <li class="span3" style="margin-left: 10px;">
+                            <h4>{{ company.name }}</h4>
+                            {% for project in company|users_projects:request.user %}
+                                <p style="margin-left: 15px; margin-top: 2px; margin-bottom: 2px;"><a
+                                        href="{% url 'project' project.pk %}">{{ project.name }}</a></p>
+                            {% empty %}
+                                <p style="margin-left: 15px;">You are not assigned to any projects by this
+                                    organization.</p>
+                            {% endfor %}
+                        </li>
+                    {% endfor %}
                 </ul>
             </div>
             <!-- /widget-content -->

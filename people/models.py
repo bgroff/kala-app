@@ -40,14 +40,9 @@ class People(AbstractUser):
         if self.is_admin:
             _companies = companies.models.Companies.active.all()
         else:
-            # All of the projects that the user is assigned too.
-            q1 = companies.models.Companies.objects.filter(
-                pk__in=projects.models.Projects.clients.through.objects.filter(people=self).values(
-                    'projects__clients__pk'))
-            # All the active projects
-            q2 = companies.models.Companies.active.filter(pk=self.company.pk)
-            # The union of that
-            _companies = q1 & q2
+            _companies = companies.models.Companies.active.filter(
+                pk__in=projects.models.Projects.clients.through.objects.filter(people__pk=self.pk).values(
+                    'projects__company__pk'))
         has_projects = companies.models.Companies.active.filter(
             pk__in=projects.models.Projects.active.all().values('company__pk'))
         return _companies & has_projects

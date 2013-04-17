@@ -4,7 +4,8 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-from documents.models import Documents
+from documents.models import Documents, DocumentVersion
+from projects.models import Projects
 
 
 class AdminRequiredMixin(object):
@@ -38,5 +39,5 @@ class Home(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         return {
             'companies': self.request.user.get_companies_list(),
-            'documents': Documents.active.all()[:10]
+            'documents': Documents.active.filter(pk__in=DocumentVersion.objects.filter(person=self.request.user.pk).values('document__pk'))[:10],
         }

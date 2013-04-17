@@ -31,6 +31,8 @@ class ProjectsView(LoginRequiredMixin, TemplateView):
 
         if self.form.is_valid():
             project = self.form.save()
+            # Add everyone in the organization to the project.
+            [project.clients.add(person) for person in project.company.get_people_list()]
             messages.success(request, 'The project has been created')
             return redirect(reverse('project', args=[project.pk]))
         return self.render_to_response(self.get_context_data())

@@ -7,6 +7,7 @@ from companies.forms import CreateCompanyForm
 from companies.models import Companies
 from .forms import PersonForm, CreatePersonForm
 from .models import People
+from projects.models import Projects
 
 
 class EditProfile(LoginRequiredMixin, TemplateView):
@@ -52,17 +53,24 @@ class PeopleView(LoginRequiredMixin, TemplateView):
     template_name = 'people.html'
 
     def get_context_data(self, **kwargs):
+        if self.request.user.is_admin:
+            return {
+                'companies': self.companies,
+                'company_form': self.company_form,
+                'person_form': self.person_form,
+                }
         return {
-            'companies': self.companies,
-            'company_form': self.company_form,
-            'person_form': self.person_form,
-            }
+            'companies': self.companies
+        }
 
     def dispatch(self, request, *args, **kwargs):
-        self.companies = Companies.active.all()
-
-        self.company_form = CreateCompanyForm(request.POST if 'create_company' in request.POST else None)
-        self.person_form = CreatePersonForm(request.POST if 'create_person' in request.POST else None)
+        if request.user.is_admin:
+            self.companies = Companies.active.all()
+            self.company_form = CreateCompanyForm(request.POST if 'create_company' in request.POST else None)
+            self.person_form = CreatePersonForm(request.POST if 'create_person' in request.POST else None)
+        else:
+            self.companies = Companies.active.filter(pk__in=Projects.clients.through.objects.filter(people__pk=self.request.user.pk).values('projects__company__pk'))
+            self.companies = self.companies | Companies.active.filter(pk=self.request.user.company.pk)
         return super(PeopleView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
