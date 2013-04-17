@@ -40,7 +40,7 @@ class Companies(models.Model):
         for person in People.objects.filter(company=self):
             person.set_active(active)
 
-        for project in Projects.objects.filter(owner=self):
+        for project in Projects.objects.filter(company=self):
             project.set_active(active)
 
         self.save()
