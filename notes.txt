@@ -3,3 +3,5 @@ associate a user with an attachment.
 
 - When redoing import, make sure that the autonow stuff is off.
 - When importing files, the file property will need to be set to Null=True
+
+- Use the version 1 styles for the

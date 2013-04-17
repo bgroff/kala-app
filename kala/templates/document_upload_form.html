@@ -1,0 +1,39 @@
+<form id="upload_form" method="post" enctype='multipart/form-data' style="margin-top: 5px;">
+    {% csrf_token %}
+    <div id="file" class="control-group {% if form.file.errors %}error{% endif %}">
+        <div class="controls">
+            <div style="margin-left: 20px;">
+                <label class="control-label" for="id_file">File:</label>
+                {{ form.file }}
+            <div id="file-error"
+                 {% if not form.description.errors %}style="display: none"{% endif %}>
+                                        <span for="id_file" class="error" style="display: inline">
+                                            {% if form.file.errors %}
+                                                {{ form.file.errors.0 }}{% else %}This field is
+                                                required.{% endif %}</span>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div id="description" class="control-group {% if form.description.errors %}error{% endif %}">
+        <div class="controls">
+            <div style="margin-left: 20px;">
+                <label class="control-label" for="id_description">Description:</label>
+                {{ form.description }}
+            <div id="description-error"
+                 {% if not form.description.errors %}style="display: none"{% endif %}>
+                                    <span for="id_description" class="error"
+                                          style="display: inline">{% if form.description.errors %}
+                                        {{ form.description.errors.0 }}{% else %}This field is
+                                        required.{% endif %}</span>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+
+        <button id="upload" type="button" class="button btn btn-primary btn-large"
+                onclick="uploadClicked()">Upload
+        </button>
+    </div>
+</form>

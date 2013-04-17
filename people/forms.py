@@ -40,7 +40,7 @@ class CreatePersonForm(PersonForm):
     class Meta:
         model = People
         fields = (
-            'email', 'first_name', 'last_name'
+            'email', 'first_name', 'last_name', 'company'
         )
 
     def clean_email(self):

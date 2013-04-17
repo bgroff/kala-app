@@ -53,17 +53,45 @@
         <div class="span4">
         <div class="widget">
             <div class="widget-header">
-                <i class="icon-edit"></i>
+                <i class="icon-cog"></i>
 
-                <h3>New Project</h3>
+                <h3>Administration</h3>
             </div>
             <!-- /widget-header -->
             <div id="project-form" class="widget-content">
+                <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Create Project</h3>
                 <form method="post" action="{% url 'projects' %}">
                     {% csrf_token %}
-                    {{ form.as_table }}
-                    <button id="create-button" type="submit" class="button btn btn-primary btn-large">Create Project
-                    </button>
+                    <fieldset>
+                        <div class="control-group {% if form.name.errors %}error{% endif %}">
+                            <div class="controls">
+                                <label class="control-label" for="id_name" style="margin-left: 20px;">Project
+                                    Name:</label>
+                                <div style="margin-left: 20px;">{{ form.name }}</div>
+                            </div>
+                            <div style="margin-left: 20px;{% if not form.name.errors %}display: none{% endif %}">
+                                        <span for="id_file" class="error" style="display: inline">
+                                                {{ form.name.errors.0 }}</span>
+                            </div>
+                        </div>
+
+                        <div class="control-group {% if form.company.errors %}error{% endif %}">
+                            <div class="controls">
+                                <label class="control-label" for="id_company" style="margin-left: 20px;">Select Company:</label>
+                                <div style="margin-left: 20px;">{{ form.company }}</div>
+                            </div>
+                            <div style="margin-left: 20px;{% if not form.company.errors %}display: none{% endif %}">
+                                        <span for="id_file" class="error" style="display: inline">
+                                                {{ form.company.errors.0 }}</span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="button btn btn-primary btn-large" name="create_project">
+                                Create Project
+                            </button>
+                        </div>
+                    </fieldset>
                 </form>
             </div>
             <!-- /widget-content -->
@@ -74,7 +102,7 @@
 {% endblock content %}
 
 {% block tour %}
-    <ol id="joyRideContent">
+    <ol id="joyRideContent" style="display: none;">
         <li data-id="projects">
             <p>If you are assigned to any projects, you can accesses them with the list below.</p>
                 <p>Click on the name of the

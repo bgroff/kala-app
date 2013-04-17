@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
@@ -26,7 +27,8 @@ class CompanyView(AdminRequiredMixin, TemplateView):
             return redirect(reverse('people'))
 
         if self.form.is_valid():
-            company = self.form.save()
+            self.form.save()
+            messages.success(request, 'The company information has been updated')
             return redirect(reverse('company', args=[self.company.pk]))
 
         return self.render_to_response(self.get_context_data())

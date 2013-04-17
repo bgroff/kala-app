@@ -30,6 +30,9 @@ MIME_TO_CATEGORY = {
     'image/png': 'image',
     'image/tiff': 'image',
     'application/pdf': 'pdf',
+    'text/x-python': 'python',
+    'text/plain': 'text',
+    'image/svg+xml': 'vector graphic',
     }
 
 CATEGORY_TO_FILE = {
@@ -40,6 +43,9 @@ CATEGORY_TO_FILE = {
     'zip': 'tar.png',
     'image': 'image.png',
     'pdf': 'pdf.png',
+    'python': 'source_py.png',
+    'vector graphic': 'vectorgfx.png',
+    'text': 'source.png'
 }
 
 def get_icon_for_mime(mime):

@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block additional_script %}
+    <script type="text/javascript">
+        function uploadClicked() {
+            var empty_fields = false
+
+            if ($("#id_file").val() == '') {
+                $("#file").addClass('error')
+                $("#file-error").show()
+                empty_fields = true
+            } else {
+                $("#file").removeClass('error')
+                $("#file-error").hide()
+
+            }
+
+            if ($("#id_description").val() == '') {
+                $("#description").addClass('error')
+                $("#description-error").show();
+                empty_fields = true
+            } else {
+                $("#description-error").hide();
+                $("#description").removeClass('error')
+            }
+
+            if (empty_fields) {
+                return;
+            }
+
+            $("#upload").attr("disabled", "disabled");
+            $("#upload").text('Uploading...')
+            $("#upload_form").submit()
+        }
+    </script>
+{% endblock additional_script %}

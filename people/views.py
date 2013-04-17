@@ -30,14 +30,20 @@ class EditProfile(LoginRequiredMixin, TemplateView):
         if 'toggle-admin' in request.POST and request.user.is_admin:
             self.person.is_admin = not self.person.is_admin
             self.person.save()
+            if self.person.is_admin:
+                messages.success(request, 'This user has been granted administrator privileges')
+            else:
+                messages.success(request, 'This user has had it\'s administrator privileges revoked')
             return redirect(reverse('edit_profile', args=[self.person.pk]))
 
         if 'delete' in request.POST and request.user.is_admin:
             self.person.set_active(False)
+            messages.success(request, 'The person has been removed')
             return redirect(reverse('people'))
 
         if self.form.is_valid():
             self.form.save()
+            messages.success(request, 'Profile data has been saved')
             return redirect(reverse('edit_profile', args=[self.person.pk]))
         return self.render_to_response(self.get_context_data())
 
@@ -66,9 +72,11 @@ class PeopleView(LoginRequiredMixin, TemplateView):
 
         if 'create_company' in request.POST and self.company_form.is_valid():
             company = self.company_form.save()
-            return redirect(reverse('people', args=[company.pk]))
+            messages.success(request, 'The company has been created')
+            return redirect(reverse('company', args=[company.pk]))
         if 'create_person' in request.POST and self.person_form.is_valid():
             self.person_form.save()
+            messages.success(request, 'The person has been created')
             return redirect(reverse('people'))
         return self.render_to_response(self.get_context_data())
 

@@ -22,6 +22,7 @@ class DocumentView(TemplateView, BaseDocumentView):
         return {
             'form': self.form,
             'document': self.document,
+            'project': self.project,
         }
 
     def dispatch(self, request, pk, *args, **kwargs):
@@ -56,5 +57,5 @@ class DownloadDocument(BaseDocumentView):
             return redirect(reverse('home'))
         return super(DownloadDocument, self).dispatch(request, *args, **kwargs)
 
-    def get(self, request, pk):
+    def get(self, request, *args, **kwargs):
         return self.document.build_http_response()

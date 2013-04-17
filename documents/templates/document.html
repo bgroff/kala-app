@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'document_upload_base.html' %}
 {% load static %}
 {% load kala_tags %}
 {% load pagination_tags %}
@@ -65,12 +65,7 @@
                         {% if forloop.first %}
                             <div id="document-created"></div>
                         {% endif %}
-                        on {{ document.created|date:"M j" }}, {{ document.file.size|filesizeformat }} -
-                        <a
-                                {% if forloop.first %}
-                                    id="document-edit"
-                                {% endif %}
-                                    href="{% url 'document' document.pk %}">Edit Document</a>
+                        on {{ document.created|date:"M j" }}, {{ document.file.size|filesizeformat }}
                         <ul>
                             {% for version in document.list_versions %}
                                 <li>
@@ -96,33 +91,19 @@
             <!-- /widget-header -->
             <div class="widget-content">
                 <div>
-                    <h4 id="new-document">Upload New Version</h4>
+                    <h3 id="new-document" style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Upload New Version</h3>
 
-                    <form id="upload_form" method="post" action="{% url 'document' document.pk %}"
-                          enctype='multipart/form-data' style="margin-top: 5px;">
-                        {% csrf_token %}
-                        {{ form.as_table }}
-                        <button id="upload" type="submit" class="button btn btn-primary btn-large"
-                                onclick="uploadClicked()">Upload
-                        </button>
-                    </form>
+                    {% include "document_upload_form.html" %}
                 </div>
             </div>
             <!-- /widget-content -->
         </div>
         <!-- /widget -->
     </div>
-    <script type="text/javascript">
-        function uploadClicked() {
-            $("#upload").attr("disabled", "disabled");
-            $("#upload").text('Uploading...')
-            $("#upload_form").submit()
-        }
-    </script>
 {% endblock content %}
 
 {% block tour %}
-    <ol id="joyRideContent">
+    <ol id="joyRideContent" style="display: none;">
         <li data-id="documents">
             <p>If there are documents available for this project they will be listed below.</p>
         </li>

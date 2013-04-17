@@ -26,11 +26,12 @@ class ProjectsView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_admin:
-            messages.error(request, 'You do not have permission to create a new project.')
+            messages.error(request, 'You do not have permission to create a new project')
             return redirect(reverse('projects'))
 
         if self.form.is_valid():
             project = self.form.save()
+            messages.success(request, 'The project has been created')
             return redirect(reverse('project', args=[project.pk]))
         return self.render_to_response(self.get_context_data())
 
@@ -53,8 +54,18 @@ class ProjectView(LoginRequiredMixin, TemplateView):
         return super(ProjectView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        if 'delete' in request.POST:
+            if request.user.is_admin:
+                self.project.set_active(False)
+                messages.success(request, 'The project has been deleted')
+                return redirect(reverse('projects'))
+            else:
+                messages.error(request, 'You do not have permission to delete this project')
+                return redirect(reverse('project', args=[self.project.pk]))
+
         if self.form.is_valid():
             self.form.save()
+            messages.success(request, 'The document has been created')
             return redirect(reverse('project', args=[self.project.pk]))
         return self.render_to_response(self.get_context_data())
 
@@ -74,7 +85,13 @@ class ProjectPermissions(AdminRequiredMixin, TemplateView):
         return super(ProjectPermissions, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        all_valid = True
         for form in self.forms:
             if form.is_valid():
                 form.save()
+            else:
+                all_valid = False
+        if all_valid:
+            messages.success(request, 'The permissions have been updated.')
+            return redirect(reverse('permissions', args=[self.project.pk]))
         return self.render_to_response(self.get_context_data())

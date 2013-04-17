@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'document_upload_base.html' %}
 {% load static %}
 {% load kala_tags %}
 {% load pagination_tags %}
@@ -36,8 +36,8 @@
                                     {% if forloop.first %}
                                         id="document-image"
                                     {% endif %}
-                                 src="{% static document.get_icon %}" alt="{{ document.get_alt }}"
-                                 style="width: 64px; height: 64px;"/>
+                                        src="{% static document.get_icon %}" alt="{{ document.get_alt }}"
+                                        style="width: 64px; height: 64px;"/>
                         </div>
 
                         <div style="margin-left: 75px;">
@@ -50,15 +50,15 @@
                                         {% if forloop.first %}
                                             id="document-download"
                                         {% endif %}
-                                        href="{% url 'download_document' document.uuid %}">
+                                            href="{% url 'download_document' document.uuid %}">
                                     <i class="icon-download-alt" style="font-size: 16pt;"></i>
                                 </a>
                             </h3>
 
                             {% if document.description %}
                                 <h4 {% if forloop.first %}
-                                            id="document-description"
-                                        {% endif %}>
+                                    id="document-description"
+                                {% endif %}>
                                     {{ document.description }}
                                 </h4>
                             {% endif %}
@@ -75,7 +75,7 @@
                                     {% if forloop.first %}
                                         id="document-edit"
                                     {% endif %}
-                                    href="{% url 'document' document.pk %}">Edit Document</a>
+                                        href="{% url 'document' document.pk %}">Add Version</a>
                             <ul>
                                 {% for version in document.list_versions %}
                                     <li>
@@ -106,40 +106,34 @@
             </div>
             <!-- /widget-header -->
             <div class="widget-content">
-                <div style="border-bottom: 1px dotted #CCC;">
-                    <h4 id="new-document">Upload New Document</h4>
-
-                    <form id="upload_form" method="post" action="{% url 'project' project.pk %}"
-                          enctype='multipart/form-data' style="margin-top: 5px;">
-                        {% csrf_token %}
-                        {{ form.as_table }}
-                        <button id="upload" type="submit" class="button btn btn-primary btn-large"
-                                onclick="uploadClicked()">Upload
-                        </button>
-                    </form>
-                </div>
+                    <h3 id="new-document"  style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Upload New Document</h3>
+                    {% include 'document_upload_form.html' %}
                 <div style="margin-top: 10px;">
-                    <h4>Sort By</h4>
+                    <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Sort By</h3>
 
-                    <form method="get" action="">
+                    <form method="get" action="{% url 'project' project.pk %}">
                     </form>
                 </div>
+                {% if request.user.is_admin %}
+                    <div style="margin-top: 10px;">
+                        <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Delete Project</h3>
+
+                        <form method="post" action="{% url 'project' project.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="button btn btn-danger btn-large" name="delete">Delete Project
+                            </button>
+                        </form>
+                    </div>
+                {% endif %}
             </div>
             <!-- /widget-content -->
         </div>
         <!-- /widget -->
     </div>
-    <script type="text/javascript">
-        function uploadClicked() {
-            $("#upload").attr("disabled", "disabled");
-            $("#upload").text('Uploading...')
-            $("#upload_form").submit()
-        }
-    </script>
 {% endblock content %}
 
 {% block tour %}
-    <ol id="joyRideContent">
+    <ol id="joyRideContent" style="display: none">
         <li data-id="documents">
             <p>If there are documents available for this project they will be listed below.</p>
         </li>
@@ -177,11 +171,11 @@
         </li>
         <li data-id="id_file">
             <p>Select the file that you wish to upload by clicking on the browse button. This will bring up a file
-            picker dialog, which you can use to select the document from your computer.</p>
+                picker dialog, which you can use to select the document from your computer.</p>
         </li>
         <li data-id="id_description">
             <p>The description of a new document should either describe the original intents of a document, or the
-            changes that you have made to an existing document.</p>
+                changes that you have made to an existing document.</p>
         </li>
         <li data-id="upload">
             <p>When you are ready to create a new document, click the Create Document button and the document will be

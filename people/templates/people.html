@@ -64,35 +64,94 @@
                 </div>
                 <!-- /widget-header -->
                 <div class="widget-content">
-                    <form action="{% url 'people' %}" method="post">
-                        {% csrf_token %}
-                        {{ company_form.as_table }}
-                        <button type="submit" class="button btn btn-primary btn-large" name="create_company">Create
-                            Company
-                        </button>
-                    </form>
-
-                    <div class="divider"></div>
+                    <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Create Company</h3>
 
                     <form action="{% url 'people' %}" method="post">
                         {% csrf_token %}
-                        {{ person_form.as_table }}
-                        <button type="submit" class="button btn btn-primary btn-large" name="create_person">Create
-                            Person
-                        </button>
+                        <fieldset>
+                            <div id="company" class="control-group {% if company_form.name.errors %}error{% endif %}">
+                                <div class="controls">
+                                    <label class="control-label" for="id_name" style="margin-left: 20px;">Company
+                                        Name:</label>
+
+                                    <div style="margin-left: 20px;">{{ company_form.name }}</div>
+                                </div>
+                                <div id="company-error"
+                                     style="margin-left: 20px;{% if not company_form.name.errors %}display: none{% endif %}">
+                                        <span for="id_file" class="error" style="display: inline">
+                                            {% if company_form.name.errors %}
+                                                {{ company_form.name.errors.0 }}{% else %}This field is
+                                                required.{% endif %}</span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="button btn btn-primary btn-large" name="create_company">
+                                    Create Company
+                                </button>
+                            </div>
+                        </fieldset>
                     </form>
 
+                    <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Create Person</h3>
+
+                    <form action="{% url 'people' %}" method="post">
+                        {% csrf_token %}
+                        {% csrf_token %}
+                        <fieldset>
+                            <div class="control-group {% if person_form.email.errors %}error{% endif %}">
+                                <div class="controls">
+                                    <label class="control-label" for="id_email" style="margin-left: 20px;">Email:</label>
+                                    <div style="margin-left: 20px;">{{ person_form.email }}</div>
+                                </div>
+                                <div style="margin-left: 20px;{% if not person_form.email.errors %}display: none{% endif %}">
+                                        <span for="id_email" class="error" style="display: inline">
+                                                {{ person_form.email.errors.0 }}</span>
+                                </div>
+                            </div>
+
+                            <div class="control-group {% if person_form.first_name.errors %}error{% endif %}">
+                                <div class="controls">
+                                    <label class="control-label" for="id_first_name" style="margin-left: 20px;">First Name:</label>
+                                    <div style="margin-left: 20px;">{{ person_form.first_name }}</div>
+                                </div>
+                                <div style="margin-left: 20px;{% if not person_form.first_name.errors %}display: none{% endif %}">
+                                        <span for="id_email" class="error" style="display: inline">
+                                                {{ person_form.first_name.errors.0 }}</span>
+                                </div>
+                            </div>
+
+                            <div class="control-group {% if person_form.last_name.errors %}error{% endif %}">
+                                <div class="controls">
+                                    <label class="control-label" for="id_last_name" style="margin-left: 20px;">Last Name:</label>
+                                    <div style="margin-left: 20px;">{{ person_form.last_name }}</div>
+                                </div>
+                                <div style="margin-left: 20px;{% if not person_form.last_name.errors %}display: none{% endif %}">
+                                        <span for="id_email" class="error" style="display: inline">
+                                                {{ person_form.last_name.errors.0 }}</span>
+                                </div>
+                            </div>
+
+                            <div class="control-group {% if person_form.company.errors %}error{% endif %}">
+                                <div class="controls">
+                                    <label class="control-label" for="id_company" style="margin-left: 20px;">Select Company:</label>
+                                    <div style="margin-left: 20px;">{{ person_form.company }}</div>
+                                </div>
+                                <div style="margin-left: 20px;{% if not person_form.company.errors %}display: none{% endif %}">
+                                        <span for="id_email" class="error" style="display: inline">
+                                                {{ person_form.company.errors.0 }}</span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="button btn btn-primary btn-large" name="create_person">
+                                    Create Person
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
                 </div>
                 <!-- /widget-content -->
             </div>
             <!-- /widget -->
         </div>
-        <script type="text/javascript">
-            function uploadClicked() {
-                $("#upload").attr("disabled", "disabled");
-                $("#upload").text('Uploading...')
-                $("#upload_form").submit()
-            }
-        </script>
     {% endif %}
 {% endblock content %}

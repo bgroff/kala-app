@@ -115,6 +115,7 @@ class DocumentVersion(models.Model):
              update_fields=None, save_document=True):
         if save_document:
             self.document.name = self.name
+            self.document.date = self.created
             self.document.save()
         super(DocumentVersion, self).save(force_insert, force_update, using, update_fields)
 
