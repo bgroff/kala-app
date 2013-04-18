@@ -26,6 +26,7 @@ class BCDocumentVersion(DocumentVersion):
     bc_id = models.IntegerField()
     bc_category = models.IntegerField(null=True, blank=True)
     bc_url = models.URLField(max_length=400)
+    bc_project = models.ForeignKey('BCProject')
 
 
 #should probably use AbstractBaseUser as the 30 char limit on users names is difficult.
