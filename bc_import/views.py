@@ -62,7 +62,9 @@ class BasecampImport(TemplateView):
             import_groups.delay(self.bc_auth['bc_name'], self.bc_auth['username'], self.bc_auth['password'])
 
         if 'update-documents' in request.POST:
-            pass
+            documents = BCDocumentVersion.objects.filter(file='')
+            for document in documents:
+                download_document.delay(document, self.bc_auth['username'], self.bc_auth['password'])
 
         return self.render_to_response(self.get_context_data())
 

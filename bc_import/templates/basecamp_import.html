@@ -36,7 +36,14 @@
                         </button>
                     </div>
                 </form>
-            </div>
+                <form class="form-horizontal" method="post" action="{% url 'basecamp_import' %}">
+                    {% csrf_token %}
+                    <div class="form-actions">
+                        <button type="submit" class="button btn btn-primary btn-large" name="update-documents">Update
+                            Document Files
+                        </button>
+                    </div>
+                </form>            </div>
             <!-- /widget-content -->
         </div>
         <!-- /widget -->
