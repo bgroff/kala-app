@@ -5,3 +5,4 @@ associate a user with an attachment.
 - When importing files, the file property will need to be set to Null=True
 
 - Use the version 1 styles for the
+- There are people without usernames, I have set them inactive, check that this is what is supposed to happen.

@@ -146,7 +146,7 @@
                                     <strong>Warning: </strong> {{ message }}.
                                 </div>
                             {% endif %}
-                            {% if message.level == 35 %}
+                            {% if message.level >= 35 %}
                                 <div class="alert alert-error">
                                     <a class="close" data-dismiss="alert">×</a>
                                     <strong>Error: </strong> {{ message }}.

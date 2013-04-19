@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="span8">
+        <div class="widget">
+            <div class="widget-header">
+                <i class="icon-edit"></i>
+
+                <h3>{{ name}}</h3>
+            </div>
+            <!-- /widget-header -->
+            <div id="documents" class="widget-content">
+
+            </div>
+            <!-- /widget-content -->
+        </div>
+        <!-- /widget -->
+    </div>
+    <div class="span4">
+        <div class="widget">
+            <div class="widget-header">
+                <i class="icon-cog"></i>
+
+                <h3>Options</h3>
+
+            </div>
+            <!-- /widget-header -->
+            <div class="widget-content">
+                <form class="form-horizontal" method="post" action="{% url 'basecamp_import' %}">
+                    {% csrf_token %}
+                    <div class="form-actions">
+                        <button type="submit" class="button btn btn-primary btn-large" name="update-information">Update
+                            Information
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- /widget-content -->
+        </div>
+        <!-- /widget -->
+    </div>
+{% endblock content %}
+

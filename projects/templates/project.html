@@ -30,7 +30,7 @@
                     {% paginate %}
                 </p>
                 {% for document in documents %}
-                    <div>
+                    <div style="clear: both;">
                         <div style="float: left">
                             <img
                                     {% if forloop.first %}
@@ -46,13 +46,20 @@
                                         id="document-name"
                                     {% endif %}>
                                 {{ document.name }}
-                                <a
-                                        {% if forloop.first %}
-                                            id="document-download"
-                                        {% endif %}
-                                            href="{% url 'download_document' document.uuid %}">
-                                    <i class="icon-download-alt" style="font-size: 16pt;"></i>
-                                </a>
+
+                                {% if document.file %}
+                                    <a
+                                            {% if forloop.first %}
+                                                id="document-download"
+                                            {% endif %}
+                                                href="{% url 'download_document' document.uuid %}">
+                                        <i class="icon-download-alt" style="font-size: 16pt;"></i>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'basecamp_download_document' document.uuid %}"><i
+                                            class="icon-cloud-download" style="font-size: 16pt;"></i></a>
+                                {% endif %}
+
                             </h3>
 
                             {% if document.description %}
@@ -70,7 +77,13 @@
                             {% if forloop.first %}
                                 <div id="document-created"></div>
                             {% endif %}
-                            on {{ document.created|date:"M j" }}, {{ document.file.size|filesizeformat }} -
+                            on {{ document.date|date:"M j" }},
+                            {% if document.file %}
+                                {{ document.file.size|filesizeformat }}
+                                {% else %}<a href="{% url 'basecamp_download_document' document.uuid %}">Retrieve from
+                                Basecamp</a>
+                            {% endif %}
+                            -
                             <a
                                     {% if forloop.first %}
                                         id="document-edit"
@@ -106,8 +119,9 @@
             </div>
             <!-- /widget-header -->
             <div class="widget-content">
-                    <h3 id="new-document"  style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Upload New Document</h3>
-                    {% include 'document_upload_form.html' %}
+                <h3 id="new-document" style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Upload New
+                    Document</h3>
+                {% include 'document_upload_form.html' %}
                 <div style="margin-top: 10px;">
                     <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Sort By</h3>
 

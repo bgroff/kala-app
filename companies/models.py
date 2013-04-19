@@ -15,11 +15,10 @@ class Companies(models.Model):
     address1 = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)
     state = USStateField(null=True, blank=True)
-    zip = USPostalCodeField(null=True, blank=True)
     country = CountryField(default='US')
     fax = PhoneNumberField(null=True, blank=True)
     phone = PhoneNumberField(null=True, blank=True)
-    locale = models.CharField(max_length=2, null=True, blank=True)
+    locale = models.CharField(max_length=2, null=True, blank=True, default='en')
     timezone = TimeZoneField(default=settings.TIME_ZONE)
     website = models.URLField(null=True, blank=True)
 

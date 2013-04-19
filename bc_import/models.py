@@ -6,7 +6,6 @@ from companies.models import Companies
 
 
 class BCCompany(Companies):
-    # remove when done
     bc_id = models.IntegerField()
 
 
@@ -29,7 +28,6 @@ class BCDocumentVersion(DocumentVersion):
     bc_project = models.ForeignKey('BCProject')
 
 
-#should probably use AbstractBaseUser as the 30 char limit on users names is difficult.
 class BCPerson(People):
     bc_id = models.IntegerField(null=True, blank=True)
 

@@ -47,4 +47,9 @@ urlpatterns = patterns('',
                            r'^projects/',
                            include('projects.urls'),
                        ),
+
+                       url(
+                           r'^import/',
+                           include('bc_import.urls'),
+                       ),
 )

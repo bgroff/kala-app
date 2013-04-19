@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block addditional_style %}
+    <link href="{% static 'css/pages/signin.css' %}" rel="stylesheet">
+{% endblock addditional_style %}
+
+{% block content %}
+
+    <div class="account-container">
+
+        <div class="content clearfix">
+
+            <form action="" method="post">
+                {% csrf_token %}
+                {{ form.errors }}
+                <h1>Authorize Basecamp Access</h1>
+
+                <div class="login-fields">
+                    <p>Enter your Basecamp information below:</p>
+                    <div class="field">
+                        <label for="id_name">{{ form.name.label_tag }}</label>
+                        <input type="text" id="id_name" name="name" value="" placeholder="{% if form.name.errors %}{{ form.name.errors.0 }}{% else %}Name{% endif %}"
+                               class="login username-field"/>
+                    </div>
+
+                    <div class="field">
+                        <label for="id_username">{{ form.username.label_tag }}</label>
+                        <input type="text" id="id_username" name="username" value="" placeholder="{% if form.username.errors %}{{ form.username.errors.0 }}{% else %}Username{% endif %}"
+                               class="login username-field"/>
+                    </div>
+                    <!-- /field -->
+
+                    <div class="field">
+                        <label for="id_password">{{ form.password.label_tag }}</label>
+                        <input type="password" id="id_password" name="password" value="" placeholder="{% if form.password.errors %}{{ form.password.errors.0 }}{% else %}Password{% endif %}"
+                               class="login password-field"/>
+                    </div>
+                    <!-- /password -->
+
+                </div>
+                <!-- /login-fields -->
+
+                <div class="login-actions">
+                    <button class="button btn btn-warning btn-large">Authorize</button>
+                </div>
+                <!-- .actions -->
+            </form>
+        </div>
+    </div>
+{% endblock content %}

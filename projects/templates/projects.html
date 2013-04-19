@@ -22,9 +22,11 @@
             <div class="widget-content">
                 <ul id="projects" class="news-items">
                     {% for company in companies %}
-                        <li class="span6">
+                        <li class="span6" style="border: 0px;">
                             <div class="news-item-detail">
-                                <h2 class="news-item-title" style="width: 100%">{{ company.name }}</h2>
+                                <h2 class="news-item-title" style="width: 100%; border-bottom: 1px solid #D5D5D5;">
+                                    {{ company.name }}
+                                </h2>
 
                                 <p class="news-item-preview" style="width: 100%">
                                     {% for project in company|users_projects:request.user %}

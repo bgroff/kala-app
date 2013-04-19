@@ -99,7 +99,7 @@ document_file_storage = DocumentStorage(location=settings.DOCUMENT_ROOT)
 class DocumentVersion(models.Model):
     uuid = UUIDField(auto=True, primary_key=True)
     document = models.ForeignKey('Documents', null=True)
-    file = models.FileField(upload_to=upload_document_to, storage=document_file_storage)
+    file = models.FileField(upload_to=upload_document_to, storage=document_file_storage, max_length=255)
     description = models.TextField(null=True)
     created = models.DateTimeField() # Update save method
     changed = models.DateTimeField(auto_now=True) # Update save method
@@ -108,8 +108,8 @@ class DocumentVersion(models.Model):
     name = models.CharField(max_length=255)
 
     class Meta:
-        get_latest_by = 'changed'
-        ordering = ['name', 'changed']
+        get_latest_by = 'created'
+        ordering = ['name', 'created']
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None, save_document=True):
