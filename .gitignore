@@ -1,0 +1,7 @@
+*.pyc
+.*
+settings.py
+kala/documents
+kala/media
+.venv
+celerybeat-schedule
