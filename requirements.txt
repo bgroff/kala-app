@@ -6,8 +6,9 @@ argparse==1.2.1
 billiard==2.7.3.28
 celery==3.0.19
 defusedxml==0.4.1
+distribute==0.6.24
 django-audit-log==0.2.3
--e git://github.com/tgdn/django-bootstrap-pagination.git@503261acb2fb5a39354a0c8a5af9da73dbcfbb73#egg=django_bootstrap_pagination-dev
+-e git+http://github.com/bgroff/django-bootstrap-pagination.git@c396f1cb0241b9ddee899daf41c933ca273441bd#egg=django_bootstrap_pagination-dev
 django-celery==3.0.17
 django-countries==1.5
 django-localflavor-us==1.0
