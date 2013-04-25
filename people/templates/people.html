@@ -28,7 +28,7 @@
                             {% if request.user.is_admin %}{{ company.name }} -<a href="{% url 'company' company.pk %}">
                                 Edit</a>{% else %}{{ company }}{% endif %}</h3>
                     <ul>
-                        <div style="padding-left: 60px; padding-top: 20px;">
+                        <div style="padding-top: 20px;">
                             {% for person in company.get_people_list %}
                                 <div class="span3" style="min-height: 80px;">
                                     <address>
