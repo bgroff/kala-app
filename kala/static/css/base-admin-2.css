@@ -668,7 +668,7 @@ h6 {
 }
 .widget .widget-header {
     position: relative;
-    height: 40px;
+    min-height: 40px;
     line-height: 40px;
     background: #E9E9E9;
     background: -moz-linear-gradient(top, #fafafa 0%, #e9e9e9 100%);
