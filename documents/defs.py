@@ -40,11 +40,11 @@ MIME_TO_CATEGORY = {
     'video/mpeg': 'video',
     'text/html': 'html',
     'application/x-msdos-program': 'program',
-    }
+}
 
 CATEGORY_TO_FILE = {
-    'word': 'document.png',
-    'excel': 'spreadsheet.png',
+    'word': 'ooo_writer.png',
+    'excel': 'ooo_calc.png',
     'powerpoint': 'ooo_impress.png',
     'deb': 'deb.png',
     'zip': 'tar.png',
