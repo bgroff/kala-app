@@ -30,6 +30,13 @@ MIME_TO_CATEGORY = {
     'text/x-python': 'python',
     'text/plain': 'text',
     'image/svg+xml': 'vector graphic',
+    'video/x-ms-wmv': 'video',
+    'video/quicktime': 'video',
+    'video/x-msvideo': 'video',
+    'video/mp4': 'video',
+    'video/mpeg': 'video',
+    'text/html': 'html',
+    'application/x-msdos-program': 'program',
 }
 
 CATEGORY_TO_FILE = {
@@ -42,7 +49,10 @@ CATEGORY_TO_FILE = {
     'pdf': 'pdf.png',
     'python': 'source_py.png',
     'vector graphic': 'vectorgfx.png',
-    'text': 'source.png'
+    'text': 'source.png',
+    'video': 'video.png',
+    'html': 'html.png',
+    'program': 'shellscript.png',
 }
 
 
