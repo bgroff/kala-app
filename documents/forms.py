@@ -1,5 +1,6 @@
 import datetime
 from django import forms
+from documents.defs import get_categories, get_categories_for_mimes
 from .models import DocumentVersion, Documents
 
 
@@ -7,6 +8,7 @@ class DocumentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.project = kwargs.pop('project')
         self.person = kwargs.pop('person')
+        # If a document is passed, then this is a version.
         try:
             self.document = kwargs.pop('document')
         except KeyError:
@@ -31,3 +33,17 @@ class DocumentForm(forms.ModelForm):
         self.instance.name = self.cleaned_data['file'].name
         self.instance.created = now
         return super(DocumentForm, self).save(*args, **kwargs)
+
+
+class SortForm(forms.Form):
+    s = forms.ChoiceField(choices=(('DATE', 'Sort by Date'), ('AZ', 'Sort Alphabetically')), widget=forms.RadioSelect,
+                          initial='DATE')
+
+
+class CategoryForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.project = kwargs.pop('project')
+        super(CategoryForm, self).__init__(*args, **kwargs)
+
+        self.fields['c'] = forms.ChoiceField(choices=get_categories_for_mimes(
+            Documents.active.filter(project=self.project).distinct('mime').order_by('mime').values_list('mime')))

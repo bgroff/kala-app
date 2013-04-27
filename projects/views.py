@@ -2,7 +2,8 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
-from documents.forms import DocumentForm
+from documents.defs import get_mimes_for_category
+from documents.forms import DocumentForm, SortForm, CategoryForm
 from documents.models import Documents
 from kala.views import LoginRequiredMixin, AdminRequiredMixin
 from people.models import People
@@ -42,10 +43,19 @@ class ProjectView(LoginRequiredMixin, TemplateView):
     template_name = 'project.html'
 
     def get_context_data(self, **kwargs):
+        documents = Documents.active.filter(project=self.project)
+        if hasattr(self, 'sort_order'):
+            if self.sort_order == 'AZ':
+                documents = documents.order_by('name')
+        if hasattr(self, 'category'):
+            mimes = get_mimes_for_category(self.category)
+            documents = documents.filter(mime__in=mimes)
         return {
-            'documents': Documents.active.filter(project=self.project),
+            'categories_form': self.categories_form,
+            'documents': documents,
             'form': self.form,
             'project': self.project,
+            'sort_form': self.sort_form,
             }
 
     def dispatch(self, request, pk, *args, **kwargs):
@@ -53,6 +63,12 @@ class ProjectView(LoginRequiredMixin, TemplateView):
         person = People.objects.get(pk=self.request.user.pk)
         self.form = DocumentForm(request.POST or None, request.FILES or None, person=person,
                                  project=self.project)
+        self.categories_form = CategoryForm(request.GET or None, project=self.project)
+        self.sort_form = SortForm(request.GET or None)
+        if 's' in request.GET:
+            self.sort_order = request.GET.get('s')
+        if 'c' in request.GET and request.GET.get('c'):
+            self.category = request.GET.get('c')
         return super(ProjectView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):

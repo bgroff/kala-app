@@ -6,3 +6,5 @@ associate a user with an attachment.
 
 - Use the version 1 styles for the
 - There are people without usernames, I have set them inactive, check that this is what is supposed to happen.
+
+- ALTER TABLE documents_documents ADD COLUMN mime character varying(255);

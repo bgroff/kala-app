@@ -58,6 +58,8 @@
                                 {% else %}
                                     <a href="{% url 'basecamp_download_document' document.uuid %}"><i
                                             class="icon-cloud-download" style="font-size: 16pt;"></i></a>
+                                    - <a href="{% url 'basecamp_download_document' document.uuid %}">Retrieve from
+                                    Basecamp</a>
                                 {% endif %}
 
                             </h3>
@@ -71,19 +73,16 @@
                             {% endif %}
 
                             {% if forloop.first %}
-                                <div id="document-owner"></div>
+                                <span id="document-owner"></span>
                             {% endif %}
                             by {{ document.person|pretty_user }}
                             {% if forloop.first %}
-                                <div id="document-created"></div>
+                                <span id="document-created"></span>
                             {% endif %}
-                            on {{ document.date|date:"M j" }},
+                            on {{ document.date|date:"M j, Y" }} -
                             {% if document.file %}
                                 {{ document.file.size|filesizeformat }}
-                                {% else %}<a href="{% url 'basecamp_download_document' document.uuid %}">Retrieve from
-                                Basecamp</a>
                             {% endif %}
-                            -
                             <a
                                     {% if forloop.first %}
                                         id="document-edit"
@@ -126,6 +125,30 @@
                     <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Sort By</h3>
 
                     <form method="get" action="{% url 'project' project.pk %}">
+                        <div id="description" class="control-group">
+                            <div class="controls">
+                                <div style="margin-left: 20px;">
+                                    {% for choice in sort_form.s %}
+                                        {{ choice.choice_label }}: {{ choice.tag }}<br/>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="description" class="control-group">
+                            <div class="controls">
+                                <div style="margin-left: 20px;">
+                                    <label class="control-label" for="id_c">Filter by Category:</label>
+                                    {{ categories_form.c }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="button btn btn-primary btn-large">
+                                Sort Documents
+                            </button>
+                        </div>
                     </form>
                 </div>
                 {% if request.user.is_admin %}
@@ -134,8 +157,11 @@
 
                         <form method="post" action="{% url 'project' project.pk %}">
                             {% csrf_token %}
-                            <button type="submit" class="button btn btn-danger btn-large" name="delete">Delete Project
-                            </button>
+                            <div class="form-actions">
+                                <button type="submit" class="button btn btn-danger btn-large" name="delete">Delete
+                                    Project
+                                </button>
+                            </div>
                         </form>
                     </div>
                 {% endif %}

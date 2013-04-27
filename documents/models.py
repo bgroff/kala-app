@@ -12,7 +12,7 @@ class Documents(models.Model):
     project = models.ForeignKey('projects.Projects')
     name = models.CharField(max_length=255)
     date = models.DateTimeField()
-
+    mime = models.CharField(max_length=255, null=True)
     is_active = models.BooleanField(default=True)
 
     objects = models.Manager()
