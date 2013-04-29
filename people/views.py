@@ -2,22 +2,24 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
-from kala.views import LoginRequiredMixin, AdminRequiredMixin
+from kala.views import LoginRequiredMixin
 from companies.forms import CreateCompanyForm
 from companies.models import Companies
-from .forms import PersonForm, CreatePersonForm
-from .models import People
 from projects.models import Projects
-
+from .forms import PersonForm, CreatePersonForm, permission_forms
+from .models import People
 
 class EditProfile(LoginRequiredMixin, TemplateView):
     template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
-        return {
+        context = {
             'form': self.form,
             'person': self.person,
             }
+        if self.request.user.is_admin:
+            context['permission_forms'] = self.permission_forms
+        return context
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.person = get_object_or_404(People.active, pk=pk)
@@ -25,6 +27,8 @@ class EditProfile(LoginRequiredMixin, TemplateView):
             messages.error(request, 'You do not have permission to edit this persons account.')
             return redirect(reverse('home'))
         self.form = PersonForm(request.POST or None, instance=self.person)
+        if request.user.is_admin:
+            self.permission_forms = permission_forms(request, self.person)
         return super(EditProfile, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -41,6 +45,17 @@ class EditProfile(LoginRequiredMixin, TemplateView):
             self.person.set_active(False)
             messages.success(request, 'The person has been removed')
             return redirect(reverse('people'))
+
+        if 'save-permissions' in request.POST:
+            all_valid = True
+            for form in self.permission_forms:
+                if form.is_valid():
+                    form.save()
+                else:
+                    all_valid = False
+            if all_valid:
+                messages.success(request, 'The permissions have been updated.')
+                return redirect(reverse('edit_profile', args=[self.person.pk]))
 
         if self.form.is_valid():
             self.form.save()

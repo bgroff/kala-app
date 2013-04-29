@@ -1,4 +1,6 @@
 from django import forms
+from companies.models import Companies
+from projects.models import Projects
 from .models import People
 
 
@@ -56,3 +58,36 @@ class CreatePersonForm(PersonForm):
         self.instance.company = self.cleaned_data['company']
         return super(CreatePersonForm, self).save(*args, **kwargs)
 
+
+def permission_forms(request, person):
+    return [PermissionsForm(request.POST or None, person=person, company=company) for company in
+            Companies.active.filter(pk__in=Projects.active.all().values('company__pk'))]
+
+
+class PermissionsForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.person = kwargs.pop('person')
+        self.company = kwargs.pop('company')
+        self.projects = Projects.active.filter(company=self.company)
+        super(PermissionsForm, self).__init__(*args, **kwargs)
+        self.fields[self.company] = forms.BooleanField(required=False, label='Select/Unselect All',
+                                                       widget=forms.CheckboxInput(
+                                                           attrs={'class': 'company_checkbox',
+                                                                  'pk_id': self.company.pk,
+                                                           }))
+        for project in self.projects:
+            self.fields['%i' % project.pk] = forms.BooleanField(required=False, label=project,
+                                                                initial=True if project.clients.filter(
+                                                                    pk=self.person.pk).exists() else False,
+                                                                widget=forms.CheckboxInput(
+                                                                    attrs={'pk': self.company.pk}))
+
+    def save(self):
+        for project in self.projects:
+            is_selected = self.cleaned_data['%i' % project.pk]
+            if is_selected:
+                if not project.clients.filter(pk=self.person.pk).exists():
+                    project.clients.add(self.person)
+            else:
+                if project.clients.filter(pk=self.person.pk).exists():
+                    project.clients.remove(self.person)
