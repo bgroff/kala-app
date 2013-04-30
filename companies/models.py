@@ -45,7 +45,7 @@ class Companies(models.Model):
         self.save()
 
     def get_project_list(self, person):
-        assert type(person) is People, 'The user parameter must be of type People'
+#        assert type(person) is People, 'The user parameter must be of type People'
         if person.is_admin:
             return Projects.active.filter(company=self)
         else:
