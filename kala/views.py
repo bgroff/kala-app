@@ -41,3 +41,11 @@ class Home(LoginRequiredMixin, TemplateView):
             'companies': self.request.user.get_companies_list(),
             'documents': Documents.active.filter(pk__in=DocumentVersion.objects.filter(person=self.request.user.pk).values('document__pk'))[:10],
         }
+
+
+class AttributionView(TemplateView):
+    template_name = 'attribution.html'
+
+
+class LicenseView(TemplateView):
+    template_name = 'license.html'

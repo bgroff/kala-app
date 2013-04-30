@@ -24,7 +24,7 @@ class EditProfile(LoginRequiredMixin, TemplateView):
     def dispatch(self, request, pk, *args, **kwargs):
         self.person = get_object_or_404(People.active, pk=pk)
         if self.person != request.user and not request.user.is_admin:
-            messages.error(request, 'You do not have permission to edit this persons account.')
+            messages.error(request, 'You do not have permission to edit this persons account')
             return redirect(reverse('home'))
         self.form = PersonForm(request.POST or None, instance=self.person)
         if request.user.is_admin:
@@ -54,7 +54,7 @@ class EditProfile(LoginRequiredMixin, TemplateView):
                 else:
                     all_valid = False
             if all_valid:
-                messages.success(request, 'The permissions have been updated.')
+                messages.success(request, 'The permissions have been updated')
                 return redirect(reverse('edit_profile', args=[self.person.pk]))
 
         if self.form.is_valid():
@@ -90,7 +90,7 @@ class PeopleView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_admin:
-            messages.error(request, 'You do not have permission to create a new company.')
+            messages.error(request, 'You do not have permission to create a new company')
             return redirect(reverse('people'))
 
         if 'create_company' in request.POST and self.company_form.is_valid():

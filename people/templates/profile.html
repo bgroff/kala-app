@@ -35,7 +35,6 @@
         <li class="active">
             <a href="#profile" data-toggle="tab">Profile</a>
         </li>
-        <li><a href="#settings" data-toggle="tab">Settings</a></li>
         {% if request.user.is_admin %}
             <li><a href="#projects" data-toggle="tab">Projects</a></li>
         {% endif %}
@@ -151,83 +150,7 @@
             </fieldset>
         </form>
     </div>
-
-    <div class="tab-pane" id="settings">
-        <form id="edit-profile2" class="form-horizontal">
-            <fieldset>
-
-
-                <div class="control-group">
-                    <label class="control-label" for="accounttype">Account Type</label>
-
-                    <div class="controls">
-                        <label class="radio">
-                            <input type="radio" name="accounttype" value="option1" checked="checked"
-                                   id="accounttype">
-                            POP3
-                        </label>
-                        <label class="radio">
-                            <input type="radio" name="accounttype" value="option2">
-                            IMAP
-                        </label>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="accountusername">Account Username</label>
-
-                    <div class="controls">
-                        <input type="text" class="input-large" id="accountusername"
-                               value="rod.howard@example.com">
-
-                        <p class="help-block">Leave blank to use your profile email address.</p>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="emailserver">Email Server</label>
-
-                    <div class="controls">
-                        <input type="text" class="input-large" id="emailserver"
-                               value="mail.example.com">
-                    </div>
-                </div>
-                <div class="control-group">
-                    <label class="control-label" for="accountpassword">Password</label>
-
-                    <div class="controls">
-                        <input type="text" class="input-large" id="accountpassword"
-                               value="password">
-                    </div>
-                </div>
-
-
-                <div class="control-group">
-                    <label class="control-label" for="accountadvanced">Advanced Settings</label>
-
-                    <div class="controls">
-                        <label class="checkbox">
-                            <input type="checkbox" name="accountadvanced" value="option1"
-                                   checked="checked" id="accountadvanced">
-                            User encrypted connection when accessing this server
-                        </label>
-                        <label class="checkbox">
-                            <input type="checkbox" name="accounttype" value="option2">
-                            Download all message on connection
-                        </label>
-                    </div>
-                </div>
-
-
-                <br/>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Save</button>
-                    <button class="btn">Cancel</button>
-                </div>
-            </fieldset>
-        </form>
-    </div>
-
-
+    {% if request.user.is_admin %}
     <div class="tab-pane" id="projects">
         <p>To grant {{ person|pretty_user }} access to projects, click on the checkboxes below. When you are finished,
             click the "Save Permissions" button below and the user will have access to the projects.</p>
@@ -276,7 +199,7 @@
             </fieldset>
         </form>
     </div>
-
+    {% endif %}
     </div>
 
 
@@ -305,10 +228,10 @@
             <div class="widget-content">
 
 
-                <p>You can use this form to update you profile. On the profile page you can set the information
+                <p>
+                    You can use this form to update you profile. On the profile page you can set the information
                     that other people you are working with will see. Also you can change your password here.
-                    On the settings page, there are options to change the way you see information, such as timezone
-                    and your locale.</p>
+                </p>
 
                 {% if request.user.is_admin %}
                     <div style="border-bottom: 1px dotted #CCC; border-top: 1px dotted #CCC;">

@@ -44,15 +44,22 @@ class Companies(models.Model):
 
         self.save()
 
-    def get_project_list(self, user):
-        if user.is_admin:
+    def get_project_list(self, person):
+        assert type(person) is People, 'The user parameter must be of type People'
+        if person.is_admin:
             return Projects.active.filter(company=self)
         else:
-            return Projects.active.filter(company=self, pk__in=Projects.clients.through.objects.filter(people=user).values(
-                'projects__pk'))
+            return Projects.active.filter(company=self,
+                                          pk__in=Projects.clients.through.objects.filter(people=person).values(
+                                              'projects__pk'))
 
     def get_people_list(self):
         return People.active.filter(company=self)
+
+    def add_person_to_projects(self, person):
+        assert type(person) is People, 'The person parameter must be of type People'
+        for project in Projects.active.filter(company=self):
+            project.clients.add(person)
 
     def __str__(self):
         return self.name

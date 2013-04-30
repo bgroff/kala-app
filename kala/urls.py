@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.views import login, logout_then_login
-from kala.views import Home
+from kala.views import Home, LicenseView
 from people.views import EditProfile
 
 urlpatterns = patterns('',
@@ -11,7 +11,8 @@ urlpatterns = patterns('',
                        ),
 
                        url(
-                           regex=r'^login$', view=login,
+                           regex=r'^login$',
+                           view=login,
                            kwargs={'template_name': 'login.html'},
                            name='login'
                        ),
@@ -52,4 +53,10 @@ urlpatterns = patterns('',
                            r'^import/',
                            include('bc_import.urls'),
                        ),
+
+                        url(
+                            regex=r'^license$',
+                            view=LicenseView.as_view(),
+                            name='license',
+                        ),
 )
