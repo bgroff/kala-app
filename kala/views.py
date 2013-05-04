@@ -9,7 +9,6 @@ from projects.models import Projects
 
 
 class AdminRequiredMixin(object):
-
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_admin:
@@ -19,7 +18,6 @@ class AdminRequiredMixin(object):
 
 
 class AdminEditRequiredMixin(object):
-
     def post(self, request, *args, **kwargs):
         if not request.user.is_admin:
             messages.error(request, 'You must be an administrator to access this part of the application.')
@@ -28,7 +26,6 @@ class AdminEditRequiredMixin(object):
 
 
 class LoginRequiredMixin(object):
-
     def dispatch(self, request, *args, **kwargs):
         return login_required()(super(LoginRequiredMixin, self).dispatch)(request, *args, **kwargs)
 
@@ -39,12 +36,13 @@ class Home(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         return {
             'companies': self.request.user.get_companies_list(),
-            'documents': Documents.active.filter(pk__in=DocumentVersion.objects.filter(person=self.request.user.pk).values('document__pk'))[:10],
+            'documents': Documents.active.filter(
+                pk__in=DocumentVersion.objects.filter(person_id=self.request.user.pk).values('document__pk'))[:10],
         }
 
 
-class AttributionView(TemplateView):
-    template_name = 'attribution.html'
+class UserDocumentationView(TemplateView):
+    template_name = 'user_documentation.html'
 
 
 class LicenseView(TemplateView):

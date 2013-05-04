@@ -1,12 +1,19 @@
+import datetime
 from django.conf import settings
-from django_localflavor_us.models import USPostalCodeField, PhoneNumberField
+from django_localflavor_us.models import PhoneNumberField
 from django.db import models
 from django_countries import CountryField
 from django_localflavor_us.models import USStateField
-from kala.managers import ActiveManager
+from kala.managers import ActiveManager, DeletedManager
 from people.models import People
 from projects.models import Projects
 from timezone_field import TimeZoneField
+
+
+class CompaniesWithProjectManager(models.Manager):
+    def get_query_set(self):
+        return super(CompaniesWithProjectManager, self).get_query_set().filter(is_active=True,
+                                                                 pk__in=Projects.active.all().values('company__pk'))
 
 
 class Companies(models.Model):
@@ -19,20 +26,19 @@ class Companies(models.Model):
     fax = PhoneNumberField(null=True, blank=True)
     phone = PhoneNumberField(null=True, blank=True)
     locale = models.CharField(max_length=2, null=True, blank=True, default='en')
+    removed = models.DateField(null=True)
     timezone = TimeZoneField(default=settings.TIME_ZONE)
     website = models.URLField(null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
 
-    objects = models.Manager()
     active = ActiveManager()
+    deleted = DeletedManager()
+    objects = models.Manager()
+    with_projects = CompaniesWithProjectManager()
 
     class Meta:
         ordering = ['name']
-
-    def __init__(self, *args, **kwargs):
-        super(Companies, self).__init__(*args, **kwargs)
-        self.__is_active = self.is_active
 
     def set_active(self, active):
         self.is_active = active
@@ -42,11 +48,13 @@ class Companies(models.Model):
         for project in Projects.objects.filter(company=self):
             project.set_active(active)
 
+        if not self.is_active:
+            self.removed = datetime.date.today()
         self.save()
 
-    def get_project_list(self, person):
-#        assert type(person) is People, 'The user parameter must be of type People'
-        if person.is_admin:
+    def get_project_list(self, person=None):
+    #        assert type(person) is People, 'The user parameter must be of type People'
+        if not person or person.is_admin:
             return Projects.active.filter(company=self)
         else:
             return Projects.active.filter(company=self,

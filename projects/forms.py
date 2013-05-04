@@ -1,33 +1,48 @@
 from companies.models import Companies
 from django import forms
+from documents.defs import get_categories_for_mimes
+from documents.models import Documents
 from kala.templatetags.kala_tags import pretty_user
 from people.models import People
 from .models import Projects
 
 
-class ProjectForm(forms.ModelForm):
+class CategoryForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        self.company = kwargs.pop('company')
-        self.is_admin = kwargs.pop('is_admin')
-        super(ProjectForm, self).__init__(*args, **kwargs)
-        if self.is_admin:
-            self.fields['company'] = forms.ModelChoiceField(queryset=Companies.active.all(), initial=self.company)
+        self.project = kwargs.pop('project')
+        super(CategoryForm, self).__init__(*args, **kwargs)
 
-    class Meta:
-        model = Projects
-        exclude = ['owner', 'additional_companies', 'clients', 'created', 'changed', 'is_active']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'span3'})
-        }
+        self.fields['category'] = forms.ChoiceField(choices=get_categories_for_mimes(
+            Documents.active.filter(project=self.project).distinct('mime').order_by('mime').values_list('mime')))
 
-    def save(self, commit=True):
-        if self.is_admin:
-            self.instance.owner = self.cleaned_data['company']
-        else:
-            self.instance.owner = self.company
-        project = super(ProjectForm, self).save(commit)
-        # Add all of the companies people to the project.
-        [self.instance.clients.add(person) for person in People.active.filter(company=self.company)]
+
+class CompanyForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.project = kwargs.pop('project')
+        super(CompanyForm, self).__init__(*args, **kwargs)
+
+        self.fields['company'] = forms.ModelChoiceField(queryset=Companies.active.all(), initial=self.project.company)
+
+    def save(self):
+        self.project.company = self.cleaned_data['company']
+        self.project.save()
+        return self.project
+
+
+class DeleteProjectsForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(DeleteProjectsForm, self).__init__(*args, **kwargs)
+
+        choices = []
+        for company in Companies.active.filter(pk__in=Projects.deleted.all().values('company')):
+            projects = [(project.pk, project.name) for project in Projects.deleted.filter(company=company)]
+            choices.append((company.name, projects))
+
+        self.fields['project'] = forms.ChoiceField(choices=choices)
+
+    def save(self):
+        project = Projects.deleted.get(pk=self.cleaned_data['project'])
+        project.set_active(True)
         return project
 
 
@@ -66,3 +81,37 @@ class PermissionsForm(forms.Form):
             else:
                 if self.project.clients.filter(pk=person.pk).exists():
                     self.project.clients.remove(person)
+
+
+class ProjectForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        self.company = kwargs.pop('company')
+        self.is_admin = kwargs.pop('is_admin')
+        super(ProjectForm, self).__init__(*args, **kwargs)
+        if self.is_admin:
+            self.fields['company'] = forms.ModelChoiceField(queryset=Companies.active.all(), initial=self.company)
+
+    class Meta:
+        model = Projects
+        fields = ('name', 'company')
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'span3'})
+        }
+
+    def save(self, commit=True):
+        if self.is_admin:
+            self.instance.owner = self.cleaned_data['company']
+        else:
+            self.instance.owner = self.company
+        project = super(ProjectForm, self).save(commit)
+        # Add all of the companies people to the project.
+        [self.instance.clients.add(person) for person in People.active.filter(company=self.company)]
+        return project
+
+
+class SortForm(forms.Form):
+    search = forms.ChoiceField(choices=(('DATE', 'Sort by Date'), ('AZ', 'Sort Alphabetically')), widget=forms.RadioSelect,
+                          initial='DATE')
+
+
+

@@ -1,17 +1,19 @@
+import datetime
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.http import HttpResponse
 from uuidfield import UUIDField
-from .defs import get_icon_for_mime, get_alt_for_mime
 from kala.managers import ActiveManager
+from .defs import get_icon_for_mime, get_alt_for_mime
 
 
 class Documents(models.Model):
     project = models.ForeignKey('projects.Projects')
     name = models.CharField(max_length=255)
     date = models.DateTimeField()
+    removed = models.DateField(null=True)
     mime = models.CharField(max_length=255, null=True)
     is_active = models.BooleanField(default=True)
 
@@ -23,6 +25,8 @@ class Documents(models.Model):
 
     def set_active(self, active):
         self.is_active = active
+        if not self.is_active:
+            self.removed = datetime.date.today()
         self.save()
 
     def delete(self, using=None):
@@ -80,6 +84,7 @@ class Documents(models.Model):
     def __str__(self):
         return self.name
 
+
 # Document upload functions
 def upload_document_to(instance, filename):
     """
@@ -116,6 +121,7 @@ class DocumentVersion(models.Model):
         if save_document:
             self.document.name = self.name
             self.document.date = self.created
+            self.document.mime = self.mime
             self.document.save()
         super(DocumentVersion, self).save(force_insert, force_update, using, update_fields)
 

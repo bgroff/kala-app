@@ -22,7 +22,7 @@
             <div class="widget-content">
                 <ul id="projects" class="news-items">
                     {% for company in companies %}
-                        <li class="span6" style="border: 0px;">
+                        <li class="{% if request.user.is_admin %}span6{% else %}span11{% endif %}" style="border: 0px;">
                             <div class="news-item-detail">
                                 <h2 class="news-item-title" style="width: 100%; border-bottom: 1px solid #D5D5D5;">
                                     {{ company.name }}
@@ -53,64 +53,97 @@
 
     {% if request.user.is_admin %}
         <div class="span4">
-        <div class="widget">
-            <div class="widget-header">
-                <i class="icon-cog"></i>
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Create Project</h3>
+                </div>
+                <!-- /widget-header -->
+                <div id="project-form" class="widget-content">
+                    <form method="post" action="{% url 'projects' %}">
+                        {% csrf_token %}
+                        <fieldset>
+                            <div class="control-group {% if form.name.errors %}error{% endif %}">
+                                <div class="controls">
+                                    <label class="control-label" for="id_name" style="margin-left: 20px;">Project
+                                        Name:</label>
 
-                <h3>Administration</h3>
-            </div>
-            <!-- /widget-header -->
-            <div id="project-form" class="widget-content">
-                <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Create Project</h3>
-                <form method="post" action="{% url 'projects' %}">
-                    {% csrf_token %}
-                    <fieldset>
-                        <div class="control-group {% if form.name.errors %}error{% endif %}">
-                            <div class="controls">
-                                <label class="control-label" for="id_name" style="margin-left: 20px;">Project
-                                    Name:</label>
-                                <div style="margin-left: 20px;">{{ form.name }}</div>
-                            </div>
-                            <div style="margin-left: 20px;{% if not form.name.errors %}display: none{% endif %}">
+                                    <div style="margin-left: 20px;">{{ form.name }}</div>
+                                </div>
+                                <div style="margin-left: 20px;{% if not form.name.errors %}display: none{% endif %}">
                                         <span for="id_file" class="error" style="display: inline">
                                                 {{ form.name.errors.0 }}</span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="control-group {% if form.company.errors %}error{% endif %}">
-                            <div class="controls">
-                                <label class="control-label" for="id_company" style="margin-left: 20px;">Select Company:</label>
-                                <div style="margin-left: 20px;">{{ form.company }}</div>
-                            </div>
-                            <div style="margin-left: 20px;{% if not form.company.errors %}display: none{% endif %}">
+                            <div class="control-group {% if form.company.errors %}error{% endif %}">
+                                <div class="controls">
+                                    <label class="control-label" for="id_company" style="margin-left: 20px;">Select
+                                        Company:</label>
+
+                                    <div style="margin-left: 20px;">{{ form.company }}</div>
+                                </div>
+                                <div style="margin-left: 20px;{% if not form.company.errors %}display: none{% endif %}">
                                         <span for="id_file" class="error" style="display: inline">
                                                 {{ form.company.errors.0 }}</span>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="form-actions">
-                            <button type="submit" class="button btn btn-primary btn-large" name="create_project">
-                                Create Project
-                            </button>
-                        </div>
-                    </fieldset>
-                </form>
+                            <div class="form-actions">
+                                <button type="submit" class="button btn btn-primary btn-large" name="create">
+                                    Create Project
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
             </div>
-            <!-- /widget-content -->
         </div>
-        <!-- /widget -->
+        <div class="span4">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Un-delete Project</h3>
+                </div>
+                <div id="undelete" class="widget-content">
+                    <form method="post" action="{% url 'projects' %}">
+                        {% csrf_token %}
+                        <fieldset>
+                            <div class="control-group">
+                                <p>
+                                    To un-delete a project, select it in the list below, then click un-delete.
+                                    If there are no deleted projects, this list will be empty.
+                                </p>
+
+                                <div class="controls">
+                                    <label class="control-label" for="id_project" style="margin-left: 20px;">
+                                        Un-delete Project:
+                                    </label>
+
+                                    <div style="margin-left: 20px;">{{ deleted_form.project }}</div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="button btn btn-primary btn-large" name="undelete">
+                                    Un-delete Project
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
+        </div>
     {% endif %}
-</div>
 {% endblock content %}
 
 {% block tour %}
     <ol id="joyRideContent" style="display: none;">
         <li data-id="projects">
             <p>If you are assigned to any projects, you can accesses them with the list below.</p>
-                <p>Click on the name of the
+
+            <p>Click on the name of the
                 project, which should be colored blue. This will take you to the project page, where you can upload,
                 download, and alter documents.
             </p>
+
             <p>
                 If you are not assigned to any projects you will not see a list of projects.
             </p>

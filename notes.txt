@@ -8,3 +8,8 @@ associate a user with an attachment.
 - There are people without usernames, I have set them inactive, check that this is what is supposed to happen.
 
 - ALTER TABLE documents_documents ADD COLUMN mime character varying(255);
+- ALTER TABLE projects_projects ADD COLUMN removed date;
+- ALTER TABLE documents_documents ADD COLUMN removed date;
+- ALTER TABLE companies_companies ADD COLUMN removed date;
+- ALTER TABLE people_people ADD COLUMN removed date;
+

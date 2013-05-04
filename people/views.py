@@ -6,8 +6,9 @@ from kala.views import LoginRequiredMixin
 from companies.forms import CreateCompanyForm
 from companies.models import Companies
 from projects.models import Projects
-from .forms import PersonForm, CreatePersonForm, permission_forms
+from .forms import PersonForm, CreatePersonForm, permission_forms, DeletedCompanyForm
 from .models import People
+
 
 class EditProfile(LoginRequiredMixin, TemplateView):
     template_name = 'profile.html'
@@ -16,7 +17,7 @@ class EditProfile(LoginRequiredMixin, TemplateView):
         context = {
             'form': self.form,
             'person': self.person,
-            }
+        }
         if self.request.user.is_admin:
             context['permission_forms'] = self.permission_forms
         return context
@@ -73,7 +74,8 @@ class PeopleView(LoginRequiredMixin, TemplateView):
                 'companies': self.companies,
                 'company_form': self.company_form,
                 'person_form': self.person_form,
-                }
+                'undelete_form': self.undelete_form,
+            }
         return {
             'companies': self.companies
         }
@@ -83,16 +85,19 @@ class PeopleView(LoginRequiredMixin, TemplateView):
             self.companies = Companies.active.all()
             self.company_form = CreateCompanyForm(request.POST if 'create_company' in request.POST else None)
             self.person_form = CreatePersonForm(request.POST if 'create_person' in request.POST else None)
+            self.undelete_form = DeletedCompanyForm(request.POST if 'undelete' in request.POST else None)
         else:
-            self.companies = Companies.active.filter(pk__in=Projects.clients.through.objects.filter(people__pk=self.request.user.pk).values('projects__company__pk'))
+            self.companies = Companies.active.filter(
+                pk__in=Projects.clients.through.objects.filter(people__pk=self.request.user.pk).values(
+                    'projects__company__pk'))
             self.companies = self.companies | Companies.active.filter(pk=self.request.user.company.pk)
         return super(PeopleView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if not request.user.is_admin:
-            messages.error(request, 'You do not have permission to create a new company')
+            messages.error(request, 'You do not have permission to create data')
             return redirect(reverse('people'))
-
+        #raise Exception(str(request.POST))
         if 'create_company' in request.POST and self.company_form.is_valid():
             company = self.company_form.save()
             messages.success(request, 'The company has been created')
@@ -100,6 +105,10 @@ class PeopleView(LoginRequiredMixin, TemplateView):
         if 'create_person' in request.POST and self.person_form.is_valid():
             self.person_form.save()
             messages.success(request, 'The person has been created')
+            return redirect(reverse('people'))
+        if 'undelete' in request.POST and self.undelete_form.is_valid():
+            company = self.undelete_form.save()
+            messages.success(request, 'The company %s has been un-deleted' % company.name)
             return redirect(reverse('people'))
         return self.render_to_response(self.get_context_data())
 

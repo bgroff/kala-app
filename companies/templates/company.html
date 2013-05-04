@@ -62,7 +62,7 @@
                             <div class="controls">
                                 {{ form.state }}
                             </div>
-{% comment %}
+                            {% comment %}
                             <label class="control-label" for="id_zip">Zip</label>
 
                             <div class="controls">
@@ -104,7 +104,8 @@
                             </div>
                         </div>
                         <div class="form-actions">
-                            <button type="submit" class="button btn btn-primary btn-large">Update Company Details
+                            <button type="submit" class="button btn btn-primary btn-large" name='update'>
+                                Update Company Details
                             </button>
                         </div>
                 </form>
@@ -114,16 +115,43 @@
         <!-- /widget -->
     </div> <!-- /span8 -->
 
+    <div class="span4">
+        <div class="widget stacked widget-box">
+            <div class="widget-header">
+                <h3>Un-delete Person</h3>
+            </div>
+
+            <div class="widget-content">
+                <form method="post" action="{% url 'company' company.pk %}">
+                    {% csrf_token %}
+                    <p>To un-delete a person from this company, select them in the box below, then click
+                        "Un-delete Person".</p>
+
+                    <div id="company" class="control-group">
+                        <div class="controls">
+                            <label class="control-label" for="id_person" style="margin-left: 20px;">
+                                Person:
+                            </label>
+
+                            <div style="margin-left: 20px;">{{ undelete_form.person }}</div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="button btn btn-primary btn-large" name="undelete">
+                            Un-delete Person
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div> <!-- /span4 -->
+
 
     <div class="span4">
-
-
         <div class="widget stacked widget-box">
-
             <div class="widget-header">
                 <h3>Delete Company</h3>
             </div>
-            <!-- /widget-header -->
 
             <div class="widget-content">
                 <form method="post" action="{% url 'company' company.pk %}">
@@ -138,11 +166,7 @@
                     </div>
                 </form>
             </div>
-            <!-- /widget-content -->
-
         </div>
-        <!-- /widget-box -->
-
     </div> <!-- /span4 -->
 
 {% endblock content %}

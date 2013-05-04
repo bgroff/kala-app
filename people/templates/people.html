@@ -24,22 +24,22 @@
             <!-- /widget-header -->
             <div class="widget-content">
                 {% for company in companies %}
-                        <h3 style="border-bottom: 1px solid #ddd; clear: both;">
-                            {% if request.user.is_admin %}{{ company.name }} -<a href="{% url 'company' company.pk %}">
-                                Edit</a>{% else %}{{ company }}{% endif %}</h3>
+                    <h3 style="border-bottom: 1px solid #ddd; clear: both;">
+                        {% if request.user.is_admin %}{{ company.name }} -<a href="{% url 'company' company.pk %}">
+                            Edit</a>{% else %}{{ company }}{% endif %}</h3>
                     <ul>
                         <div style="padding-top: 20px;">
                             {% for person in company.get_people_list %}
                                 <div class="span3" style="min-height: 80px;">
                                     <address>
-                                    <strong>
-                                        {% if request.user.is_admin %}
-                                            {{ person|pretty_user }} -
-                                            <a href="{% url 'edit_profile' person.pk %}">Edit</a>
-                                        {% else %}
-                                            {{ person|pretty_user }}
-                                        {% endif %}
-                                    </strong><br>
+                                        <strong>
+                                            {% if request.user.is_admin %}
+                                                {{ person|pretty_user }} -
+                                                <a href="{% url 'edit_profile' person.pk %}">Edit</a>
+                                            {% else %}
+                                                {{ person|pretty_user }}
+                                            {% endif %}
+                                        </strong><br>
                                         {% if person.title %}
                                             {{ person.title }}<br>
                                         {% endif %}
@@ -63,15 +63,10 @@
         <div class="span4">
             <div class="widget">
                 <div class="widget-header">
-                    <i class="icon-cog"></i>
-
-                    <h3>Administration</h3>
-
+                    <h3>Create Company</h3>
                 </div>
                 <!-- /widget-header -->
                 <div class="widget-content">
-                    <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Create Company</h3>
-
                     <form action="{% url 'people' %}" method="post">
                         {% csrf_token %}
                         <fieldset>
@@ -97,11 +92,18 @@
                             </div>
                         </fieldset>
                     </form>
+                </div>
+            </div>
+            <!-- /widget -->
+        </div>
 
-                    <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Create Person</h3>
-
+        <div class="span4">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Create Person</h3>
+                </div>
+                <div class="widget-content">
                     <form action="{% url 'people' %}" method="post">
-                        {% csrf_token %}
                         {% csrf_token %}
                         <fieldset>
                             <div class="control-group {% if person_form.email.errors %}error{% endif %}">
@@ -163,9 +165,47 @@
                         </fieldset>
                     </form>
                 </div>
+
                 <!-- /widget-content -->
             </div>
-            <!-- /widget -->
+        </div>
+
+        <div class="span4">
+            <div class="widget">
+                <div class="widget-header">
+
+                    <h3>Un-delete Company</h3>
+
+                </div>
+                <!-- /widget-header -->
+                <div class="widget-content">
+                    <p>
+                        To un-delete a company, select it in the list below, then click un-delete.
+                        If there are no deleted companies, this list will be empty.
+                    </p>
+
+                    <form action="{% url 'people' %}" method="post">
+                        {% csrf_token %}
+                        <fieldset>
+                            <div id="company" class="control-group">
+                                <div class="controls">
+                                    <label class="control-label" for="id_company" style="margin-left: 20px;">
+                                        Company:
+                                    </label>
+
+                                    <div style="margin-left: 20px;">{{ undelete_form.company }}</div>
+                                </div>
+
+                            </div>
+                            <div class="form-actions">
+                                <button type="submit" class="button btn btn-primary btn-large" name="undelete">
+                                    Un-delete Company
+                                </button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+            </div>
         </div>
     {% endif %}
 {% endblock content %}

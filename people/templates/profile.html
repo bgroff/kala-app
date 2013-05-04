@@ -18,196 +18,201 @@
     <div class="span8">
     <div class="widget stacked ">
 
-    <div class="widget-header">
-        <i class="icon-user"></i>
+        <div class="widget-header">
+            <i class="icon-user"></i>
 
-        <h3>{% if person.pk == request.user.pk %}Your Profile
-            {% else %}{{ person|pretty_user }}{% if person.last_name|slice:"-1:" == 's' %}'{% else %}'s
-            {% endif %} Profile{% endif %}</h3>
-    </div>
-    <!-- /widget-header -->
-    {{ form.errors }}
-    <div class="widget-content">
-
-
-    <div class="tabbable">
-    <ul class="nav nav-tabs">
-        <li class="active">
-            <a href="#profile" data-toggle="tab">Profile</a>
-        </li>
-        {% if request.user.is_admin %}
-            <li><a href="#projects" data-toggle="tab">Projects</a></li>
-        {% endif %}
-    </ul>
-
-    <br>
-
-    <div class="tab-content">
-    <div class="tab-pane active" id="profile">
-        <form id="edit-profile" class="form-horizontal" method="post"
-              action="{% url 'edit_profile' person.pk %}">
-            {% csrf_token %}
-            <fieldset>
-
-                <div class="control-group">
-                    <label class="control-label" for="username">Username</label>
-
-                    <div class="controls">
-
-                        <input type="text" class="disabled input-medium" id="username"
-                               value="{{ person.username }}" disabled>
-
-                        <p class="help-block">Your username is for logging in and cannot be
-                            changed.</p>
-                    </div>
-                    <!-- /controls -->
-                </div>
-                <!-- /control-group -->
-                <div class="control-group">
-                    <label class="control-label" for="company">Company</label>
+            <h3>{% if person.pk == request.user.pk %}Your Profile
+                {% else %}{{ person|pretty_user }}{% if person.last_name|slice:"-1:" == 's' %}'{% else %}'s
+                {% endif %} Profile{% endif %}</h3>
+        </div>
+        <!-- /widget-header -->
+        {{ form.errors }}
+        <div class="widget-content">
 
 
-                    <div class="controls">
-                        <input type="text" class="span4 disabled" id="company"
-                               value="{{ person.company }}" disabled>
-                    </div>
-                </div>
+            <div class="tabbable">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#profile" data-toggle="tab">Profile</a>
+                    </li>
+                    {% if request.user.is_admin %}
+                        <li><a href="#projects" data-toggle="tab">Projects</a></li>
+                    {% endif %}
+                </ul>
 
-                <div class="control-group">
-                    <label class="control-label" for="id_first_name">First Name</label>
+                <br>
 
-                    <div class="controls">
-                        {{ form.first_name }}
-                    </div>
-                    <!-- /controls -->
-                </div>
-                <!-- /control-group -->
+                <div class="tab-content">
+                    <div class="tab-pane active" id="profile">
+                        <form id="edit-profile" class="form-horizontal" method="post"
+                              action="{% url 'edit_profile' person.pk %}">
+                            {% csrf_token %}
+                            <fieldset>
 
+                                <div class="control-group">
+                                    <label class="control-label" for="username">Username</label>
 
-                <div class="control-group">
-                    <label class="control-label" for="id_last_name">Last Name</label>
+                                    <div class="controls">
 
-                    <div class="controls">
-                        {{ form.last_name }}
-                    </div>
-                    <!-- /controls -->
-                </div>
-                <!-- /control-group -->
+                                        <input type="text" class="disabled input-medium" id="username"
+                                               value="{{ person.username }}" disabled>
 
-                <div class="control-group">
-                    <label class="control-label" for="id_title">Title</label>
-
-                    <div class="controls">
-                        {{ form.title }}
-                    </div>
-                    <!-- /controls -->
-                </div>
-                <!-- /control-group -->
-
-                <div class="control-group">
-                    <label class="control-label" for="id_email">Email Address</label>
-
-                    <div class="controls">
-                        {{ form.email }}
-                    </div>
-                    <!-- /controls -->
-                </div>
-                <!-- /control-group -->
-
-
-                <br/><br/>
-
-                <div class="control-group">
-                    <label class="control-label" for="id_password">Password</label>
-
-                    <div class="controls">
-                        {{ form.password }}
-                    </div>
-                    <!-- /controls -->
-                </div>
-                <!-- /control-group -->
-
-
-                <div class="control-group">
-                    <label class="control-label" for="id_confirm">Confirm</label>
-
-                    <div class="controls">
-                        {{ form.confirm }}
-                    </div>
-                    <!-- /controls -->
-                </div>
-                <!-- /control-group -->
-
-
-                <br/>
-
-
-                <div class="form-actions">
-                    <button type="submit" class="button btn btn-primary btn-large">Update Profile
-                    </button>
-                </div>
-                <!-- /form-actions -->
-            </fieldset>
-        </form>
-    </div>
-    {% if request.user.is_admin %}
-    <div class="tab-pane" id="projects">
-        <p>To grant {{ person|pretty_user }} access to projects, click on the checkboxes below. When you are finished,
-            click the "Save Permissions" button below and the user will have access to the projects.</p>
-
-        <form id="edit-projects" class="form-horizontal" method="post" action="{% url 'edit_profile' person.pk %}">
-            {% csrf_token %}
-            <fieldset>
-
-                <section id="accordions">
-
-                    <div class="accordion" id="basic-accordion">
-                        {% for form in permission_forms %}
-                            <div class="accordion-group">
-
-                                <div class="accordion-heading">
-                                    <a class="accordion-toggle" data-toggle="collapse"
-                                       data-parent="#basic-accordion" href="#{{ forloop.counter }}">
-                                        {{ form.company }}
-                                    </a>
+                                        <p class="help-block">Your username is for logging in and cannot be
+                                            changed.</p>
+                                    </div>
+                                    <!-- /controls -->
                                 </div>
+                                <!-- /control-group -->
+                                <div class="control-group">
+                                    <label class="control-label" for="company">Company</label>
 
-                                <div id="{{ forloop.counter }}" class="accordion-body collapse">
-                                    <div class="accordion-inner">
 
-                                        {% for field in form %}
-                                            {% if forloop.first %}
-                                                <div class="span6"
-                                                     style="font-weight: bold; clear:both;">{{ field }} {{ field.label }}</div>
-                                            {% else %}
-                                                <div class="span2">{{ field }} {{ field.label }}</div>
-                                            {% endif %}
-                                        {% endfor %}
-
+                                    <div class="controls">
+                                        <input type="text" class="span4 disabled" id="company"
+                                               value="{{ person.company }}" disabled>
                                     </div>
                                 </div>
 
-                            </div>
-                        {% endfor %}
+                                <div class="control-group">
+                                    <label class="control-label" for="id_first_name">First Name</label>
+
+                                    <div class="controls">
+                                        {{ form.first_name }}
+                                    </div>
+                                    <!-- /controls -->
+                                </div>
+                                <!-- /control-group -->
+
+
+                                <div class="control-group">
+                                    <label class="control-label" for="id_last_name">Last Name</label>
+
+                                    <div class="controls">
+                                        {{ form.last_name }}
+                                    </div>
+                                    <!-- /controls -->
+                                </div>
+                                <!-- /control-group -->
+
+                                <div class="control-group">
+                                    <label class="control-label" for="id_title">Title</label>
+
+                                    <div class="controls">
+                                        {{ form.title }}
+                                    </div>
+                                    <!-- /controls -->
+                                </div>
+                                <!-- /control-group -->
+
+                                <div class="control-group">
+                                    <label class="control-label" for="id_email">Email Address</label>
+
+                                    <div class="controls">
+                                        {{ form.email }}
+                                    </div>
+                                    <!-- /controls -->
+                                </div>
+                                <!-- /control-group -->
+
+
+                                <br/><br/>
+
+                                <div class="control-group">
+                                    <label class="control-label" for="id_password">Password</label>
+
+                                    <div class="controls">
+                                        {{ form.password }}
+                                    </div>
+                                    <!-- /controls -->
+                                </div>
+                                <!-- /control-group -->
+
+
+                                <div class="control-group">
+                                    <label class="control-label" for="id_confirm">Confirm</label>
+
+                                    <div class="controls">
+                                        {{ form.confirm }}
+                                    </div>
+                                    <!-- /controls -->
+                                </div>
+                                <!-- /control-group -->
+
+
+                                <br/>
+
+
+                                <div class="form-actions">
+                                    <button type="submit" class="button btn btn-primary btn-large">Update Profile
+                                    </button>
+                                </div>
+                                <!-- /form-actions -->
+                            </fieldset>
+                        </form>
                     </div>
-                </section>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-large btn-primary" name='save-permissions'>
-                        Save Permissions
-                    </button>
+                    {% if request.user.is_admin %}
+                        <div class="tab-pane" id="projects">
+                            <p>To grant {{ person|pretty_user }} access to projects, click on the checkboxes below.
+                                When you are finished,
+                                click the "Save Permissions" button below and the user will have access to the
+                                projects.</p>
+
+                            <form id="edit-projects" class="form-horizontal" method="post"
+                                  action="{% url 'edit_profile' person.pk %}">
+                                {% csrf_token %}
+                                <fieldset>
+
+                                    <section id="accordions">
+
+                                        <div class="accordion" id="basic-accordion">
+                                            {% for form in permission_forms %}
+                                                <div class="accordion-group">
+
+                                                    <div class="accordion-heading">
+                                                        <a class="accordion-toggle" data-toggle="collapse"
+                                                           data-parent="#basic-accordion"
+                                                           href="#{{ forloop.counter }}">
+                                                            {{ form.company }}
+                                                        </a>
+                                                    </div>
+
+                                                    <div id="{{ forloop.counter }}" class="accordion-body collapse">
+                                                        <div class="accordion-inner">
+
+                                                            {% for field in form %}
+                                                                {% if forloop.first %}
+                                                                    <div class="span6"
+                                                                         style="font-weight: bold; clear:both;">{{ field }} {{ field.label }}</div>
+                                                                {% else %}
+                                                                    <div class="span2">{{ field }} {{ field.label }}</div>
+                                                                {% endif %}
+                                                            {% endfor %}
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </section>
+                                    <div class="form-actions">
+                                        <button type="submit" class="btn btn-large btn-primary"
+                                                name='save-permissions'>
+                                            Save Permissions
+                                        </button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    {% endif %}
                 </div>
-            </fieldset>
-        </form>
-    </div>
-    {% endif %}
-    </div>
 
 
-    </div>
+            </div>
 
 
-    </div>
-    <!-- /widget-content -->
+        </div>
+        <!-- /widget-content -->
 
     </div>
     <!-- /widget -->
@@ -215,66 +220,59 @@
     </div> <!-- /span8 -->
 
 
-    <div class="span4">
+    {% if request.user.is_admin %}
+        <div class="span4">
+            <div class="widget stacked widget-box">
+                <div class="widget-header">
+                    <h3>Administrative Access</h3>
+                </div>
+                <div class="widget-content">
+                    <form method="post" action="{% url 'edit_profile' person.pk %}">
+                        {% csrf_token %}
 
-
-        <div class="widget stacked widget-box">
-
-            <div class="widget-header">
-                <h3>Extra Info</h3>
-            </div>
-            <!-- /widget-header -->
-
-            <div class="widget-content">
-
-
-                <p>
-                    You can use this form to update you profile. On the profile page you can set the information
-                    that other people you are working with will see. Also you can change your password here.
-                </p>
-
-                {% if request.user.is_admin %}
-                    <div style="border-bottom: 1px dotted #CCC; border-top: 1px dotted #CCC;">
-                        <form method="post" action="{% url 'edit_profile' person.pk %}">
-                            {% csrf_token %}
-
-                            {% if person.is_admin %}
-                                <p style="margin-top: 5px;">To remove administration privileges from this user, click the button below.</p>
-                                <div class="form-actions">
-                                    <button type="submit" class="button btn btn-danger btn-large" name="toggle-admin">
-                                        Remove Admin
-                                    </button>
-                                </div>
-                            {% else %}
-                                <p style="margin-top: 5px;">To grant administrative privileges to this user, click the button below.</p>
-                                <div class="form-actions">
-                                    <button type="submit" class="button btn btn-primary btn-large"
-                                            style="clear: both; margin-top: 5px;" name="toggle-admin">Grant Admin
-                                    </button>
-                                </div>
-                            {% endif %}
-                        </form>
-                    </div>
-                    <div style="border-bottom: 1px dotted #CCC; border-top: 1px dotted #CCC;">
-                        <form method="post" action="{% url 'edit_profile' person.pk %}">
-                            {% csrf_token %}
-                            <p style="margin-top: 5px;">To delete this user, click the button below.</p>
-
-                                <div class="form-actions">
-                                <button type="submit" class="button btn btn-danger btn-large" name="delete">
-                                    Delete User
+                        {% if person.is_admin %}
+                            <p style="margin-top: 5px;">To remove administration privileges from this user, click
+                                the button below.</p>
+                            <div class="form-actions">
+                                <button type="submit" class="button btn btn-danger btn-large" name="toggle-admin">
+                                    Remove Admin
                                 </button>
                             </div>
-                        </form>
-                    </div>
-
-                {% endif %}
+                        {% else %}
+                            <p style="margin-top: 5px;">To grant administrative privileges to this user, click the
+                                button below.</p>
+                            <div class="form-actions">
+                                <button type="submit" class="button btn btn-primary btn-large"
+                                        style="clear: both; margin-top: 5px;" name="toggle-admin">Grant Admin
+                                </button>
+                            </div>
+                        {% endif %}
+                    </form>
+                </div>
             </div>
-            <!-- /widget-content -->
-
         </div>
-        <!-- /widget-box -->
-    </div>
+
+        <div class="span4">
+            <div class="widget stacked widget-box">
+                <div class="widget-header">
+                    <h3>Delete Person</h3>
+                </div>
+                <div class="widget-content">
+                    <form method="post" action="{% url 'edit_profile' person.pk %}">
+                        {% csrf_token %}
+                        <p style="margin-top: 5px;">To delete this person, click the button below.</p>
+
+                        <div class="form-actions">
+                            <button type="submit" class="button btn btn-danger btn-large" name="delete">
+                                Delete Person
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
 {% endblock content %}
 
 {% block additional_script %}

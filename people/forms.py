@@ -59,6 +59,15 @@ class CreatePersonForm(PersonForm):
         return super(CreatePersonForm, self).save(*args, **kwargs)
 
 
+class DeletedCompanyForm(forms.Form):
+    company = forms.ModelChoiceField(queryset=Companies.deleted.all())
+
+    def save(self):
+        company = self.cleaned_data['company']
+        company.set_active(True)
+        return company
+
+
 def permission_forms(request, person):
     return [PermissionsForm(request.POST or None, person=person, company=company) for company in
             Companies.active.filter(pk__in=Projects.active.all().values('company__pk'))]

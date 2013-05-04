@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.auth.views import login, logout_then_login
-from kala.views import Home, LicenseView
+from kala.views import Home, LicenseView, UserDocumentationView
 from people.views import EditProfile
 
 urlpatterns = patterns('',
@@ -58,5 +58,10 @@ urlpatterns = patterns('',
                             regex=r'^license$',
                             view=LicenseView.as_view(),
                             name='license',
+                        ),
+                        url(
+                            regex=r'^user_documentation$',
+                            view=UserDocumentationView.as_view(),
+                            name='user_documentation',
                         ),
 )

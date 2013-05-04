@@ -6,7 +6,7 @@
 {% block projects_class %}active{% endblock %}
 
 {% block content %}
-    <div class="span12">
+    <div class="span12" xmlns="http://www.w3.org/1999/html">
         <div class="breadcrumb">
             <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
             <li><a href="{% url 'projects' %}">Projects</a> <span class="divider">/</span></li>
@@ -83,23 +83,69 @@
     <div class="span4">
         <div class="widget">
             <div class="widget-header">
-                <i class="icon-cog"></i>
-
                 <h3>Options</h3>
 
             </div>
             <!-- /widget-header -->
             <div class="widget-content">
-                <div>
-                    <h3 id="new-document" style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Upload New Version</h3>
+                <h3 id="new-document" style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Upload New
+                    Version</h3>
 
-                    {% include "document_upload_form.html" %}
-                </div>
+                {% include "document_upload_form.html" %}
             </div>
-            <!-- /widget-content -->
         </div>
-        <!-- /widget -->
     </div>
+
+    <div class="span4">
+        <div class="widget">
+            <div class="widget-header">
+                <h3 id="mv-document">Move Document</h3>
+
+            </div>
+            <div class="widget-content">
+                <p>To move the document to another project you may use the form below.</p>
+
+                <form method="post" action="{% url 'document' document.pk %}">
+                    {% csrf_token %}
+                    <div id="file" class="control-group {% if form.file.errors %}error{% endif %}">
+                        <div class="controls">
+                            <div style="margin-left: 20px;">
+                                <label class="control-label" for="id_file">Company:</label>
+                                {{ project_form.project }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <input type="submit" class="btn btn-large btn-primary" name="move"
+                               value="Move Document">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="span4">
+        <div class="widget">
+            <div class="widget-header">
+                <h3 id="delete-document">Delete Document</h3>
+
+            </div>
+            <div class="widget-content">
+                <p>To delete the document click on the link below. You can retrieve the document later by using the
+                    project history page.</p>
+
+                <form method="post" action="{% url 'document' document.pk %}">
+                    {% csrf_token %}
+                    <div class="form-actions">
+                        <input type="submit" class="btn btn-large btn-danger" name="delete"
+                               value="Delete Document">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- /widget-content -->
+
 {% endblock content %}
 
 {% block tour %}

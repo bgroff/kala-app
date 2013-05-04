@@ -1,6 +1,7 @@
 import datetime
+from companies.models import Companies
 from django import forms
-from documents.defs import get_categories, get_categories_for_mimes
+from projects.models import Projects
 from .models import DocumentVersion, Documents
 
 
@@ -35,15 +36,19 @@ class DocumentForm(forms.ModelForm):
         return super(DocumentForm, self).save(*args, **kwargs)
 
 
-class SortForm(forms.Form):
-    s = forms.ChoiceField(choices=(('DATE', 'Sort by Date'), ('AZ', 'Sort Alphabetically')), widget=forms.RadioSelect,
-                          initial='DATE')
-
-
-class CategoryForm(forms.Form):
+class ProjectForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        self.project = kwargs.pop('project')
-        super(CategoryForm, self).__init__(*args, **kwargs)
+        self.document = kwargs.pop('document')
+        super(ProjectForm, self).__init__(*args, **kwargs)
 
-        self.fields['c'] = forms.ChoiceField(choices=get_categories_for_mimes(
-            Documents.active.filter(project=self.project).distinct('mime').order_by('mime').values_list('mime')))
+        choices = []
+        for company in Companies.with_projects.all():
+            projects = [(project.pk, project.name) for project in company.get_project_list()]
+            choices.append((company.name, projects))
+
+        self.fields['project'] = forms.ChoiceField(choices=choices, initial=self.document.project.pk)
+
+    def save(self):
+        self.document.project_id = self.cleaned_data['project']
+        self.document.save()
+        return self.document

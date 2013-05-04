@@ -10,7 +10,12 @@
         <div class="breadcrumb">
             <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
             <li><a href="{% url 'projects' %}">Projects</a> <span class="divider">/</span></li>
-            <li class="active">{{ project }}</li>
+            <li class="active">
+                {{ project }}
+                {% if request.user.is_admin %}
+                    - <a id="edit-permissions" href="{% url 'permissions' project.pk %}">Edit Permissions</a>
+                {% endif %}
+            </li>
         </div>
     </div>
 
@@ -19,8 +24,7 @@
             <div class="widget-header">
                 <i class="icon-edit"></i>
 
-                <h3>{{ project.name }}{% if request.user.is_admin %} -
-                    <a id="edit-permissions" href="{% url 'permissions' project.pk %}">Edit Permissions</a>{% endif %}
+                <h3>{{ project.name }}
                 </h3>
             </div>
             <!-- /widget-header -->
@@ -111,65 +115,107 @@
     <div class="span4">
         <div class="widget">
             <div class="widget-header">
-                <i class="icon-cog"></i>
-
-                <h3>Options</h3>
-
+                <h3 id="new-document">Upload New Document</h3>
             </div>
             <!-- /widget-header -->
             <div class="widget-content">
-                <h3 id="new-document" style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Upload New
-                    Document</h3>
                 {% include 'document_upload_form.html' %}
-                <div style="margin-top: 10px;">
-                    <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Sort By</h3>
+            </div>
+        </div>
+    </div>
 
-                    <form method="get" action="{% url 'project' project.pk %}">
+    <div class="span4">
+        <div class="widget">
+            <div class="widget-header">
+                <h3 id="new-document">Sort By</h3>
+            </div>
+            <!-- /widget-header -->
+            <div class="widget-content">
+
+                <form method="get" action="{% url 'project' project.pk %}">
+                    <div id="description" class="control-group">
+                        <div class="controls">
+                            <div style="margin-left: 20px;">
+                                {% for choice in sort_form.search %}
+                                    {{ choice.choice_label }}: {{ choice.tag }}<br/>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="description" class="control-group">
+                        <div class="controls">
+                            <div style="margin-left: 20px;">
+                                <label class="control-label" for="id_category">Filter by Category:</label>
+                                {{ categories_form.category }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="button btn btn-primary btn-large">
+                            Sort Documents
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% if request.user.is_admin %}
+        <div class="span4">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3 id="new-document">Move Project</h3>
+                </div>
+                <!-- /widget-header -->
+                <div class="widget-content">
+
+                    <p>To move the project to another company you may use the form below.</p>
+
+                    <form method="post" action="{% url 'project' project.pk %}">
+                        {% csrf_token %}
                         <div id="description" class="control-group">
                             <div class="controls">
                                 <div style="margin-left: 20px;">
-                                    {% for choice in sort_form.s %}
-                                        {{ choice.choice_label }}: {{ choice.tag }}<br/>
-                                    {% endfor %}
+                                    <label class="control-label" for="id_category">Company:</label>
+                                    {{ company_form.company }}
                                 </div>
                             </div>
                         </div>
-
-                        <div id="description" class="control-group">
-                            <div class="controls">
-                                <div style="margin-left: 20px;">
-                                    <label class="control-label" for="id_c">Filter by Category:</label>
-                                    {{ categories_form.c }}
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="form-actions">
-                            <button type="submit" class="button btn btn-primary btn-large">
-                                Sort Documents
+                            <button type="submit" class="button btn btn-primary btn-large" name="move">Move
+                                Project
                             </button>
                         </div>
                     </form>
                 </div>
-                {% if request.user.is_admin %}
-                    <div style="margin-top: 10px;">
-                        <h3 style="border-bottom: 1px solid #ddd; margin-bottom: 10px;">Delete Project</h3>
-
-                        <form method="post" action="{% url 'project' project.pk %}">
-                            {% csrf_token %}
-                            <div class="form-actions">
-                                <button type="submit" class="button btn btn-danger btn-large" name="delete">Delete
-                                    Project
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                {% endif %}
             </div>
-            <!-- /widget-content -->
         </div>
-        <!-- /widget -->
-    </div>
+
+        <div class="span4">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3 id="new-document">Delete Project</h3>
+                </div>
+                <!-- /widget-header -->
+                <div class="widget-content">
+
+                    <p>To delete this project, click on the button below. You can retrieve the project by using
+                        the "Project Retrieval" on the Projects page.</p>
+
+                    <form method="post" action="{% url 'project' project.pk %}">
+                        {% csrf_token %}
+                        <div class="form-actions">
+                            <button type="submit" class="button btn btn-danger btn-large" name="delete">Delete
+                                Project
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 {% endblock content %}
 
 {% block tour %}

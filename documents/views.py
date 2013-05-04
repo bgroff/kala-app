@@ -2,11 +2,10 @@ from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView, View
-from .forms import DocumentForm
-from .models import Documents, DocumentVersion
 from kala.views import LoginRequiredMixin
 from people.models import People
-
+from .forms import DocumentForm, ProjectForm
+from .models import Documents, DocumentVersion
 
 class BaseDocumentView(LoginRequiredMixin, View):
     def check_permission(self):
@@ -20,8 +19,9 @@ class DocumentView(TemplateView, BaseDocumentView):
 
     def get_context_data(self, **kwargs):
         return {
-            'form': self.form,
+            'project_form': self.project_form,
             'document': self.document,
+            'form': self.form,
             'project': self.project,
         }
 
@@ -31,6 +31,7 @@ class DocumentView(TemplateView, BaseDocumentView):
         self.project = self.document.project
         self.form = DocumentForm(request.POST or None, request.FILES or None, project=self.project,
                                  document=self.document, person=self.person)
+        self.project_form = ProjectForm(request.POST or None, document=self.document)
 
         if not self.check_permission():
             messages.error(request, 'You do not have permission to download this file.')
@@ -38,7 +39,17 @@ class DocumentView(TemplateView, BaseDocumentView):
         return super(DocumentView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if self.form.is_valid():
+        if 'delete' in request.POST and request.user.is_admin:
+            self.document.set_active(False)
+            messages.success(request, 'The document has been deleted')
+            return redirect(reverse('project', args=[self.project.pk]))
+
+        if 'move' in request.POST and request.user.is_admin and self.project_form.is_valid():
+            self.project_form.save()
+            messages.success(request, 'The document has been moved')
+            return redirect(reverse('document', args=[self.document.pk]))
+
+        if 'upload' in request.POST and self.form.is_valid():
             self.form.save()
             messages.success(request, 'A new version of this document has been uploaded')
             return redirect(reverse('document', args=[self.document.pk]))

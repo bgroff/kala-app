@@ -1,9 +1,10 @@
+import datetime
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django_localflavor_us.models import PhoneNumberField
 from timezone_field import TimeZoneField
-from kala.managers import ActiveManager
+from kala.managers import ActiveManager, DeletedManager
 import companies
 import projects
 
@@ -25,15 +26,19 @@ class People(AbstractUser):
     ext = models.CharField(max_length=10, null=True, blank=True)
 
     last_updated = models.DateTimeField(auto_now=True, auto_now_add=True)
+    removed = models.DateField(null=True)
 
-    objects = UserManager()
     active = ActiveManager()
+    deleted = DeletedManager()
+    objects = UserManager()
 
     class Meta:
         ordering = ['first_name', 'last_name']
 
     def set_active(self, active):
         self.is_active = active
+        if not self.is_active:
+            self.removed = datetime.date.today()
         self.save()
 
     def get_companies_list(self):
@@ -46,3 +51,9 @@ class People(AbstractUser):
         has_projects = companies.models.Companies.active.filter(
             pk__in=projects.models.Projects.active.all().values('company__pk'))
         return _companies & has_projects
+
+    def __str__(self):
+        return "%s %s" % (self.first_name, self.last_name)
+
+    def __unicode__(self):
+        return self.__str__()
