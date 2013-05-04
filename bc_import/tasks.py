@@ -161,18 +161,25 @@ def import_documents(service, username, password):
 @celery.task
 def create_document_from_document_versions():
     created = 0
-    for version in BCDocumentVersion.objects.all().order_by('bc_collection').distinct('bc_collection'):
-        if version.document is None:
+    for collection in BCDocumentVersion.objects.all().order_by('bc_collection').distinct('bc_collection').values_list('bc_collection'):
+        documents = BCDocumentVersion.objects.filter(bc_collection=collection).values_list('document')
+        if documents.count() > 0:
+            document = Documents.objects.get(pk=documents[0])
+            latest = document.get_latest()
+        else:
             document = Documents.objects.create(name=version.name, project=version.bc_project, date=version.created)
             created += 1
-        else:
-            document = version.document
-        for document_version in BCDocumentVersion.objects.filter(bc_collection=version.bc_collection):
-            document_version.document = document
-            document_version.save()
-        latest = DocumentVersion.objects.filter(document=document).latest()
-        document.date = latest.created
-        document.save()
+            latest = None
+
+        for version in BCDocumentVersion.objects.filter(bc_collection=collection):
+            if latest is None or latest.created < version.created:
+                document.date = version.created
+                document.mime = version.mime
+                document.save()
+
+            if version.document is None:
+                version.document = document
+                version.save()
     return created
 
 

@@ -28,9 +28,9 @@ class People(AbstractUser):
     last_updated = models.DateTimeField(auto_now=True, auto_now_add=True)
     removed = models.DateField(null=True)
 
+    objects = UserManager()
     active = ActiveManager()
     deleted = DeletedManager()
-    objects = UserManager()
 
     class Meta:
         ordering = ['first_name', 'last_name']
