@@ -1,6 +1,8 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from documents.defs import get_mimes_for_category
 from documents.forms import DocumentForm
@@ -24,6 +26,7 @@ class ProjectsView(LoginRequiredMixin, TemplateView):
 
         return context
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.form = ProjectForm(request.POST or None, company=request.user.company,
                                 is_admin=self.request.user.is_admin)
@@ -72,6 +75,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'sort_form': self.sort_form,
             }
 
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Projects.active, pk=pk)
         person = People.objects.get(pk=self.request.user.pk)
@@ -112,6 +116,7 @@ class ProjectPermissions(AdminRequiredMixin, TemplateView):
             'project': self.project,
             }
 
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Projects.active, pk=pk)
         self.forms = permission_forms(request, self.project)

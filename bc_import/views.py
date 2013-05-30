@@ -1,8 +1,10 @@
 import json
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core import signing
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, HttpResponse, get_object_or_404
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 from .models import BCDocumentVersion
 from .tasks import import_groups, download_document
@@ -17,6 +19,7 @@ class BasecampAuthorize(TemplateView):
             'form': self.form,
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.form = BasecampAuthorizationForm(request.POST or None)
         return super(BasecampAuthorize, self).dispatch(request, *args, **kwargs)
@@ -50,6 +53,7 @@ class BasecampImport(TemplateView):
             'name': self.bc_auth['bc_name'],
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if 'bc_auth' not in request.session:
             messages.error(request, 'You have not authorized any basecamp projects')
@@ -68,7 +72,9 @@ class BasecampImport(TemplateView):
 
         return self.render_to_response(self.get_context_data())
 
+
 class BasecampDownloadDocument(View):
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if 'bc_auth' not in request.session:
             messages.error(request, 'You have not authorized any basecamp projects')

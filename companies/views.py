@@ -1,6 +1,8 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from kala.views import AdminRequiredMixin
 from .forms import CompanyForm, DeletedPeopleForm
@@ -17,6 +19,7 @@ class CompanyView(AdminRequiredMixin, TemplateView):
             'undelete_form': self.undelete_form,
             }
 
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.company = get_object_or_404(Companies.active, pk=pk)
         self.form = CompanyForm(request.POST or None, instance=self.company)

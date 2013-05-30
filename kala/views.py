@@ -1,11 +1,14 @@
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import redirect_to_login
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from documents.models import Documents, DocumentVersion
-from projects.models import Projects
 
 
 class AdminRequiredMixin(object):
@@ -26,8 +29,19 @@ class AdminEditRequiredMixin(object):
 
 
 class LoginRequiredMixin(object):
+    login_url = settings.LOGIN_URL
+    redirect_field_name = REDIRECT_FIELD_NAME
+    raise_exception = False
+
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return login_required()(super(LoginRequiredMixin, self).dispatch)(request, *args, **kwargs)
+        if not request.user.is_authenticated():
+            if self.raise_exception:
+                raise PermissionDenied  # return a forbidden response
+            else:
+                return redirect_to_login(request.get_full_path(),
+                    self.login_url, self.redirect_field_name)
+        return super(LoginRequiredMixin, self).dispatch(request, *args, **kwargs)
 
 
 class Home(LoginRequiredMixin, TemplateView):

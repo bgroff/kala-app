@@ -1,11 +1,14 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 from kala.views import LoginRequiredMixin
 from people.models import People
 from .forms import DocumentForm, ProjectForm
 from .models import Documents, DocumentVersion
+
 
 class BaseDocumentView(LoginRequiredMixin, View):
     def check_permission(self):
@@ -25,6 +28,7 @@ class DocumentView(TemplateView, BaseDocumentView):
             'project': self.project,
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.document = get_object_or_404(Documents.active, pk=pk)
         self.person = get_object_or_404(People.active, pk=request.user.pk)
@@ -60,6 +64,7 @@ class DownloadDocument(BaseDocumentView):
     """
     """
 
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.document = get_object_or_404(DocumentVersion, pk=pk)
         self.project = self.document.document.project

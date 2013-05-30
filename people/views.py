@@ -1,8 +1,9 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
+from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-from kala.views import LoginRequiredMixin
 from companies.forms import CreateCompanyForm
 from companies.models import Companies
 from projects.models import Projects
@@ -10,7 +11,7 @@ from .forms import PersonForm, CreatePersonForm, permission_forms, DeletedCompan
 from .models import People
 
 
-class EditProfile(LoginRequiredMixin, TemplateView):
+class EditProfile(TemplateView):
     template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
@@ -22,6 +23,7 @@ class EditProfile(LoginRequiredMixin, TemplateView):
             context['permission_forms'] = self.permission_forms
         return context
 
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.person = get_object_or_404(People.active, pk=pk)
         if self.person != request.user and not request.user.is_admin:
@@ -65,7 +67,7 @@ class EditProfile(LoginRequiredMixin, TemplateView):
         return self.render_to_response(self.get_context_data())
 
 
-class PeopleView(LoginRequiredMixin, TemplateView):
+class PeopleView(TemplateView):
     template_name = 'people.html'
 
     def get_context_data(self, **kwargs):
@@ -80,6 +82,7 @@ class PeopleView(LoginRequiredMixin, TemplateView):
             'companies': self.companies
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_admin:
             self.companies = Companies.active.all()
@@ -111,4 +114,3 @@ class PeopleView(LoginRequiredMixin, TemplateView):
             messages.success(request, 'The company %s has been un-deleted' % company.name)
             return redirect(reverse('people'))
         return self.render_to_response(self.get_context_data())
-
