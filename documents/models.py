@@ -131,7 +131,7 @@ class DocumentVersion(models.Model):
         super(DocumentVersion, self).delete(using)
 
     def build_http_response(self):
-        response = HttpResponse(self.file.read(), mimetype=self.name)
+        response = HttpResponse(self.file.read(), mimetype=self.mime)
         response['Content-Length'] = self.file.size
         response['Content-Disposition'] = 'attachment; filename=' + self.name
         response['Content-Type'] = self.mime
