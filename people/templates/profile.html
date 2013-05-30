@@ -307,3 +307,19 @@
         })
     </script>
 {% endblock additional_script %}
+
+{% block tour %}
+    <ol id="joyRideContent" style="display: none;">
+        <li data-id="username">
+            <p>In this form you can edit your profile (or others if you are admin).</p>
+
+            <p>
+                Fill in the information below and then click on the "Update Profile" button below.
+            </p>
+        </li>
+        <li data-id="id_password">
+            <p>You can also change your password by filling in this box and the one below it with your new password.
+                Then click the "Update Profile" button.</p>
+        </li>
+    </ol>
+{% endblock tour %}

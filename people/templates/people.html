@@ -16,7 +16,7 @@
 
     <div class="{% if request.user.is_admin %}span8{% else %}span12{% endif %}">
         <div class="widget">
-            <div class="widget-header">
+            <div id="people-content" class="widget-header">
                 <i class="icon-user"></i>
 
                 <h3>People</h3>
@@ -198,7 +198,8 @@
 
                             </div>
                             <div class="form-actions">
-                                <button type="submit" class="button btn btn-primary btn-large" name="undelete">
+                                <button type="submit" class="button btn btn-primary btn-large" name="undelete"
+                                        id="undelete-button">
                                     Un-delete Company
                                 </button>
                             </div>
@@ -209,3 +210,27 @@
         </div>
     {% endif %}
 {% endblock content %}
+
+{% block tour %}
+    <ol id="joyRideContent" style="display: none;">
+        <li data-id="people-content">
+            <p>In this box you will see the information of the people that you work with.</p>
+
+            <p>If you are an administrator you can edit people and company information by clicking the edit link.
+            </p>
+        </li>
+        {% if request.user.is_admin %}
+            <li data-id="id_name">
+                <p>Fill in this box with a company name, then click the "Create Company" button below to create new
+                    company.
+                </p>
+            </li>
+            <li data-id="id_email">
+                <p>Fill in the form below to create a new person.</p>
+            </li>
+            <li data-id="undelete-button">
+                <p>If you would like to undelete a company, select it, then click the "Un-delete" button below.</p>
+            </li>
+        {% endif %}
+    </ol>
+{% endblock tour %}

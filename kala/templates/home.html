@@ -7,7 +7,7 @@
 {% block content %}
     <div class="span8">
         <div class="widget widget-table action-table">
-            <div class="widget-header">
+            <div id="documents" class="widget-header">
                 <i class="icon-book"></i>
 
                 <h3>Current Documents</h3>
@@ -48,7 +48,7 @@
 
     <div class="span4">
         <div class="widget">
-            <div class="widget-header">
+            <div id="projects" class="widget-header">
                 <i class="icon-edit"></i>
 
                 <h3>Your Projects</h3>
@@ -75,3 +75,23 @@
         <!-- /widget -->
     </div>
 {% endblock content %}
+
+{% block tour %}
+    <ol id="joyRideContent" style="display: none;">
+        <li data-id="documents">
+            <p>This box will contain a list of all of the documents you have worked on recently</p>
+
+            <p>Click on the document to add a new version, download the document, or see various attributes of the
+                document.
+            </p>
+
+            <p>
+                If you have not edited any documents recently this list will be empty.
+            </p>
+        </li>
+        <li data-id="projects">
+            <p>This list will show you all of the projects that you are working on. Click on the project name to
+            go to the project page.</p>
+        </li>
+    </ol>
+{% endblock tour %}

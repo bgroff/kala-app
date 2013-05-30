@@ -21,14 +21,14 @@
 
     <div class="span8">
         <div class="widget">
-            <div class="widget-header">
+            <div id="documents" class="widget-header">
                 <i class="icon-edit"></i>
 
                 <h3>{{ project.name }}
                 </h3>
             </div>
             <!-- /widget-header -->
-            <div id="documents" class="widget-content">
+            <div class="widget-content">
                 {% autopaginate documents %}
                 <p>
                     {% paginate %}

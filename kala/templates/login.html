@@ -34,10 +34,17 @@
     <div class="account-container">
 
         <div class="content clearfix">
+            {% for error in form.non_field_errors %}
+                <div class="alert alert-error">
+                    <a class="close" data-dismiss="alert">×</a>
+                    {{ error }}
+                </div>
+
+            {% endfor %}
 
             <form action="" method="post">
                 {% csrf_token %}
-                {{ form.errors }}
+
                 <h1>Login</h1>
 
                 <div class="login-fields">
