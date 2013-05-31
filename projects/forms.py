@@ -13,7 +13,8 @@ class CategoryForm(forms.Form):
         super(CategoryForm, self).__init__(*args, **kwargs)
 
         self.fields['category'] = forms.ChoiceField(choices=get_categories_for_mimes(
-            Documents.active.filter(project=self.project).distinct('mime').order_by('mime').values_list('mime')))
+            Documents.active.filter(project=self.project).distinct('mime').order_by('mime').values_list('mime')),
+                                                    widget=forms.Select(attrs={'class': 'span3'}))
 
 
 class CompanyForm(forms.Form):
@@ -21,7 +22,8 @@ class CompanyForm(forms.Form):
         self.project = kwargs.pop('project')
         super(CompanyForm, self).__init__(*args, **kwargs)
 
-        self.fields['company'] = forms.ModelChoiceField(queryset=Companies.active.all(), initial=self.project.company)
+        self.fields['company'] = forms.ModelChoiceField(queryset=Companies.active.all(), initial=self.project.company,
+                                                        widget=forms.Select(attrs={'class': 'span3'}))
 
     def save(self):
         self.project.company = self.cleaned_data['company']
@@ -38,7 +40,7 @@ class DeleteProjectsForm(forms.Form):
             projects = [(project.pk, project.name) for project in Projects.deleted.filter(company=company)]
             choices.append((company.name, projects))
 
-        self.fields['project'] = forms.ChoiceField(choices=choices)
+        self.fields['project'] = forms.ChoiceField(choices=choices, widget=forms.Select(attrs={'class': 'span3'}))
 
     def save(self):
         project = Projects.deleted.get(pk=self.cleaned_data['project'])
@@ -63,7 +65,7 @@ class PermissionsForm(forms.Form):
                                                        widget=forms.CheckboxInput(
                                                            attrs={'class': 'company_checkbox',
                                                                   'pk_id': self.company.pk,
-                                                                  }))
+                                                           }))
 
         for person in self.people:
             self.fields['%i' % person.pk] = forms.BooleanField(required=False, label=pretty_user(person),
@@ -89,7 +91,8 @@ class ProjectForm(forms.ModelForm):
         self.is_admin = kwargs.pop('is_admin')
         super(ProjectForm, self).__init__(*args, **kwargs)
         if self.is_admin:
-            self.fields['company'] = forms.ModelChoiceField(queryset=Companies.active.all(), initial=self.company)
+            self.fields['company'] = forms.ModelChoiceField(queryset=Companies.active.all(), initial=self.company,
+                                                            widget=forms.Select(attrs={'class': 'span3'}))
 
     class Meta:
         model = Projects
@@ -110,8 +113,9 @@ class ProjectForm(forms.ModelForm):
 
 
 class SortForm(forms.Form):
-    search = forms.ChoiceField(choices=(('DATE', 'Sort by Date'), ('AZ', 'Sort Alphabetically')), widget=forms.RadioSelect,
-                          initial='DATE')
+    search = forms.ChoiceField(choices=(('DATE', 'Sort by Date'), ('AZ', 'Sort Alphabetically')),
+                               widget=forms.RadioSelect,
+                               initial='DATE')
 
 
 

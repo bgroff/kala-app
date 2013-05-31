@@ -10,13 +10,16 @@ class PersonForm(forms.ModelForm):
         fields = (
             'first_name', 'last_name', 'email', 'title', 'password', 'confirm',
         )
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'span3'})
+        }
 
-    first_name = forms.CharField(required=True)
-    last_name = forms.CharField(required=True)
-    email = forms.CharField(required=True)
+    first_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'span3'}))
+    last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'span3'}))
+    email = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'span3'}))
 
-    password = forms.CharField(required=False, widget=forms.PasswordInput())
-    confirm = forms.CharField(required=False, widget=forms.PasswordInput())
+    password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'class': 'span3'}))
+    confirm = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'class': 'span3'}))
 
     def clean_confirm(self):
         password = self.cleaned_data['password']
@@ -39,6 +42,8 @@ class CreatePersonForm(PersonForm):
         del self.fields['password']
         del self.fields['confirm']
 
+    company = forms.ModelChoiceField(queryset=Companies.active.all(), widget=forms.Select(attrs={'class': 'span3'}))
+
     class Meta:
         model = People
         fields = (
@@ -60,7 +65,7 @@ class CreatePersonForm(PersonForm):
 
 
 class DeletedCompanyForm(forms.Form):
-    company = forms.ModelChoiceField(queryset=Companies.deleted.all())
+    company = forms.ModelChoiceField(queryset=Companies.deleted.all(), widget=forms.Select(attrs={'class': 'span3'}))
 
     def save(self):
         company = self.cleaned_data['company']
