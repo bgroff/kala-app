@@ -8,7 +8,7 @@ class PersonForm(forms.ModelForm):
     class Meta:
         model = People
         fields = (
-            'first_name', 'last_name', 'email', 'title', 'password', 'confirm',
+            'first_name', 'last_name', 'email', 'title'
         )
         widgets = {
             'title': forms.TextInput(attrs={'class': 'span3'})
@@ -18,28 +18,28 @@ class PersonForm(forms.ModelForm):
     last_name = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'span3'}))
     email = forms.CharField(required=True, widget=forms.TextInput(attrs={'class': 'span3'}))
 
-    password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'class': 'span3'}))
+    new_password = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'class': 'span3'}))
     confirm = forms.CharField(required=False, widget=forms.PasswordInput(attrs={'class': 'span3'}))
 
     def clean_confirm(self):
-        password = self.cleaned_data['password']
+        password = self.cleaned_data['new_password']
         confirm = self.cleaned_data['confirm']
         if confirm != password:
             raise forms.ValidationError("The two passwords do not match.")
+        if confirm != '':
+            self.confirm = confirm
         return confirm
 
     def save(self, commit=True, *args, **kwargs):
-        self.instance.username = self.cleaned_data['email']
-        self.instance.access_new_projects = False  # Probably should just remove this
-        if hasattr(self, 'confirm') and self.cleaned_data['confirm']:
-            self.instance.set_password(self.cleaned_data['confirm'])
+        if hasattr(self, 'confirm'):
+            self.instance.set_password(self.confirm)
         return super(PersonForm, self).save(commit, *args, **kwargs)
 
 
 class CreatePersonForm(PersonForm):
     def __init__(self, *args, **kwargs):
         super(CreatePersonForm, self).__init__(*args, **kwargs)
-        del self.fields['password']
+        del self.fields['new_password']
         del self.fields['confirm']
 
     company = forms.ModelChoiceField(queryset=Companies.active.all(), widget=forms.Select(attrs={'class': 'span3'}))
@@ -58,6 +58,7 @@ class CreatePersonForm(PersonForm):
             return self.cleaned_data['email']
 
     def save(self, *args, **kwargs):
+        self.instance.username = self.cleaned_data['email']
         self.instance.set_unusable_password()
         self.instance.is_active = True
         self.instance.company = self.cleaned_data['company']
