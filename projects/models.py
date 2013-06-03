@@ -20,6 +20,9 @@ class Projects(models.Model):
     active = ActiveManager()
     deleted = DeletedManager()
 
+    class Meta:
+        ordering = ('name',)
+
     def set_active(self, active):
         assert type(active) is bool, 'The active parameter must be of type bool.'
         self.is_active = active
