@@ -43,7 +43,7 @@ class ProjectsView(LoginRequiredMixin, TemplateView):
         if 'create' in request.POST and self.form.is_valid():
             project = self.form.save()
             # Add everyone in the organization to the project.
-            [project.clients.add(person) for person in project.company.get_people_list()]
+            #[project.clients.add(person) for person in project.company.get_people_list()]
             messages.success(request, 'The project has been created')
             return redirect(reverse('project', args=[project.pk]))
 

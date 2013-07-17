@@ -31,6 +31,7 @@
                                 <p class="news-item-preview" style="width: 100%">
                                     {% for project in company|users_projects:request.user %}
                                         <p style="margin-left: 15px;">
+                                            <i class="icon-cog"></i>
                                             <a href="{% url 'project' project.pk %}">{{ project }}</a>
                                             {% empty %}
                                             You are not assigned to any projects by this organization.

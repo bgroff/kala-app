@@ -12,9 +12,12 @@
             <li><a href="{% url 'projects' %}">Projects</a> <span class="divider">/</span></li>
             <li class="active">
                 {{ project }}
-                {% if request.user.is_admin %}
-                    - <a id="edit-permissions" href="{% url 'permissions' project.pk %}">Edit Permissions</a>
-                {% endif %}
+            </li>
+            {%  if request.user.is_admin %}
+                <a id="edit-permissions" href="{% url 'permissions' project.pk %}">- Edit Permissions</a>
+            {% endif %}
+            <li>
+
             </li>
         </div>
     </div>
