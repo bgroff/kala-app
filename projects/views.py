@@ -8,7 +8,7 @@ from documents.defs import get_mimes_for_category
 from documents.forms import DocumentForm
 from documents.models import Documents
 from kala.views import LoginRequiredMixin, AdminRequiredMixin
-from people.models import People
+from accounts.models import Person
 from .models import Projects
 from .forms import CategoryForm, ProjectForm, SortForm, permission_forms, CompanyForm, DeleteProjectsForm
 
@@ -78,7 +78,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
     @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Projects.active, pk=pk)
-        person = People.objects.get(pk=self.request.user.pk)
+        person = Person.objects.get(pk=self.request.user.pk)
         self.form = DocumentForm(request.POST or None, request.FILES or None, person=person,
                                  project=self.project)
         self.categories_form = CategoryForm(request.GET or None, project=self.project)

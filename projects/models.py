@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db import models
 from documents.models import Documents
 from kala.managers import ActiveManager, DeletedManager
-from people.models import People
+from accounts.models import Person
 
 
 class Projects(models.Model):
@@ -33,16 +33,16 @@ class Projects(models.Model):
         self.save()
 
     def add_client(self, client):
-        assert type(client) is People, 'The client parameter must be of type People.' # Solient Green
+        assert type(client) is Person, 'The client parameter must be of type People.' # Solient Green
 
         # Check if the client is in the clients list, add if not.
         try:
             self.clients.get(client)
-        except People.DoesNotExist:
+        except Person.DoesNotExist:
             self.clients.add(client)
 
     def remove_client(self, client):
-        assert type(client) is People, 'The client parameter must be of type People.'
+        assert type(client) is Person, 'The client parameter must be of type People.'
         self.clients.remove(client)
 
     def __str__(self):

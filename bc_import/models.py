@@ -1,6 +1,6 @@
 from django.db import models
 from documents.models import DocumentVersion
-from people.models import People
+from accounts.models import Person
 from projects.models import Projects
 from companies.models import Companies
 
@@ -28,7 +28,7 @@ class BCDocumentVersion(DocumentVersion):
     bc_project = models.ForeignKey('BCProject')
 
 
-class BCPerson(People):
+class BCPerson(Person):
     bc_id = models.IntegerField(null=True, blank=True)
 
 

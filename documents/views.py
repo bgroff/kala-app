@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
 from kala.views import LoginRequiredMixin
-from people.models import People
+from accounts.models import Person
 from .forms import DocumentForm, ProjectForm
 from .models import Documents, DocumentVersion
 
@@ -31,7 +31,7 @@ class DocumentView(TemplateView, BaseDocumentView):
     @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.document = get_object_or_404(Documents.active, pk=pk)
-        self.person = get_object_or_404(People.active, pk=request.user.pk)
+        self.person = get_object_or_404(Person.active, pk=request.user.pk)
         self.project = self.document.project
         self.form = DocumentForm(request.POST or None, request.FILES or None, project=self.project,
                                  document=self.document, person=self.person)

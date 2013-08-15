@@ -5,7 +5,7 @@ from django.db import models
 from django_countries import CountryField
 from django_localflavor_us.models import USStateField
 from kala.managers import ActiveManager, DeletedManager
-from people.models import People
+from accounts.models import Person
 from projects.models import Projects
 from timezone_field import TimeZoneField
 
@@ -42,7 +42,7 @@ class Companies(models.Model):
 
     def set_active(self, active):
         self.is_active = active
-        for person in People.objects.filter(company=self):
+        for person in Person.objects.filter(company=self):
             person.set_active(active)
 
         for project in Projects.objects.filter(company=self):
@@ -62,10 +62,10 @@ class Companies(models.Model):
                                               'projects__pk'))
 
     def get_people_list(self):
-        return People.active.filter(company=self)
+        return Person.active.filter(company=self)
 
     def add_person_to_projects(self, person):
-        assert type(person) is People, 'The person parameter must be of type People'
+        assert type(person) is Person, 'The person parameter must be of type People'
         for project in Projects.active.filter(company=self):
             project.clients.add(person)
 

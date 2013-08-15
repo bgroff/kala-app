@@ -3,7 +3,7 @@ from django import forms
 from documents.defs import get_categories_for_mimes
 from documents.models import Documents
 from kala.templatetags.kala_tags import pretty_user
-from people.models import People
+from accounts.models import Person
 from .models import Projects
 
 
@@ -107,8 +107,8 @@ class ProjectForm(forms.ModelForm):
         else:
             self.instance.owner = self.company
         project = super(ProjectForm, self).save(commit)
-        # Add all of the companies people to the project.
-        [self.instance.clients.add(person) for person in People.active.filter(company=self.company)]
+        # Add all of the companies accounts to the project.
+        [self.instance.clients.add(person) for person in Person.active.filter(company=self.company)]
         return project
 
 

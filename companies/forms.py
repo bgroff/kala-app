@@ -1,5 +1,5 @@
 from django import forms
-from people.models import People
+from accounts.models import Person
 from .models import Companies
 
 
@@ -22,7 +22,7 @@ class DeletedPeopleForm(forms.Form):
     def __init__(self, *args, **kwargs):
         company = kwargs.pop('company')
         super(DeletedPeopleForm, self).__init__(*args, **kwargs)
-        self.fields['person'] = forms.ModelChoiceField(queryset=People.deleted.filter(company=company),
+        self.fields['person'] = forms.ModelChoiceField(queryset=Person.deleted.filter(company=company),
                                                        widget=forms.Select(attrs={'class': 'span3'}))
 
     def save(self):
