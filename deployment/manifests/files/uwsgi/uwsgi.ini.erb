@@ -1,0 +1,17 @@
+[uwsgi]
+vhost = true
+plugins = python
+master = true
+enable-threads = true
+processes = 2
+chdir = /srv/kala
+module = moi.wsgi:application
+virtualenv = /home/vagrant/virtualenvs/kala
+touch-reload = /srv/kala/reload
+
+env = DJANGO_SETTINGS_MODULE=kala.settings
+env = MOI_DEPLOYMENT_ENVIRONMENT=development
+env = MOI_SECRET_KEY=<%= secret_key %>
+env = MOI_DATABASE_USER=<%= db_user %>
+env = MOI_DATABASE_PASSWORD=<%= db_password %>
+env = MOI_DATABASE_NAME=<%= db_name %>

@@ -1,0 +1,22 @@
+server {
+    listen   80;
+
+    charset utf-8;
+    server_name kala.ndptc.manoa.hawaii.edu;
+    access_log /var/log/nginx/kala.ndptc.manoa.hawaii.edu.access.log;
+    error_log /var/log/nginx/kala.ndptc.manoa.hawaii.edu.error.log;
+    client_max_body_size 200M;
+
+    location / {
+        uwsgi_pass unix:/run/uwsgi/app/kala.ndptc.manoa.hawaii.edu/socket;
+        include    uwsgi_params;
+    }
+
+    location /static/ {
+            alias /srv/kala/kala/static/;
+    }
+
+    location /media/ {
+            alias /srv/kala/kala/media/;
+    }
+}
