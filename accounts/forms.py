@@ -1,6 +1,6 @@
 from django import forms
-from companies.models import Companies
-from projects.models import Projects
+from companies.models import Company
+from projects.models import Project
 from .models import Person
 
 
@@ -42,7 +42,7 @@ class CreatePersonForm(PersonForm):
         del self.fields['new_password']
         del self.fields['confirm']
 
-    company = forms.ModelChoiceField(queryset=Companies.active.all(), widget=forms.Select(attrs={'class': 'span3'}))
+    company = forms.ModelChoiceField(queryset=Company.objects.active(), widget=forms.Select(attrs={'class': 'span3'}))
 
     class Meta:
         model = Person
@@ -66,7 +66,8 @@ class CreatePersonForm(PersonForm):
 
 
 class DeletedCompanyForm(forms.Form):
-    company = forms.ModelChoiceField(queryset=Companies.deleted.all(), widget=forms.Select(attrs={'class': 'span3'}))
+    company = forms.ModelChoiceField(queryset=Company.objects.deleted(),
+                                     widget=forms.Select(attrs={'class': 'span3'}))
 
     def save(self):
         company = self.cleaned_data['company']
@@ -76,14 +77,14 @@ class DeletedCompanyForm(forms.Form):
 
 def permission_forms(request, person):
     return [PermissionsForm(request.POST or None, person=person, company=company) for company in
-            Companies.active.filter(pk__in=Projects.active.all().values('company__pk'))]
+            Company.objects.active().filter(pk__in=Project.objects.active().values('company__pk'))]
 
 
 class PermissionsForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.person = kwargs.pop('person')
         self.company = kwargs.pop('company')
-        self.projects = Projects.active.filter(company=self.company)
+        self.projects = Project.objects.active().filter(company=self.company)
         super(PermissionsForm, self).__init__(*args, **kwargs)
         self.fields[self.company] = forms.BooleanField(required=False, label='Select/Unselect All',
                                                        widget=forms.CheckboxInput(

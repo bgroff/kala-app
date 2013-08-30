@@ -9,7 +9,7 @@
         <div class="span12">
             <div class="breadcrumb">
                 <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
-                <li><a href="{% url 'people' %}">People</a> <span class="divider">/</span></li>
+                <li><a href="{% url 'accounts' %}">People</a> <span class="divider">/</span></li>
                 <li class="active">{{ person|pretty_user }}</li>
             </div>
         </div>
@@ -117,6 +117,7 @@
 
                                 <br/><br/>
 
+                                {% if not user.is_uh %}
                                 <div class="control-group">
                                     <label class="control-label" for="id_new_password">Password</label>
 
@@ -137,7 +138,7 @@
                                     <!-- /controls -->
                                 </div>
                                 <!-- /control-group -->
-
+                                {% endif %}
 
                                 <br/>
 
@@ -150,7 +151,7 @@
                             </fieldset>
                         </form>
                     </div>
-                    {% if request.user.is_admin %}
+                    {% if user.is_admin %}
                         <div class="tab-pane" id="projects">
                             <p>To grant {{ person|pretty_user }} access to projects, click on the checkboxes below.
                                 When you are finished,
@@ -220,7 +221,7 @@
     </div> <!-- /span8 -->
 
 
-    {% if request.user.is_admin %}
+    {% if user.is_admin %}
         <div class="span4">
             <div class="widget stacked widget-box">
                 <div class="widget-header">

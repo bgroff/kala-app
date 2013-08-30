@@ -4,19 +4,20 @@ from django_localflavor_us.models import PhoneNumberField
 from django.db import models
 from django_countries import CountryField
 from django_localflavor_us.models import USStateField
-from kala.managers import ActiveManager, DeletedManager
+from ndptc.managers.managers import ActiveManager
 from accounts.models import Person
-from projects.models import Projects
+from projects.models import Project
 from timezone_field import TimeZoneField
 
 
 class CompaniesWithProjectManager(models.Manager):
     def get_query_set(self):
         return super(CompaniesWithProjectManager, self).get_query_set().filter(is_active=True,
-                                                                 pk__in=Projects.active.all().values('company__pk'))
+                                                                               pk__in=Project.objects.active().values(
+                                                                                   'company__pk'))
 
 
-class Companies(models.Model):
+class Company(models.Model):
     name = models.CharField(max_length=255, unique=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     address1 = models.CharField(max_length=255, null=True, blank=True)
@@ -32,20 +33,19 @@ class Companies(models.Model):
 
     is_active = models.BooleanField(default=True)
 
-    active = ActiveManager()
-    deleted = DeletedManager()
-    objects = models.Manager()
+    objects = ActiveManager()
     with_projects = CompaniesWithProjectManager()
 
     class Meta:
         ordering = ['name']
+        db_table = 'kala_companies'
 
     def set_active(self, active):
         self.is_active = active
         for person in Person.objects.filter(company=self):
             person.set_active(active)
 
-        for project in Projects.objects.filter(company=self):
+        for project in Project.objects.filter(company=self):
             project.set_active(active)
 
         if not self.is_active:
@@ -55,18 +55,18 @@ class Companies(models.Model):
     def get_project_list(self, person=None):
     #        assert type(person) is People, 'The user parameter must be of type People'
         if not person or person.is_admin:
-            return Projects.active.filter(company=self)
+            return Project.objects.active().filter(company=self)
         else:
-            return Projects.active.filter(company=self,
-                                          pk__in=Projects.clients.through.objects.filter(people=person).values(
-                                              'projects__pk'))
+            return Project.objects.active().filter(company=self,
+                                                   pk__in=Project.clients.through.objects.filter(person=person).values(
+                                                       'project__pk'))
 
     def get_people_list(self):
-        return Person.active.filter(company=self)
+        return Person.objects.filter(company=self)  # Todo: only show people that are active
 
     def add_person_to_projects(self, person):
         assert type(person) is Person, 'The person parameter must be of type People'
-        for project in Projects.active.filter(company=self):
+        for project in Project.active.filter(company=self):
             project.clients.add(person)
 
     def __str__(self):

@@ -1,4 +1,3 @@
-import json
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core import signing
@@ -6,12 +5,13 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, HttpResponse, get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
+from ndptc.accounts.mixins import LoginRequiredMixin
 from .models import BCDocumentVersion
 from .tasks import import_groups, download_document
 from .forms import BasecampAuthorizationForm
 
 
-class BasecampAuthorize(TemplateView):
+class BasecampAuthorize(LoginRequiredMixin, TemplateView):
     template_name = 'basecamp_authorization.html'
 
     def get_context_data(self, **kwargs):

@@ -1,13 +1,11 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
-from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView, View
-from kala.views import LoginRequiredMixin
+from ndptc.accounts.mixins import LoginRequiredMixin
 from accounts.models import Person
 from .forms import DocumentForm, ProjectForm
-from .models import Documents, DocumentVersion
+from .models import Document, DocumentVersion
 
 
 class BaseDocumentView(LoginRequiredMixin, View):
@@ -28,10 +26,9 @@ class DocumentView(TemplateView, BaseDocumentView):
             'project': self.project,
         }
 
-    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
-        self.document = get_object_or_404(Documents.active, pk=pk)
-        self.person = get_object_or_404(Person.active, pk=request.user.pk)
+        self.document = get_object_or_404(Document.objects.active(), pk=pk)
+        self.person = get_object_or_404(Person.objects.filter(is_active=True), pk=request.user.pk)
         self.project = self.document.project
         self.form = DocumentForm(request.POST or None, request.FILES or None, project=self.project,
                                  document=self.document, person=self.person)
@@ -64,7 +61,6 @@ class DownloadDocument(BaseDocumentView):
     """
     """
 
-    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.document = get_object_or_404(DocumentVersion, pk=pk)
         self.project = self.document.document.project
@@ -74,4 +70,4 @@ class DownloadDocument(BaseDocumentView):
         return super(DownloadDocument, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        return self.document.build_http_response()
+        return self.document.http_response()

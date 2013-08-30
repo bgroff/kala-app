@@ -1,8 +1,7 @@
 import datetime
-from companies.models import Companies
 from django import forms
-from projects.models import Projects
-from .models import DocumentVersion, Documents
+from companies.models import Company
+from .models import DocumentVersion, Document
 
 
 class DocumentForm(forms.ModelForm):
@@ -14,6 +13,7 @@ class DocumentForm(forms.ModelForm):
             self.document = kwargs.pop('document')
         except KeyError:
             self.document = None
+
         super(DocumentForm, self).__init__(*args, **kwargs)
 
     class Meta:
@@ -26,7 +26,7 @@ class DocumentForm(forms.ModelForm):
     def save(self, *args, **kwargs):
         now = datetime.datetime.now()
         if self.document is None:
-            self.document = Documents.objects.create(project=self.project, date=now)
+            self.document = Document.objects.create(project=self.project, date=now)
         self.instance.project = self.project
         self.instance.person = self.person
         self.instance.document = self.document
@@ -42,7 +42,7 @@ class ProjectForm(forms.Form):
         super(ProjectForm, self).__init__(*args, **kwargs)
 
         choices = []
-        for company in Companies.with_projects.all():
+        for company in Company.with_projects.all():
             projects = [(project.pk, project.name) for project in company.get_project_list()]
             choices.append((company.name, projects))
 

@@ -25,7 +25,7 @@
             <div class="widget-content">
                 {% for company in companies %}
                     <h3 style="border-bottom: 1px solid #ddd; clear: both;">
-                        {% if request.user.is_admin %}{{ company.name }} -<a href="{% url 'company' company.pk %}">
+                        {% if user.is_admin %}{{ company.name }} -<a href="{% url 'company' company.pk %}">
                             Edit</a>{% else %}{{ company }}{% endif %}</h3>
                     <ul>
                         <div style="padding-top: 20px;">
@@ -33,7 +33,7 @@
                                 <div class="span3" style="min-height: 80px;">
                                     <address>
                                         <strong>
-                                            {% if request.user.is_admin %}
+                                            {% if user.is_admin %}
                                                 {{ person|pretty_user }} -
                                                 <a href="{% url 'edit_profile' person.pk %}">Edit</a>
                                             {% else %}
@@ -67,7 +67,7 @@
                 </div>
                 <!-- /widget-header -->
                 <div class="widget-content">
-                    <form action="{% url 'people' %}" method="post">
+                    <form action="{% url 'accounts' %}" method="post">
                         {% csrf_token %}
                         <fieldset>
                             <div id="company" class="control-group {% if company_form.name.errors %}error{% endif %}">
@@ -103,7 +103,7 @@
                     <h3>Create Person</h3>
                 </div>
                 <div class="widget-content">
-                    <form action="{% url 'people' %}" method="post">
+                    <form action="{% url 'accounts' %}" method="post">
                         {% csrf_token %}
                         <fieldset>
                             <div class="control-group {% if person_form.email.errors %}error{% endif %}">
@@ -184,7 +184,7 @@
                         If there are no deleted companies, this list will be empty.
                     </p>
 
-                    <form action="{% url 'people' %}" method="post">
+                    <form action="{% url 'accounts' %}" method="post">
                         {% csrf_token %}
                         <fieldset>
                             <div id="company" class="control-group">

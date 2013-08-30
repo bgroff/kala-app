@@ -1,17 +1,19 @@
 from django.contrib import messages
+from django.contrib.auth import get_user
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
+from ndptc.accounts.mixins import LoginRequiredMixin
 from companies.forms import CreateCompanyForm
-from companies.models import Companies
-from projects.models import Projects
+from companies.models import Company
+from projects.models import Project
 from .forms import PersonForm, CreatePersonForm, permission_forms, DeletedCompanyForm
 from .models import Person
 
 
-class EditProfile(TemplateView):
+class EditProfile(LoginRequiredMixin, TemplateView):
     template_name = 'profile.html'
 
     def get_context_data(self, **kwargs):
@@ -23,9 +25,8 @@ class EditProfile(TemplateView):
             context['permission_forms'] = self.permission_forms
         return context
 
-    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
-        self.person = get_object_or_404(Person.active, pk=pk)
+        self.person = get_object_or_404(Person, pk=pk)
         if self.person != request.user and not request.user.is_admin:
             messages.error(request, 'You do not have permission to edit this persons account')
             return redirect(reverse('home'))
@@ -67,7 +68,7 @@ class EditProfile(TemplateView):
         return self.render_to_response(self.get_context_data())
 
 
-class PeopleView(TemplateView):
+class PeopleView(LoginRequiredMixin, TemplateView):
     template_name = 'accounts.html'
 
     def get_context_data(self, **kwargs):
@@ -84,31 +85,34 @@ class PeopleView(TemplateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_admin:
-            self.companies = Companies.active.all()
+        self.user = get_user(request)
+        if self.user.is_admin:
+            self.companies = Company.objects.active()
             self.company_form = CreateCompanyForm(request.POST if 'create_company' in request.POST else None)
             self.person_form = CreatePersonForm(request.POST if 'create_person' in request.POST else None)
             self.undelete_form = DeletedCompanyForm(request.POST if 'undelete' in request.POST else None)
         else:
-            self.companies = Companies.active.filter(
-                pk__in=Projects.clients.through.objects.filter(people__pk=self.request.user.pk).values(
-                    'projects__company__pk'))
-            self.companies = self.companies | Companies.active.filter(pk=self.request.user.company.pk)
+            self.companies = Company.objects.active().filter(
+                pk__in=Project.clients.through.objects.filter(person__pk=self.user.pk).values(
+                    'project__company__pk'))
+            self.companies = self.companies | Company.objects.active().filter(pk=self.user.company.pk)
         return super(PeopleView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if not request.user.is_admin:
+        if not self.user.is_admin:
             messages.error(request, 'You do not have permission to create data')
             return redirect(reverse('accounts'))
-        #raise Exception(str(request.POST))
+
         if 'create_company' in request.POST and self.company_form.is_valid():
             company = self.company_form.save()
             messages.success(request, 'The company has been created')
             return redirect(reverse('company', args=[company.pk]))
+
         if 'create_person' in request.POST and self.person_form.is_valid():
             self.person_form.save()
             messages.success(request, 'The person has been created')
             return redirect(reverse('accounts'))
+
         if 'undelete' in request.POST and self.undelete_form.is_valid():
             company = self.undelete_form.save()
             messages.success(request, 'The company %s has been un-deleted' % company.name)

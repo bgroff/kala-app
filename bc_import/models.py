@@ -1,11 +1,11 @@
 from django.db import models
 from documents.models import DocumentVersion
 from accounts.models import Person
-from projects.models import Projects
-from companies.models import Companies
+from projects.models import Project
+from companies.models import Company
 
 
-class BCCompany(Companies):
+class BCCompany(Company):
     bc_id = models.IntegerField()
 
 
@@ -32,5 +32,5 @@ class BCPerson(Person):
     bc_id = models.IntegerField(null=True, blank=True)
 
 
-class BCProject(Projects):
+class BCProject(Project):
     bc_id = models.IntegerField()

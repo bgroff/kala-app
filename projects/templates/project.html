@@ -13,7 +13,7 @@
             <li class="active">
                 {{ project }}
             </li>
-            {%  if request.user.is_admin %}
+            {%  if user.is_admin %}
                 <a id="edit-permissions" href="{% url 'permissions' project.pk %}">- Edit Permissions</a>
             {% endif %}
             <li>

@@ -4,14 +4,14 @@ plugins = python
 master = true
 enable-threads = true
 processes = 2
-chdir = /srv/kala
-module = moi.wsgi:application
-virtualenv = /home/vagrant/virtualenvs/kala
-touch-reload = /srv/kala/reload
+chdir = /srv/<%= project %>
+module = <%= project %>.wsgi:application
+virtualenv = /home/vagrant/virtualenvs/<%= project %>
+touch-reload = /srv/<%= project %>/reload
 
-env = DJANGO_SETTINGS_MODULE=kala.settings
-env = MOI_DEPLOYMENT_ENVIRONMENT=development
-env = MOI_SECRET_KEY=<%= secret_key %>
-env = MOI_DATABASE_USER=<%= db_user %>
-env = MOI_DATABASE_PASSWORD=<%= db_password %>
-env = MOI_DATABASE_NAME=<%= db_name %>
+env = DJANGO_SETTINGS_MODULE=<%= project %>.settings
+env = KALA_DEPLOYMENT_ENVIRONMENT=development
+env = KALA_SECRET_KEY=<%= secret_key %>
+env = KALA_DATABASE_USER=<%= db_user %>
+env = KALA_DATABASE_PASSWORD=<%= db_password %>
+env = KALA_DATABASE_NAME=<%= db_name %>

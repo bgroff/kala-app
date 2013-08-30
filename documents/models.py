@@ -4,24 +4,26 @@ from django.core.files.storage import FileSystemStorage
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.http import HttpResponse
+from django.utils.encoding import python_2_unicode_compatible
 from uuidfield import UUIDField
-from kala.managers import ActiveManager
+from ndptc.managers.managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
 
 
-class Documents(models.Model):
-    project = models.ForeignKey('projects.Projects')
+@python_2_unicode_compatible
+class Document(models.Model):
+    project = models.ForeignKey('projects.Project')
     name = models.CharField(max_length=255)
     date = models.DateTimeField()
     removed = models.DateField(null=True)
     mime = models.CharField(max_length=255, null=True)
     is_active = models.BooleanField(default=True)
 
-    objects = models.Manager()
-    active = ActiveManager()
+    objects = ActiveManager()
 
     class Meta:
         ordering = ['-date', 'name']
+        db_table = 'kala_documents'
 
     def set_active(self, active):
         self.is_active = active
@@ -31,7 +33,7 @@ class Documents(models.Model):
 
     def delete(self, using=None):
         DocumentVersion.objects.filter(document=self).delete()
-        super(Documents, self).delete(using)
+        super(Document, self).delete(using)
 
     @property
     def uuid(self):
@@ -96,14 +98,15 @@ class DocumentStorage(FileSystemStorage):
     """
     """
     def url(self, name):
-        document = Documents.objects.get(file=name)
+        document = Document.objects.get(file=name)
         return unicode(reverse('download_document', args=[str(document.pk)]))
 document_file_storage = DocumentStorage(location=settings.DOCUMENT_ROOT)
 
 
+@python_2_unicode_compatible
 class DocumentVersion(models.Model):
     uuid = UUIDField(auto=True, primary_key=True)
-    document = models.ForeignKey('Documents', null=True)
+    document = models.ForeignKey('Document', null=True)
     file = models.FileField(upload_to=upload_document_to, storage=document_file_storage, max_length=255)
     description = models.TextField(null=True)
     created = models.DateTimeField() # Update save method
@@ -115,6 +118,7 @@ class DocumentVersion(models.Model):
     class Meta:
         get_latest_by = 'created'
         ordering = ['name', 'created']
+        db_table = 'kala_document_version'
 
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None, save_document=True):
@@ -126,11 +130,11 @@ class DocumentVersion(models.Model):
         super(DocumentVersion, self).save(force_insert, force_update, using, update_fields)
 
     def delete(self, using=None):
-        if Documents.objects.filter(pk=self.document.pk).count() < 1:
+        if Document.objects.filter(pk=self.document.pk).count() < 1:
             self.document.delete()
         super(DocumentVersion, self).delete(using)
 
-    def build_http_response(self):
+    def http_response(self):
         response = HttpResponse(self.file.read(), mimetype=self.mime)
         response['Content-Length'] = self.file.size
         response['Content-Disposition'] = 'attachment; filename=' + self.name

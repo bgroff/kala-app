@@ -52,7 +52,7 @@
         <!-- /widget -->
     </div>
 
-    {% if request.user.is_admin %}
+    {% if user.is_admin %}
         <div class="span4">
             <div class="widget">
                 <div class="widget-header">
@@ -149,7 +149,7 @@
                 If you are not assigned to any projects you will not see a list of projects.
             </p>
         </li>
-        {% if request.user.is_admin %}
+        {% if user.is_admin %}
             <li data-id="project-form">
                 <p>To create a new project, use the form provided above.</p>
             </li>

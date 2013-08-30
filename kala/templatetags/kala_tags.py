@@ -2,7 +2,7 @@ from django.utils.functional import SimpleLazyObject
 from django.template import Library
 from types import NoneType
 from accounts.models import Person
-from companies.models import Companies
+from companies.models import Company
 
 register = Library()
 
@@ -20,7 +20,7 @@ def pretty_user(user):
 
 @register.filter
 def users_projects(company, user):
-    assert type(company) is Companies, 'The company must be of type Company, got %s' % type(company)
+    assert type(company) is Company, 'The company must be of type Company, got %s' % type(company)
     assert type(
         user) is Person or NoneType or SimpleLazyObject, 'The user must either be of type People or None, got %s' % type(
         user)

@@ -1,15 +1,13 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404
-from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
+from ndptc.accounts.mixins import LoginRequiredMixin, AdminRequiredMixin
 from documents.defs import get_mimes_for_category
 from documents.forms import DocumentForm
-from documents.models import Documents
-from kala.views import LoginRequiredMixin, AdminRequiredMixin
+from documents.models import Document
 from accounts.models import Person
-from .models import Projects
+from .models import Project
 from .forms import CategoryForm, ProjectForm, SortForm, permission_forms, CompanyForm, DeleteProjectsForm
 
 
@@ -26,7 +24,6 @@ class ProjectsView(LoginRequiredMixin, TemplateView):
 
         return context
 
-    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.form = ProjectForm(request.POST or None, company=request.user.company,
                                 is_admin=self.request.user.is_admin)
@@ -59,7 +56,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
     template_name = 'project.html'
 
     def get_context_data(self, **kwargs):
-        documents = Documents.active.filter(project=self.project)
+        documents = Document.objects.active().filter(project=self.project)
         if hasattr(self, 'sort_order'):
             if self.sort_order == 'AZ':
                 documents = documents.order_by('name')
@@ -75,9 +72,8 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'sort_form': self.sort_form,
             }
 
-    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
-        self.project = get_object_or_404(Projects.active, pk=pk)
+        self.project = get_object_or_404(Project.objects.active(), pk=pk)
         person = Person.objects.get(pk=self.request.user.pk)
         self.form = DocumentForm(request.POST or None, request.FILES or None, person=person,
                                  project=self.project)
@@ -116,9 +112,8 @@ class ProjectPermissions(AdminRequiredMixin, TemplateView):
             'project': self.project,
             }
 
-    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
-        self.project = get_object_or_404(Projects.active, pk=pk)
+        self.project = get_object_or_404(Project.objects.active(), pk=pk)
         self.forms = permission_forms(request, self.project)
         return super(ProjectPermissions, self).dispatch(request, *args, **kwargs)
 

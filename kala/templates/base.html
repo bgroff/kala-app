@@ -83,7 +83,7 @@
                     </li>
 
                     <li class="{% block people_class %}{% endblock %}">
-                        <a href="{% url 'people' %}">
+                        <a href="{% url 'accounts' %}">
                             <i class="icon-group"></i>
                             <span>People</span>
                         </a>
@@ -104,7 +104,7 @@
                         </a>
 
                         <ul class="dropdown-menu">
-                            <li><a href="{% url 'edit_profile' request.user.pk %}">Edit Profile</a></li>
+                            <li><a href="{% url 'edit_profile' user.pk %}">Edit Profile</a></li>
                             <li><a href="{% url 'logout' %}">Logout</a></li>
                         </ul>
                     </li>

@@ -1,8 +1,9 @@
 import os
 from django.core.exceptions import ImproperlyConfigured
-from kala.settings.databases import DATABASES
-from kala.settings.functions import get_env_variable
-from kala.settings.installed_apps import INSTALLED_APPS
+from .databases import DATABASES
+from .functions import get_env_variable
+from .installed_apps import INSTALLED_APPS
+from .ndptc import USE_DMS
 
 
 ALLOWED_HOSTS = ('localhost', 'kala.ndptc.manoa.hawaii.edu',)
@@ -28,7 +29,7 @@ except ImproperlyConfigured:
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
 MEDIA_URL = '/media/'
-ROOT_URLCONF = 'moi.urls'
+ROOT_URLCONF = 'kala.urls'
 SECRET_KEY = get_env_variable('KALA_SECRET_KEY')
 STATIC_URL = '/static/'
 
@@ -40,10 +41,31 @@ except ImproperlyConfigured:
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-WSGI_APPLICATION = 'moi.wsgi.application'
+WSGI_APPLICATION = 'kala.wsgi.application'
 
-SITE_ROOT = os.path.realpath(os.path.dirname(__file__) + '../')
-DOCUMENT_ROOT = os.path.join(SITE_ROOT, 'documents/')
+SITE_ROOT = os.path.realpath(os.path.dirname(__file__) + '/..')
+DOCUMENT_ROOT = '/tmp/' #os.path.join(SITE_ROOT, 'documents/')
 DATA_ROOT = os.path.join(SITE_ROOT, 'data/')
 MEDIA_ROOT = os.path.join(SITE_ROOT, 'media/')
 STATIC_ROOT = os.path.join(SITE_ROOT, 'static/')
+
+MIDDLEWARE_CLASSES = (
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'pagination.middleware.PaginationMiddleware',
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    "django.core.context_processors.debug",
+    "django.core.context_processors.i18n",
+    "django.core.context_processors.media",
+    "django.core.context_processors.static",
+    "django.core.context_processors.tz",
+    "django.core.context_processors.request",
+    "django.contrib.messages.context_processors.messages"
+)

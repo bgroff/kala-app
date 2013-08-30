@@ -1,32 +1,11 @@
 from django.conf.urls import patterns, include, url
-from django.contrib.auth.views import login, logout_then_login
 from kala.views import Home, LicenseView, UserDocumentationView
-from accounts.views import EditProfile
 
 urlpatterns = patterns('',
                        url(
                            regex=r'^$',
                            view=Home.as_view(),
                            name='home'
-                       ),
-
-                       url(
-                           regex=r'^login$',
-                           view=login,
-                           kwargs={'template_name': 'login.html'},
-                           name='login'
-                       ),
-                       url(
-                           regex=r'^logout$',
-                           view=logout_then_login,
-                           kwargs={'login_url': '/login'},
-                           name='logout'
-                       ),
-                       #    url(r'^create_account$', CreateAccount.as_view(), name='create_account'),
-                       url(
-                           regex=r'^edit_profile/(?P<pk>\d+)$',
-                           view=EditProfile.as_view(),
-                           name='edit_profile'
                        ),
 
                        url(

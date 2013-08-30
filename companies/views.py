@@ -1,12 +1,10 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
-from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-from kala.views import AdminRequiredMixin
+from ndptc.accounts.mixins import AdminRequiredMixin
 from .forms import CompanyForm, DeletedPeopleForm
-from .models import Companies
+from .models import Company
 
 
 class CompanyView(AdminRequiredMixin, TemplateView):
@@ -19,9 +17,8 @@ class CompanyView(AdminRequiredMixin, TemplateView):
             'undelete_form': self.undelete_form,
             }
 
-    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
-        self.company = get_object_or_404(Companies.active, pk=pk)
+        self.company = get_object_or_404(Company.objects.active(), pk=pk)
         self.form = CompanyForm(request.POST or None, instance=self.company)
         self.undelete_form = DeletedPeopleForm(request.POST or None, company=self.company)
         return super(CompanyView, self).dispatch(request, *args, **kwargs)
@@ -30,7 +27,7 @@ class CompanyView(AdminRequiredMixin, TemplateView):
         if 'delete' in request.POST:
             self.company.set_active(False)
             messages.success(request, 'The company %s has been deleted' % self.company)
-            return redirect(reverse('people'))
+            return redirect(reverse('accounts'))
 
         if 'undelete' in request.POST and self.undelete_form.is_valid():
             person = self.undelete_form.save()

@@ -6,3 +6,4 @@ kala/documents
 kala/media
 .venv
 celerybeat-schedule
+reload

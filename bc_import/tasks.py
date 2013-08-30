@@ -6,7 +6,7 @@ from django.conf import settings
 from django.utils import timezone
 from djcelery import celery
 from bc_import.models import BCCompany, BCPerson, BCProject, BCDocumentVersion
-from documents.models import Documents, DocumentVersion
+from documents.models import Document, DocumentVersion
 import requests
 
 
@@ -164,10 +164,10 @@ def create_document_from_document_versions():
     for collection in BCDocumentVersion.objects.all().order_by('bc_collection').distinct('bc_collection').values_list('bc_collection'):
         documents = BCDocumentVersion.objects.filter(bc_collection=collection).values_list('document')
         if documents.count() > 0:
-            document = Documents.objects.get(pk=documents[0])
+            document = Document.objects.get(pk=documents[0])
             latest = document.get_latest()
         else:
-            document = Documents.objects.create(name=version.name, project=version.bc_project, date=version.created)
+            document = Document.objects.create(name=version.name, project=version.bc_project, date=version.created)
             created += 1
             latest = None
 

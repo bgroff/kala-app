@@ -13,7 +13,7 @@ import projects
 @python_2_unicode_compatible
 class Person(NDPTCPerson):
     title = models.CharField(max_length=255, null=True, blank=True)
-    company = models.ForeignKey('companies.Companies')
+    company = models.ForeignKey('companies.Company')
     timezone = TimeZoneField(default=settings.TIME_ZONE, blank=True)
     access_new_projects = models.BooleanField()
 
@@ -43,13 +43,13 @@ class Person(NDPTCPerson):
 
     def get_companies_list(self):
         if self.is_admin:
-            _companies = companies.models.Companies.active.all()
+            _companies = companies.models.Company.objects.active()
         else:
-            _companies = companies.models.Companies.active.filter(
-                pk__in=projects.models.Projects.clients.through.objects.filter(people__pk=self.pk).values(
-                    'projects__company__pk'))
-        has_projects = companies.models.Companies.active.filter(
-            pk__in=projects.models.Projects.active.all().values('company__pk'))
+            _companies = companies.models.Company.objects.active().filter(
+                pk__in=projects.models.Project.clients.through.objects.filter(person__pk=self.pk).values(
+                    'project__company__pk'))
+        has_projects = companies.models.Company.objects.active().filter(
+            pk__in=projects.models.Project.objects.active().values('company__pk'))
         return _companies & has_projects
 
     def __str__(self):

@@ -11,6 +11,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'rest_framework',
+    'pagination',
 
     'ndptc.accounts',
 
@@ -19,7 +20,7 @@ INSTALLED_APPS = (
     'documents',
     'kala',
     'projects',
-
+    'bc_import',
 )
 
 
