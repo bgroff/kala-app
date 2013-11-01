@@ -11,9 +11,6 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 
     'rest_framework',
-    'pagination',
-
-    'ndptc.accounts',
 
     'accounts',
     'companies',

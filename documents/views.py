@@ -1,9 +1,9 @@
+from accounts.mixins import LoginRequiredMixin
+from accounts.models import Person
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView, View
-from ndptc.accounts.mixins import LoginRequiredMixin
-from accounts.models import Person
 from .forms import DocumentForm, ProjectForm
 from .models import Document, DocumentVersion
 

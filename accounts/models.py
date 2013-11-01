@@ -1,17 +1,16 @@
 from django.conf import settings
-from django.contrib.auth.models import UserManager
+from django.contrib.auth.models import UserManager, AbstractUser
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from django_localflavor_us.models import PhoneNumberField
 from timezone_field import TimeZoneField
-from ndptc.accounts.models import NDPTCPerson
 import companies
 import datetime
 import projects
 
 
 @python_2_unicode_compatible
-class Person(NDPTCPerson):
+class Person(AbstractUser):
     title = models.CharField(max_length=255, null=True, blank=True)
     company = models.ForeignKey('companies.Company')
     timezone = TimeZoneField(default=settings.TIME_ZONE, blank=True)

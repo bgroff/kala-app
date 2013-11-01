@@ -16,153 +16,142 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
     <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
     <!-- [if lt IE 8]>
-          <link href="{% static 'css/font-awesome-ie7.min.css' %}" rel="stylesheet">
+    <link href="{% static 'css/font-awesome-ie7.min.css' %}" rel="stylesheet">
     <![endif]-->
 
+    <link href="{% static 'css/custom.css' %}" rel="stylesheet">
+    <link href="{% static 'css/custom-admin-responsive.css' %}" rel="stylesheet">
+    <link rel="icon" type="image/png" href="static/img/kala-favicon.png">
 
-    <link href="{% static 'css/base-admin-2.css' %}" rel="stylesheet">
-    <link href="{% static 'css/base-admin-2-responsive.css' %}" rel="stylesheet">
-
-    <link href="{% static 'css/pages/dashboard.css' %}" rel="stylesheet">
-    <link rel="icon" type="image/png" href="{% static 'img/kala-favicon.png' %}">
-
-    {% block addditional_style %}
-
-    {% endblock addditional_style %}
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
 
 </head>
 
 <body>
 {% block nav-bar %}
-    <div class="navbar navbar-fixed-top">
+<div class="navbar navbar-fixed-top">
 
-        <div class="navbar-inner">
+    <div class="navbar-inner">
 
-            <div class="container">
-
-                <a class="brand" href="{% url 'home' %}">
-                    <img src="{% static 'img/kala-logo.png' %}" alt="Kala - Document Management Logo">
-                    <span style="margin-left: 10px;">Kala Document Management</span>
-                </a>
-
-            </div>
-            <!-- /container -->
-
+        <div class="container">
+            <a class="brand" href="index.html">
+                <img src="{% static 'img/kala-logo.png' %}" alt="Kala - Document Management Logo">
+                <span id="site-name">Kala Document Management</span>
+            </a>
         </div>
-        <!-- /navbar-inner -->
+        <!--&lt;!&ndash; /container &ndash;&gt;-->
 
     </div>
-    <!-- /navbar -->
+    <!--/navbar-inner-->
+
+</div>
+<!-- /navbar -->
 {% endblock nav-bar %}
 
 {% block sub-nav-bar %}
-    <div class="subnavbar">
+<div class="subnavbar">
 
-        <div class="subnavbar-inner">
+    <div class="subnavbar-inner">
 
-            <div class="container">
+        <div class="container">
 
-                <ul class="mainnav">
+            <ul class="mainnav">
+                <li class="{% block home_class %}{% endblock %}">
+                    <a href="{% url 'home' %}">
+                        <i class="icon-home"></i>
+                        <span>Home</span>
+                    </a>
+                </li>
 
-                    <li class="{% block home_class %}{% endblock %}">
-                        <a href="{% url 'home' %}">
-                            <i class="icon-home"></i>
-                            <span>Home</span>
-                        </a>
-                    </li>
+                <li class="{% block projects_class %}{% endblock %}">
+                    <a href="{% url 'projects' %}">
+                        <i class="icon-edit"></i>
+                        <span>Projects</span>
+                    </a>
+                </li>
 
-                    <li class="{% block projects_class %}{% endblock %}">
-                        <a href="{% url 'projects' %}">
-                            <i class="icon-edit"></i>
-                            <span>Projects</span>
-                        </a>
-                    </li>
+                <li class="{% block people_class %}{% endblock %}">
+                    <a href="{% url 'accounts' %}">
+                        <i class="icon-group"></i>
+                        <span>People</span>
+                    </a>
+                </li>
 
-                    <li class="{% block people_class %}{% endblock %}">
-                        <a href="{% url 'accounts' %}">
-                            <i class="icon-group"></i>
-                            <span>People</span>
-                        </a>
-                    </li>
+                <li onclick=launch_tour()>
+                    <a style="cursor: pointer;">
+                        <i class="icon-question-sign"></i>
+                        <span>Help</span>
+                    </a>
+                </li>
 
-                    <li onclick=launch_tour()>
-                        <a style="cursor: pointer;">
-                            <i class="icon-question-sign"></i>
-                            <span>Help</span>
-                        </a>
-                    </li>
+                <li class="dropdown {% block account_class %}{% endblock %}">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="icon-user"></i>
+                        <span>My Account</span>
+                        <b class="caret"></b>
+                    </a>
 
-                    <li class="dropdown {% block account_class %}{% endblock %}">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-                            <i class="icon-user"></i>
-                            <span>My Account</span>
-                            <b class="caret"></b>
-                        </a>
-
-                        <ul class="dropdown-menu">
-                            <li><a href="{% url 'edit_profile' user.pk %}">Edit Profile</a></li>
-                            <li><a href="{% url 'logout' %}">Logout</a></li>
-                        </ul>
-                    </li>
-
-                </ul>
-
-            </div>
-            <!-- /container -->
-
+                    <ul class="dropdown-menu">
+                        <li><a href="{% url 'edit_profile' user.pk %}">Edit Profile</a></li>
+                        <li><a href="{% url 'logout' %}">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
-        <!-- /subnavbar-inner -->
+        <!-- /container -->
 
     </div>
-    <!-- /subnavbar -->
+    <!-- /subnavbar-inner -->
+
+</div>
+<!-- /subnavbar -->
 {% endblock sub-nav-bar %}
+
 
 <div class="main">
 
     <div class="main-inner">
 
         <div class="container">
+            {% if messages %}
+            <div class="span12">
+                {% for message in messages %}
+                {% if message.level == 20 %}
+                <div class="alert alert-info">
+                    <a class="close" data-dismiss="alert">×</a>
+                    <strong>Information: </strong> {{ message }}.
+                </div>
+                {% endif %}
+                {% if message.level == 25 %}
+                <div class="alert alert-success">
+                    <a class="close" data-dismiss="alert">×</a>
+                    <strong>Success: </strong> {{ message }}.
+                </div>
+                {% endif %}
+                {% if message.level == 30 %}
+                <div class="alert alert-warning">
+                    <a class="close" data-dismiss="alert">×</a>
+                    <strong>Warning: </strong> {{ message }}.
+                </div>
+                {% endif %}
+                {% if message.level >= 35 %}
+                <div class="alert alert-error">
+                    <a class="close" data-dismiss="alert">×</a>
+                    <strong>Error: </strong> {{ message }}.
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% block content %}
+
+            {% endblock content %}
 
             <div class="row">
-
-                {% if messages %}
-                    <div class="span12">
-                        {% for message in messages %}
-                            {% if message.level == 20 %}
-                                <div class="alert alert-info">
-                                    <a class="close" data-dismiss="alert">×</a>
-                                    <strong>Information: </strong> {{ message }}.
-                                </div>
-                            {% endif %}
-                            {% if message.level == 25 %}
-                                <div class="alert alert-success">
-                                    <a class="close" data-dismiss="alert">×</a>
-                                    <strong>Success: </strong> {{ message }}.
-                                </div>
-                            {% endif %}
-                            {% if message.level == 30 %}
-                                <div class="alert alert-warning">
-                                    <a class="close" data-dismiss="alert">×</a>
-                                    <strong>Warning: </strong> {{ message }}.
-                                </div>
-                            {% endif %}
-                            {% if message.level >= 35 %}
-                                <div class="alert alert-error">
-                                    <a class="close" data-dismiss="alert">×</a>
-                                    <strong>Error: </strong> {{ message }}.
-                                </div>
-                            {% endif %}
-                        {% endfor %}
-                    </div>
-                {% endif %}
-
-                {% block content %}
-
-                {% endblock content %}
 
             </div>
             <!-- /row -->
@@ -177,62 +166,62 @@
 <!-- /main -->
 
 {% block extra %}
-    <div class="extra">
-        <div class="extra-inner">
-            <div class="container">
-                <div class="row">
-                    <div class="span4">
-                        <h4>About</h4>
-                        <ul>
-                            <li><a href="javascript:;">About Us</a></li>
-                            <li><a href="https://github.com/bgroff/kala">Kala on Github</a></li>
-                        </ul>
-                    </div>
-                    <div class="span4">
+<div class="extra">
+    <div class="extra-inner">
+        <div class="container">
+            <div class="row">
+                <div class="span4">
+                    <h4>About</h4>
+                    <ul>
+                        <li><a href="javascript:;">About Us</a></li>
+                        <li><a href="https://github.com/bgroff/kala">Kala on Github</a></li>
+                    </ul>
+                </div>
+                <div class="span4">
 
-                        <h4>Support</h4>
+                    <h4>Support</h4>
 
-                        <ul>
-                            <li><a href="{% url 'user_documentation' %}">User Documentation</a></li>
-                            <li><a href="javascript:;">Developer Documentation</a></li>
-                        </ul>
-                    </div>
-                    <div class="span4">
-                        <h4>Legal</h4>
-                        <ul>
-                            <li><a href="{% url 'license' %}">License</a></li>
-                        </ul>
-                    </div>
+                    <ul>
+                        <li><a href="{% url 'user_documentation' %}">User Documentation</a></li>
+                        <li><a href="javascript:;">Developer Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="span4">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="{% url 'license' %}">License</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
+</div>
 {% endblock extra %}
 
 {% block footer %}
-    <div class="footer">
+<div class="footer">
 
-        <div class="footer-inner">
+    <div class="footer-inner">
 
-            <div class="container">
+        <div class="container">
 
-                <div class="row">
+            <div class="row">
 
-                    <div class="span12">
-                    </div>
-                    <!-- /span12 -->
-
+                <div class="span12">
                 </div>
-                <!-- /row -->
+                <!-- /span12 -->
 
             </div>
-            <!-- /container -->
+            <!-- /row -->
 
         </div>
-        <!-- /footer-inner -->
+        <!-- /container -->
 
     </div>
-    <!-- /footer -->
+    <!-- /footer-inner -->
+
+</div>
+<!-- /footer -->
 {% endblock footer %}
 
 {% block tour %}{% endblock tour %}

@@ -5,6 +5,7 @@
 {% block home_class %}active{% endblock %}
 
 {% block content %}
+<div class="row-fluid">
     <div class="span8">
         <div class="widget widget-table action-table">
             <div id="documents" class="widget-header">
@@ -46,7 +47,7 @@
          </div>
     </div>
 
-    <div class="span4">
+    <div class="span4 pull-right">
         <div class="widget">
             <div id="projects" class="widget-header">
                 <i class="icon-edit"></i>
@@ -68,6 +69,8 @@
                                     organization.</p>
                             {% endfor %}
                         </li>
+                    {% empty %}
+                        <p style="margin-left: 15px;">There are currently no companies with projects.</p>
                     {% endfor %}
                 </ul>
             </div>
@@ -75,6 +78,7 @@
         </div>
         <!-- /widget -->
     </div>
+</div>
 {% endblock content %}
 
 {% block tour %}

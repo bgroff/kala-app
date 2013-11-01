@@ -1,8 +1,8 @@
 from django.db import models
-from documents.models import DocumentVersion
 from accounts.models import Person
-from projects.models import Project
 from companies.models import Company
+from documents.models import DocumentVersion
+from projects.models import Project
 
 
 class BCCompany(Company):

@@ -4,11 +4,11 @@ Exec { path => '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin' }
 $inc_file_path = '/vagrant/manifests/files' # Absolute path to the files directory (If you're using vagrant, you can leave it alone.)
 $tz = 'Pacific/Honolulu' # Timezone
 $project = 'kala' # Used in nginx and uwsgi
-$domain_name = 'kala.ndptc.manoa.hawaii.edu' # Used in nginx, uwsgi and virtualenv directory
-$db_name = 'ndptc' # Mysql database name to create
-$db_user = 'ndptc' # Mysql username to create
-$db_password = 'ndptc' # Mysql password for $db_user
-$secret_key = '68d3b82e-08eb-4585-b8d4-2b77d73f2a89'
+$domain_name = 'kala.localhost' # Used in nginx, uwsgi and virtualenv directory
+$db_name = 'kala' # Postgres database name to create
+$db_user = 'kala' # Postgres username to create
+$db_password = 'kala' # Postgres password for $db_user
+$secret_key = '68d3b82e-08eb-4585-b8d4-2b77d73f2a89' # Change if you want
 
 include timezone
 include apt
@@ -234,4 +234,9 @@ class software {
     ensure => latest,
     require => Class['apt'],
   }
+}
+
+user { "vagrant":
+  ensure => present,
+  shell  => "/bin/zsh"
 }

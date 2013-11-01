@@ -1,6 +1,6 @@
+from accounts.mixins import LoginRequiredMixin
 from django.contrib.auth import get_user
 from django.views.generic import TemplateView
-from ndptc.accounts.mixins import LoginRequiredMixin
 from documents.models import Document, DocumentVersion
 
 

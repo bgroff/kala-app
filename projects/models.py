@@ -1,10 +1,10 @@
 import datetime
+from accounts.models import Person
 from django.conf import settings
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from documents.models import Document
-from ndptc.managers.managers import ActiveManager
-from accounts.models import Person
+from kala.managers import ActiveManager
 
 
 @python_2_unicode_compatible

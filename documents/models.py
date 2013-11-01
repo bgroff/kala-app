@@ -6,8 +6,8 @@ from django.db import models
 from django.http import HttpResponse
 from django.utils.encoding import python_2_unicode_compatible
 from uuidfield import UUIDField
-from ndptc.managers.managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
+from kala.managers import ActiveManager
 
 
 @python_2_unicode_compatible

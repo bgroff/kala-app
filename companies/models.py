@@ -4,8 +4,8 @@ from django_localflavor_us.models import PhoneNumberField
 from django.db import models
 from django_countries import CountryField
 from django_localflavor_us.models import USStateField
-from ndptc.managers.managers import ActiveManager
 from accounts.models import Person
+from kala.managers import ActiveManager
 from projects.models import Project
 from timezone_field import TimeZoneField
 

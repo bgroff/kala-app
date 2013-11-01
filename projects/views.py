@@ -1,8 +1,8 @@
+from accounts.mixins import LoginRequiredMixin, AdminRequiredMixin
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
-from ndptc.accounts.mixins import LoginRequiredMixin, AdminRequiredMixin
 from documents.defs import get_mimes_for_category
 from documents.forms import DocumentForm
 from documents.models import Document

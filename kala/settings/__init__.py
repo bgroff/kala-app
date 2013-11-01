@@ -3,11 +3,10 @@ from django.core.exceptions import ImproperlyConfigured
 from .databases import DATABASES
 from .functions import get_env_variable
 from .installed_apps import INSTALLED_APPS
-from .ndptc import USE_DMS
 
 
-ALLOWED_HOSTS = ('localhost', 'kala.ndptc.manoa.hawaii.edu',)
-if get_env_variable('KALA_DEPLOYMENT_ENVIRONMENT') is 'development':
+ALLOWED_HOSTS = ('localhost', 'kala.localhost',)
+if get_env_variable('KALA_DEPLOYMENT_ENVIRONMENT') == 'development':
     # IP Address used by vagrant
     ALLOWED_HOSTS += ('10.1.1.10',)
 DEBUG = True
@@ -15,7 +14,6 @@ DEBUG = True
 AUTH_USER_MODEL = 'accounts.Person'
 
 AUTHENTICATION_BACKENDS = (
-    'ndptc.accounts.backends.UHBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -44,7 +42,10 @@ USE_TZ = True
 WSGI_APPLICATION = 'kala.wsgi.application'
 
 SITE_ROOT = os.path.realpath(os.path.dirname(__file__) + '/..')
-DOCUMENT_ROOT = '/tmp/' #os.path.join(SITE_ROOT, 'documents/')
+if get_env_variable('KALA_DEPLOYMENT_ENVIRONMENT') == 'development':
+    DOCUMENT_ROOT = '/tmp/'
+else:
+    DOCUMENT_ROOT = os.path.join(SITE_ROOT, 'documents/')
 DATA_ROOT = os.path.join(SITE_ROOT, 'data/')
 MEDIA_ROOT = os.path.join(SITE_ROOT, 'media/')
 STATIC_ROOT = os.path.join(SITE_ROOT, 'static/')
@@ -56,7 +57,6 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'pagination.middleware.PaginationMiddleware',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

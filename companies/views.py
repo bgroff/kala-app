@@ -1,8 +1,8 @@
+from accounts.mixins import AdminRequiredMixin
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
-from ndptc.accounts.mixins import AdminRequiredMixin
 from .forms import CompanyForm, DeletedPeopleForm
 from .models import Company
 

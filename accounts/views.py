@@ -5,11 +5,11 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-from ndptc.accounts.mixins import LoginRequiredMixin
 from companies.forms import CreateCompanyForm
 from companies.models import Company
 from projects.models import Project
 from .forms import PersonForm, CreatePersonForm, permission_forms, DeletedCompanyForm
+from .mixins import LoginRequiredMixin
 from .models import Person
 
 
