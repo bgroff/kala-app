@@ -5,7 +5,7 @@ Kala: Project Management in Django
 Kala is a project management application written in Python on the Django web framework. The intent is for the Kala to
 act as a drop in replacement for Basecamp. Kala can import your projects and files from an existing Basecamp
 installation. As of the writing of this document, Kala only supports files and file versions, although adding additional
-components should relatively strait forward.
+components should relatively straight forward.
 
 Basecamp is a registered trademark of 37signals, LLC and Kala has no affiliation with either.
 
