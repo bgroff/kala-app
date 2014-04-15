@@ -1,7 +1,6 @@
 {% extends 'document_upload_base.html' %}
 {% load static %}
 {% load kala_tags %}
-{% load pagination_tags %}
 
 {% block projects_class %}active{% endblock %}
 
@@ -32,10 +31,6 @@
             </div>
             <!-- /widget-header -->
             <div  class="widget-content">
-                {% autopaginate documents %}
-                <p>
-                    {% paginate %}
-                </p>
                 {% for document in documents %}
                     <div style="clear: both;">
                         <div style="float: left">
@@ -107,9 +102,7 @@
                 {% empty %}
                     There are no documents for this project. Use the form on this page to create a new document.
                 {% endfor %}
-                <p>
-                    {% paginate %}
-                </p>
+
             </div>
             <!-- /widget-content -->
         </div>
