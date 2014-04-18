@@ -212,6 +212,19 @@ tutorials out there though, so go googling.
 
 -------
 
+
+=================
+Running the Tests
+=================
+
+sudo aptitude install postgresql postgresql-server-dev-all
+
+sudo su postgres
+
+createuser -d -l -P test
+
+createdb createdb -O test test
+
 ==================
 User Documentation
 ==================

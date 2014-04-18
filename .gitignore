@@ -7,3 +7,4 @@ kala/media
 .venv
 celerybeat-schedule
 reload
+MANIFEST
