@@ -41,6 +41,3 @@ class PersonTests(FastFixtureTestCase):
         self.person.is_admin = True
         self.person.save()
         self.assertEqual(2, self.person.get_companies().count())
-
-    def str_test(self):
-        self.assertEqual(str(self.person), "{0} {1}".format(self.person.first_name, self.person.last_name))

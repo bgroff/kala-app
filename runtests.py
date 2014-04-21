@@ -7,8 +7,10 @@ import django
 import six
 import kala
 import tests
+import sys
 
-
+sys.path.insert(0, os.path.dirname(kala.__file__))
+print(sys.path)
 urlpatterns = []
 
 TEMPLATE_DEBUG = True

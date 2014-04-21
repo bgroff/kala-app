@@ -10,27 +10,27 @@ urlpatterns = patterns('',
 
    url(
        r'^companies/',
-       include('kala.companies.urls'),
+       include('companies.urls'),
    ),
 
    url(
        r'^documents/',
-       include('kala.documents.urls'),
+       include('documents.urls'),
    ),
 
    url(
        r'^accounts/',
-       include('kala.accounts.urls'),
+       include('accounts.urls'),
    ),
 
    url(
        r'^projects/',
-       include('kala.projects.urls'),
+       include('projects.urls'),
    ),
 
    url(
        r'^import/',
-       include('kala.bc_import.urls'),
+       include('bc_import.urls'),
    ),
 
     url(

@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user
 from django.views.generic import TemplateView
-from ..accounts.mixins import LoginRequiredMixin
-from ..documents.models import Document, DocumentVersion
+from accounts.mixins import LoginRequiredMixin
+from documents.models import Document, DocumentVersion
 
 
 class Home(LoginRequiredMixin, TemplateView):

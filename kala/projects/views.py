@@ -4,11 +4,11 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 from .models import Project
 from .forms import CategoryForm, ProjectForm, SortForm, permission_forms, CompanyForm, DeleteProjectsForm
-from ..accounts.mixins import LoginRequiredMixin, AdminRequiredMixin
-from ..accounts.models import Person
-from ..documents.defs import get_mimes_for_category
-from ..documents.forms import DocumentForm
-from ..documents.models import Document
+from accounts.mixins import LoginRequiredMixin, AdminRequiredMixin
+from accounts.models import Person
+from documents.defs import get_mimes_for_category
+from documents.forms import DocumentForm
+from documents.models import Document
 
 
 class ProjectsView(LoginRequiredMixin, TemplateView):

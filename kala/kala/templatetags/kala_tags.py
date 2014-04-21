@@ -1,7 +1,7 @@
 from django.utils.functional import SimpleLazyObject
 from django.template import Library
-from kala.accounts.models import Person
-from kala.companies.models import Company
+from accounts.models import Person
+from companies.models import Company
 
 register = Library()
 
@@ -16,9 +16,5 @@ def pretty_user(user):
 
 @register.filter
 def users_projects(company, user):
-    assert type(company) is Company, 'The company must be of type Company, got %s' % type(company)
-    assert type(
-        user) is Person or NoneType or SimpleLazyObject, 'The user must either be of type People or None, got %s' % type(
-        user)
     return company.get_project_list(user)
 

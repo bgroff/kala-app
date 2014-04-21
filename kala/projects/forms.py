@@ -1,8 +1,8 @@
 from django import forms
 from .models import Project
-from ..companies.models import Company
-from ..documents.defs import get_categories_for_mimes
-from ..documents.models import Document
+from companies.models import Company
+from documents.defs import get_categories_for_mimes
+from documents.models import Document
 
 
 class CategoryForm(forms.Form):

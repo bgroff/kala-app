@@ -1,15 +1,13 @@
 from django.conf import settings
 from django.contrib.auth.models import UserManager, AbstractUser
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
 from django_localflavor_us.models import PhoneNumberField
 from timezone_field import TimeZoneField
-import kala.companies
-import kala.projects
+import companies
+import projects
 import datetime
 
 
-@python_2_unicode_compatible
 class Person(AbstractUser):
     title = models.CharField(max_length=255, null=True, blank=True)
     company = models.ForeignKey('companies.Company')
@@ -42,14 +40,14 @@ class Person(AbstractUser):
 
     def get_companies(self):
         if self.is_admin:
-            _companies = kala.companies.models.Company.objects.active()
+            _companies = companies.models.Company.objects.active()
         else:
-            _companies = kala.companies.models.Company.objects.active().filter(
-                pk__in=kala.projects.models.Project.clients.through.objects.filter(person__pk=self.pk).values(
+            _companies = companies.models.Company.objects.active().filter(
+                pk__in=projects.models.Project.clients.through.objects.filter(person__pk=self.pk).values(
                     'project__company__pk'))
-        has_projects = kala.companies.models.Company.objects.active().filter(
-            pk__in=kala.projects.models.Project.objects.active().values('company__pk'))
+        has_projects = companies.models.Company.objects.active().filter(
+            pk__in=projects.models.Project.objects.active().values('company__pk'))
         return _companies & has_projects
 
-    def __str__(self):
+    def __str__(self):  # pragma: no cover
         return "{0} {1}".format(self.first_name, self.last_name)

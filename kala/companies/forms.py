@@ -1,6 +1,6 @@
 from django import forms
 from .models import Company
-from ..accounts.models import Person
+from accounts.models import Person
 
 
 class CompanyForm(forms.ModelForm):

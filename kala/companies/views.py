@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView
 from .forms import CompanyForm, DeletedPeopleForm
 from .models import Company
-from ..accounts.mixins import AdminRequiredMixin
+from accounts.mixins import AdminRequiredMixin
 
 
 class CompanyView(AdminRequiredMixin, TemplateView):

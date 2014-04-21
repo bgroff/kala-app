@@ -5,9 +5,9 @@ from django.db import models
 from django_countries.fields import CountryField
 from django_localflavor_us.models import USStateField
 from timezone_field import TimeZoneField
-from ..accounts.models import Person
-from ..kala.managers import ActiveManager
-from ..projects.models import Project
+from accounts.models import Person
+from managers import ActiveManager
+from projects.models import Project
 
 
 class CompaniesWithProjectManager(models.Manager):

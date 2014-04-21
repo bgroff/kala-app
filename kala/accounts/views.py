@@ -8,9 +8,9 @@ from django.views.generic import TemplateView
 from .forms import PersonForm, CreatePersonForm, permission_forms, DeletedCompanyForm
 from .mixins import LoginRequiredMixin
 from .models import Person
-from ..companies.forms import CreateCompanyForm
-from ..companies.models import Company
-from ..projects.models import Project
+from companies.forms import CreateCompanyForm
+from companies.models import Company
+from projects.models import Project
 
 
 class EditProfile(LoginRequiredMixin, TemplateView):

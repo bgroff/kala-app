@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, View
 from .models import BCDocumentVersion
 from .tasks import import_groups, download_document
 from .forms import BasecampAuthorizationForm
-from ..accounts.mixins import LoginRequiredMixin
+from accounts.mixins import LoginRequiredMixin
 
 
 class BasecampAuthorize(LoginRequiredMixin, TemplateView):

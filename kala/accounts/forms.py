@@ -1,7 +1,7 @@
 from django import forms
 from .models import Person
-from ..companies.models import Company
-from ..projects.models import Project
+from companies.models import Company
+from projects.models import Project
 
 
 class PersonForm(forms.ModelForm):

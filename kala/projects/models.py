@@ -1,13 +1,11 @@
 import datetime
 from django.conf import settings
 from django.db import models
-from django.utils.encoding import python_2_unicode_compatible
-from ..accounts.models import Person
-from ..documents.models import Document
-from ..kala.managers import ActiveManager
+from accounts.models import Person
+from documents.models import Document
+from managers import ActiveManager
 
 
-@python_2_unicode_compatible
 class Project(models.Model):
     name = models.CharField(max_length=255)
     company = models.ForeignKey('companies.Company')

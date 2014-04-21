@@ -4,7 +4,7 @@ from django.conf import settings
 from django.utils import timezone
 from djcelery import celery
 from .models import BCCompany, BCPerson, BCProject, BCDocumentVersion
-from ..documents.models import Document
+from documents.models import Document
 import requests
 import urllib
 
