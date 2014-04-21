@@ -168,6 +168,18 @@ class syncdb {
     user        => vagrant,
     require     => [Class['virtualenv'], Class['postgres']]
   }
+
+  exec { 'loaddata':
+    command => "bash -c \"export KALA_DEPLOYMENT_ENVIRONMENT=development &&\
+      export KALA_DATABASE_NAME=kala &&\
+      export KALA_DATABASE_USER=kala &&\
+      export KALA_DATABASE_PASSWORD=kala &&\
+      export KALA_SECRET_KEY=68d3b82e-08eb-4585-b8d4-2b77d73f2a89 &&\
+      /home/vagrant/virtualenvs/${project}/bin/python manage.py loaddata /vagrant/test_data.json\"",
+    cwd         => "/srv/${project}",
+    user        => vagrant,
+    require     => Exec['syncdb']
+  }
 }
 
 class python {
