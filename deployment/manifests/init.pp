@@ -19,6 +19,8 @@ include python
 include virtualenv
 include pildeps
 include software
+include syncdb
+include user_config
 
 class timezone {
   package { "tzdata":
@@ -30,9 +32,9 @@ class timezone {
     require => Package["tzdata"],
     source => "file:///usr/share/zoneinfo/${tz}",
   }
-}
+  }
 
-class apt {
+  class apt {
   exec { 'apt-get update':
     timeout => 0
   }
@@ -78,10 +80,10 @@ class nginx {
 class uwsgi {
   package { 'uwsgi':
     ensure => latest,
-    require => Class['apt'],
+    require => [Class['apt'], Class['python'], Class['virtualenv']],
   }
 
-  package { 'uwsgi-plugin-python':
+  package { 'uwsgi-plugin-python3':
     ensure => latest,
     require => Package['uwsgi'],
   }
@@ -128,7 +130,7 @@ class postgres {
     require => Class['apt'],
   }
 
-  package { 'postgresql-server-dev-9.1':
+  package { 'postgresql-server-dev-all':
     ensure => latest,
     require => Class['apt'],
   }
@@ -151,45 +153,56 @@ class postgres {
     unless => "sudo -u postgres -- psql -tAc \"SELECT 1 from pg_database WHERE datname='${db_name}'\" | grep -q 1",
     require => Exec['create role'],
   }
+}
 
+class syncdb {
+  exec { 'syncdb':
+    command => "bash -c \"export KALA_DEPLOYMENT_ENVIRONMENT=development &&\
+      export KALA_DATABASE_NAME=kala &&\
+      export KALA_DATABASE_USER=kala &&\
+      export KALA_DATABASE_PASSWORD=kala &&\
+      export KALA_SECRET_KEY=68d3b82e-08eb-4585-b8d4-2b77d73f2a89 &&\
+      /home/vagrant/virtualenvs/${project}/bin/python manage.py syncdb --noinput &&\
+      touch /srv/${project}/reload\"",
+    cwd         => "/srv/${project}",
+    user        => vagrant,
+    require     => [Class['virtualenv'], Class['postgres']]
+  }
 }
 
 class python {
-  package { 'python':
+  package { 'python3':
     ensure => latest,
     require => Class['apt'],
   }
 
-  package { 'python-dev':
+  package { 'python3-dev':
     ensure => latest,
     require => Class['apt'],
   }
 
-  package { 'python-pip':
+  package { 'python3-pip':
     ensure => latest,
     require => Class['apt'],
   }
-
 }
 
 class virtualenv {
-  package { 'virtualenv':
-    ensure => latest,
-    provider => pip,
+  exec { 'virtualenv':
+    command => "sudo pip3 install virtualenv",
     require => Class['python', 'pildeps'],
   }
 
   exec { 'create virtualenv':
     command => "sudo -u vagrant virtualenv /home/vagrant/virtualenvs/${project}",
-    unless => 'test -d /home/vagrant/virtualenvs/moi',
-    require => Package['virtualenv'],
+    unless => 'test -d /home/vagrant/virtualenvs/${project}',
+    require => Exec['virtualenv'],
   }
 
   exec { 'pip install':
-    command => "sudo -u vagrant pip install -E /home/vagrant/virtualenvs/${project} -r /srv/${project}/requirements.txt",
+    command => "sudo -u vagrant /home/vagrant/virtualenvs/${project}/bin/pip install -r /srv/${project}/requirements.txt",
     require => Exec['create virtualenv'],
   }
-
 }
 
 class pildeps {
@@ -236,7 +249,42 @@ class software {
   }
 }
 
-user { "vagrant":
-  ensure => present,
-  shell  => "/bin/zsh"
+class user_config {
+  # Clone oh-my-zsh
+  exec { 'clone oh-my-zsh':
+    cwd     => "/home/vagrant",
+    user    => "vagrant",
+    command => "git clone https://github.com/robbyrussell/oh-my-zsh.git /home/vagrant/.oh-my-zsh",
+    creates => "/home/vagrant/.oh-my-zsh",
+    require => [Package['git'], Package['zsh']]
+  }
+
+  exec { 'copy-config':
+    cwd     => "/home/vagrant",
+    user    => "vagrant",
+    command => "sudo -u vagrant cp /home/vagrant/.oh-my-zsh/templates/zshrc.zsh-template /home/vagrant/.zshrc",
+    require => Exec['clone oh-my-zsh']
+  }
+
+  exec { 'activate cd':
+    cwd     => "/home/vagrant",
+    user    => "vagrant",
+    command => "echo 'source /home/vagrant/virtualenvs/kala/bin/activate' >> /home/vagrant/.zshrc && echo 'cd /srv/kala' >> /home/vagrant/.zshrc",
+    require => Exec['copy-config']
+  }
+
+  # Set the shell
+  exec { "chsh -s /usr/bin/zsh vagrant":
+    unless  => "grep -E '^vagrant.+:/usr/bin/zsh$' /etc/passwd",
+    require => Package['zsh']
+  }
+
+  file { "/etc/environment":
+    content => "export KALA_DEPLOYMENT_ENVIRONMENT=development
+      export KALA_DATABASE_NAME=${db_name}
+      export KALA_DATABASE_USER=${db_user}
+      export KALA_DATABASE_PASSWORD=${db_password}
+      export KALA_SECRET_KEY=${secret_key}",
+    mode => 644,
+  }
 }

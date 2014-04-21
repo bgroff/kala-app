@@ -1,17 +1,17 @@
 [uwsgi]
 vhost = true
-plugins = python
+plugins = python3
 master = true
 enable-threads = true
 processes = 2
-chdir = /srv/<%= project %>
-module = <%= project %>.wsgi:application
-virtualenv = /home/vagrant/virtualenvs/<%= project %>
-touch-reload = /srv/<%= project %>/reload
+chdir = /srv/<%= @project %>
+module = <%= @project %>.wsgi:application
+virtualenv = /home/vagrant/virtualenvs/<%= @project %>
+touch-reload = /srv/<%= @project %>/reload
 
-env = DJANGO_SETTINGS_MODULE=<%= project %>.settings
+env = DJANGO_SETTINGS_MODULE=<%= @project %>.settings
 env = KALA_DEPLOYMENT_ENVIRONMENT=development
-env = KALA_SECRET_KEY=<%= secret_key %>
-env = KALA_DATABASE_USER=<%= db_user %>
-env = KALA_DATABASE_PASSWORD=<%= db_password %>
-env = KALA_DATABASE_NAME=<%= db_name %>
+env = KALA_SECRET_KEY=<%= @secret_key %>
+env = KALA_DATABASE_USER=<%= @db_user %>
+env = KALA_DATABASE_PASSWORD=<%= @db_password %>
+env = KALA_DATABASE_NAME=<%= @db_name %>

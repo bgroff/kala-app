@@ -2,21 +2,21 @@ server {
     listen   80;
 
     charset utf-8;
-    server_name <%= domain_name %>;
-    access_log /var/log/nginx/<%= domain_name %>.access.log;
-    error_log /var/log/nginx/<%= domain_name %>.error.log;
+    server_name <%= @domain_name %>;
+    access_log /var/log/nginx/<%= @domain_name %>.access.log;
+    error_log /var/log/nginx/<%= @domain_name %>.error.log;
     client_max_body_size 200M;
 
     location / {
-        uwsgi_pass unix:/run/uwsgi/app/<%= domain_name %>/socket;
+        uwsgi_pass unix:/run/uwsgi/app/<%= @domain_name %>/socket;
         include    uwsgi_params;
     }
 
     location /static/ {
-            alias /srv/<%= project %>/<%= project %>/static/;
+            alias /srv/<%= @project %>/<%= @project %>/static/;
     }
 
     location /media/ {
-            alias /srv/<%= project %>/<%= project %>/media/;
+            alias /srv/<%= @project %>/<%= @project %>/media/;
     }
 }
