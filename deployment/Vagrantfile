@@ -1,26 +1,23 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+PROJECT = "kala"
+PROJECT_URL = "kala.ndptc.manoa.hawaii.edu"
+
 Vagrant.configure("2") do |config|
-  config.vm.box = "trusty64"
-  config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box = "bento/ubuntu-16.04"
 
-  # Change the name from a random string to kala
-  config.vm.provider "virtualbox" do |p|
-      p.name = "kala"
+  config.vm.network "forwarded_port", guest: 80, host: 4040
+
+  config.vm.synced_folder "../", "/srv/" + PROJECT + "-app"
+  config.vm.synced_folder "../../ndptc-core", "/srv/ndptc-core"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = PROJECT
+    vb.customize ["modifyvm", :id, "--cableconnected1", "on"]
+    vb.memory = "1024"
   end
-  config.vm.define :kala do |t|
-  end
 
-  # Forward port 80 => 9000 on the host, so you will see this at
-  # http://localhost:9000
-  config.vm.network "forwarded_port", guest: 80, host: 9000
-
-  # Share the kala folder
-  config.vm.synced_folder "../kala", "/srv/kala"
-
-  config.vm.provision :puppet do |puppet|
-    puppet.manifests_path = "manifests"
-    puppet.manifest_file  = "init.pp"
-  end
+  config.vm.provision "shell", path: "provision.sh", args: [PROJECT, PROJECT_URL]
+  config.vm.provision "shell", path: "app_specific.sh", args: [PROJECT, PROJECT_URL]
 end
