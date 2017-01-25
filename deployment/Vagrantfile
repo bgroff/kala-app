@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 PROJECT = "kala"
-PROJECT_URL = "kala.ndptc.manoa.hawaii.edu"
+PROJECT_URL = "kala.example.com"
 
 Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-16.04"
@@ -10,7 +10,6 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 80, host: 4040
 
   config.vm.synced_folder "../", "/srv/" + PROJECT + "-app"
-  config.vm.synced_folder "../../ndptc-core", "/srv/ndptc-core"
 
   config.vm.provider "virtualbox" do |vb|
     vb.name = PROJECT

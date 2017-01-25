@@ -5,7 +5,7 @@ PROJECT_URL=$2
 
 # Update the system.
 apt update
-apt upgrade -y
+DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" upgrade
 
 # This ubuntu box does not set the locale correctly, which was causing postgres
 # to use LATIN1 as the encoding, not what we want. So manualy set things to UTF8
