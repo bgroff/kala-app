@@ -1,12 +1,12 @@
 from django import forms
-from .models import Person
+from .models import User
 from companies.models import Company
 from projects.models import Project
 
 
 class PersonForm(forms.ModelForm):
     class Meta:
-        model = Person
+        model = User
         fields = (
             'first_name', 'last_name', 'email', 'title'
         )
@@ -45,16 +45,16 @@ class CreatePersonForm(PersonForm):
     company = forms.ModelChoiceField(queryset=Company.objects.active(), widget=forms.Select(attrs={'class': 'span3'}))
 
     class Meta:
-        model = Person
+        model = User
         fields = (
             'email', 'first_name', 'last_name', 'company'
         )
 
     def clean_email(self):
         try:
-            Person.objects.get(username=self.cleaned_data['email'])
+            User.objects.get(username=self.cleaned_data['email'])
             raise forms.ValidationError("This email is already in use.")
-        except Person.DoesNotExist:
+        except User.DoesNotExist:
             return self.cleaned_data['email']
 
     def save(self, *args, **kwargs):

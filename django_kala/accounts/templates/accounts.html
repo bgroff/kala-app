@@ -29,7 +29,7 @@
                             Edit</a>{% else %}{{ company }}{% endif %}</h3>
                     <ul>
                         <div style="padding-top: 20px;">
-                            {% for person in company.get_people_list %}
+                            {% for person in company.get_people %}
                                 <div class="span3" style="min-height: 80px;">
                                     <address>
                                         <strong>

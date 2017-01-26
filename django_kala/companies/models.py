@@ -5,16 +5,17 @@ from django.db import models
 from django_countries.fields import CountryField
 from django_localflavor_us.models import USStateField
 from timezone_field import TimeZoneField
-from accounts.models import Person
+from accounts.models import User
 from managers import ActiveManager
 from projects.models import Project
 
 
 class CompaniesWithProjectManager(models.Manager):
     def get_query_set(self):
-        return super(CompaniesWithProjectManager, self).get_query_set().filter(is_active=True,
-                                                                               pk__in=Project.objects.active().values(
-                                                                                   'company__pk'))
+        return super(CompaniesWithProjectManager, self).get_query_set().filter(
+            is_active=True,
+            pk__in=Project.objects.active().values('company__pk')
+        )
 
 
 class Company(models.Model):
@@ -42,7 +43,7 @@ class Company(models.Model):
 
     def set_active(self, active):
         self.is_active = active
-        for person in Person.objects.filter(company=self):
+        for person in User.objects.filter(company=self):
             person.set_active(active)
 
         for project in Project.objects.filter(company=self):
@@ -58,14 +59,15 @@ class Company(models.Model):
             return Project.objects.active().filter(company=self)
         else:
             return Project.objects.active().filter(company=self,
-                                                   pk__in=Project.clients.through.objects.filter(person=person).values(
-                                                       'project__pk'))
+                                                   pk__in=Project.clients.through.objects.filter(
+                                                       person=person
+                                                   ).values('project__pk'))
 
     def get_people_list(self):
-        return Person.objects.filter(company=self)  # Todo: only show people that are active
+        return User.objects.filter(company=self)  # Todo: only show people that are active
 
     def add_person_to_projects(self, person):
-        assert type(person) is Person, 'The person parameter must be of type People'
+        assert type(person) is User, 'The person parameter must be of type People'
         for project in Project.active.filter(company=self):
             project.clients.add(person)
 

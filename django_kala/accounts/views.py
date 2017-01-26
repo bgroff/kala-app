@@ -7,7 +7,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
 from .forms import PersonForm, CreatePersonForm, permission_forms, DeletedCompanyForm
 from .mixins import LoginRequiredMixin
-from .models import Person
+from .models import User
 from companies.forms import CreateCompanyForm
 from companies.models import Company
 from projects.models import Project
@@ -26,7 +26,7 @@ class EditProfile(LoginRequiredMixin, TemplateView):
         return context
 
     def dispatch(self, request, pk, *args, **kwargs):
-        self.person = get_object_or_404(Person, pk=pk)
+        self.person = get_object_or_404(User, pk=pk)
         if self.person != request.user and not request.user.is_admin:
             messages.error(request, 'You do not have permission to edit this persons account')
             return redirect(reverse('home'))
@@ -89,9 +89,11 @@ class PeopleView(LoginRequiredMixin, TemplateView):
             self.undelete_form = DeletedCompanyForm(request.POST if 'undelete' in request.POST else None)
         else:
             self.companies = Company.objects.active().filter(
-                pk__in=Project.clients.through.objects.filter(person__pk=self.user.pk).values(
+                pk__in=Project.clients.through.objects.filter(user__pk=self.user.pk).values(
                     'project__company__pk'))
-            self.companies = self.companies | Company.objects.active().filter(pk=self.user.company.pk)
+            self.companies = self.companies | Company.objects.active().filter(
+                pk__in=self.user.companies.values_list('pk', flat=True)
+            )
         return super(PeopleView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):

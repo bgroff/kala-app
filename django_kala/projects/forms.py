@@ -57,8 +57,11 @@ def permission_forms(request, project):
 class PermissionsForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.project = kwargs.pop('project')
-        self.company = kwargs.pop('company')
-        self.people = self.company.get_people_list()
+        try:
+            self.company = kwargs.pop('company')
+            self.people = self.company.get_people()
+        except:
+            self.people = []
         super(PermissionsForm, self).__init__(*args, **kwargs)
         self.fields[self.company] = forms.BooleanField(required=False, label='Select/Unselect All',
                                                        widget=forms.CheckboxInput(
@@ -90,7 +93,7 @@ class ProjectForm(forms.ModelForm):
         self.is_admin = kwargs.pop('is_admin')
         super(ProjectForm, self).__init__(*args, **kwargs)
         if self.is_admin:
-            self.fields['company'] = forms.ModelChoiceField(queryset=Company.objects.active(), initial=self.company,
+            self.fields['company'] = forms.ModelChoiceField(queryset=Company.objects.active(),
                                                             widget=forms.Select(attrs={'class': 'span3'}))
 
     class Meta:

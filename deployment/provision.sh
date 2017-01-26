@@ -78,15 +78,15 @@ plugins = python3
 master = true
 enable-threads = true
 processes = 2
-chdir = /srv/$PROJECT-app/$PROJECT
-module = $PROJECT.wsgi:application
+chdir = /srv/$PROJECT-app/django_$PROJECT
+module = django_$PROJECT.wsgi:application
 touch-reload = /srv/$PROJECT-app/reload
 virtualenv = /home/vagrant/.virtualenvs/$PROJECT
 
 env = DEPLOYMENT_ENVIRONMENT=development
-env = DATABASE_USER=ndptc
-env = DATABASE_PASSWORD=ndptc
-env = DATABASE_NAME=ndptc
+env = DATABASE_USER=kala
+env = DATABASE_PASSWORD=kala
+env = DATABASE_NAME=kala
 EOM
 
 # zshrc
@@ -96,7 +96,7 @@ export DATABASE_USER=ndptc
 export DATABASE_PASSWORD=ndptc
 export DATABASE_NAME=ndptc
 source /home/vagrant/.virtualenvs/$PROJECT/bin/activate
-cd /srv/$PROJECT-app/$PROJECT
+cd /srv/$PROJECT-app/django_$PROJECT
 EOM
 
 # If the symbolic link exists, remove it.
@@ -106,12 +106,12 @@ fi
 ln -s /etc/uwsgi/apps-available/$PROJECT_URL.ini /etc/uwsgi/apps-enabled/$PROJECT_URL.ini
 
 # Create the database, check if the role and database exist first though.
-if ! sudo -u postgres -- psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='ndptc'" | grep -q 1; then
-	sudo -u postgres -- psql -c "CREATE ROLE ndptc WITH LOGIN PASSWORD 'ndptc';"
+if ! sudo -u postgres -- psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='kala'" | grep -q 1; then
+	sudo -u postgres -- psql -c "CREATE ROLE kala WITH LOGIN PASSWORD 'kala';"
 fi
 
-if ! sudo -u postgres -- psql -tAc "SELECT 1 from pg_database WHERE datname='ndptc'"  | grep -q 1; then
-	sudo -u postgres -- psql -c "CREATE DATABASE ndptc WITH OWNER ndptc;"
+if ! sudo -u postgres -- psql -tAc "SELECT 1 from pg_database WHERE datname='kala'"  | grep -q 1; then
+	sudo -u postgres -- psql -c "CREATE DATABASE kala WITH OWNER kala;"
 fi
 
 # Make it so pip does not complain if pip is an older version.
@@ -126,7 +126,7 @@ chown -R vagrant:vagrant /home/vagrant/.virtualenvs/$PROJECT
 
 # Migrate the database
 source /home/vagrant/.zshrc
-cd /srv/$PROJECT-app/$PROJECT
+cd /srv/$PROJECT-app/django_$PROJECT
 python3 manage.py migrate
 
 # Restart the services

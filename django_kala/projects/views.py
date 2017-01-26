@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 from .models import Project
 from .forms import CategoryForm, ProjectForm, SortForm, permission_forms, CompanyForm, DeleteProjectsForm
 from accounts.mixins import LoginRequiredMixin, AdminRequiredMixin
-from accounts.models import Person
+from accounts.models import User
 from documents.defs import get_mimes_for_category
 from documents.forms import DocumentForm
 from documents.models import Document
@@ -25,7 +25,7 @@ class ProjectsView(LoginRequiredMixin, TemplateView):
         return context
 
     def dispatch(self, request, *args, **kwargs):
-        self.form = ProjectForm(request.POST or None, company=request.user.company,
+        self.form = ProjectForm(request.POST or None, company=request.user.companies,
                                 is_admin=self.request.user.is_admin)
         if request.user.is_admin:
             self.deleted_form = DeleteProjectsForm(request.POST or None)
@@ -74,7 +74,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
-        person = Person.objects.get(pk=self.request.user.pk)
+        person = User.objects.get(pk=self.request.user.pk)
         self.form = DocumentForm(request.POST or None, request.FILES or None, person=person,
                                  project=self.project)
         self.categories_form = CategoryForm(request.GET or None, project=self.project)

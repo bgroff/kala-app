@@ -8,9 +8,9 @@ import projects
 import datetime
 
 
-class Person(AbstractUser):
+class User(AbstractUser):
     title = models.CharField(max_length=255, null=True, blank=True)
-    company = models.ForeignKey('companies.Company')
+    companies = models.ManyToManyField('companies.Company')
     timezone = TimeZoneField(default=settings.TIME_ZONE, blank=True)
     access_new_projects = models.BooleanField(default=False)
 
@@ -23,7 +23,7 @@ class Person(AbstractUser):
     office = PhoneNumberField(null=True, blank=True)
     ext = models.CharField(max_length=10, null=True, blank=True)
 
-    last_updated = models.DateTimeField(auto_now=True, auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
     removed = models.DateField(null=True)
 
     objects = UserManager()
@@ -43,8 +43,10 @@ class Person(AbstractUser):
             _companies = companies.models.Company.objects.active()
         else:
             _companies = companies.models.Company.objects.active().filter(
-                pk__in=projects.models.Project.clients.through.objects.filter(person__pk=self.pk).values(
-                    'project__company__pk'))
+                pk__in=projects.models.Project.clients.through.objects.filter(
+                    user__pk=self.pk
+                ).values('project__company__pk')
+            )
         has_projects = companies.models.Company.objects.active().filter(
             pk__in=projects.models.Project.objects.active().values('company__pk'))
         return _companies & has_projects
