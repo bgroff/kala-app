@@ -55,11 +55,11 @@ server {
     }
 
     location /static/ {
-            alias /srv/$PROJECT-app/$PROJECT/$PROJECT/static/;
+            alias /srv/$PROJECT-app/django_$PROJECT/django_$PROJECT/static/;
     }
 
     location /media/ {
-            alias /srv/$PROJECT-app/$PROJECT/$PROJECT/media/;
+            alias /srv/$PROJECT-app/django_$PROJECT/django_$PROJECT/media/;
     }
 }
 EOM
@@ -92,9 +92,9 @@ EOM
 # zshrc
 cat >> /home/vagrant/.zshrc <<- EOM
 export DEPLOYMENT_ENVIRONMENT=development
-export DATABASE_USER=ndptc
-export DATABASE_PASSWORD=ndptc
-export DATABASE_NAME=ndptc
+export DATABASE_USER=kala
+export DATABASE_PASSWORD=kala
+export DATABASE_NAME=kala
 source /home/vagrant/.virtualenvs/$PROJECT/bin/activate
 cd /srv/$PROJECT-app/django_$PROJECT
 EOM
