@@ -1,3 +1,4 @@
+from django.conf import settings
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -13,4 +14,5 @@ INSTALLED_APPS = [
     'documents',
     'django_kala',
     'projects',
+    'basecamp_classic'
 ]

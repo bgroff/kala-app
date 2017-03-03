@@ -24,6 +24,11 @@ urlpatterns = [
     ),
 
     url(
+        r'^',
+        include('basecamp_classic.urls'),
+    ),
+
+    url(
         r'^companies/',
         include('companies.urls'),
     ),
