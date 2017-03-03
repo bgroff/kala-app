@@ -1,5 +1,4 @@
-appdirs==1.4.0
-Django==1.10.5
+Django>=1.10,<1.11
 django-countries==4.0
 django-localflavor-us==1.1
 django-timezone-field==2.0
@@ -9,3 +8,4 @@ psycopg2==2.6.2
 pyparsing==2.1.10
 pytz==2016.10
 six==1.10.0
+defusedxml
