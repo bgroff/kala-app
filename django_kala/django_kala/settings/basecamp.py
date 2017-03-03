@@ -1,0 +1,3 @@
+BASECAMP = {
+    'USE_CLASSIC_API': True
+}

@@ -14,6 +14,7 @@ import os
 
 from .apps import INSTALLED_APPS
 from .authentication import *
+from .basecamp import BASECAMP
 from .databases import DATABASES
 from .email import *
 from .functions import get_env_variable
@@ -61,3 +62,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
+
+MEDIA_ROOT = '/tmp/kala/'
