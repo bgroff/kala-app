@@ -1,15 +1,13 @@
 import datetime
+
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.http import HttpResponse
-from django.utils.encoding import python_2_unicode_compatible
+from uuid import uuid4
 from managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
 
 
-@python_2_unicode_compatible
 class Document(models.Model):
     project = models.ForeignKey('projects.Project')
     name = models.CharField(max_length=255)
@@ -86,9 +84,8 @@ class Document(models.Model):
         return self.name
 
 
-@python_2_unicode_compatible
 class DocumentVersion(models.Model):
-    uuid = models.UUIDField(primary_key=True)
+    uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     document = models.ForeignKey('Document', null=True)
     file = models.FileField(max_length=255)
     description = models.TextField(null=True)
@@ -118,7 +115,7 @@ class DocumentVersion(models.Model):
         super(DocumentVersion, self).delete(using)
 
     def http_response(self):
-        response = HttpResponse(self.file.read(), mimetype=self.mime)
+        response = HttpResponse(self.file.read(), content_type=self.mime)
         response['Content-Length'] = self.file.size
         response['Content-Disposition'] = 'attachment; filename=' + self.name
         response['Content-Type'] = self.mime
@@ -131,4 +128,4 @@ class DocumentVersion(models.Model):
         return get_alt_for_mime(self.mime)
 
     def __str__(self):
-        return self.name.encode('utf-8')
+        return self.name

@@ -53,7 +53,7 @@ class Company(models.Model):
             self.removed = datetime.date.today()
         self.save()
 
-    def get_project_list(self, person=None):
+    def get_projects(self, person=None):
     #        assert type(person) is People, 'The user parameter must be of type People'
         if not person or person.is_admin:
             return Project.objects.active().filter(company=self)
@@ -63,8 +63,8 @@ class Company(models.Model):
                                                        person=person
                                                    ).values('project__pk'))
 
-    def get_people_list(self):
-        return User.objects.filter(company=self)  # Todo: only show people that are active
+    def get_people(self):
+        return self.user_set.all()  # Todo: only show people that are active
 
     def add_person_to_projects(self, person):
         assert type(person) is User, 'The person parameter must be of type People'

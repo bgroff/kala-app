@@ -54,7 +54,7 @@
                                             {% if forloop.first %}
                                                 id="document-download"
                                             {% endif %}
-                                                href="{% url 'download_document' document.uuid %}">
+                                                href="{% url 'download_document' document.uuid.hex %}">
                                         <i class="icon-download-alt" style="font-size: 16pt;"></i>
                                     </a>
                                 {% endif %}
@@ -88,7 +88,7 @@
                             <ul>
                                 {% for version in document.list_versions %}
                                     <li>
-                                        <a href="{% url 'download_document' version.uuid %}">{{ version }}</a>
+                                        <a href="{% url 'download_document' version.uuid.hex %}">{{ version }}</a>
                                     </li>
                                 {% endfor %}
                             </ul>

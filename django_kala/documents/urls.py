@@ -8,7 +8,7 @@ urlpatterns = [
        name='document'
    ),
    url(
-       regex=r'^(?P<pk>[a-fA-F0-9]{32})/download$/',
+       regex=r'(?P<pk>[a-fA-F0-9]{32})/download/$',
        view=DownloadDocument.as_view(),
        name='download_document'
    ),

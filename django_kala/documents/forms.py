@@ -43,7 +43,7 @@ class ProjectForm(forms.Form):
 
         choices = []
         for company in Company.with_projects.all():
-            projects = [(project.pk, project.name) for project in company.get_project_list()]
+            projects = [(project.pk, project.name) for project in company.get_projects()]
             choices.append((company.name, projects))
 
         self.fields['project'] = forms.ChoiceField(choices=choices, initial=self.document.project.pk)
