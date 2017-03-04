@@ -36,7 +36,7 @@ class XMLPeopleRenderer(BaseRenderer):
 
         # If users are a list, deal with that
         if type(data['users']) is QuerySet:
-            xml.startElement('people', {})
+            xml.startElement('people', {'type': 'array'})
 
             self._to_xml(data['users'], data['request_user'], xml)
 
@@ -56,6 +56,12 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('id', {'type': 'integer'})
             xml.characters(smart_text(user.id))
             xml.endElement('id')
+            xml.startElement('uuid', {'type': 'uuid'})
+            xml.characters(smart_text(user.uuid))
+            xml.endElement('uuid')
+            xml.startElement('created-at', {'type': 'datetime'})
+            xml.characters(smart_text(user.date_joined.isoformat()))
+            xml.endElement('created-at')
             xml.startElement('first-name', {})
             xml.characters(smart_text(user.first_name))
             xml.endElement('first-name')
@@ -91,7 +97,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.endElement('phone-number-office')
             xml.startElement('phone-number-office-ext', {})
             try:
-                xml.characters(smart_text(user.phone_ext if user.phone_ext else ''))
+                xml.characters(smart_text(user.ext if user.ext else ''))
             except AttributeError:
                 xml.characters(smart_text(''))
             xml.endElement('phone-number-office-ext')
@@ -137,16 +143,20 @@ class XMLPeopleRenderer(BaseRenderer):
                 xml.endElement('user-name')
 
                 xml.startElement('administrator', {'type': 'boolean'})
-                xml.characters(smart_text(user.is_admin))
+                xml.characters(smart_text(str(user.is_admin).lower()))
                 xml.endElement('administrator')
 
                 xml.startElement('deleted', {'type': 'boolean'})
-                xml.characters(smart_text(not user.is_active))
+                xml.characters(smart_text(str(not user.is_active)).lower())
                 xml.endElement('deleted')
 
                 xml.startElement('has-access-to-new-projects', {'type': 'boolean'})
                 try:
-                    xml.characters(smart_text(user.access_new_projects if user.access_new_projects else False))
+                    xml.characters(
+                        smart_text(
+                            str(user.access_new_projects).lower() if user.access_new_projects else str(False).lower()
+                        )
+                    )
                 except AttributeError:
                     xml.characters(smart_text(''))
                 xml.endElement('has-access-to-new-projects')
@@ -161,6 +171,14 @@ class XMLPeopleRenderer(BaseRenderer):
                 xml.characters(smart_text(error))
                 xml.endElement('error')
             xml.endElement('id')
+
+        if data.get('uuid', False):
+            xml.startElement('uuid', {'type': 'uuid'})
+            for error in data['uuid']:
+                xml.startElement('error', {})
+                xml.characters(smart_text(error))
+                xml.endElement('error')
+            xml.endElement('uuid')
 
         if data.get('username', False):
             xml.startElement('user-name', {})
@@ -228,7 +246,7 @@ class XMLPeopleRenderer(BaseRenderer):
 
         if data.get('phone_ext', False):
             xml.startElement('phone-number-office-ext', {})
-            for error in data['phone_ext']:
+            for error in data['ext']:
                 xml.startElement('error', {})
                 xml.characters(smart_text(error))
                 xml.endElement('error')

@@ -1,3 +1,4 @@
+dateparser
 Django>=1.10,<1.11
 django-countries==4.0
 django-localflavor-us==1.1

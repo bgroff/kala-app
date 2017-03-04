@@ -16,10 +16,8 @@ User = get_user_model()
 
 class MeView(APIView):
     """
-    View to list all users in the system.
+    View that will display XML for the current user.
 
-    * Requires token authentication.
-    * Only admin users are able to access this view.
     """
     parser_classes = [XMLParser]
     renderer_classes = [XMLPeopleRenderer]
@@ -33,17 +31,16 @@ class MeView(APIView):
 
     def get(self, request, format=None):
         """
-        Return a list of all users.
+        Return an xml version of the current user.
         """
         return Response({'users': request.user, 'request_user': request.user})
 
 
 class PeopleView(APIView):
     """
-    View to list all users in the system.
+    View to list all users in the system. You can also POST to this view with an xml person if you are an
+    administrator.
 
-    * Requires token authentication.
-    * Only admin users are able to access this view.
     """
     parser_classes = [XMLParser]
     renderer_classes = [XMLPeopleRenderer]
@@ -73,17 +70,14 @@ class PeopleView(APIView):
         user_data = UserSerializer(data=request.data)
         if user_data.is_valid():
             user = user_data.save()
-            return Response({'users': user, 'request_user': User.objects.first()}, status=HTTP_201_CREATED)
-#        raise Exception(str(user_data.errors['username']))
+            return Response({'users': user, 'request_user': user}, status=HTTP_201_CREATED)
         return Response(user_data.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class PersonView(APIView):
     """
-    View to list all users in the system.
+    View to show a single user in the system.
 
-    * Requires token authentication.
-    * Only admin users are able to access this view.
     """
     parser_classes = [XMLParser]
     renderer_classes = [XMLPeopleRenderer]

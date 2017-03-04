@@ -8,6 +8,7 @@ from rest_framework.exceptions import ParseError
 from rest_framework.parsers import BaseParser
 
 import defusedxml.ElementTree as etree
+import dateparser
 
 
 class XMLParser(BaseParser):
@@ -43,6 +44,8 @@ class XMLParser(BaseParser):
         for field in fields:
             if field.tag == 'user-name':
                 data['username'] = str(field.text)
+            if field.tag == 'created-at':
+                data['date_joined'] = dateparser.parse(field.text)
             if field.tag == 'first-name':
                 data['first_name'] = str(field.text)
             if field.tag == 'last-name':
@@ -60,7 +63,7 @@ class XMLParser(BaseParser):
             if field.tag == 'phone-number-office':
                 data['phone'] = str(field.text)
             if field.tag == 'phone-number-office-ext':
-                data['phone_ext'] = str(field.text)
+                data['ext'] = str(field.text)
             if field.tag == 'phone-number-mobile':
                 data['mobile'] = str(field.text)
             if field.tag == 'phone-number-home':
