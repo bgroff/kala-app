@@ -11,7 +11,7 @@ import datetime
 
 
 class User(AbstractUser):
-    uuid = models.UUIDField(unique=True, db_index=True, editable=False, default=uuid4)
+    uuid = models.UUIDField(unique=True, db_index=True, default=uuid4)
     title = models.CharField(max_length=255, null=True, blank=True)
     companies = models.ManyToManyField('companies.Company')
     timezone = TimeZoneField(default=settings.TIME_ZONE, blank=True)
