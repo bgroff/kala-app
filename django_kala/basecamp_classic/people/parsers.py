@@ -42,6 +42,10 @@ class XMLParser(BaseParser):
 
         fields = list(element)
         for field in fields:
+            if field.tag == 'id':
+                data['id'] = dateparser.parse(field.text)
+            if field.tag == 'uuid':
+                data['uuid'] = dateparser.parse(field.text)
             if field.tag == 'user-name':
                 data['username'] = str(field.text)
             if field.tag == 'created-at':
