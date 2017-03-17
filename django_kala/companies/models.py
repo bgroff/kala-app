@@ -1,13 +1,14 @@
-import datetime
 from django.conf import settings
-from django_localflavor_us.models import PhoneNumberField
 from django.db import models
 from django_countries.fields import CountryField
-from django_localflavor_us.models import USStateField
+from django_localflavor_us.models import PhoneNumberField, USStateField
 from timezone_field import TimeZoneField
-from accounts.models import User
+from uuid import uuid4
+
 from managers import ActiveManager
 from projects.models import Project
+
+import datetime
 
 
 class CompaniesWithProjectManager(models.Manager):
@@ -20,10 +21,12 @@ class CompaniesWithProjectManager(models.Manager):
 
 class Company(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    uuid = models.UUIDField(unique=True, db_index=True, default=uuid4)
     address = models.CharField(max_length=255, null=True, blank=True)
     address1 = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)
     state = USStateField(null=True, blank=True)
+    zip = models.CharField(max_length=25, null=True, blank=True)
     country = CountryField(default='US')
     fax = PhoneNumberField(null=True, blank=True)
     phone = PhoneNumberField(null=True, blank=True)
@@ -43,7 +46,7 @@ class Company(models.Model):
 
     def set_active(self, active):
         self.is_active = active
-        for person in User.objects.filter(company=self):
+        for person in self.user_set.all():
             person.set_active(active)
 
         for project in Project.objects.filter(company=self):
@@ -67,7 +70,6 @@ class Company(models.Model):
         return self.user_set.all()  # Todo: only show people that are active
 
     def add_person_to_projects(self, person):
-        assert type(person) is User, 'The person parameter must be of type People'
         for project in Project.active.filter(company=self):
             project.clients.add(person)
 
