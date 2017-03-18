@@ -4,6 +4,7 @@
 settings.py
 kala/documents
 kala/media
+docs/_build
 .venv
 celerybeat-schedule
 reload
