@@ -1,3 +1,8 @@
+.. image:: https://requires.io/github/bgroff/kala-app/requirements.svg?branch=master
+     :target: https://requires.io/github/bgroff/kala-app/requirements/?branch=master
+     :alt: Requirements Status
+
+
 **********************************
 Kala: Project Management in Django
 **********************************
