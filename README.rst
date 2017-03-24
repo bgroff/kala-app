@@ -2,6 +2,10 @@
      :target: https://requires.io/github/bgroff/kala-app/requirements/?branch=master
      :alt: Requirements Status
 
+.. image:: https://readthedocs.org/projects/kala-app/badge/?version=latest
+     :target: https://readthedocs.org/projects/kala-app/badge/?version=latest
+     :alt: Readthedocs
+
 
 **********************************
 Kala: Project Management in Django
