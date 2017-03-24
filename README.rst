@@ -3,7 +3,7 @@
      :alt: Requirements Status
 
 .. image:: https://readthedocs.org/projects/kala-app/badge/?version=latest
-     :target: https://readthedocs.org/projects/kala-app/badge/?version=latest
+     :target: http://kala-app.readthedocs.io/en/latest/
      :alt: Readthedocs
 
 
