@@ -1,9 +1,10 @@
-import datetime
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from accounts.models import User
-from documents.models import Document
+
 from managers import ActiveManager
+
+import datetime
 
 
 class Project(models.Model):
@@ -23,25 +24,21 @@ class Project(models.Model):
         db_table = 'kala_projects'
 
     def set_active(self, active):
-        assert type(active) is bool, 'The active parameter must be of type bool.'
         self.is_active = active
-        for document in Document.objects.filter(project=self):
+        for document in self.document_set.all():
             document.set_active(active)
         if not self.is_active:
             self.removed = datetime.date.today()
         self.save()
 
     def add_client(self, client):
-        assert type(client) is User, 'The client parameter must be of type People.' # Solient Green
-
         # Check if the client is in the clients list, add if not.
         try:
             self.clients.get(client)
-        except Person.DoesNotExist:
+        except ObjectDoesNotExist:
             self.clients.add(client)
 
     def remove_client(self, client):
-        assert type(client) is User, 'The client parameter must be of type People.'
         self.clients.remove(client)
 
     def __str__(self):
