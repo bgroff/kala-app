@@ -17,7 +17,7 @@ from ..people.renderers import XMLPeopleRenderer
 
 class CompaniesView(APIView):
     """
-    View that will display XML for the current user.
+    View that will display XML for all companies.
 
     """
     parser_classes = [XMLCompanyParser]
