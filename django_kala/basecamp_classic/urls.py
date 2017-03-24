@@ -9,4 +9,8 @@ urlpatterns = [
         r'^',
         include('basecamp_classic.people.urls'),
     ),
+    url(
+        r'^',
+        include('basecamp_classic.projects.urls'),
+    ),
 ]
