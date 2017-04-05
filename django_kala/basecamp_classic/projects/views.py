@@ -5,11 +5,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
-from projects.models import Project
+from projects.models import Project, Category
 
-from .parsers import XMLProjectParser
-from .renderers import XMLProjectRenderer
-from .serializers import ProjectSerializer
+from .parsers import XMLProjectParser, XMLCategoryParser
+from .renderers import XMLProjectRenderer, XMLCategoryRenderer
+from .serializers import ProjectSerializer, CategorySerializer
 
 from ..people.parsers import XMLParser
 from ..people.renderers import XMLPeopleRenderer
@@ -87,3 +87,36 @@ class PeopleView(APIView):
         """
         project = get_object_or_404(Project, pk=pk)
         return Response({'users': project.clients.all(), 'request_user': request.user})
+
+
+class CategoriesView(APIView):
+    """
+    View that will display XML for all categories for a project.
+
+    """
+    parser_classes = [XMLCategoryParser]
+    renderer_classes = [XMLCategoryRenderer]
+    authentication_classes = (
+        authentication.TokenAuthentication,
+        authentication.BasicAuthentication,
+        authentication.SessionAuthentication
+    )
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, pk, format=None):
+        """
+        Return an xml version of all of the companies.
+        """
+        project = get_object_or_404(Project, pk=pk)
+        return Response({'categories': project.category_set.all().prefetch_related(), 'request_user': request.user})
+
+    def post(self, request, pk, format=None):
+        if not request.user.is_admin:
+            raise PermissionDenied()
+
+        project = get_object_or_404(Project, pk=pk)
+        category_data = CategorySerializer(data=request.data, project=project)
+        if category_data.is_valid():
+            category = category_data.save()
+            return Response({'categories': category, 'request_user': request.user}, status=HTTP_201_CREATED)
+        return Response(category_data.errors, status=HTTP_400_BAD_REQUEST)

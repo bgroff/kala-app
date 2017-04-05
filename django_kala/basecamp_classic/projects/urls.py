@@ -19,4 +19,10 @@ urlpatterns = [
        view=PeopleView.as_view(),
        name='people'
    ),
+
+   url(
+       regex=r'^projects/(?P<pk>\d+)/categories.xml$',
+       view=CategoriesView.as_view(),
+       name='categories'
+   ),
 ]

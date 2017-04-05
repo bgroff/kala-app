@@ -144,3 +144,111 @@ class XMLProjectRenderer(BaseRenderer):
             xml.endElement('company')
 
         xml.endElement('errors')
+
+
+
+class XMLCategoryRenderer(BaseRenderer):
+    """
+    Renderer which serializes to XML.
+    """
+    media_type = 'application/xml'
+    format = 'xml'
+    charset = 'utf-8'
+    item_tag_name = 'category'
+    root_tag_name = 'categories'
+
+    def render(self, data, accepted_media_type=None, renderer_context=None):
+        """
+        Renders `data` into serialized XML.
+        """
+        if data is None:
+            return ''
+
+        stream = StringIO()
+
+        xml = SimplerXMLGenerator(stream, self.charset)
+        xml.startDocument()
+        # If we do not have companies or request_user then we have errors
+        if not data.get('categories', False) and not data.get('request_user', False):
+            self._to_errors(data, xml)
+            xml.endDocument()
+            return stream.getvalue()
+
+        if type(data['categories']) is QuerySet:
+            xml.startElement('categories', {'type': 'array'})
+
+            self._to_xml(data['categories'], data['request_user'], xml)
+
+            xml.endElement('categories')
+        # Otherwise just render a company
+        else:
+            self.render_category(data['categories'], data['request_user'], xml)
+        xml.endDocument()
+        return stream.getvalue()
+
+    def _to_xml(self, categories, request_user, xml):
+        for category in categories:
+            self.render_category(category, request_user, xml)
+
+    def render_category(self, category, request_user, xml):
+            xml.startElement('category', {})
+            xml.startElement('id', {'type': 'integer'})
+            xml.characters(smart_text(category.id))
+            xml.endElement('id')
+
+            xml.startElement('name', {})
+            xml.characters(smart_text(category.name))
+            xml.endElement('name')
+
+            xml.startElement('type', {})
+            xml.characters(smart_text(category.type))
+            xml.endElement('type')
+
+            xml.startElement('project-id', {})
+            xml.characters(smart_text(category.project_id))
+            xml.endElement('project-id')
+
+            xml.startElement('elements-count', {})
+            try:
+                xml.characters(smart_text(category.elements_count if category.elements_count else ''))
+            except AttributeError:
+                xml.characters(smart_text(''))
+            xml.endElement('elements-count')
+
+            xml.endElement('category')
+
+    def _to_errors(self, data, xml):
+        xml.startElement('errors', {})
+        if data.get('id', False):
+            xml.startElement('id', {'type': 'integer'})
+            for error in data['id']:
+                xml.startElement('error', {})
+                xml.characters(smart_text(error))
+                xml.endElement('error')
+            xml.endElement('id')
+
+        if data.get('name', False):
+            xml.startElement('name', {})
+            for error in data['name']:
+                xml.startElement('error', {})
+                xml.characters(smart_text(error))
+                xml.endElement('error')
+            xml.endElement('name')
+
+        if data.get('type', False):
+            xml.startElement('type', {})
+            for error in data['type']:
+                xml.startElement('error', {})
+                xml.characters(smart_text(error))
+                xml.endElement('error')
+            xml.endElement('type')
+
+        if data.get('project', False):
+            xml.startElement('project', {})
+            for error in data['project']:
+                xml.startElement('error', {})
+                xml.characters(smart_text(error))
+                xml.endElement('error')
+            xml.endElement('project')
+
+        xml.endElement('errors')
