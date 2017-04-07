@@ -25,4 +25,10 @@ urlpatterns = [
        view=CategoriesView.as_view(),
        name='categories'
    ),
+
+   url(
+       regex=r'^projects/(?P<pk>\d+)/attachments.xml$',
+       view=DocumentsView.as_view(),
+       name='documents'
+   ),
 ]

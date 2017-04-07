@@ -14,6 +14,7 @@ class Document(models.Model):
     date = models.DateTimeField()
     removed = models.DateField(null=True)
     mime = models.CharField(max_length=255, null=True)
+    category = models.ForeignKey('projects.Category', null=True)
     is_active = models.BooleanField(default=True)
 
     objects = ActiveManager()
@@ -87,7 +88,9 @@ class Document(models.Model):
 class DocumentVersion(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     document = models.ForeignKey('Document', null=True)
-    file = models.FileField(max_length=255)
+    file = models.FileField(null=True)
+    url = models.URLField()
+    size = models.IntegerField()
     description = models.TextField(null=True)
     created = models.DateTimeField() # Update save method
     changed = models.DateTimeField(auto_now=True) # Update save method
@@ -117,7 +120,7 @@ class DocumentVersion(models.Model):
     def http_response(self):
         response = HttpResponse(self.file.read(), content_type=self.mime)
         response['Content-Length'] = self.file.size
-        response['Content-Disposition'] = 'attachment; filename=' + self.name
+        response['Content-Disposition'] = 'attachment; filename={0}'.format(self.name)
         response['Content-Type'] = self.mime
         return response
 
