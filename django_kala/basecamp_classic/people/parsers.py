@@ -85,6 +85,8 @@ class XMLParser(BaseParser):
 
             if field.tag == 'administrator':
                 data['is_admin'] = bool(distutils.util.strtobool(field.text))
+            if field.tag == 'deleted':
+                data['is_active'] = not(bool(distutils.util.strtobool(field.text)))
             if field.tag == 'has-access-to-new-projects':
                 data['access_new_projects'] = bool(distutils.util.strtobool(field.text))
         return data

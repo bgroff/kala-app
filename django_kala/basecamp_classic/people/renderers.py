@@ -35,7 +35,7 @@ class XMLPeopleRenderer(BaseRenderer):
             return stream.getvalue()
 
         # If users are a list, deal with that
-        if type(data['users']) is QuerySet:
+        if type(data['users']) is QuerySet or type(data['users']) is list:
             xml.startElement('people', {'type': 'array'})
 
             self._to_xml(data['users'], data['request_user'], xml)
