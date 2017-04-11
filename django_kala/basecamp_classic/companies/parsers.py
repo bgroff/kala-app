@@ -41,8 +41,6 @@ class XMLCompanyParser(BaseParser):
         for field in fields:
             if field.tag == 'id':
                 data['id'] = str(field.text)
-            if field.tag == 'uuid':
-                data['uuid'] = str(field.text)
             if field.tag == 'name':
                 data['name'] = str(field.text)
 
