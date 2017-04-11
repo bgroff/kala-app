@@ -43,7 +43,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.endElement('people')
         # Otherwise just render a person
         else:
-            self.render_person(data['request_user'], data['request_user'], xml)
+            self.render_person(data['users'], data['request_user'], xml)
         xml.endDocument()
         return stream.getvalue()
 
