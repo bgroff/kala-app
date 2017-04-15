@@ -83,7 +83,7 @@ module = django_$PROJECT.wsgi:application
 touch-reload = /srv/$PROJECT-app/reload
 virtualenv = /home/vagrant/.virtualenvs/$PROJECT
 
-env = DEPLOYMENT_ENVIRONMENT=development
+env = DEPLOYMENT=development
 env = DATABASE_USER=kala
 env = DATABASE_PASSWORD=kala
 env = DATABASE_NAME=kala
@@ -92,7 +92,7 @@ EOM
 
 # zshrc
 cat >> /home/vagrant/.zshrc <<- EOM
-export DEPLOYMENT_ENVIRONMENT=development
+export DEPLOYMENT=development
 export DATABASE_USER=kala
 export DATABASE_PASSWORD=kala
 export DATABASE_NAME=kala
