@@ -89,7 +89,7 @@ class DocumentVersion(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     document = models.ForeignKey('Document', null=True)
     file = models.FileField(null=True)
-    url = models.URLField()
+    url = models.URLField(max_length=3000)
     size = models.IntegerField()
     description = models.TextField(null=True)
     created = models.DateTimeField() # Update save method

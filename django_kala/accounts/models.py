@@ -28,7 +28,7 @@ class User(AbstractUser):
 
     last_updated = models.DateTimeField(auto_now=True)
     removed = models.DateField(null=True)
-    avatar_url = models.URLField()
+    avatar_url = models.URLField(max_length=1200)
 
     objects = UserManager()
 
