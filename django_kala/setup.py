@@ -23,6 +23,7 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Internet :: WWW/HTTP :: WSGI',
     ],
-    packages=['kala', 'kala.kala', 'kala.accounts', 'kala.bc_import', 'kala.companies', 'kala.documents',
-              'kala.projects']
+    packages=['django_kala', 'accounts', 'companies', 'documents', 'projects',
+              'basecamp_classic', 'basecamp_classic.people', 'basecamp_classic.companies',
+              'basecamp_classic.projects', 'basecamp_classic.documents']
 )
