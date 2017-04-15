@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ('file', models.FileField(null=True, upload_to='')),
-                ('url', models.URLField()),
+                ('url', models.URLField(max_length=3000)),
                 ('size', models.IntegerField()),
                 ('description', models.TextField(null=True)),
                 ('created', models.DateTimeField()),

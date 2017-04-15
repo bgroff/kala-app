@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('ext', models.CharField(blank=True, max_length=10, null=True)),
                 ('last_updated', models.DateTimeField(auto_now=True)),
                 ('removed', models.DateField(null=True)),
-                ('avatar_url', models.URLField()),
+                ('avatar_url', models.URLField(max_length=1200)),
                 ('companies', models.ManyToManyField(to='companies.Company')),
                 ('groups', models.ManyToManyField(blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', related_name='user_set', related_query_name='user', to='auth.Group', verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(blank=True, help_text='Specific permissions for this user.', related_name='user_set', related_query_name='user', to='auth.Permission', verbose_name='user permissions')),
