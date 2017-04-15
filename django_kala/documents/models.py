@@ -1,8 +1,7 @@
-import datetime
-
 from django.conf import settings
 from django.db import models
 from django.http import HttpResponse
+from django.utils import timezone
 from uuid import uuid4
 from managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
@@ -26,7 +25,7 @@ class Document(models.Model):
     def set_active(self, active):
         self.is_active = active
         if not self.is_active:
-            self.removed = datetime.date.today()
+            self.removed = timezone.now().date()
         self.save()
 
     def delete(self, using=None):
@@ -90,10 +89,10 @@ class DocumentVersion(models.Model):
     document = models.ForeignKey('Document', null=True)
     file = models.FileField(null=True)
     url = models.URLField(max_length=3000)
-    size = models.IntegerField()
+    size = models.IntegerField(default=0)
     description = models.TextField(null=True)
-    created = models.DateTimeField() # Update save method
-    changed = models.DateTimeField(auto_now=True) # Update save method
+    created = models.DateTimeField(default=timezone.now) # Update save method
+    changed = models.DateTimeField(default=timezone.now) # Update save method
     mime = models.CharField(max_length=255, null=True)
     person = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     name = models.CharField(max_length=255)
