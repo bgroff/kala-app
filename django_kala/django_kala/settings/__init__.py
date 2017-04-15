@@ -14,11 +14,13 @@ import os
 
 from .apps import INSTALLED_APPS
 from .authentication import *
+from .aws import *
 from .basecamp import BASECAMP
 from .databases import DATABASES
 from .email import *
 from .functions import get_env_variable
 from .middleware import MIDDLEWARE
+from .storage import *
 from .templates import TEMPLATES
 from .validators import AUTH_PASSWORD_VALIDATORS
 from .debug import *
@@ -35,9 +37,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '(e^h^f=)*li=uq3@u(965ghns0f1sd@v(i8hrc12d#0*-cnedu'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = [get_env_variable('HOST_NAME')]
 

@@ -4,8 +4,8 @@ import os
 
 def get_env_variable(variable, default=None):
     try:
-        if default is None:
-            return os.environ[variable]
-        return default
+        return os.environ[variable]
     except KeyError:
+        if default is not None:
+            return default
         raise ImproperlyConfigured("The environment variable {0} is not set.".format(variable))
