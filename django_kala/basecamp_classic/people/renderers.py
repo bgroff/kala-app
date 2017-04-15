@@ -278,7 +278,7 @@ class XMLPeopleRenderer(BaseRenderer):
 
         if data.get('company', False):
             xml.startElement('company-id', {})
-            for error in data['company']:
+            for error in data['companies']:
                 xml.startElement('error', {})
                 xml.characters(smart_text(error))
                 xml.endElement('error')

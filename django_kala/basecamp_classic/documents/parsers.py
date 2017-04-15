@@ -67,9 +67,6 @@ class XMLDocumentParser(BaseParser):
             if field.tag == 'download-url':
                 data['url'] = str(field.text)
 
-            if field.tag == 'version':
-                data['version'] = int(str(field.text))
-
             if field.tag == 'collection':
                 data['collection'] = str(field.text)
 

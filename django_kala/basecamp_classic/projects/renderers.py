@@ -146,7 +146,6 @@ class XMLProjectRenderer(BaseRenderer):
         xml.endElement('errors')
 
 
-
 class XMLCategoryRenderer(BaseRenderer):
     """
     Renderer which serializes to XML.
@@ -180,7 +179,7 @@ class XMLCategoryRenderer(BaseRenderer):
             self._to_xml(data['categories'], data['request_user'], xml)
 
             xml.endElement('categories')
-        # Otherwise just render a company
+        # Otherwise just render a category
         else:
             self.render_category(data['categories'], data['request_user'], xml)
         xml.endDocument()

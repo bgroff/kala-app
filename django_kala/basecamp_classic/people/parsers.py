@@ -44,8 +44,6 @@ class XMLParser(BaseParser):
         for field in fields:
             if field.tag == 'id':
                 data['id'] = int(field.text)
-            if field.tag == 'uuid':
-                data['uuid'] = field.text
             if field.tag == 'user-name':
                 data['username'] = str(field.text)
             if field.tag == 'created-at':
@@ -76,7 +74,7 @@ class XMLParser(BaseParser):
                 data['fax'] = str(field.text)
 
             if field.tag == 'company-id':
-                data['company_id'] = int(field.text) if field.text else None
+                data['companies'] = [int(field.text)] if field.text else None
             if field.tag == 'client-id':
                 data['client_id'] = int(field.text) if field.text else None
 

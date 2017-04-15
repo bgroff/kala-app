@@ -5,15 +5,17 @@ User = get_user_model()
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
-        fields = ('id', 'uuid', 'first_name', 'last_name', 'email', 'username', 'avatar_url', 'date_joined')
+        fields = (
+            'id', 'first_name', 'last_name', 'email', 'username',
+            'avatar_url', 'date_joined', 'is_active', 'is_admin',
+            'companies'
+        )
 
     def create(self, validated_data):
-        return User.objects.create(**validated_data)
-
-    def validate_email(self, value):
-        # At least try to dedup emails
-        if User.objects.filter(email__iexact=value):
-            raise serializers.ValidationError('Email address is already in use.')
-        return value
+        companies = validated_data.pop('companies')
+        user = User.objects.create(**validated_data)
+        user.companies.add(*companies)
+        return user

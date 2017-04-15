@@ -6,6 +6,7 @@ from rest_framework.exceptions import ParseError
 from rest_framework.parsers import BaseParser
 
 import defusedxml.ElementTree as etree
+import dateparser
 
 
 class XMLProjectParser(BaseParser):
@@ -56,7 +57,7 @@ class XMLProjectParser(BaseParser):
                 data['status'] = str(field.text)
 
             if field.tag == 'created-on':
-                data['created'] = str(field.text)
+                data['created'] = dateparser.parse(str(field.text))
             if field.tag == 'last-changed-on':
                 data['changed'] = str(field.text)
 

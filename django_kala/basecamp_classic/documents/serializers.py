@@ -13,7 +13,9 @@ class DocumentSerializer(serializers.Serializer):
         pass
 
     def create(self, validated_data):
-        if validated_data['version'] == 1:
+        try:
+            document = Document.objects.get(pk=validated_data['collection'])
+        except Document.DoesNotExist:
             document = Document.objects.create(
                 project=validated_data['project'],
                 name=validated_data['name'],
@@ -22,8 +24,6 @@ class DocumentSerializer(serializers.Serializer):
             if 'category' in validated_data.keys():
                 document.category = validated_data['category']
                 document.save()
-        else:
-            document = Document.objects.get(pk=validated_data['collection'])
 
         DocumentVersion.objects.create(
             document=document,
@@ -36,7 +36,6 @@ class DocumentSerializer(serializers.Serializer):
         )
         return document
 
-    id = serializers.IntegerField()
     name = serializers.CharField()
     description = serializers.CharField()
     size = serializers.IntegerField()
@@ -45,7 +44,6 @@ class DocumentSerializer(serializers.Serializer):
     person = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     created = serializers.DateTimeField()
     url = serializers.URLField()
-    version = serializers.IntegerField()
     collection = serializers.IntegerField()
 
     def validate_project(self, project):

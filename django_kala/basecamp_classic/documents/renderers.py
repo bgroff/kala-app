@@ -53,9 +53,15 @@ class XMLDocumentRenderer(BaseRenderer):
 
     def render_document(self, document, version, request_user, xml):
         xml.startElement('document', {})
+
         xml.startElement('id', {'type': 'integer'})
         xml.characters(smart_text(version.uuid))
         xml.endElement('id')
+
+        xml.startElement('collection', {'type': 'integer'})
+        xml.characters(smart_text(document.id))
+        xml.endElement('collection')
+
         xml.startElement('name', {})
         xml.characters(smart_text(document.name))
         xml.endElement('name')
