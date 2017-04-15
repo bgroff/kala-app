@@ -39,7 +39,7 @@ SECRET_KEY = '(e^h^f=)*li=uq3@u(965ghns0f1sd@v(i8hrc12d#0*-cnedu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [get_env_variable('HOST_NAME')]
 
 # Application definition
 
