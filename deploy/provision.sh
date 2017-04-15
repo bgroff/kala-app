@@ -87,6 +87,7 @@ env = DEPLOYMENT_ENVIRONMENT=development
 env = DATABASE_USER=kala
 env = DATABASE_PASSWORD=kala
 env = DATABASE_NAME=kala
+env = HOST_NAME=localhost
 EOM
 
 # zshrc
@@ -95,6 +96,7 @@ export DEPLOYMENT_ENVIRONMENT=development
 export DATABASE_USER=kala
 export DATABASE_PASSWORD=kala
 export DATABASE_NAME=kala
+export HOST_NAME=localhost
 source /home/vagrant/.virtualenvs/$PROJECT/bin/activate
 cd /srv/$PROJECT-app/django_$PROJECT
 EOM
