@@ -48,6 +48,7 @@ server {
     access_log /var/log/nginx/$PROJECT_URL.access.log;
     error_log /var/log/nginx/$PROJECT_URL.error.log;
     client_max_body_size 200M;
+    sendfile off;
 
     location / {
         uwsgi_pass unix:/run/uwsgi/app/$PROJECT_URL/socket;
