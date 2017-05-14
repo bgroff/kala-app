@@ -83,6 +83,6 @@ def get_mimes_for_category(category):
 def get_icon_for_mime(mime):
     try:
         file = CATEGORY_TO_FILE[MIME_TO_CATEGORY[mime]]
-        return 'img/icons/%s' % file
+        return 'images/icons/%s' % file
     except KeyError:
-        return 'img/icons/unknown.png'
+        return 'images/icons/filemanager.png'
