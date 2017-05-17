@@ -1,262 +1,431 @@
-{% extends 'document_upload_base.html' %}
+{% extends 'base.html' %}
 {% load static %}
 {% load kala_tags %}
 
 {% block projects_class %}active{% endblock %}
-
 {% block content %}
-    <div class="span12">
-        <div class="breadcrumb">
-            <li><a href="{% url 'home' %}">Home</a> <span class="divider">/</span></li>
-            <li><a href="{% url 'projects' %}">Projects</a> <span class="divider">/</span></li>
-            <li class="active">
-                {{ project }}
-            </li>
-            {%  if user.is_admin %}
-                <a id="edit-permissions" href="{% url 'permissions' project.pk %}">- Edit Permissions</a>
-            {% endif %}
-            <li>
-
-            </li>
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="repo options">
+                <div class="ui labeled button">
+                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
+                        <input type="hidden" value="watching">
+                        <i class="checklist icon"></i> View
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <div class="item" data-value="not-watching">
+                                <h4>Not Watching</h4>
+                                <span>Be notified when participating or @mentioned.</span>
+                            </div>
+                            <div class="item" data-value="watching">
+                                <h4>Watching</h4>
+                                <span>Be notified of all conversations.</span>
+                            </div>
+                            <div class="item" data-value="ignoring">
+                                <h4>Ignoring</h4>
+                                <span>Never be notified.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui labeled button">
+                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
+                        <input type="hidden" value="watching">
+                        <i class="checklist icon"></i> Sort
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <div class="item" data-value="not-watching">
+                                <h4>Not Watching</h4>
+                                <span>Be notified when participating or @mentioned.</span>
+                            </div>
+                            <div class="item" data-value="watching">
+                                <h4>Watching</h4>
+                                <span>Be notified of all conversations.</span>
+                            </div>
+                            <div class="item" data-value="ignoring">
+                                <h4>Ignoring</h4>
+                                <span>Never be notified.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui labeled button">
+                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
+                        <input type="hidden" value="watching">
+                        <i class="checklist icon"></i> Sort
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <div class="item" data-value="not-watching">
+                                <h4>Not Watching</h4>
+                                <span>Be notified when participating or @mentioned.</span>
+                            </div>
+                            <div class="item" data-value="watching">
+                                <h4>Watching</h4>
+                                <span>Be notified of all conversations.</span>
+                            </div>
+                            <div class="item" data-value="ignoring">
+                                <h4>Ignoring</h4>
+                                <span>Never be notified.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ui big breadcrumb">
+                <a class="section">{{ project.company }}</a>
+                <div class="divider"> /</div>
+                <a class="active section">{{ project }}</a>
+            </div>
         </div>
+
+        <div class="ui tabular menu">
+            <div class="ui container">
+                <a class="active item">
+                    <i class="book icon"></i>
+                    Documents
+                </a>
+                <a class="item">
+                    <i class="issue opened icon"></i>
+                    Issues
+                    <span class="ui small label">593</span>
+                </a>
+                {#            <a class="item">#}
+                {#              <i class="git pull request icon"></i>#}
+                {#              Pull Requests#}
+                {#              <span class="ui small label">39</span>#}
+                {#            </a>#}
+                {#            <a class="item">#}
+                {#              <i class="book icon"></i>#}
+                {#              Wiki#}
+                {#            </a>#}
+                {#            <a class="item">#}
+                {#              <i class="pulse icon"></i>#}
+                {#              Pulse#}
+                {#            </a>#}
+                {#            <a class="item">#}
+                {#              <i class="graph icon"></i>#}
+                {#              Graphs#}
+                {#            </a>#}
+                <a class="item" href="{% url 'projects:details' project.pk %}">
+                    <i class="gear icon"></i>
+                    Settings
+                </a>
+            </div>
+        </div>
+
     </div>
 
-    <div class="span8">
-        <div class="widget">
-            <div id="documents" class="widget-header">
-                <i class="icon-edit"></i>
+    <div class="ui container">
+        <!-- Repo Content -->
+        <div class="ui four item top attached borderless stats menu">
+            <a class="item">
+                <i class="book icon"></i>
+                <b>{{ project.document_set.all.count }}</b> documents
+            </a>
+            <a class="item">
+                <i class="git branch icon"></i>
+                <b>10</b> versions
+            </a>
+            <a class="item">
+                <i class="tag icon"></i>
+                <b>127</b> categories
+            </a>
+            <a class="item">
+                <i class="organization icon"></i>
+                <b>111</b> contributors
+            </a>
+        </div>
+        <div class="ui bottom attached horizontal language segments">
+            <div class="ui inverted yellow segment"></div>
+            <div class="ui inverted purple segment"></div>
+            <div class="ui inverted red segment"></div>
+        </div>
 
-                <h3>{{ project.name }}
-                </h3>
-            </div>
-            <!-- /widget-header -->
-            <div  class="widget-content">
-                {% for document in documents %}
-                    <div style="clear: both;">
-                        <div style="float: left">
-                            <img
-                                    {% if forloop.first %}
-                                        id="document-image"
-                                    {% endif %}
-                                        src="{% static document.get_icon %}" alt="{{ document.get_alt }}"
-                                        style="width: 64px; height: 64px;"/>
-                        </div>
-
-                        <div style="margin-left: 75px;">
-                            <h3
-                                    {% if forloop.first %}
-                                        id="document-name"
-                                    {% endif %}>
-                                {{ document.name }}
-
-                                {% if document.file %}
-                                    <a
-                                            {% if forloop.first %}
-                                                id="document-download"
-                                            {% endif %}
-                                                href="{% url 'download_document' document.uuid.hex %}">
-                                        <i class="icon-download-alt" style="font-size: 16pt;"></i>
-                                    </a>
-                                {% endif %}
-
-                            </h3>
-
-                            {% if document.description %}
-                                <h4 {% if forloop.first %}
-                                    id="document-description"
-                                {% endif %}>
-                                    {{ document.description }}
-                                </h4>
-                            {% endif %}
-
-                            {% if forloop.first %}
-                                <span id="document-owner"></span>
+        <div class="ui cards">
+            {% for document in documents %}
+                <div class="ui card">
+                    <div class="ui fade reveal image">
+                        <img class="visible content" style="background-color: #f3f3f3"
+                             src="{% static document.get_icon %}"
+                             alt="{{ document.get_alt }}">
+                        <img class="hidden content" src="{% static "images/icons/android-download.png" %}"
+                             alt="{{ document.get_alt }}">
+                    </div>
+                    <div class="content">
+                        <a class="header" style="word-wrap: break-word;">{{ document.name }}</a>
+                        <div class="meta">
+                            {% if document.documentversion_set.all.count == 1 %}
+                                <span class="date">Created on {{ document.date }}</span>
+                            {% else %}
+                                <span class="date">Updated on {{ document.date }}</span>
                             {% endif %}
                             by {{ document.person }}
-                            {% if forloop.first %}
-                                <span id="document-created"></span>
-                            {% endif %}
-                            on {{ document.date|date:"M j, Y" }} -
-                            {% if document.file %}
-                                {{ document.file.size|filesizeformat }}
-                            {% endif %}
-                            <a
-                                    {% if forloop.first %}
-                                        id="document-edit"
-                                    {% endif %}
-                                        href="{% url 'document' document.pk %}">Add Version</a>
-                            <ul>
-                                {% for version in document.list_versions %}
-                                    <li>
-                                        <a href="{% url 'download_document' version.uuid.hex %}">{{ version }}</a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
                         </div>
+                        {% if document.description %}
+                            <div class="description">
+                                {{ document.description }}
+                            </div>
+                        {% endif %}
                     </div>
-                {% empty %}
-                    There are no documents for this project. Use the form on this page to create a new document.
-                {% endfor %}
+                    <div class="extra content">
+                        <a>
+                            <i class="git branch icon"></i>
+                            Versions {{ document.documentversion_set.all.count }}
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
 
-            </div>
-            <!-- /widget-content -->
         </div>
-        <!-- /widget -->
-    </div>
-    <div class="span4">
-        <div class="widget">
-            <div class="widget-header">
-                <h3 id="new-document">Upload New Document</h3>
-            </div>
-            <!-- /widget-header -->
-            <div class="widget-content">
-                {% include 'document_upload_form.html' %}
-            </div>
+        <div class="ui divider"></div>
+
+        <div class="ui pagination menu">
+            {% for page in page_range %}
+                <a class="{% if page == current_page %}active{% endif %} item"
+                   href="{% url 'projects:project' project.pk %}?page={{ page }}">
+                    {{ page }}
+                </a>
+            {% endfor %}
         </div>
     </div>
-
-    <div class="span4">
-        <div class="widget">
-            <div class="widget-header">
-                <h3 id="new-document">Sort By</h3>
-            </div>
-            <!-- /widget-header -->
-            <div class="widget-content">
-
-                <form method="get" action="{% url 'project' project.pk %}">
-                    <div id="description" class="control-group">
-                        <div class="controls">
-                            <div style="margin-left: 20px;">
-                                {% for choice in sort_form.search %}
-                                    {{ choice.choice_label }}: {{ choice.tag }}<br/>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div id="description" class="control-group">
-                        <div class="controls">
-                            <div style="margin-left: 20px;">
-                                <label class="control-label" for="id_category">Filter by Category:</label>
-                                {{ categories_form.category }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="button btn btn-primary btn-large">
-                            Sort Documents
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    {% if request.user.is_admin %}
-        <div class="span4">
-            <div class="widget">
-                <div class="widget-header">
-                    <h3 id="new-document">Move Project</h3>
-                </div>
-                <!-- /widget-header -->
-                <div class="widget-content">
-
-                    <p>To move the project to another company you may use the form below.</p>
-
-                    <form method="post" action="{% url 'project' project.pk %}">
-                        {% csrf_token %}
-                        <div id="description" class="control-group">
-                            <div class="controls">
-                                <div style="margin-left: 20px;">
-                                    <label class="control-label" for="id_category">Company:</label>
-                                    {{ company_form.company }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-actions">
-                            <button type="submit" class="button btn btn-primary btn-large" name="move">Move
-                                Project
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class="span4">
-            <div class="widget">
-                <div class="widget-header">
-                    <h3 id="new-document">Delete Project</h3>
-                </div>
-                <!-- /widget-header -->
-                <div class="widget-content">
-
-                    <p>To delete this project, click on the button below. You can retrieve the project by using
-                        the "Project Retrieval" on the Projects page.</p>
-
-                    <form method="post" action="{% url 'project' project.pk %}">
-                        {% csrf_token %}
-                        <div class="form-actions">
-                            <button type="submit" class="button btn btn-danger btn-large" name="delete">Delete
-                                Project
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    {% endif %}
 {% endblock content %}
-
-{% block tour %}
-    <ol id="joyRideContent" style="display: none">
-        <li data-id="documents">
-            <p>If there are documents available for this project they will be listed below.</p>
-        </li>
-
-        <li data-id="document-image">
-            <p>This image represents the type of file that has been uploaded, ie. word, powerpoint, etc...</p>
-        </li>
-        <li data-id="document-name">
-            <p>This is the name of the document as it will appear on your computer.</p>
-        </li>
-        <li data-id="document-download">
-            <p>To download the document, you can click on this link.</p>
-        </li>
-        <li data-id="document-description">
-            <p>This is the textual description of the changes/purpose of this document.</p>
-        </li>
-        <li data-id="document-owner">
-            <p>This is the name of the person that uploaded this document.</p>
-        </li>
-        <li data-id="document-created">
-            <p>This is the date that this version of the document was uploaded.</p>
-        </li>
-        <li data-id="document-edit">
-            <p>You can use this link to upload a new version of this document.</p>
-        </li>
-
-        {% if request.user.is_admin %}
-            <li data-id="edit-permissions">
-                <p>If you want to add or remove people from the project, you can do so by clicking on the edit
-                    permissions.</p>
-            </li>
-        {% endif %}
-        <li data-id="new-document">
-            <p>To create a new document, you can use the form below.</p>
-        </li>
-        <li data-id="id_file">
-            <p>Select the file that you wish to upload by clicking on the browse button. This will bring up a file
-                picker dialog, which you can use to select the document from your computer.</p>
-        </li>
-        <li data-id="id_description">
-            <p>The description of a new document should either describe the original intents of a document, or the
-                changes that you have made to an existing document.</p>
-        </li>
-        <li data-id="upload">
-            <p>When you are ready to create a new document, click the Create Document button and the document will be
-                created. You will come back to this page once the document has been created.</p>
-        </li>
-    </ol>
-{% endblock tour %}
+{##}
+{#    <div class="span8">#}
+{#        <div class="widget">#}
+{#            <div id="documents" class="widget-header">#}
+{#                <i class="icon-edit"></i>#}
+{##}
+{#                <h3>{{ project.name }}#}
+{#                </h3>#}
+{#            </div>#}
+{#            <!-- /widget-header -->#}
+{#            <div  class="widget-content">#}
+{#                {% for document in documents %}#}
+{#                    <div style="clear: both;">#}
+{#                        <div style="float: left">#}
+{#                            <img#}
+{#                                    {% if forloop.first %}#}
+{#                                        id="document-image"#}
+{#                                    {% endif %}#}
+{#                                        src="{% static document.get_icon %}" alt="{{ document.get_alt }}"#}
+{#                                        style="width: 64px; height: 64px;"/>#}
+{#                        </div>#}
+{##}
+{#                        <div style="margin-left: 75px;">#}
+{#                            <h3#}
+{#                                    {% if forloop.first %}#}
+{#                                        id="document-name"#}
+{#                                    {% endif %}>#}
+{#                                {{ document.name }}#}
+{##}
+{#                                {% if document.file %}#}
+{#                                    <a#}
+{#                                            {% if forloop.first %}#}
+{#                                                id="document-download"#}
+{#                                            {% endif %}#}
+{#                                                href="{% url 'download_document' document.uuid.hex %}">#}
+{#                                        <i class="icon-download-alt" style="font-size: 16pt;"></i>#}
+{#                                    </a>#}
+{#                                {% endif %}#}
+{##}
+{#                            </h3>#}
+{##}
+{#                            {% if document.description %}#}
+{#                                <h4 {% if forloop.first %}#}
+{#                                    id="document-description"#}
+{#                                {% endif %}>#}
+{#                                    {{ document.description }}#}
+{#                                </h4>#}
+{#                            {% endif %}#}
+{##}
+{#                            {% if forloop.first %}#}
+{#                                <span id="document-owner"></span>#}
+{#                            {% endif %}#}
+{#                            by {{ document.person }}#}
+{#                            {% if forloop.first %}#}
+{#                                <span id="document-created"></span>#}
+{#                            {% endif %}#}
+{#                            on {{ document.date|date:"M j, Y" }} -#}
+{#                            {% if document.file %}#}
+{#                                {{ document.file.size|filesizeformat }}#}
+{#                            {% endif %}#}
+{#                            <a#}
+{#                                    {% if forloop.first %}#}
+{#                                        id="document-edit"#}
+{#                                    {% endif %}#}
+{#                                        href="{% url 'document' document.pk %}">Add Version</a>#}
+{#                            <ul>#}
+{#                                {% for version in document.list_versions %}#}
+{#                                    <li>#}
+{#                                        <a href="{% url 'download_document' version.uuid.hex %}">{{ version }}</a>#}
+{#                                    </li>#}
+{#                                {% endfor %}#}
+{#                            </ul>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                {% empty %}#}
+{#                    There are no documents for this project. Use the form on this page to create a new document.#}
+{#                {% endfor %}#}
+{##}
+{#            </div>#}
+{#            <!-- /widget-content -->#}
+{#        </div>#}
+{#        <!-- /widget -->#}
+{#    </div>#}
+{#    <div class="span4">#}
+{#        <div class="widget">#}
+{#            <div class="widget-header">#}
+{#                <h3 id="new-document">Upload New Document</h3>#}
+{#            </div>#}
+{#            <!-- /widget-header -->#}
+{#            <div class="widget-content">#}
+{#                {% include 'document_upload_form.html' %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{##}
+{#    <div class="span4">#}
+{#        <div class="widget">#}
+{#            <div class="widget-header">#}
+{#                <h3 id="new-document">Sort By</h3>#}
+{#            </div>#}
+{#            <!-- /widget-header -->#}
+{#            <div class="widget-content">#}
+{##}
+{#                <form method="get" action="{% url 'project' project.pk %}">#}
+{#                    <div id="description" class="control-group">#}
+{#                        <div class="controls">#}
+{#                            <div style="margin-left: 20px;">#}
+{#                                {% for choice in sort_form.search %}#}
+{#                                    {{ choice.choice_label }}: {{ choice.tag }}<br/>#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{##}
+{##}
+{#                    <div id="description" class="control-group">#}
+{#                        <div class="controls">#}
+{#                            <div style="margin-left: 20px;">#}
+{#                                <label class="control-label" for="id_category">Filter by Category:</label>#}
+{#                                {{ categories_form.category }}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{##}
+{#                    <div class="form-actions">#}
+{#                        <button type="submit" class="button btn btn-primary btn-large">#}
+{#                            Sort Documents#}
+{#                        </button>#}
+{#                    </div>#}
+{#                </form>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#    {% if request.user.is_admin %}#}
+{#        <div class="span4">#}
+{#            <div class="widget">#}
+{#                <div class="widget-header">#}
+{#                    <h3 id="new-document">Move Project</h3>#}
+{#                </div>#}
+{#                <!-- /widget-header -->#}
+{#                <div class="widget-content">#}
+{##}
+{#                    <p>To move the project to another company you may use the form below.</p>#}
+{##}
+{#                    <form method="post" action="{% url 'project' project.pk %}">#}
+{#                        {% csrf_token %}#}
+{#                        <div id="description" class="control-group">#}
+{#                            <div class="controls">#}
+{#                                <div style="margin-left: 20px;">#}
+{#                                    <label class="control-label" for="id_category">Company:</label>#}
+{#                                    {{ company_form.company }}#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="form-actions">#}
+{#                            <button type="submit" class="button btn btn-primary btn-large" name="move">Move#}
+{#                                Project#}
+{#                            </button>#}
+{#                        </div>#}
+{#                    </form>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{##}
+{#        <div class="span4">#}
+{#            <div class="widget">#}
+{#                <div class="widget-header">#}
+{#                    <h3 id="new-document">Delete Project</h3>#}
+{#                </div>#}
+{#                <!-- /widget-header -->#}
+{#                <div class="widget-content">#}
+{##}
+{#                    <p>To delete this project, click on the button below. You can retrieve the project by using#}
+{#                        the "Project Retrieval" on the Projects page.</p>#}
+{##}
+{#                    <form method="post" action="{% url 'project' project.pk %}">#}
+{#                        {% csrf_token %}#}
+{#                        <div class="form-actions">#}
+{#                            <button type="submit" class="button btn btn-danger btn-large" name="delete">Delete#}
+{#                                Project#}
+{#                            </button>#}
+{#                        </div>#}
+{#                    </form>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endif %}#}
+{#{% endblock content %}#}
+{##}
+{#{% block tour %}#}
+{#    <ol id="joyRideContent" style="display: none">#}
+{#        <li data-id="documents">#}
+{#            <p>If there are documents available for this project they will be listed below.</p>#}
+{#        </li>#}
+{##}
+{#        <li data-id="document-image">#}
+{#            <p>This image represents the type of file that has been uploaded, ie. word, powerpoint, etc...</p>#}
+{#        </li>#}
+{#        <li data-id="document-name">#}
+{#            <p>This is the name of the document as it will appear on your computer.</p>#}
+{#        </li>#}
+{#        <li data-id="document-download">#}
+{#            <p>To download the document, you can click on this link.</p>#}
+{#        </li>#}
+{#        <li data-id="document-description">#}
+{#            <p>This is the textual description of the changes/purpose of this document.</p>#}
+{#        </li>#}
+{#        <li data-id="document-owner">#}
+{#            <p>This is the name of the person that uploaded this document.</p>#}
+{#        </li>#}
+{#        <li data-id="document-created">#}
+{#            <p>This is the date that this version of the document was uploaded.</p>#}
+{#        </li>#}
+{#        <li data-id="document-edit">#}
+{#            <p>You can use this link to upload a new version of this document.</p>#}
+{#        </li>#}
+{##}
+{#        {% if request.user.is_admin %}#}
+{#            <li data-id="edit-permissions">#}
+{#                <p>If you want to add or remove people from the project, you can do so by clicking on the edit#}
+{#                    permissions.</p>#}
+{#            </li>#}
+{#        {% endif %}#}
+{#        <li data-id="new-document">#}
+{#            <p>To create a new document, you can use the form below.</p>#}
+{#        </li>#}
+{#        <li data-id="id_file">#}
+{#            <p>Select the file that you wish to upload by clicking on the browse button. This will bring up a file#}
+{#                picker dialog, which you can use to select the document from your computer.</p>#}
+{#        </li>#}
+{#        <li data-id="id_description">#}
+{#            <p>The description of a new document should either describe the original intents of a document, or the#}
+{#                changes that you have made to an existing document.</p>#}
+{#        </li>#}
+{#        <li data-id="upload">#}
+{#            <p>When you are ready to create a new document, click the Create Document button and the document will be#}
+{#                created. You will come back to this page once the document has been created.</p>#}
+{#        </li>#}
+{#    </ol>#}
+{#{% endblock tour %}#}

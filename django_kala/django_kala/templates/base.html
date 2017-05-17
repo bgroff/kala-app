@@ -5,471 +5,164 @@
 <html>
 <head>
 
-  <!-- Standard Meta -->
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- Standard Meta -->
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-  <!-- Site Properities -->
-  <title>Kala Document Management</title>
+    <!-- Site Properities -->
+    <title>Kala Document Management</title>
 
-  <!-- Always Use Same -->
-  <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/icon.css" %}">
-  <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/image.css" %}">
-  <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/transition.css" %}">
-  <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/default/checkbox.css" %}">
-  <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/sidebar.css" %}">
+    <!-- Always Use Same -->
+    <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/icon.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/image.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/transition.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/default/checkbox.css" %}">
 
-  <!--
-    These css files are pre-compiled
-    to test out gulp
-    use static.html, run gulp from semantic/, and modify theme.config or variables
-  !-->
-  <link rel="stylesheet" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/form.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/reset.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/site.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/breadcrumb.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/button.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/card.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/container.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/divider.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/dropdown.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/grid.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/header.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/input.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/label.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/list.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/menu.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/message.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/popup.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/reveal.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/segment.css" %}">
-  <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/github/table.css" %}">
+    <!--
+      These css files are pre-compiled
+      to test out gulp
+      use static.html, run gulp from semantic/, and modify theme.config or variables
+    !-->
+    <link rel="stylesheet" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/form.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/accordion.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/checkbox.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/reset.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/site.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/breadcrumb.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/button.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/card.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/container.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/divider.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/dimmer.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/dropdown.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/form.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/grid.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/header.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/input.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/label.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/list.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/menu.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/message.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/modal.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/popup.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/reveal.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/segment.css" %}">
+    <link class="themable" rel="stylesheet" type="text/css" href="{% static "css/ui/components/material/table.css" %}">
 
-  <link rel="stylesheet" type="text/css" href="{% static "css/global.css" %}">
-  <link rel="stylesheet" type="text/css" href="{% static "css/layouts/theme.css" %}">
-  <link rel="stylesheet" type="text/css" href="{% static "css/layouts/home.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/global.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/layouts/theme.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/layouts/home.css" %}">
 
 </head>
 
-<body id="home" class="pushable">
-  <div class="ui theme left push sidebar">
-    <div class="ui form">
-      <h3 class="ui dividing header">Layout </h3>
-      <div class="field">
-        <div class="ui second checkbox">
-          <input type="checkbox"></input>
-          <label>Distinctive Buttons
-            <i class="tiny link question icon" data-content="Adds 'primary', 'labeled icon' and colored classes on a few buttons"></i>
-          </label>
-        </div>
-      </div>
-      <h3 class="ui dividing header">Theme</h3>
-      <div class="field">
-        <label>Global Theme</label>
-        <select class="ui theme dropdown" name="global">
-          <option value="default">Default</option>
-          <option value="amazon">Amazon</option>
-          <option value="github" selected>GitHub</option>
-          <option value="material" selected>Material</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Button</label>
-        <select class="ui theme dropdown" name="button">
-          <option value="default">Default</option>
-          <option value="amazon">Amazon</option>
-          <option value="chubby">Chubby</option>
-          <option value="github" selected>GitHub</option>
-          <option value="material">Material</option>
-          <option value="twitter">Twitter</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Menu</label>
-        <select class="ui theme dropdown" name="menu">
-          <option value="default">Default</option>
-          <option value="chubby">Chubby</option>
-          <option value="github" selected>GitHub</option>
-        </select>
-      </div>
-      <h3 class="ui header">About</h3>
-      <p>This example was created to demonstrate the theming and prototyping abilities of <a href="http://www.semantic-ui.com">Semantic UI</a>.</p>
-      <p>Layout examples above use simple class name swaps to show how working within an well-defined ui vocabulary allows for rapid prototyping without coding</p>
-      <a class="ui fluid labeled icon button" target="_blank" href="index-classic.html">
-        View Classic GitHub
-        <i class="github mark icon"></i>
-      </a>
-      <div class="ui divider"></div>
-      <a class="ui fluid labeled icon button" target="_blank" href="http://www.semantic-ui.com">
-        Visit Semantic-UI.com
-        <i class="external linkify icon"></i>
-      </a>
-      <a class="ui fluid primary labeled icon button" target="_blank" href="http://semantic-ui.com/usage/theming.html">
-        Explore theming
-        <i class="paintcan icon"></i>
-      </a>
-      <div class="ui horizontal divider"><i class="github mark icon"></i></div>
-
-      <iframe class="github" src="http://ghbtns.com/github-btn.html?user=semantic-org&amp;repo=example-github&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100" height="20"></iframe>
-    </div>
-  </div>
-  <div class="pusher">
-    <!-- Global Header -->
-    <div class="page header">
-      <div class="ui container">
+<body id="home">
+<!-- Global Header -->
+<div class="page header">
+    <div class="ui container">
         <div class="ui right floated icon text menu">
-          <a class="launch icon item" data-content="Select a theme">
-            <i class="disabled link paintcan icon"></i>
-          </a>
-          <a class="item" data-content="You have unread notification in this repository.">
-            <span class="ui empty mini floating circular blue notification label"></span>
-            <i class="bell icon"></i>
-          </a>
-          <div class="ui add top right pointing dropdown item" data-content="Create new...">
-            <i class="large plus icon"></i>
-            <i class="dropdown icon"></i>
-            <div class="menu">
-              <a class="item">New organization</a>
-              <div class="divider"></div>
-              <div class="header">This organization</div>
-              <a class="item">Invite someone</a>
-              <a class="item">New project</a>
-              <div class="divider"></div>
-              <div class="header">This project</div>
-              <a class="item">New document</a>
+            <a class="launch icon item" data-content="Select a theme">
+                <i class="disabled link paintcan icon"></i>
+            </a>
+            <a class="item" data-content="You have unread notification in this repository.">
+                <span class="ui empty mini floating circular blue notification label"></span>
+                <i class="bell icon"></i>
+            </a>
+            <div class="ui add top right pointing dropdown item" data-content="Create new...">
+                <i class="large plus icon"></i>
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <a class="item">New organization</a>
+                    <div class="divider"></div>
+                    <div class="header">This organization</div>
+                    <a class="item">Invite someone</a>
+                    <a class="item">New project</a>
+                    <div class="divider"></div>
+                    <div class="header">This project</div>
+                    <a class="item">New document</a>
+                </div>
             </div>
-          </div>
-          <div class="user top right pointing ui dropdown item" data-content="View profile and more">
-            <img class="ui mini rounded image" src="{{ request.user.avatar_url }}">
-            <i class="dropdown icon"></i>
-            <div class="menu">
-              <div class="user header">
-                Signed in as <b>{{ request.user }}</b>
-              </div>
-              <div class="divider"></div>
-              <a class="item" href="{% url 'edit_profile' request.user.pk %}">Your Profile</a>
-              <a class="item">Help</a>
-              <div class="divider"></div>
-              <a class="item">Sign Out</a>
+            <div class="user top right pointing ui dropdown item" data-content="View profile and more">
+                <img class="ui mini rounded image" src="{{ request.user.avatar_url }}">
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    <div class="user header">
+                        Signed in as <b>{{ request.user }}</b>
+                    </div>
+                    <div class="divider"></div>
+                    <a class="item" href="{% url 'edit_profile' request.user.pk %}">Your Profile</a>
+                    <a class="item">Help</a>
+                    <div class="divider"></div>
+                    <a class="item">Sign Out</a>
+                </div>
             </div>
-          </div>
         </div>
 
         <div class="ui text menu">
-          <a class="icon item" href="http://www.github.com/semantic-org/semantic-ui/">
-            <i class="huge emphasized github mark icon"></i>
-          </a>
-          <div class="item">
-            <div class="ui small labeled input">
-              <div class="ui label">
-                This project
-              </div>
-              <input type="text" placeholder="Search">
+            <a class="icon item" href="http://www.github.com/semantic-org/semantic-ui/">
+                <i class="huge emphasized github mark icon"></i>
+            </a>
+            <div class="item">
+                <div class="ui small labeled input">
+                    <div class="ui label">
+                        This project
+                    </div>
+                    <input type="text" placeholder="Search">
+                </div>
+                <a class="item">
+                    <b>Projects</b>
+                </a>
+                <a class="item">
+                    <b>Organizations</b>
+                </a>
+                <a class="item">
+                    <b>People</b>
+                </a>
             </div>
-            <a class="item">
-              <b>Projects</b>
-            </a>
-            <a class="item">
-              <b>Organizations</b>
-            </a>
-            <a class="item">
-              <b>People</b>
-            </a>
-          </div>
         </div>
-      </div>
     </div>
-    <div class="page content">
-        {% block content %}
-        {% endblock content %}
-    </div>
-    <div class="footer">
-      <div class="ui container">
+</div>
+<div class="page content">
+    {% block content %}
+    {% endblock content %}
+</div>
+<div class="footer">
+    <div class="ui container">
         <div class="ui section divider"></div>
         <div class="ui small right floated horizontal list">
-          <a class="item" href="#">Status</a>
-          <a class="item" href="#">API</a>
-          <a class="item" href="#">Training</a>
-          <a class="item" href="#">Shop</a>
-          <a class="item" href="#">Blog</a>
-          <a class="item" href="#">About</a>
-          <a class="item" href="#">Pricing</a>
+            <a class="item" href="#">Status</a>
+            <a class="item" href="#">API</a>
+            <a class="item" href="#">Training</a>
+            <a class="item" href="#">Shop</a>
+            <a class="item" href="#">Blog</a>
+            <a class="item" href="#">About</a>
+            <a class="item" href="#">Pricing</a>
         </div>
         <i class="large github mark icon"></i>
         <div class="ui small horizontal list">
-          <div class="disabled item" href="#">&copy; 2016 GitHub, Inc.</div>
-          <a class="item" href="#">Terms</a>
-          <a class="item" href="#">Privacy</a>
-          <a class="item" href="#">Security</a>
-          <a class="item" href="#">Contact</a>
-          <a class="item" href="#">Help</a>
+            <div class="disabled item" href="#">&copy; 2017 Malolo Industries.</div>
+            <a class="item" href="#">Terms</a>
+            <a class="item" href="#">Privacy</a>
+            <a class="item" href="#">Security</a>
+            <a class="item" href="#">Contact</a>
+            <a class="item" href="#">Help</a>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 
-  <!-- JS Includes -->
-  <script src="{% static "javascript/library/jquery.min.js" %}"></script>
-  <script src="{% static "css/ui/semantic.min.js" %}"></script>
-  <script src="{% static "javascript/home.js" %}"></script>
-  <script src="{% static "javascript/theme.js" %}"></script>
+<!-- JS Includes -->
+<script src="{% static "javascript/library/jquery.min.js" %}"></script>
+<script src="{% static "css/ui/semantic.min.js" %}"></script>
+<script src="{% static "javascript/home.js" %}"></script>
+<script src="{% static "css/ui/components/accordion.js" %}"></script>
+<script src="{% static "css/ui/components/checkbox.js" %}"></script>
+<script src="{% static "css/ui/components/dimmer.js" %}"></script>
+<script src="{% static "css/ui/components/form.js" %}"></script>
+<script src="{% static "css/ui/components/modal.js" %}"></script>
+<script src="{% static "css/ui/components/transition.js" %}"></script>
+
+{% block scripts %}
+{% endblock scripts %}
 </body>
 
 </html>
-
-
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-{#    <meta charset="utf-8">#}
-{#    <title>Kala - Document Management</title>#}
-{##}
-{#    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">#}
-{#    <meta name="apple-mobile-web-app-capable" content="yes">#}
-{##}
-{#    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">#}
-{#    <link href="{% static 'css/bootstrap-responsive.min.css' %}" rel="stylesheet">#}
-{#    <link href="{% static 'css/joyride-2.0.3.css' %}" rel="stylesheet">#}
-{##}
-{#    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">#}
-{#    <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">#}
-{#    <!-- [if lt IE 8]>#}
-{#          <link href="{% static 'css/font-awesome-ie7.min.css' %}" rel="stylesheet">#}
-{#    <![endif]-->#}
-{##}
-{##}
-{#    <link href="{% static 'css/base-admin-2.css' %}" rel="stylesheet">#}
-{#    <link href="{% static 'css/base-admin-2-responsive.css' %}" rel="stylesheet">#}
-{##}
-{#    <link href="{% static 'css/pages/dashboard.css' %}" rel="stylesheet">#}
-{#    <link rel="icon" type="image/png" href="{% static 'img/kala-favicon.png' %}">#}
-{##}
-{#    {% block addditional_style %}#}
-{##}
-{#    {% endblock addditional_style %}#}
-{#    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->#}
-{#    <!--[if lt IE 9]>#}
-{#      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>#}
-{#    <![endif]-->#}
-{##}
-{#</head>#}
-{##}
-{#<body>#}
-{#{% block nav-bar %}#}
-{#    <div class="navbar navbar-fixed-top">#}
-{##}
-{#        <div class="navbar-inner">#}
-{##}
-{#            <div class="container">#}
-{##}
-{#                <a class="brand" href="{% url 'home' %}">#}
-{#                    <img src="{% static 'img/kala-logo.png' %}" alt="Kala - Document Management Logo">#}
-{#                    <span style="margin-left: 10px;">Kala Document Management</span>#}
-{#                </a>#}
-{##}
-{#            </div>#}
-{#            <!-- /container -->#}
-{##}
-{#        </div>#}
-{#        <!-- /navbar-inner -->#}
-{##}
-{#    </div>#}
-{#    <!-- /navbar -->#}
-{#{% endblock nav-bar %}#}
-{##}
-{#{% block sub-nav-bar %}#}
-{#    <div class="subnavbar">#}
-{##}
-{#        <div class="subnavbar-inner">#}
-{##}
-{#            <div class="container">#}
-{##}
-{#                <ul class="mainnav">#}
-{##}
-{#                    <li class="{% block home_class %}{% endblock %}">#}
-{#                        <a href="{% url 'home' %}">#}
-{#                            <i class="icon-home"></i>#}
-{#                            <span>Home</span>#}
-{#                        </a>#}
-{#                    </li>#}
-{##}
-{#                    <li class="{% block projects_class %}{% endblock %}">#}
-{#                        <a href="{% url 'projects' %}">#}
-{#                            <i class="icon-edit"></i>#}
-{#                            <span>Projects</span>#}
-{#                        </a>#}
-{#                    </li>#}
-{##}
-{#                    <li class="{% block people_class %}{% endblock %}">#}
-{#                        <a href="{% url 'accounts' %}">#}
-{#                            <i class="icon-group"></i>#}
-{#                            <span>People</span>#}
-{#                        </a>#}
-{#                    </li>#}
-{##}
-{#                    <li onclick=launch_tour()>#}
-{#                        <a style="cursor: pointer;">#}
-{#                            <i class="icon-question-sign"></i>#}
-{#                            <span>Help</span>#}
-{#                        </a>#}
-{#                    </li>#}
-{##}
-{#                    <li class="dropdown {% block account_class %}{% endblock %}">#}
-{#                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">#}
-{#                            <i class="icon-user"></i>#}
-{#                            <span>My Account</span>#}
-{#                            <b class="caret"></b>#}
-{#                        </a>#}
-{##}
-{#                        <ul class="dropdown-menu">#}
-{#                            <li><a href="{% url 'edit_profile' user.pk %}">Edit Profile</a></li>#}
-{#                            <li><a href="{% url 'logout' %}">Logout</a></li>#}
-{#                        </ul>#}
-{#                    </li>#}
-{##}
-{#                </ul>#}
-{##}
-{#            </div>#}
-{#            <!-- /container -->#}
-{##}
-{#        </div>#}
-{#        <!-- /subnavbar-inner -->#}
-{##}
-{#    </div>#}
-{#    <!-- /subnavbar -->#}
-{#{% endblock sub-nav-bar %}#}
-{##}
-{#<div class="main">#}
-{##}
-{#    <div class="main-inner">#}
-{##}
-{#        <div class="container">#}
-{##}
-{#            <div class="row">#}
-{##}
-{#                {% if messages %}#}
-{#                    <div class="span12">#}
-{#                        {% for message in messages %}#}
-{#                            {% if message.level == 20 %}#}
-{#                                <div class="alert alert-info">#}
-{#                                    <a class="close" data-dismiss="alert">×</a>#}
-{#                                    <strong>Information: </strong> {{ message }}.#}
-{#                                </div>#}
-{#                            {% endif %}#}
-{#                            {% if message.level == 25 %}#}
-{#                                <div class="alert alert-success">#}
-{#                                    <a class="close" data-dismiss="alert">×</a>#}
-{#                                    <strong>Success: </strong> {{ message }}.#}
-{#                                </div>#}
-{#                            {% endif %}#}
-{#                            {% if message.level == 30 %}#}
-{#                                <div class="alert alert-warning">#}
-{#                                    <a class="close" data-dismiss="alert">×</a>#}
-{#                                    <strong>Warning: </strong> {{ message }}.#}
-{#                                </div>#}
-{#                            {% endif %}#}
-{#                            {% if message.level >= 35 %}#}
-{#                                <div class="alert alert-error">#}
-{#                                    <a class="close" data-dismiss="alert">×</a>#}
-{#                                    <strong>Error: </strong> {{ message }}.#}
-{#                                </div>#}
-{#                            {% endif %}#}
-{#                        {% endfor %}#}
-{#                    </div>#}
-{#                {% endif %}#}
-{##}
-{#                {% block content %}#}
-{##}
-{#                {% endblock content %}#}
-{##}
-{#            </div>#}
-{#            <!-- /row -->#}
-{##}
-{#        </div>#}
-{#        <!-- /container -->#}
-{##}
-{#    </div>#}
-{#    <!-- /main-inner -->#}
-{##}
-{#</div>#}
-{#<!-- /main -->#}
-{##}
-{#{% block extra %}#}
-{#    <div class="extra">#}
-{#        <div class="extra-inner">#}
-{#            <div class="container">#}
-{#                <div class="row">#}
-{#                    <div class="span4">#}
-{#                        <h4>About</h4>#}
-{#                        <ul>#}
-{#                            <li><a href="javascript:;">About Us</a></li>#}
-{#                            <li><a href="https://github.com/bgroff/kala">Kala on Github</a></li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                    <div class="span4">#}
-{##}
-{#                        <h4>Support</h4>#}
-{##}
-{#                        <ul>#}
-{#                            <li><a href="{% url 'user_documentation' %}">User Documentation</a></li>#}
-{#                            <li><a href="javascript:;">Developer Documentation</a></li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                    <div class="span4">#}
-{#                        <h4>Legal</h4>#}
-{#                        <ul>#}
-{#                            <li><a href="{% url 'license' %}">License</a></li>#}
-{#                        </ul>#}
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#{% endblock extra %}#}
-{##}
-{#{% block footer %}#}
-{#    <div class="footer">#}
-{##}
-{#        <div class="footer-inner">#}
-{##}
-{#            <div class="container">#}
-{##}
-{#                <div class="row">#}
-{##}
-{#                    <div class="span12">#}
-{#                    </div>#}
-{#                    <!-- /span12 -->#}
-{##}
-{#                </div>#}
-{#                <!-- /row -->#}
-{##}
-{#            </div>#}
-{#            <!-- /container -->#}
-{##}
-{#        </div>#}
-{#        <!-- /footer-inner -->#}
-{##}
-{#    </div>#}
-{#    <!-- /footer -->#}
-{#{% endblock footer %}#}
-{##}
-{#{% block tour %}{% endblock tour %}#}
-{##}
-{#<!-- Placed at the end of the document so the pages load faster -->#}
-{#<script src="{% static 'js/jquery-1.8.3.js' %}"></script>#}
-{#<script src="{% static 'js/bootstrap.js' %}"></script>#}
-{#<script src="{% static 'js/modernizr.mq.js' %}"></script>#}
-{#<script src="{% static 'js/jquery.joyride-2.0.3.js' %}"></script>#}
-{##}
-{##}
-{#<script type="text/javascript">#}
-{#    function launch_tour() {#}
-{#        $('#joyRideContent').joyride({'autoStart': true}).show();#}
-{#    }#}
-{#</script>#}
-{##}
-{#{% block additional_script %}#}
-{#{% endblock additional_script %}#}
-{#</body>#}
-{#</html>#}

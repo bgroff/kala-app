@@ -10,6 +10,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'storages',
+    'taggit',
 
     'accounts',
     'companies',

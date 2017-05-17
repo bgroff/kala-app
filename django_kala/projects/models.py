@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
+from taggit.managers import TaggableManager
 
 from managers import ActiveManager
 
@@ -9,6 +10,9 @@ import datetime
 
 class Project(models.Model):
     name = models.CharField(max_length=255)
+    description = models.TextField()
+    tags = TaggableManager()
+
     company = models.ForeignKey('companies.Company')
     clients = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
@@ -25,8 +29,6 @@ class Project(models.Model):
 
     def set_active(self, active):
         self.is_active = active
-        for document in self.document_set.all():
-            document.set_active(active)
         if not self.is_active:
             self.removed = datetime.date.today()
         self.save()

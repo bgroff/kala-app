@@ -7,5 +7,10 @@ if type(deployment) is str:
         DEBUG = False
     else:
         DEBUG = True
+        from .apps import INSTALLED_APPS
+        from .middleware import MIDDLEWARE
+        INSTALLED_APPS += ['debug_toolbar']
+        MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
+        INTERNAL_IPS = ['10.0.2.2']
 else:
     DEBUG = True

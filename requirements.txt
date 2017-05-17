@@ -3,6 +3,7 @@ Django>=1.11,<2.0
 django-countries==4.4
 django-localflavor-us==1.1
 django-storages==1.5.2
+django-taggit==0.22.1
 django-timezone-field==2.0
 djangorestframework==3.6.2
 packaging==16.8
