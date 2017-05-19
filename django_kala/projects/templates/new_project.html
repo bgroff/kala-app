@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load kala_tags %}
+
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <a class="section" href="{% url 'projects:projects' %}">Projects</a>
+                <div class="divider"> /</div>
+                <span class="active section">New Project</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui divider">
+    </div>
+
+    <div class="ui one column grid container">
+        <div class="twelve wide column">
+            <form class="ui form" method="post">
+                {% csrf_token %}
+                <div class="field">
+                    <label>{{ form.company.label }}</label>
+                    {{ form.company }}
+                </div>
+                <div class="field">
+                    <label>{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+                <div class="field">
+                    <label>{{ form.description.label }}</label>
+                    {{ form.description }}
+                </div>
+                <div class="field">
+                    <label>{{ form.tags.label }}</label>
+                    {{ form.tags }}
+                    {#                    <input id={{ form.tags.auto_id }} type="text" name="{{ form.name.name }}" placeholder="Project Name" value="{{ form.name.value }}" maxlength="{{ form.fields.name.max_length }} required">#}
+                </div>
+                <button class="ui button primary" type="submit">Create project</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('select.search.dropdown')
+            .dropdown()
+        ;
+    </script>
+{% endblock scripts %}

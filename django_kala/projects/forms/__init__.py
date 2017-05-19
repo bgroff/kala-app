@@ -2,6 +2,7 @@
 from .settings.details import DetailsForm
 from .settings.manage_access import ManageAccessForm, manage_access_forms
 from .settings.transfer_ownership import TransferOwnershipForm
+from .new_project import NewProjectForm
 
 
 from django import forms
@@ -35,33 +36,6 @@ class DeleteProjectsForm(forms.Form):
     def save(self):
         project = Project.objects.deleted().get(pk=self.cleaned_data['project'])
         project.set_active(True)
-        return project
-
-
-class ProjectForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        self.company = kwargs.pop('company')
-        self.is_admin = kwargs.pop('is_admin')
-        super(ProjectForm, self).__init__(*args, **kwargs)
-        if self.is_admin:
-            self.fields['company'] = forms.ModelChoiceField(queryset=Company.objects.active(),
-                                                            widget=forms.Select(attrs={'class': 'span3'}))
-
-    class Meta:
-        model = Project
-        fields = ('name', 'company')
-        widgets = {
-            'name': forms.TextInput(attrs={'class': 'span3'})
-        }
-
-    def save(self, commit=True):
-        if self.is_admin:
-            self.instance.owner = self.cleaned_data['company']
-        else:
-            self.instance.owner = self.company
-        project = super(ProjectForm, self).save(commit)
-        # Add all of the companies accounts to the project.
-        #[self.instance.clients.add(person) for person in Person.active.filter(company=self.company)]
         return project
 
 

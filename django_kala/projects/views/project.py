@@ -17,7 +17,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
     template_name = 'project.html'
 
     def get_context_data(self, **kwargs):
-        documents = Document.objects.active().filter(project=self.project)
+        documents = Document.objects.active().filter(project=self.project).select_related().prefetch_related('documentversion_set')
         if hasattr(self, 'sort_order'):
             if self.sort_order == 'AZ':
                 documents = documents.order_by('name')

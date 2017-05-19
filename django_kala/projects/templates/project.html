@@ -6,71 +6,6 @@
 {% block content %}
     <div class="repo ribbon">
         <div class="ui container">
-            <div class="repo options">
-                <div class="ui labeled button">
-                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
-                        <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> View
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <div class="item" data-value="not-watching">
-                                <h4>Not Watching</h4>
-                                <span>Be notified when participating or @mentioned.</span>
-                            </div>
-                            <div class="item" data-value="watching">
-                                <h4>Watching</h4>
-                                <span>Be notified of all conversations.</span>
-                            </div>
-                            <div class="item" data-value="ignoring">
-                                <h4>Ignoring</h4>
-                                <span>Never be notified.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="ui labeled button">
-                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
-                        <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> Sort
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <div class="item" data-value="not-watching">
-                                <h4>Not Watching</h4>
-                                <span>Be notified when participating or @mentioned.</span>
-                            </div>
-                            <div class="item" data-value="watching">
-                                <h4>Watching</h4>
-                                <span>Be notified of all conversations.</span>
-                            </div>
-                            <div class="item" data-value="ignoring">
-                                <h4>Ignoring</h4>
-                                <span>Never be notified.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="ui labeled button">
-                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
-                        <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> Sort
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <div class="item" data-value="not-watching">
-                                <h4>Not Watching</h4>
-                                <span>Be notified when participating or @mentioned.</span>
-                            </div>
-                            <div class="item" data-value="watching">
-                                <h4>Watching</h4>
-                                <span>Be notified of all conversations.</span>
-                            </div>
-                            <div class="item" data-value="ignoring">
-                                <h4>Ignoring</h4>
-                                <span>Never be notified.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div class="ui big breadcrumb">
                 <a class="section">{{ project.company }}</a>
                 <div class="divider"> /</div>
@@ -141,52 +76,127 @@
             <div class="ui inverted red segment"></div>
         </div>
 
-        <div class="ui cards">
-            {% for document in documents %}
-                <div class="ui card">
-                    <div class="ui fade reveal image">
-                        <img class="visible content" style="background-color: #f3f3f3"
-                             src="{% static document.get_icon %}"
-                             alt="{{ document.get_alt }}">
-                        <img class="hidden content" src="{% static "images/icons/android-download.png" %}"
-                             alt="{{ document.get_alt }}">
-                    </div>
-                    <div class="content">
-                        <a class="header" style="word-wrap: break-word;">{{ document.name }}</a>
-                        <div class="meta">
-                            {% if document.documentversion_set.all.count == 1 %}
-                                <span class="date">Created on {{ document.date }}</span>
-                            {% else %}
-                                <span class="date">Updated on {{ document.date }}</span>
-                            {% endif %}
-                            by {{ document.person }}
-                        </div>
-                        {% if document.description %}
-                            <div class="description">
-                                {{ document.description }}
+        <div class="repo title">
+            <div class="repo options">
+{#                <div class="ui compact buttons">#}
+{#                    <div class="ui button">New File</div>#}
+{#                    <div class="ui button">Find File</div>#}
+{#                </div>#}
+{#                <div class="ui right action input">#}
+{#                    <div class="ui compact dropdown button">#}
+{#                        SSH#}
+{#                        <i class="dropdown icon"></i>#}
+{#                    </div>#}
+{#                    <input type="text" value="https://github.com/Semantic-Org/Semantic-UI">#}
+{#                    <a class="ui icon button" data-content="Copy to clipboard">#}
+{#                        <i class="clippy icon"></i>#}
+{#                    </a>#}
+{#                </div>#}
+{#                <div class="ui compact icon button" data-content="Save to desktop.">#}
+{#                    <i class="cloud download icon"></i>#}
+{#                </div>#}
+                <div class="ui compact button">
+                    Download ZIP
+                </div>
+                <div class="ui labeled button">
+                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
+                        <input type="hidden" value="watching">
+                        <i class="checklist icon"></i> Filter
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            {% for category in project.category_set.all %}
+                            <div class="item" data-value="not-watching">
+                                <h4>{{ category }}</h4>
                             </div>
-                        {% endif %}
-                    </div>
-                    <div class="extra content">
-                        <a>
-                            <i class="git branch icon"></i>
-                            Versions {{ document.documentversion_set.all.count }}
-                        </a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
-            {% endfor %}
-
+                <div class="ui labeled button">
+                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
+                        <input type="hidden" value="watching">
+                        <i class="checklist icon"></i> Sort
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <div class="item" data-value="not-watching">
+                                <h4>Alphabetically</h4>
+                            </div>
+                            <div class="item" data-value="watching">
+                                <h4>Date</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{#            <div class="ui dropdown branch compact button">#}
+{#                <div class="text">#}
+{#                    Branch:#}
+{#                    <b>master</b>#}
+{#                </div>#}
+{#                <i class="dropdown icon"></i>#}
+{#            </div>#}
+            <div class="ui positive compact icon button">
+               + New document
+            </div>
         </div>
-        <div class="ui divider"></div>
+      <div class="ui divider">
+      </div>
+        <div class="ui container">
+            <div class="ui cards">
+                {% for document in documents %}
+                    <div class="ui card">
+                        <div class="ui fade reveal image">
+                            <img class="visible content" style="background-color: #f3f3f3"
+                                 src="{% static document.get_icon %}"
+                                 alt="{{ document.get_alt }}">
+                            <img class="hidden content" src="{% static "images/icons/android-download.png" %}"
+                                 alt="{{ document.get_alt }}">
+                        </div>
+                        <div class="content">
+                            <a class="header" style="word-wrap: break-word;">{{ document.name }}</a>
+                            <div class="meta">
+                                {% if document.documentversion_set.all.count == 1 %}
+                                    <span class="date">Created on {{ document.date }}</span>
+                                {% else %}
+                                    <span class="date">Updated on {{ document.date }}</span>
+                                {% endif %}
+                                by {{ document.person }}
+                            </div>
+                            {% if document.description %}
+                                <div class="description" style="word-wrap: break-word;">
+                                    {{ document.description }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="extra content">
+                            <a>
+                                <i class="git branch icon"></i>
+                                Versions {{ document.documentversion_set.all.count }}
+                            </a>
+                            <div class="ui divider"></div>
+                <div class="ui compact button primary">
+                    + New version
+                </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="ui container">There are no documents uploaded for this project.</div>
+                {% endfor %}
 
-        <div class="ui pagination menu">
-            {% for page in page_range %}
-                <a class="{% if page == current_page %}active{% endif %} item"
-                   href="{% url 'projects:project' project.pk %}?page={{ page }}">
-                    {{ page }}
-                </a>
-            {% endfor %}
+            </div>
+
+            <div class="ui divider"></div>
+
+            <div class="ui pagination menu">
+                {% for page in page_range %}
+                    <a class="{% if page == current_page %}active{% endif %} item"
+                       href="{% url 'projects:project' project.pk %}?page={{ page }}">
+                        {{ page }}
+                    </a>
+                {% endfor %}
+            </div>
         </div>
+
     </div>
 {% endblock content %}
 {##}

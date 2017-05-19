@@ -17,7 +17,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/icon.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/image.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/transition.css" %}">
-    <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/default/checkbox.css" %}">
+    <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/checkbox.css" %}">
 
     <!--
       These css files are pre-compiled
@@ -73,10 +73,10 @@
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <a class="item">New organization</a>
+                    <a class="item" href="{% url 'projects:new_project' %}">New project</a>
                     <div class="divider"></div>
                     <div class="header">This organization</div>
                     <a class="item">Invite someone</a>
-                    <a class="item">New project</a>
                     <div class="divider"></div>
                     <div class="header">This project</div>
                     <a class="item">New document</a>
@@ -109,7 +109,7 @@
                     </div>
                     <input type="text" placeholder="Search">
                 </div>
-                <a class="item">
+                <a class="item" href="{% url 'projects:projects' %}">
                     <b>Projects</b>
                 </a>
                 <a class="item">

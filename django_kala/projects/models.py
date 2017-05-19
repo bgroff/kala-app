@@ -11,7 +11,7 @@ import datetime
 class Project(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
 
     company = models.ForeignKey('companies.Company')
     clients = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
@@ -53,4 +53,4 @@ class Category(models.Model):
     type = models.CharField(max_length=20, db_index=True)
 
     def __str__(self):
-        return '{0} - {1}'.format(self.name, self.type)
+        return '{0}'.format(self.name)

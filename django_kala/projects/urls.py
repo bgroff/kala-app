@@ -9,6 +9,12 @@ urlpatterns = [
    ),
 
    url(
+       regex=r'^new_project$',
+       view=NewProjectView.as_view(),
+       name='new_project'
+   ),
+
+   url(
        regex=r'^(?P<pk>\d+)/$',
        view=ProjectView.as_view(),
        name='project'
