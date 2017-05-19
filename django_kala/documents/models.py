@@ -75,10 +75,10 @@ class Document(models.Model):
         return self.document.get_alt()
 
     def get_latest(self):
-        return DocumentVersion.objects.filter(document=self).latest()
+        return self.documentversion_set.latest()
 
     def list_versions(self):
-        return DocumentVersion.objects.filter(document=self).exclude(pk=self.get_latest().pk)
+        return self.documentversion_set.all()
 
     def __str__(self):
         return self.name
