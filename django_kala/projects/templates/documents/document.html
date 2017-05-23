@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load kala_tags %}
+
+{% block projects_class %}active{% endblock %}
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <a class="section">{{ project.company }}</a>
+                <div class="divider"> /</div>
+                <a class="active section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
+                <div class="divider"> /</div>
+                <span class="active section">{{ document }}</span>
+            </div>
+        </div>
+
+        <div class="ui tabular menu">
+            <div class="ui container">
+                <a class="active item">
+                    <i class="git branch icon"></i>
+                    Versions
+                </a>
+                <a class="item">
+                    <i class="issue opened icon"></i>
+                    Issues
+                    <span class="ui small label">593</span>
+                </a>
+                <a class="item" href="{% url 'projects:document_details' project.pk document.pk %}">
+                    <i class="gear icon"></i>
+                    Settings
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="ui container">
+        <div class="repo title">
+            <div class="repo options">
+                <div class="ui compact button">
+                    Download ZIP
+                </div>
+            </div>
+            <a class="ui positive compact icon button" href="{% url 'projects:new_version' project.pk document.pk %}">
+                + New version
+            </a>
+        </div>
+        <div class="ui divider">
+        </div>
+        <div class="ui container">
+            <div class="ui cards">
+                {% for documentversion in document.documentversion_set.all %}
+                    <div class="ui card">
+                        <div class="ui fade reveal image">
+                            <img class="visible content" style="background-color: #f3f3f3"
+                                 src="{% static documentversion.get_icon %}"
+                                 alt="{{ documentversion.get_alt }}">
+                            <img class="hidden content" src="{% static "images/icons/android-download.png" %}"
+                                 alt="{{ documentversion.get_alt }}">
+                        </div>
+                        <div class="content">
+                            <a class="header" style="word-wrap: break-word;">{{ documentversion.name }}</a>
+                            <div class="meta">
+                                <span class="date">Created on {{ documentversion.created }}</span>
+                                by {{ documentversion.person }}
+                            </div>
+                            {% if documentversion.description %}
+                                <div class="description" style="word-wrap: break-word;">
+                                    {{ documentversion.description }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="ui container">There are no documents uploaded for this project.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

@@ -4,18 +4,21 @@ from django.http import HttpResponse
 from django.utils import timezone
 from uuid import uuid4
 from managers import ActiveManager
+from taggit.managers import TaggableManager
+
 from .defs import get_icon_for_mime, get_alt_for_mime
 
 
 class Document(models.Model):
     project = models.ForeignKey('projects.Project')
     name = models.CharField(max_length=255)
-    date = models.DateTimeField()
+    date = models.DateTimeField(default=timezone.now)
     removed = models.DateField(null=True)
     mime = models.CharField(max_length=255, null=True)
-    category = models.ForeignKey('projects.Category', null=True)
+    category = models.ForeignKey('projects.Category', null=True, blank=True)
     is_active = models.BooleanField(default=True)
 
+    tags = TaggableManager(blank=True)
     objects = ActiveManager()
 
     class Meta:
@@ -103,10 +106,10 @@ class DocumentVersion(models.Model):
         db_table = 'kala_document_version'
 
     def save(self, force_insert=False, force_update=False, using=None,
-             update_fields=None, save_document=True):
+             update_fields=None, save_document=False):
         if save_document:
-            self.document.name = self.name
-            self.document.date = self.created
+            #self.document.name = self.name
+            #self.document.date = self.created
             self.document.mime = self.mime
             self.document.save()
         super(DocumentVersion, self).save(force_insert, force_update, using, update_fields)

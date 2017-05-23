@@ -4,11 +4,11 @@ from django.views.generic.base import TemplateView
 
 from accounts.mixins import AdminRequiredMixin
 from projects.models import Project
-from projects.forms import TransferOwnershipForm
+from projects.forms import DetailsForm
 
 
-class TransferOwnershipView(AdminRequiredMixin, TemplateView):
-    template_name = 'settings/project_transfer_ownership.html'
+class DetailsView(AdminRequiredMixin, TemplateView):
+    template_name = 'projects/settings/details.html'
 
     def get_context_data(self, **kwargs):
         return {
@@ -18,11 +18,13 @@ class TransferOwnershipView(AdminRequiredMixin, TemplateView):
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
-        self.form = TransferOwnershipForm(request.POST or None, project=self.project)
-        return super(TransferOwnershipView, self).dispatch(request, *args, **kwargs)
+        self.form = DetailsForm(request.POST or None, instance=self.project)
+        return super(DetailsView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
+            self.form.save(commit=False)
+            self.form.save_m2m()
             self.form.save()
-            return redirect(reverse('projects:transfer_ownership', args=[self.project.pk]))
+            return redirect(reverse('projects:details', args=[self.project.pk]))
         return self.render_to_response(self.get_context_data())

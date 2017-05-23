@@ -24,23 +24,6 @@
                     Issues
                     <span class="ui small label">593</span>
                 </a>
-                {#            <a class="item">#}
-                {#              <i class="git pull request icon"></i>#}
-                {#              Pull Requests#}
-                {#              <span class="ui small label">39</span>#}
-                {#            </a>#}
-                {#            <a class="item">#}
-                {#              <i class="book icon"></i>#}
-                {#              Wiki#}
-                {#            </a>#}
-                {#            <a class="item">#}
-                {#              <i class="pulse icon"></i>#}
-                {#              Pulse#}
-                {#            </a>#}
-                {#            <a class="item">#}
-                {#              <i class="graph icon"></i>#}
-                {#              Graphs#}
-                {#            </a>#}
                 <a class="item" href="{% url 'projects:details' project.pk %}">
                     <i class="gear icon"></i>
                     Settings
@@ -111,9 +94,9 @@
                     </div>
                 </div>
             </div>
-            <div class="ui positive compact icon button">
+            <a class="ui positive compact icon button" href="{% url 'projects:new_document' project.pk %}">
                 + New document
-            </div>
+            </a>
         </div>
         <div class="ui divider">
         </div>
@@ -129,7 +112,7 @@
                                  alt="{{ document.documentversion_set.all.0.get_alt }}">
                         </div>
                         <div class="content">
-                            <a class="header" style="word-wrap: break-word;">{{ document.name }}</a>
+                            <a class="header" style="word-wrap: break-word;" href="{% url 'projects:document' project.pk document.pk %}">{{ document.name }}</a>
                             <div class="meta">
                                 {% if document.documentversion_set.all.count == 1 %}
                                     <span class="date">Created on {{ document.date }}</span>
@@ -169,9 +152,9 @@
                                 </div>
                             </div>
                             <div class="ui divider"></div>
-                            <div class="ui compact button primary">
+                            <a class="ui compact button primary" href="{% url 'projects:new_version' project.pk document.pk %}">
                                 + New version
-                            </div>
+                            </a>
                         </div>
                     </div>
                     {% empty %}

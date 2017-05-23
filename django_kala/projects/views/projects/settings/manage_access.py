@@ -9,7 +9,7 @@ from projects.models import Project
 
 
 class ManageAccessView(AdminRequiredMixin, TemplateView):
-    template_name = 'settings/project_manage_access.html'
+    template_name = 'projects/settings/manage_access.html'
 
     def get_context_data(self, **kwargs):
         return {

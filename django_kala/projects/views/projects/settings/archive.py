@@ -7,7 +7,7 @@ from projects.models import Project
 
 
 class ArchiveView(AdminRequiredMixin, TemplateView):
-    template_name = 'settings/project_archive.html'
+    template_name = 'projects/settings/archive.html'
 
     def get_context_data(self, **kwargs):
         return {

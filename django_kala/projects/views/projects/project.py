@@ -14,7 +14,7 @@ from projects.models import Project
 
 
 class ProjectView(LoginRequiredMixin, TemplateView):
-    template_name = 'project.html'
+    template_name = 'projects/project.html'
 
     def get_context_data(self, **kwargs):
         documents = Document.objects.active().filter(project=self.project).select_related().prefetch_related(

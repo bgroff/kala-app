@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load kala_tags %}
+
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <a class="section">{{ project.company }}</a>
+                <div class="divider"> /</div>
+                <a class="active section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
+                <div class="divider"> /</div>
+                <a class="active section">{{ document }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui tabular menu">
+        <div class="ui container">
+            <a class="item" href="{% url 'projects:project' project.pk %}">
+                <i class="book icon"></i>
+                Documents
+            </a>
+            <a class="item">
+                <i class="issue opened icon"></i>
+                Issues
+                <span class="ui small label">593</span>
+            </a>
+            <a class="active item" href="{% url 'projects:details' project.pk %}">
+                <i class="gear icon"></i>
+                Settings
+            </a>
+        </div>
+    </div>
+
+
+    <div class="ui two column grid container">
+        <div class="four wide column">
+            <div class="ui vertical menu">
+                <div class="item">
+                    <div class="header">Document</div>
+                    <div class="menu">
+                        <a class="active item" href="{% url 'projects:details' project.pk %}">Details</a>
+                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="header">People</div>
+                    <div class="menu">
+                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">Manage access</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="header">Projects</div>
+                    <div class="menu">
+                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="twelve wide column">
+            <form class="ui form" method="post">
+                {% csrf_token %}
+                <div class="field">
+                    <label>{{ form.name.label }}</label>
+                    <input id={{ form.name.auto_id }} type="text" name="{{ form.name.name }}" placeholder="Project Name" value="{{ form.name.value }}" maxlength="{{ form.fields.name.max_length }} required">
+                </div>
+                <div class="field">
+                    <label>{{ form.category.label }}</label>
+                    {{ form.category }}
+                </div>
+                <div class="field">
+                    <label>{{ form.tags.label }}</label>
+                    {{ form.tags }}
+                </div>
+                <button class="ui button primary" type="submit">Update details</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        $('select.search.dropdown')
+            .dropdown()
+        ;
+    </script>
+{% endblock scripts %}

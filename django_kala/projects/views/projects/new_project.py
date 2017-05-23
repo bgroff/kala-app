@@ -7,7 +7,7 @@ from projects.forms import NewProjectForm
 
 
 class NewProjectView(LoginRequiredMixin, TemplateView):
-    template_name = 'new_project.html'
+    template_name = 'projects/new_project.html'
 
     def get_context_data(self, **kwargs):
         return {

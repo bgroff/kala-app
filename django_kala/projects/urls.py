@@ -20,11 +20,29 @@ urlpatterns = [
        name='project'
    ),
 
-   # url(
-   #     regex=r'^(?P<pk>\d+)/permissions/$',
-   #     view=ProjectPermissions.as_view(),
-   #     name='permissions'
-   # ),
+   url(
+       regex=r'^(?P<project_pk>\d+)/new_document$',
+       view=NewDocumentView.as_view(),
+       name='new_document'
+   ),
+
+   url(
+       regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)$',
+       view=DocumentView.as_view(),
+       name='document'
+   ),
+
+   url(
+       regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/new_version$',
+       view=NewDocumentVersionView.as_view(),
+       name='new_version'
+   ),
+
+   url(
+       regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/details$',
+       view=DocumentDetailsView.as_view(),
+       name='document_details'
+   ),
 
    url(
        regex=r'^(?P<pk>\d+)/settings/details$',
