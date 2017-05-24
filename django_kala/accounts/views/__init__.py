@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 
+from .settings.details import DetailsView
 from .invite_user import InviteUserView
 from .users import UsersView
 

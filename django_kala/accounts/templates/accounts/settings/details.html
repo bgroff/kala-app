@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load kala_tags %}
+
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <a class="section" href="{% url 'users:users' %}">Users</a>
+                <div class="divider"> /</div>
+                <a class="active section">{{ user }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui tabular menu">
+        <div class="ui container">
+            <a class="item" href="{% url 'users:users' %}">
+                <i class="organization icon"></i>
+                Users
+            </a>
+            <a class="item">
+                <i class="merge icon"></i>
+                Merge users
+            </a>
+            <a class="active item" href="{% url 'users:details' user.pk %}">
+                <i class="gear icon"></i>
+                Settings
+            </a>
+        </div>
+    </div>
+
+
+    <div class="ui two column grid container">
+        <div class="four wide column">
+            <div class="ui vertical menu">
+                <div class="item">
+                    <div class="header">User</div>
+                    <div class="menu">
+                        <a class="active item" href="{% url 'users:details' user.pk %}">Details</a>
+{#                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>#}
+                    </div>
+                </div>
+{#                <div class="item">#}
+{#                    <div class="header">People</div>#}
+{#                    <div class="menu">#}
+{#                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">Manage access</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="item">#}
+{#                    <div class="header">Organizations</div>#}
+{#                    <div class="menu">#}
+{#                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+        <div class="twelve wide column">
+            <form class="ui form" method="post">
+                {% csrf_token %}
+                <div class="field">
+                    <label>{{ form.email.label }}</label>
+                    {{ form.email }}
+                </div>
+                <div class="field">
+                    <label>{{ form.first_name.label }}</label>
+                    {{ form.first_name }}
+                </div>
+                <div class="field">
+                    <label>{{ form.last_name.label }}</label>
+                    {{ form.last_name }}
+                </div>
+                <div class="field">
+                    <label>{{ form.title.label }}</label>
+                    {{ form.title }}
+                </div>
+                <div class="field">
+                    <label>{{ form.timezone.label }}</label>
+                    {{ form.timezone }}
+                </div>
+                <div class="field">
+                    <label>{{ form.mobile.label }}</label>
+                    {{ form.mobile }}
+                </div>
+                <div class="field">
+                    <label>{{ form.office.label }}</label>
+                    {{ form.office }}
+                </div>
+                <button class="ui button primary" type="submit">Update details</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

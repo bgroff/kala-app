@@ -6,10 +6,22 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <h2 class="section">Users</h2>
+                <a class="section">Users</a>
             </div>
         </div>
-        <div class="ui divider"></div>
+    </div>
+
+    <div class="ui tabular menu">
+        <div class="ui container">
+            <a class="active item" href="{% url 'users:users' %}">
+                <i class="organization icon"></i>
+                Users
+            </a>
+            <a class="item">
+                <i class="merge icon"></i>
+                Merge users
+            </a>
+        </div>
     </div>
 
     <div class="ui container">
@@ -60,7 +72,13 @@
                         <div class="content">
                             <img class="right floated avatar ui image" src="{{ user.avatar_url }}">
                             <div class="header">
-                                {{ user }}
+                                {% if request.user.is_admin %}
+                                    <a href="{% url 'users:details' user.pk %}">
+                                        {{ user }}
+                                    </a>
+                                {% else %}
+                                    {{ user }}
+                                {% endif %}
                             </div>
                             <div class="meta">
                                 {{ user.companies.all|join:', ' }}

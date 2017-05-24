@@ -1,4 +1,6 @@
+from .settings.details import DetailsForm
 from .invite_user import InviteUserForm
+
 
 from django import forms
 from django.contrib.auth import get_user_model

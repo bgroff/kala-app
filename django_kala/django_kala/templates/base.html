@@ -90,7 +90,7 @@
                         Signed in as <b>{{ request.user }}</b>
                     </div>
                     <div class="divider"></div>
-                    <a class="item" href="{% url 'users:edit_profile' request.user.pk %}">Your Profile</a>
+                    <a class="item" href="{% url 'users:details' request.user.pk %}">Your Profile</a>
                     <a class="item">Help</a>
                     <div class="divider"></div>
                     <a class="item">Sign Out</a>
