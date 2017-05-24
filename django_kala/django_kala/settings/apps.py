@@ -17,5 +17,4 @@ INSTALLED_APPS = [
     'documents',
     'django_kala',
     'projects',
-    'basecamp_classic'
 ]

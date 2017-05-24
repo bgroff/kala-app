@@ -10,98 +10,17 @@
                 <h2>Projects</h2>
             </div>
         </div>
+        <div class="ui divider"></div>
     </div>
 
     <div class="ui container">
-        <!-- Repo Content -->
-        <div class="ui four item top attached borderless stats menu">
-            <a class="item">
-                <i class="book icon"></i>
-                <b>{{ project.document_set.all.count }}</b> documents
-            </a>
-            <a class="item">
-                <i class="git branch icon"></i>
-                <b>10</b> versions
-            </a>
-            <a class="item">
-                <i class="tag icon"></i>
-                <b>127</b> categories
-            </a>
-            <a class="item">
-                <i class="organization icon"></i>
-                <b>111</b> contributors
-            </a>
-        </div>
-        <div class="ui bottom attached horizontal language segments">
-            <div class="ui inverted yellow segment"></div>
-            <div class="ui inverted purple segment"></div>
-            <div class="ui inverted red segment"></div>
-        </div>
 
         <div class="repo title">
-            <div class="repo options">
-                {#                <div class="ui compact buttons">#}
-                {#                    <div class="ui button">New File</div>#}
-                {#                    <div class="ui button">Find File</div>#}
-                {#                </div>#}
-                {#                <div class="ui right action input">#}
-                {#                    <div class="ui compact dropdown button">#}
-                {#                        SSH#}
-                {#                        <i class="dropdown icon"></i>#}
-                {#                    </div>#}
-                {#                    <input type="text" value="https://github.com/Semantic-Org/Semantic-UI">#}
-                {#                    <a class="ui icon button" data-content="Copy to clipboard">#}
-                {#                        <i class="clippy icon"></i>#}
-                {#                    </a>#}
-                {#                </div>#}
-                {#                <div class="ui compact icon button" data-content="Save to desktop.">#}
-                {#                    <i class="cloud download icon"></i>#}
-                {#                </div>#}
-                <div class="ui compact button">
-                    Download ZIP
+            <a href="{% url 'projects:new_project' %}">
+                <div class="ui positive compact icon button">
+                    + New project
                 </div>
-                <div class="ui labeled button">
-                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
-                        <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> Filter
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            {% for category in project.category_set.all %}
-                                <div class="item" data-value="not-watching">
-                                    <h4>{{ category }}</h4>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <div class="ui labeled button">
-                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
-                        <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> Sort
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <div class="item" data-value="not-watching">
-                                <h4>Alphabetically</h4>
-                            </div>
-                            <div class="item" data-value="watching">
-                                <h4>Date</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {#            <div class="ui dropdown branch compact button">#}
-            {#                <div class="text">#}
-            {#                    Branch:#}
-            {#                    <b>master</b>#}
-            {#                </div>#}
-            {#                <i class="dropdown icon"></i>#}
-            {#            </div>#}
-        <a href="{% url 'projects:new_project' %}">
-            <div class="ui positive compact icon button">
-                + New project
-            </div>
-        </a>
+            </a>
         </div>
         <div class="ui divider">
         </div>

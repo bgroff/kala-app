@@ -1,12 +1,17 @@
 from django.conf.urls import url
 from django.contrib.auth.views import login, logout_then_login
-from .views import EditProfile, PeopleView
+from .views import EditProfile, UsersView, InviteUserView
 
 
 urlpatterns = [
    url(regex=r'^$',
-       view=PeopleView.as_view(),
+       view=UsersView.as_view(),
        name='users',
+   ),
+
+   url(regex=r'^invite_user$',
+       view=InviteUserView.as_view(),
+       name='invite_user',
    ),
 
    url(

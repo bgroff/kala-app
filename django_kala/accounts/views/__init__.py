@@ -1,16 +1,16 @@
+from django.contrib.auth import get_user_model
+
+from .invite_user import InviteUserView
+from .users import UsersView
+
 from django.contrib import messages
-from django.contrib.auth import get_user
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
-from django.utils.decorators import method_decorator
 from django.views.generic import TemplateView
-from .forms import PersonForm, CreatePersonForm, permission_forms, DeletedCompanyForm
-from .mixins import LoginRequiredMixin
-from .models import User
-from companies.forms import CreateCompanyForm
-from companies.models import Company
-from projects.models import Project
+
+from ..forms.invite_user import InviteUserForm
+from ..forms import PersonForm, permission_forms
+from ..mixins import LoginRequiredMixin
 
 
 class EditProfile(LoginRequiredMixin, TemplateView):
@@ -26,7 +26,7 @@ class EditProfile(LoginRequiredMixin, TemplateView):
         return context
 
     def dispatch(self, request, pk, *args, **kwargs):
-        self.person = get_object_or_404(User, pk=pk)
+        self.person = get_object_or_404(get_user_model(), pk=pk)
         if self.person != request.user and not request.user.is_admin:
             messages.error(request, 'You do not have permission to edit this persons account')
             return redirect(reverse('home'))
@@ -62,13 +62,3 @@ class EditProfile(LoginRequiredMixin, TemplateView):
             messages.success(request, 'Profile data has been saved')
             return redirect(reverse('edit_profile', args=[self.person.pk]))
         return self.render_to_response(self.get_context_data())
-
-
-class PeopleView(LoginRequiredMixin, TemplateView):
-    template_name = 'users.html'
-
-    def get_context_data(self, **kwargs):
-        return {
-            'users': self.request.user.get_users().prefetch_related('companies'),
-            'companies': self.request.user.get_companies()
-        }

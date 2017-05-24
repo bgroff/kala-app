@@ -6,7 +6,7 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <fiv class="section">Users</fiv>
+                <h2 class="section">Users</h2>
             </div>
         </div>
         <div class="ui divider"></div>
@@ -46,8 +46,8 @@
                 </div>
             </div>
             {% if request.user.is_admin %}
-                <a class="ui positive compact icon button">
-                    + New person
+                <a class="ui positive compact icon button" href="{% url 'users:invite_user' %}">
+                    + Invite user
                 </a>
             {% endif %}
         </div>

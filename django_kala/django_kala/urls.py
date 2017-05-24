@@ -26,7 +26,7 @@ urlpatterns = [
 
     url(
         r'^',
-        include('basecamp_classic.urls', namespace='basecamp_classic'),
+        include('api.basecamp_classic.urls', namespace='basecamp_classic'),
     ),
 
     url(

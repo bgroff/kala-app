@@ -6,21 +6,15 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section" href="{% url 'projects:projects' %}">Projects</a>
-                <div class="divider"> /</div>
+                <h2>
                 <a class="section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
                 <div class="divider"> /</div>
                 <span class="active section">New Document</span>
+
+                </h2>
             </div>
         </div>
-    </div>
-    <div class="ui one column grid container">
-        <div class="twelve wide column">
-            <h2 class="ui header">Create a new document</h2>
-            <p>Use the form below to create a new document</p>
-            <div class="ui divider">
-            </div>
-        </div>
+    <div class="ui divider"></div>
     </div>
 
     <div class="ui one column grid container">

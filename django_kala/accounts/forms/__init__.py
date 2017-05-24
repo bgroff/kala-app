@@ -1,12 +1,15 @@
+from .invite_user import InviteUserForm
+
 from django import forms
-from .models import User
+from django.contrib.auth import get_user_model
+
 from companies.models import Company
 from projects.models import Project
 
 
 class PersonForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = get_user_model()
         fields = (
             'first_name', 'last_name', 'email', 'title'
         )
@@ -45,16 +48,16 @@ class CreatePersonForm(PersonForm):
     company = forms.ModelChoiceField(queryset=Company.objects.active(), widget=forms.Select(attrs={'class': 'span3'}))
 
     class Meta:
-        model = User
+        model = get_user_model()
         fields = (
             'email', 'first_name', 'last_name', 'company'
         )
 
     def clean_email(self):
         try:
-            User.objects.get(username=self.cleaned_data['email'])
+            get_user_model().objects.get(username=self.cleaned_data['email'])
             raise forms.ValidationError("This email is already in use.")
-        except User.DoesNotExist:
+        except get_user_model().DoesNotExist:
             return self.cleaned_data['email']
 
     def save(self, *args, **kwargs):

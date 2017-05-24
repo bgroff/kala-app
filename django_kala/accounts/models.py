@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import UserManager, AbstractUser
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from django_localflavor_us.models import PhoneNumberField
 from timezone_field import TimeZoneField
 from uuid import uuid4
@@ -11,6 +12,8 @@ import datetime
 
 
 class User(AbstractUser):
+    email = models.EmailField(_('email address'))
+
     uuid = models.UUIDField(unique=True, db_index=True, default=uuid4)
     title = models.CharField(max_length=255, null=True, blank=True)
     companies = models.ManyToManyField('companies.Company')
@@ -31,6 +34,8 @@ class User(AbstractUser):
     avatar_url = models.URLField(max_length=1200)
 
     objects = UserManager()
+
+    USERNAME_FIELD = 'email'
 
     class Meta:
         ordering = ['first_name', 'last_name']
@@ -62,6 +67,8 @@ class User(AbstractUser):
             companies = self.get_companies().values_list('pk')
             return User.objects.filter(companies__in=companies)
 
+    def send_invite(self):
+        pass
 
     def __str__(self):  # pragma: no cover
         return "{0} {1}".format(self.first_name, self.last_name)
