@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block projects_class %}active{% endblock %}
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <fiv class="section">Users</fiv>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+    </div>
+
+    <div class="ui container">
+        <div class="repo title">
+            <div class="repo options">
+                <div class="ui labeled button">
+                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
+                        <input type="hidden" value="watching">
+                        <i class="checklist icon"></i> Filter
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            {% for company in companies %}
+                                <div class="item" data-value="not-watching">
+                                    <h4>{{ company }}</h4>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="ui labeled button">
+                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
+                        <input type="hidden" value="watching">
+                        <i class="checklist icon"></i> Sort
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <div class="item" data-value="not-watching">
+                                <h4>Alphabetically</h4>
+                            </div>
+                            <div class="item" data-value="watching">
+                                <h4>Company</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if request.user.is_admin %}
+                <a class="ui positive compact icon button">
+                    + New person
+                </a>
+            {% endif %}
+        </div>
+        <div class="ui divider">
+        </div>
+        <div class="ui container">
+            <div class="ui cards">
+                {% for user in users %}
+                    <div class="card">
+                        <div class="content">
+                            <img class="right floated avatar ui image" src="{{ user.avatar_url }}">
+                            <div class="header">
+                                {{ user }}
+                            </div>
+                            <div class="meta">
+                                {{ user.companies.all|join:', ' }}
+                            </div>
+                            <div class="description">
+                                <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="ui container">There are no users.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        $('.dropdown')
+            .dropdown({
+                direction: 'upward'
+            })
+        ;
+    </script>
+{% endblock scripts %}

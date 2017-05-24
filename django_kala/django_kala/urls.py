@@ -40,8 +40,8 @@ urlpatterns = [
     ),
 
     url(
-        r'^accounts/',
-        include('accounts.urls'),
+        r'^users/',
+        include('accounts.urls', namespace='users'),
     ),
 
     url(

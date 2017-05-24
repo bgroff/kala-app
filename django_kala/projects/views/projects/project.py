@@ -8,7 +8,7 @@ from accounts.mixins import LoginRequiredMixin
 from accounts.models import User
 from documents.defs import get_mimes_for_category
 from documents.forms import DocumentForm
-from documents.models import Document
+from documents.models import Document, DocumentVersion
 from projects.forms import CategoryForm, SortForm
 from projects.models import Project
 
@@ -21,6 +21,12 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'documentversion_set',
             'documentversion_set__person'
         )
+
+        version_ids = []
+        for document in documents:
+            for version in document.documentversion_set.all():
+                version_ids.append(str(version.uuid))
+        versions = DocumentVersion.objects.filter(uuid__in=version_ids).order_by('person_id')
 
         if hasattr(self, 'sort_order'):
             if self.sort_order == 'AZ':
@@ -43,6 +49,8 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'form': self.form,
             'project': self.project,
             'sort_form': self.sort_form,
+            'version_count': versions.count(),
+            'user_count': versions.distinct('person').count()
         }
 
     def dispatch(self, request, pk, *args, **kwargs):

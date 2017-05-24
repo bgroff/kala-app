@@ -55,5 +55,13 @@ class User(AbstractUser):
             pk__in=projects.models.Project.objects.active().values('company__pk'))
         return _companies & has_projects
 
+    def get_users(self):
+        if self.is_admin:
+            return User.objects.all()
+        else:
+            companies = self.get_companies().values_list('pk')
+            return User.objects.filter(companies__in=companies)
+
+
     def __str__(self):  # pragma: no cover
         return "{0} {1}".format(self.first_name, self.last_name)

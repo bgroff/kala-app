@@ -6,7 +6,7 @@ from .views import EditProfile, PeopleView
 urlpatterns = [
    url(regex=r'^$',
        view=PeopleView.as_view(),
-       name='accounts',
+       name='users',
    ),
 
    url(

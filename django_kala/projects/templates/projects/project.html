@@ -42,15 +42,15 @@
             </a>
             <a class="item">
                 <i class="git branch icon"></i>
-                <b>10</b> versions
+                <b>{{ version_count }}</b> versions
             </a>
             <a class="item">
                 <i class="tag icon"></i>
-                <b>127</b> categories
+                <b>{{ project.category_set.all.count }}</b> categories
             </a>
             <a class="item">
                 <i class="organization icon"></i>
-                <b>111</b> contributors
+                <b>{{ user_count }}</b> contributors
             </a>
         </div>
         <div class="ui bottom attached horizontal language segments">

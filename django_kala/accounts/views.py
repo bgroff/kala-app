@@ -65,54 +65,10 @@ class EditProfile(LoginRequiredMixin, TemplateView):
 
 
 class PeopleView(LoginRequiredMixin, TemplateView):
-    template_name = 'accounts.html'
+    template_name = 'users.html'
 
     def get_context_data(self, **kwargs):
-        if self.request.user.is_admin:
-            return {
-                'companies': self.companies,
-                'company_form': self.company_form,
-                'person_form': self.person_form,
-                'undelete_form': self.undelete_form,
-            }
         return {
-            'companies': self.companies
+            'users': self.request.user.get_users().prefetch_related('companies'),
+            'companies': self.request.user.get_companies()
         }
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        self.user = get_user(request)
-        if self.user.is_admin:
-            self.companies = Company.objects.active()
-            self.company_form = CreateCompanyForm(request.POST if 'create_company' in request.POST else None)
-            self.person_form = CreatePersonForm(request.POST if 'create_person' in request.POST else None)
-            self.undelete_form = DeletedCompanyForm(request.POST if 'undelete' in request.POST else None)
-        else:
-            self.companies = Company.objects.active().filter(
-                pk__in=Project.clients.through.objects.filter(user__pk=self.user.pk).values(
-                    'project__company__pk'))
-            self.companies = self.companies | Company.objects.active().filter(
-                pk__in=self.user.companies.values_list('pk', flat=True)
-            )
-        return super(PeopleView, self).dispatch(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        if not self.user.is_admin:
-            messages.error(request, 'You do not have permission to create data')
-            return redirect(reverse('accounts'))
-
-        if 'create_company' in request.POST and self.company_form.is_valid():
-            company = self.company_form.save()
-            messages.success(request, 'The company has been created')
-            return redirect(reverse('company', args=[company.pk]))
-
-        if 'create_person' in request.POST and self.person_form.is_valid():
-            self.person_form.save()
-            messages.success(request, 'The person has been created')
-            return redirect(reverse('accounts'))
-
-        if 'undelete' in request.POST and self.undelete_form.is_valid():
-            company = self.undelete_form.save()
-            messages.success(request, 'The company %s has been un-deleted' % company.name)
-            return redirect(reverse('accounts'))
-        return self.render_to_response(self.get_context_data())
