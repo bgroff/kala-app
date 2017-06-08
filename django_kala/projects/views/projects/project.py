@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.postgres.search import SearchVector
 from django.core.paginator import Paginator, InvalidPage
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -17,26 +18,21 @@ class ProjectView(LoginRequiredMixin, TemplateView):
     template_name = 'projects/project.html'
 
     def get_context_data(self, **kwargs):
-        documents = Document.objects.active().filter(project=self.project).select_related().prefetch_related(
-            'documentversion_set',
-            'documentversion_set__person'
-        )
-
         version_ids = []
-        for document in documents:
+        for document in self.documents:
             for version in document.documentversion_set.all():
                 version_ids.append(str(version.uuid))
         versions = DocumentVersion.objects.filter(uuid__in=version_ids).order_by('person_id')
 
         if hasattr(self, 'sort_order'):
             if self.sort_order == 'AZ':
-                documents = documents.order_by('name')
+                self.documents = self.documents.order_by('name')
         if hasattr(self, 'category'):
             mimes = get_mimes_for_category(self.category)
-            documents = documents.filter(mime__in=mimes)
+            self.documents = self.documents.filter(mime__in=mimes)
         per_page = self.request.GET.get('per_page', 20)
         page = self.request.GET.get('page', 1)
-        paginator = Paginator(documents, per_page)
+        paginator = Paginator(self.documents, per_page)
         try:
             documents = paginator.page(page).object_list
         except InvalidPage:
@@ -46,7 +42,6 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'documents': documents,
             'page_range': paginator.page_range,
             'current_page': page,
-            'form': self.form,
             'project': self.project,
             'sort_form': self.sort_form,
             'version_count': versions.count(),
@@ -55,26 +50,21 @@ class ProjectView(LoginRequiredMixin, TemplateView):
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
-        person = User.objects.get(pk=self.request.user.pk)
-        self.form = DocumentForm(request.POST or None, request.FILES or None, person=person,
-                                 project=self.project)
         self.categories_form = CategoryForm(request.GET or None, project=self.project)
         self.sort_form = SortForm(request.GET or None)
         if 'search' in request.GET:
+            self.documents = Document.objects.filter(
+                id__in=DocumentVersion.objects.annotate(
+                    search=SearchVector('name', 'description')
+                ).filter(
+                    search=request.GET.get('search', '')
+                ).values_list('document_id', flat=True)
+            ).filter(project=self.project).prefetch_related('documentversion_set', 'documentversion_set__person')
             self.sort_order = request.GET.get('search')
-        if 'category' in request.GET and request.GET.get('category'):
-            self.category = request.GET.get('category')
+        else:
+            self.documents = Document.objects.active().filter(project=self.project).select_related().prefetch_related(
+                'documentversion_set',
+                'documentversion_set__person'
+            )
+
         return super(ProjectView, self).dispatch(request, *args, **kwargs)
-
-    def post(self, request, *args, **kwargs):
-        if 'delete' in request.POST and request.user.is_admin:
-            self.project.set_active(False)
-            messages.success(request, 'The project has been deleted')
-            return redirect(reverse('projects'))
-
-        if 'upload' in request.POST and self.form.is_valid():
-            self.form.save()
-            messages.success(request, 'The document has been created')
-            return redirect(reverse('project', args=[self.project.pk]))
-        return self.render_to_response(self.get_context_data())
-

@@ -12,7 +12,7 @@ import datetime
 
 
 class User(AbstractUser):
-    email = models.EmailField(_('email address'))
+    email = models.EmailField(_('email address'), unique=True)
 
     uuid = models.UUIDField(unique=True, db_index=True, default=uuid4)
     title = models.CharField(max_length=255, null=True, blank=True)
@@ -36,6 +36,7 @@ class User(AbstractUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
     class Meta:
         ordering = ['first_name', 'last_name']
@@ -59,6 +60,14 @@ class User(AbstractUser):
         has_projects = companies.models.Company.objects.active().filter(
             pk__in=projects.models.Project.objects.active().values('company__pk'))
         return _companies & has_projects
+
+    def get_projects(self):
+        if self.is_admin:
+            return projects.models.Project.objects.active()
+        else:
+            return projects.models.Project.objects.active().filter(
+                company__id=self.get_companies().values_list('company__pk')
+            )
 
     def get_users(self):
         if self.is_admin:

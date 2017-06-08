@@ -15,13 +15,19 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls import url, include
-from .views import Home, LicenseView, UserDocumentationView
+from .views import Home, SearchView, LicenseView, UserDocumentationView
 
 urlpatterns = [
     url(
         regex=r'^$',
         view=Home.as_view(),
         name='home'
+    ),
+
+    url(
+        regex=r'^search/$',
+        view=SearchView.as_view(),
+        name='search'
     ),
 
     url(

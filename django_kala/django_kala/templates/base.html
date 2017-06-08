@@ -103,12 +103,9 @@
                 <i class="huge emphasized github mark icon"></i>
             </a>
             <div class="item">
-                <div class="ui small labeled input">
-                    <div class="ui label">
-                        This project
-                    </div>
-                    <input type="text" placeholder="Search">
-                </div>
+                {% block search_bar %}
+                    {% include 'includes/search_bar.html' %}
+                {% endblock %}
                 <a class="item" href="{% url 'projects:projects' %}">
                     <b>Projects</b>
                 </a>

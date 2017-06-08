@@ -1,37 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block search_bar %}
-{% include 'projects/includes/project_search_bar.html' %}
-{% endblock %}
 
 {% block content %}
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section">{{ project.company }}</a>
-                <div class="divider"> /</div>
-                <a class="active section">{{ project }}</a>
+                <h2 class="section">Search Results</h2>
             </div>
         </div>
 
-        <div class="ui tabular menu">
-            <div class="ui container">
-                <a class="active item">
-                    <i class="book icon"></i>
-                    Documents
-                </a>
-                <a class="item">
-                    <i class="issue opened icon"></i>
-                    Issues
-                    <span class="ui small label">593</span>
-                </a>
-                <a class="item" href="{% url 'projects:details' project.pk %}">
-                    <i class="gear icon"></i>
-                    Settings
-                </a>
-            </div>
-        </div>
+    <div class="ui divider"></div>
 
     </div>
 
@@ -40,16 +19,16 @@
         <div class="ui four item top attached borderless stats menu">
             <a class="item">
                 <i class="book icon"></i>
-                <b>{{ project.document_set.all.count }}</b> documents
+                <b>{{ document_count }}</b> documents
             </a>
             <a class="item">
                 <i class="git branch icon"></i>
                 <b>{{ version_count }}</b> versions
             </a>
-            <a class="item">
-                <i class="tag icon"></i>
-                <b>{{ project.category_set.all.count }}</b> categories
-            </a>
+{#            <a class="item">#}
+{#                <i class="tag icon"></i>#}
+{#                <b>{{ project.category_set.all.count }}</b> categories#}
+{#            </a>#}
             <a class="item">
                 <i class="organization icon"></i>
                 <b>{{ user_count }}</b> contributors
@@ -96,7 +75,7 @@
                     </div>
                 </div>
             </div>
-            <a class="ui positive compact icon button" href="{% url 'projects:new_document' project.pk %}">
+                    <a class="ui positive compact icon button"">
                 + New document
             </a>
         </div>
@@ -114,7 +93,7 @@
                                  alt="{{ document.documentversion_set.all.0.get_alt }}">
                         </div>
                         <div class="content">
-                            <a class="header" style="word-wrap: break-word;" href="{% url 'projects:document' project.pk document.pk %}">{{ document.name }}</a>
+                            <a class="header" style="word-wrap: break-word;" href="{% url 'projects:document' document.project.pk document.pk %}">{{ document.name }}</a>
                             <div class="meta">
                                 {% if document.documentversion_set.all.count == 1 %}
                                     <span class="date">Created on {{ document.date }}</span>
@@ -154,7 +133,7 @@
                                 </div>
                             </div>
                             <div class="ui divider"></div>
-                            <a class="ui compact button primary" href="{% url 'projects:new_version' project.pk document.pk %}">
+                            <a class="ui compact button primary" href="{% url 'projects:new_version' document.project.pk document.pk %}">
                                 + New version
                             </a>
                         </div>
@@ -170,7 +149,7 @@
             <div class="ui pagination menu">
                 {% for page in page_range %}
                     <a class="{% if page == current_page %}active{% endif %} item"
-                       href="{% url 'projects:project' project.pk %}?page={{ page }}">
+                       href="{% url 'search' %}?page={{ page }}&search={{ request.GET.search }}">
                         {{ page }}
                     </a>
                 {% endfor %}
