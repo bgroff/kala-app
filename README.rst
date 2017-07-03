@@ -21,10 +21,6 @@ Basecamp is a registered trademark of 37signals, LLC and Kala has no affiliation
 
 Kala is the Hawaiian name for surgeonfish and is the mascot for the Kala project management software.
 
-.. image:: https://github.com/bgroff/kala-app/raw/master/django_kala/django_kala/static/img/kala-logo.png
-    :alt: Kala logo
-    :align: center
-
 
 =============
 Main Features
