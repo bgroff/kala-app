@@ -5,7 +5,7 @@ from django_localflavor_us.models import PhoneNumberField, USStateField
 from timezone_field import TimeZoneField
 from uuid import uuid4
 
-from managers import ActiveManager
+from django_kala.managers import ActiveManager
 from projects.models import Project
 
 import datetime

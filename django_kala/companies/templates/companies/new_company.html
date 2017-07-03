@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load kala_tags %}
+
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <h2 class="active section">New Organization</h2>
+            </div>
+        </div>
+        <div class="ui divider">
+        </div>
+    </div>
+
+    <div class="ui one column grid container">
+        <div class="twelve wide column">
+            <form class="ui form" method="post">
+                {% csrf_token %}
+                <div class="field">
+                    <label>{{ form.name.label }}</label>
+                    {{ form.name }}
+                </div>
+                <div class="field">
+                    <label>{{ form.address.label }}</label>
+                    {{ form.address }}
+                </div>
+                <div class="field">
+                    <label>{{ form.address1.label }}</label>
+                    {{ form.address1 }}
+                </div>
+                <div class="field">
+                    <label>{{ form.city.label }}</label>
+                    {{ form.city }}
+                </div>
+                <div class="field">
+                    <label>{{ form.state.label }}</label>
+                    {{ form.state }}
+                </div>
+                <div class="field">
+                    <label>{{ form.zip.label }}</label>
+                    {{ form.zip }}
+                </div>
+                <div class="field">
+                    <label>{{ form.country.label }}</label>
+                    {{ form.country }}
+                </div>
+                <div class="field">
+                    <label>{{ form.phone.label }}</label>
+                    {{ form.phone }}
+                </div>
+                <div class="field">
+                    <label>{{ form.website.label }}</label>
+                    {{ form.website }}
+                </div>
+                <button class="ui button primary" type="submit">Create ogranization</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $('select.search.dropdown')
+            .dropdown()
+        ;
+    </script>
+{% endblock scripts %}

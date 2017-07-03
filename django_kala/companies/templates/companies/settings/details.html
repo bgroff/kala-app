@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load kala_tags %}
+
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <a class="section">{{ organization }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui tabular menu">
+        <div class="ui container">
+            <a class="active item" href="{% url 'organizations:details' organization.pk %}">
+                <i class="gear icon"></i>
+                Settings
+            </a>
+        </div>
+    </div>
+
+
+    <div class="ui two column grid container">
+        <div class="four wide column">
+            <div class="ui vertical menu">
+                <div class="item">
+                    <div class="header">Ogranization</div>
+                    <div class="menu">
+                        <a class="active item" href="{% url 'organizations:details' organization.pk %}">Details</a>
+{#                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>#}
+                    </div>
+                </div>
+{#                <div class="item">#}
+{#                    <div class="header">People</div>#}
+{#                    <div class="menu">#}
+{#                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">Manage access</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="item">#}
+{#                    <div class="header">Organizations</div>#}
+{#                    <div class="menu">#}
+{#                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+        <div class="twelve wide column">
+            <form class="ui form" method="post">
+                {% csrf_token %}
+                <div class="field">
+                    <label>{{ form.name.label }}</label>
+                    <input id={{ form.name.auto_id }} type="text" name="{{ form.name.name }}" placeholder="Project Name" value="{{ form.name.value }}" maxlength="{{ form.fields.name.max_length }} required">
+                </div>
+                <div class="field">
+                    <label>{{ form.address.label }}</label>
+                    <input id={{ form.address.auto_id }} type="text" name="{{ form.address.name }}" placeholder="Address" value="{{ form.address.value }}" maxlength="{{ form.fields.address.max_length }} required">
+                </div>
+                <div class="field">
+                    <label>{{ form.address1.label }}</label>
+                    <input id={{ form.address1.auto_id }} type="text" name="{{ form.address1.name }}" placeholder="Address additional" value="{{ form.address1.value }}" maxlength="{{ form.fields.address1.max_length }} required">
+                </div>
+                <div class="field">
+                    <label>{{ form.city.label }}</label>
+                    <input id={{ form.city.auto_id }} type="text" name="{{ form.city.name }}" placeholder="City" value="{{ form.city.value }}" maxlength="{{ form.fields.city.max_length }} required">
+                </div>
+                <div class="field">
+                    <label>{{ form.state.label }}</label>
+                    <input id={{ form.state.auto_id }} type="text" name="{{ form.state.name }}" placeholder="State" value="{{ form.state.value }}" maxlength="{{ form.fields.state.max_length }} required">
+                </div>
+                <div class="field">
+                    <label>{{ form.zip.label }}</label>
+                    <input id={{ form.zip.auto_id }} type="text" name="{{ form.zip.name }}" placeholder="Zip code" value="{{ form.zip.value }}" maxlength="{{ form.fields.zip.max_length }} required">
+                </div>
+                <div class="field">
+                    <label>{{ form.country.label }}</label>
+                    <input id={{ form.country.auto_id }} type="text" name="{{ form.country.name }}" placeholder="Country" value="{{ form.country.value }}" maxlength="{{ form.fields.country.max_length }} required">
+                </div>
+                <div class="field">
+                    <label>{{ form.phone.label }}</label>
+                    <input id={{ form.phone.auto_id }} type="text" name="{{ form.phone.name }}" placeholder="Phone number" value="{{ form.phone.value }}" maxlength="{{ form.fields.phone.max_length }} required">
+                </div>
+                <div class="field">
+                    <label>{{ form.website.label }}</label>
+                    <input id={{ form.website.auto_id }} type="text" name="{{ form.website.name }}" placeholder="Website" value="{{ form.website.value }}" maxlength="{{ form.fields.website.max_length }} required">
+                </div>
+               <button class="ui button primary" type="submit">Update details</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

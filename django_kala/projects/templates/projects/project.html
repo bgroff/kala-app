@@ -106,13 +106,15 @@
             <div class="ui cards">
                 {% for document in documents %}
                     <div class="ui card">
-                        <div class="ui fade reveal image">
-                            <img class="visible content" style="background-color: #f3f3f3"
-                                 src="{% static document.documentversion_set.all.0.get_icon %}"
-                                 alt="{{ document.documentversion_set.all.0.get_alt }}">
-                            <img class="hidden content" src="{% static "images/icons/android-download.png" %}"
-                                 alt="{{ document.documentversion_set.all.0.get_alt }}">
+                        <a href="{% url 'projects:download' project.pk document.pk document.documentversion_set.all.0.uuid %}">
+                            <div class="ui fade reveal image">
+                                <img class="visible content" style="background-color: #f3f3f3"
+                                     src="{% static document.documentversion_set.all.0.get_icon %}"
+                                     alt="{{ document.documentversion_set.all.0.get_alt }}">
+                                <img class="hidden content" src="{% static "images/icons/android-download.png" %}"
+                                     alt="{{ document.documentversion_set.all.0.get_alt }}">
                         </div>
+                        </a>
                         <div class="content">
                             <a class="header" style="word-wrap: break-word;" href="{% url 'projects:document' project.pk document.pk %}">{{ document.name }}</a>
                             <div class="meta">
@@ -143,7 +145,7 @@
                                         {% for document_version in document.documentversion_set.all %}
                                             <div class="item">
                                                 <div class="content">
-                                                    <a class="header">{{ document_version.name }}</a>
+                                                    <a class="header" href="{% url 'projects:download' project.pk document_version.document.pk document_version.uuid %}">{{ document_version.name }}</a>
                                                     <div class="description">By {{ document_version.person }} on {{ document_version.created|date:"SHORT_DATETIME_FORMAT" }}</div>
                                                 </div>
                                             </div>

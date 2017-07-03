@@ -1,14 +1,14 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 
-from accounts.mixins import AdminRequiredMixin
 from projects.forms import manage_access_forms
 from projects.models import Project
 
 
-class ManageAccessView(AdminRequiredMixin, TemplateView):
+class ManageAccessView(LoginRequiredMixin, TemplateView):
     template_name = 'projects/settings/manage_access.html'
 
     def get_context_data(self, **kwargs):

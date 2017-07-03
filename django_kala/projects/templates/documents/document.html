@@ -52,6 +52,8 @@
             <div class="ui cards">
                 {% for documentversion in document.documentversion_set.all %}
                     <div class="ui card">
+                        <a href="{% url 'projects:download' project.pk document.pk documentversion.uuid %}">
+
                         <div class="ui fade reveal image">
                             <img class="visible content" style="background-color: #f3f3f3"
                                  src="{% static documentversion.get_icon %}"
@@ -59,6 +61,7 @@
                             <img class="hidden content" src="{% static "images/icons/android-download.png" %}"
                                  alt="{{ documentversion.get_alt }}">
                         </div>
+                        </a>
                         <div class="content">
                             <a class="header" style="word-wrap: break-word;">{{ documentversion.name }}</a>
                             <div class="meta">

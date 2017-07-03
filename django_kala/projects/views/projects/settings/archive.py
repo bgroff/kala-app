@@ -1,12 +1,12 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic.base import TemplateView
 
-from accounts.mixins import AdminRequiredMixin
 from projects.models import Project
 
 
-class ArchiveView(AdminRequiredMixin, TemplateView):
+class ArchiveView(LoginRequiredMixin, TemplateView):
     template_name = 'projects/settings/archive.html'
 
     def get_context_data(self, **kwargs):

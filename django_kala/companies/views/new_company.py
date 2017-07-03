@@ -3,11 +3,11 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 
-from projects.forms import NewProjectForm
+from ..forms.settings.details import DetailsForm
 
 
-class NewProjectView(LoginRequiredMixin, TemplateView):
-    template_name = 'projects/new_project.html'
+class NewCompanyView(LoginRequiredMixin, TemplateView):
+    template_name = 'companies/new_company.html'
 
     def get_context_data(self, **kwargs):
         return {
@@ -15,11 +15,11 @@ class NewProjectView(LoginRequiredMixin, TemplateView):
         }
 
     def dispatch(self, request, *args, **kwargs):
-        self.form = NewProjectForm(request.POST or None, request.FILES or None, user=request.user)
-        return super(NewProjectView, self).dispatch(request, *args, **kwargs)
+        self.form = DetailsForm(request.POST or None, request.FILES or None)
+        return super(NewCompanyView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
-            project = self.form.save()
-            return redirect(reverse('projects:project', args=[project.pk]))
+            company = self.form.save()
+            return redirect(reverse('organizations:organization', args=[company.pk]))
         return self.render_to_response(self.get_context_data())

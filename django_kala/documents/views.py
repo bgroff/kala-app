@@ -1,8 +1,8 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import TemplateView, View
-from accounts.mixins import LoginRequiredMixin
 from accounts.models import User
 from .forms import DocumentForm, ProjectForm
 from .models import Document, DocumentVersion

@@ -1,9 +1,9 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
 from ..forms.invite_user import InviteUserForm
-from ..mixins import LoginRequiredMixin
 
 
 class InviteUserView(LoginRequiredMixin, TemplateView):

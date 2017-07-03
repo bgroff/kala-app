@@ -48,7 +48,7 @@ class User(AbstractUser):
             self.removed = datetime.date.today()
         self.save()
 
-    def get_companies(self):
+    def get_companies(self, has_projects=True):
         if self.is_admin:
             _companies = companies.models.Company.objects.active()
         else:
@@ -57,9 +57,11 @@ class User(AbstractUser):
                     user__pk=self.pk
                 ).values('project__company__pk')
             )
-        has_projects = companies.models.Company.objects.active().filter(
-            pk__in=projects.models.Project.objects.active().values('company__pk'))
-        return _companies & has_projects
+        if has_projects:
+            has_projects = companies.models.Company.objects.active().filter(
+                pk__in=projects.models.Project.objects.active().values('company__pk'))
+            return _companies & has_projects
+        return _companies
 
     def get_projects(self):
         if self.is_admin:

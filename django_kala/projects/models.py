@@ -3,7 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from taggit.managers import TaggableManager
 
-from managers import ActiveManager
+from django_kala.managers import ActiveManager
 
 import datetime
 

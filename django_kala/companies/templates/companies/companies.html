@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <h2 class="section">Organizations</h2>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+    </div>
+
+    <div class="ui container">
+        <div class="repo title">
+            <a class="ui positive compact icon button" href="{% url 'organizations:new_organization' %}">
+                + New organization
+            </a>
+        </div>
+        <div class="ui divider">
+        </div>
+        <div class="ui container">
+            <div class="ui cards">
+                {% for company in companies %}
+                    <div class="ui card">
+{#                    {% static company.get_icon %}#}
+{#                        <img src="https://d1wt9ys8kr8als.cloudfront.net/aku/static/img/ndptc/ndptc-logo.png"#}
+{#                             alt="{{ company.get_alt }}">#}
+                        <div class="content">
+                            <a class="header" style="word-wrap: break-word;"
+                               href="{% url 'organizations:details' company.pk %}">{{ company.name }}</a>
+                            <div class="meta">
+{#                                <span class="date">Site {{ company.website }}</span>#}
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="ui container">There are no companies. Please add one with the button above.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

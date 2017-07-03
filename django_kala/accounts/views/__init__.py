@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .settings.details import DetailsView
 from .invite_user import InviteUserView
@@ -11,7 +12,6 @@ from django.views.generic import TemplateView
 
 from ..forms.invite_user import InviteUserForm
 from ..forms import PersonForm, permission_forms
-from ..mixins import LoginRequiredMixin
 
 
 class EditProfile(LoginRequiredMixin, TemplateView):

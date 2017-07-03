@@ -1,15 +1,7 @@
-from django.contrib import messages
-from django.core.paginator import Paginator, InvalidPage
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import get_object_or_404
 from django.views.generic import TemplateView
-
-from accounts.mixins import LoginRequiredMixin
-from accounts.models import User
-from documents.defs import get_mimes_for_category
-from documents.forms import DocumentForm
 from documents.models import Document
-from projects.forms import CategoryForm, SortForm
 from projects.models import Project
 
 

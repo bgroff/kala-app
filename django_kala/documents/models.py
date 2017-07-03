@@ -3,7 +3,7 @@ from django.db import models
 from django.http import HttpResponse
 from django.utils import timezone
 from uuid import uuid4
-from managers import ActiveManager
+from django_kala.managers import ActiveManager
 from taggit.managers import TaggableManager
 
 from .defs import get_icon_for_mime, get_alt_for_mime

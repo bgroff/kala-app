@@ -1,7 +1,12 @@
 from django.contrib.auth import get_user
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.postgres.search import SearchVector
+from django.core.paginator import Paginator, InvalidPage
 from django.views.generic import TemplateView
-from accounts.mixins import LoginRequiredMixin
+
+from documents.defs import get_mimes_for_category
 from documents.models import Document, DocumentVersion
+from projects.forms import SortForm
 
 
 class Home(LoginRequiredMixin, TemplateView):
@@ -21,18 +26,6 @@ class UserDocumentationView(LoginRequiredMixin, TemplateView):
 
 class LicenseView(TemplateView, LoginRequiredMixin):
     template_name = 'license.html'
-
-from django.contrib import messages
-from django.contrib.postgres.search import SearchVector
-from django.core.paginator import Paginator, InvalidPage
-from django.shortcuts import get_object_or_404, redirect
-from django.urls import reverse
-from django.views.generic import TemplateView
-
-from accounts.mixins import LoginRequiredMixin
-from documents.defs import get_mimes_for_category
-from documents.models import Document, DocumentVersion
-from projects.forms import CategoryForm, SortForm
 
 
 class SearchView(LoginRequiredMixin, TemplateView):

@@ -1,13 +1,13 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic.base import TemplateView
 
-from accounts.mixins import AdminRequiredMixin
 from projects.models import Project
 from projects.forms.documents.new_document import NewDocumentForm, NewDocumentVersionForm
 
 
-class NewDocumentView(AdminRequiredMixin, TemplateView):
+class NewDocumentView(LoginRequiredMixin, TemplateView):
     template_name = 'documents/new_document.html'
 
     def get_context_data(self, **kwargs):

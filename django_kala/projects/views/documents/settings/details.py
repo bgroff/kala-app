@@ -1,14 +1,14 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic.base import TemplateView
 
-from accounts.mixins import AdminRequiredMixin
 from documents.models import Document
 from projects.models import Project
 from projects.forms.documents.settings.details import DetailsForm
 
 
-class DocumentDetailsView(AdminRequiredMixin, TemplateView):
+class DocumentDetailsView(LoginRequiredMixin, TemplateView):
     template_name = 'documents/settings/details.html'
 
     def get_context_data(self, **kwargs):
