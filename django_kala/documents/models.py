@@ -1,12 +1,13 @@
 from django.conf import settings
 from django.db import models
-from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.utils import timezone
 from uuid import uuid4
 from django_kala.managers import ActiveManager
 from taggit.managers import TaggableManager
 
 from .defs import get_icon_for_mime, get_alt_for_mime
+import boto3 as boto3
 
 
 class Document(models.Model):
@@ -120,11 +121,16 @@ class DocumentVersion(models.Model):
         super(DocumentVersion, self).delete(using)
 
     def http_response(self):
-        response = HttpResponse(self.file.read(), content_type=self.mime)
-        response['Content-Length'] = self.file.size
-        response['Content-Disposition'] = 'attachment; filename={0}'.format(self.name)
-        response['Content-Type'] = self.mime
-        return response
+        s3 = boto3.client('s3')
+        url = s3.generate_presigned_url(
+            ClientMethod='get_object',
+            Params={
+                'Bucket': settings.S3_STORAGE_BUCKET,
+                'Key': 'media/{0}'.format(self.file.name)
+            }
+        )
+        return redirect(url)
+
 
     def get_icon(self):
         return get_icon_for_mime(self.mime)
