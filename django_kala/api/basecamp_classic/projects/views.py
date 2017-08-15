@@ -65,7 +65,7 @@ class ProjectView(APIView):
 
     def get(self, request, pk, format=None):
         """
-        Return a company by pk.
+        Return a project by pk.
         """
         project = get_object_or_404(Project, pk=pk)
         return Response({'projects': project, 'request_user': request.user})

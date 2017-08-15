@@ -7,5 +7,5 @@ class ProjectsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            'companies': self.request.user.get_companies(),
+            'organizations': self.request.user.get_organizations(),
         }

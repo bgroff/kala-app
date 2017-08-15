@@ -27,7 +27,7 @@ class XMLProjectRenderer(BaseRenderer):
 
         xml = SimplerXMLGenerator(stream, self.charset)
         xml.startDocument()
-        # If we do not have companies or request_user then we have errors
+        # If we do not have organizations or request_user then we have errors
         if not data.get('projects', False) and not data.get('request_user', False):
             self._to_errors(data, xml)
             xml.endDocument()
@@ -40,7 +40,7 @@ class XMLProjectRenderer(BaseRenderer):
             self._to_xml(data['projects'], data['request_user'], xml)
 
             xml.endElement('projects')
-        # Otherwise just render a company
+        # Otherwise just render a organization
         else:
             self.render_projects(data['projects'], data['request_user'], xml)
         xml.endDocument()
@@ -107,10 +107,10 @@ class XMLProjectRenderer(BaseRenderer):
             xml.startElement('company', {})
 
             xml.startElement('id', {'type': 'integer'})
-            xml.characters(smart_text(project.company.id))
+            xml.characters(smart_text(project.organization.id))
             xml.endElement('id')
             xml.startElement('name', {})
-            xml.characters(smart_text(project.company.name))
+            xml.characters(smart_text(project.organization.name))
             xml.endElement('name')
 
             xml.endElement('company')

@@ -13,5 +13,5 @@ def pretty_user(user):
 
 
 @register.filter
-def users_projects(company, user):
-    return company.get_projects(user)
+def users_projects(organization, user):
+    return organization.get_projects(user)

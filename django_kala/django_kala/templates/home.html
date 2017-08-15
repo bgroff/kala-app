@@ -48,11 +48,11 @@
             <div class="one wide">
                 <h3>Your Projects</h3>
                 <div class="ui relaxed divided list">
-                    {% for company in companies %}
+                    {% for organization in organizations %}
                         <div class="item">
                             <div class="content">
-                                <a class="header">{{ company.name }}</a>
-                                <div class="description">{% for project in company|users_projects:request.user %}
+                                <a class="header">{{ organization.name }}</a>
+                                <div class="description">{% for project in organization|users_projects:request.user %}
 
                                     <p style="margin-left: 15px; margin-top: 2px; margin-bottom: 2px;"><i
                                             class="icon-cog icon-"></i><a

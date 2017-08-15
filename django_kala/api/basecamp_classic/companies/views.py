@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import authentication, permissions
 
-from companies.models import Company
+from organizations.models import Organization
 
 from .parsers import XMLCompanyParser
 from .renderers import XMLCompaniesRenderer
@@ -34,7 +34,7 @@ class CompaniesView(APIView):
         """
         Return an xml version of all of the companies.
         """
-        return Response({'companies': Company.objects.all(), 'request_user': request.user})
+        return Response({'companies': Organization.objects.all(), 'request_user': request.user})
 
     def post(self, request, format=None):
         if not request.user.is_admin:
@@ -64,7 +64,7 @@ class CompanyView(APIView):
         """
         Return a company by pk.
         """
-        company = get_object_or_404(Company, pk=pk)
+        company = get_object_or_404(Organization, pk=pk)
         return Response({'companies': company, 'request_user': request.user})
 
 
@@ -85,5 +85,5 @@ class PeopleView(APIView):
         """
         Return a list of all users for a specific company.
         """
-        company = get_object_or_404(Company, pk=pk)
+        company = get_object_or_404(Organization, pk=pk)
         return Response({'users': company.get_people(), 'request_user': request.user})

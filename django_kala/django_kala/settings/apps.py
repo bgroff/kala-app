@@ -12,9 +12,9 @@ INSTALLED_APPS = [
     'storages',
     'taggit',
 
-    'accounts',
-    'companies',
-    'documents',
+    'auth.apps.AuthConfig',
+    'organizations.apps.OrganizationsConfig',
+    'documents.apps.DocumentsConfig',
     'django_kala',
-    'projects',
+    'projects.apps.ProjectsConfig',
 ]

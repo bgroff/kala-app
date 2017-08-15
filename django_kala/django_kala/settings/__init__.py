@@ -27,7 +27,7 @@ from .debug import *
 
 
 # Change this if you wish to use a different user model.
-AUTH_USER_MODEL = 'accounts.User'
+AUTH_USER_MODEL = 'kala_auth.User'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

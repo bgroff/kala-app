@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block projects_class %}active{% endblock %}
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <a class="section">Users</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui tabular menu">
+        <div class="ui container">
+            <a class="active item" href="{% url 'users:users' %}">
+                <i class="organization icon"></i>
+                Users
+            </a>
+            <a class="item">
+                <i class="merge icon"></i>
+                Merge users
+            </a>
+        </div>
+    </div>
+
+    <div class="ui container">
+        <div class="repo title">
+            <div class="repo options">
+                <div class="ui labeled button">
+                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
+                        <input type="hidden" value="watching">
+                        <i class="checklist icon"></i> Filter
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            {% for organization in organizations %}
+                                <div class="item" data-value="not-watching">
+                                    <h4>{{ organization }}</h4>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="ui labeled button">
+                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
+                        <input type="hidden" value="watching">
+                        <i class="checklist icon"></i> Sort
+                        <i class="dropdown icon"></i>
+                        <div class="menu">
+                            <div class="item" data-value="not-watching">
+                                <h4>Alphabetically</h4>
+                            </div>
+                            <div class="item" data-value="watching">
+                                <h4>Organization</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if request.user.is_admin %}
+                <a class="ui positive compact icon button" href="{% url 'users:invite_user' %}">
+                    + Invite user
+                </a>
+            {% endif %}
+        </div>
+        <div class="ui divider">
+        </div>
+        <div class="ui container">
+            <div class="ui cards">
+                {% for user in users %}
+                    <div class="card">
+                        <div class="content">
+                            <img class="right floated avatar ui image" src="{{ user.avatar_url }}">
+                            <div class="header">
+                                {% if request.user.is_admin %}
+                                    <a href="{% url 'users:details' user.pk %}">
+                                        {{ user }}
+                                    </a>
+                                {% else %}
+                                    {{ user }}
+                                {% endif %}
+                            </div>
+                            <div class="meta">
+                                {{ user.organizations.all|join:', ' }}
+                            </div>
+                            <div class="description">
+                                <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="ui container">There are no users.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        $('.dropdown')
+            .dropdown({
+                direction: 'upward'
+            })
+        ;
+    </script>
+{% endblock scripts %}

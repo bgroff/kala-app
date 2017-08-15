@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from accounts.models import User
+from auth.models import User
 from documents.models import Document, DocumentVersion
 from projects.models import Category, Project
 

@@ -74,7 +74,7 @@ class XMLParser(BaseParser):
                 data['fax'] = str(field.text)
 
             if field.tag == 'company-id':
-                data['companies'] = [int(field.text)] if field.text else None
+                data['organizations'] = [int(field.text)] if field.text else None
             if field.tag == 'client-id':
                 data['client_id'] = int(field.text) if field.text else None
 

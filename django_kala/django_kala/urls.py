@@ -37,7 +37,7 @@ urlpatterns = [
 
     url(
         r'^ogranizations/',
-        include('companies.urls', namespace='organizations'),
+        include('organizations.urls', namespace='organizations'),
     ),
 
     url(
@@ -47,7 +47,7 @@ urlpatterns = [
 
     url(
         r'^accounts/',
-        include('accounts.urls', namespace='users'),
+        include('auth.urls', namespace='users'),
     ),
 
     url(

@@ -24,15 +24,15 @@
         </div>
         <div class="twelve wide column">
             <div class="ui styled fluid accordion">
-                {% for company in companies %}
+                {% for organization in organizations %}
                     <div class="title active">
                         <i class="dropdown icon"></i>
-                        {{ company }}
+                        {{ organization }}
                     </div>
                     <div class="content {% if forloop.first %}active{% endif %}">
                         <div class="transition visible" style="display: block !important;">
                             <div class="ui grid">
-                                {% for project in company.project_set.all %}
+                                {% for project in organization.project_set.all %}
                                     <div class="four wide column">
                                     <a href="{% url 'projects:project' project.pk %}">
                                         {{ project }}

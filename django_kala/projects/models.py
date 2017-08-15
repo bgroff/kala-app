@@ -13,7 +13,7 @@ class Project(models.Model):
     description = models.TextField()
     tags = TaggableManager(blank=True)
 
-    company = models.ForeignKey('companies.Company')
+    organization = models.ForeignKey('organizations.Organization')
     clients = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
     created = models.DateTimeField(auto_now_add=True)

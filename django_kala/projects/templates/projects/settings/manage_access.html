@@ -6,7 +6,7 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section">{{ project.company }}</a>
+                <a class="section">{{ project.organization }}</a>
                 <div class="divider"> /</div>
                 <a class="active section">{{ project }}</a>
             </div>
@@ -64,7 +64,7 @@
                     {% for form in forms %}
                         <div class="title active">
                             <i class="dropdown icon"></i>
-                            {{ form.company }}
+                            {{ form.organization }}
                         </div>
                         <div class="content {% if forloop.first %}active{% endif %}">
                             <div class="transition visible" style="display: block !important;">
@@ -111,9 +111,9 @@
 
         $(document).ready(function () {
             // For each group, add the event handler to select/unselect all the checkboxes
-            $(".company_checkbox").each(function () {
+            $(".organization_checkbox").each(function () {
                 var pk = $(this).attr('pk_id')
-                var company_checkbox = $(this)
+                var organization_checkbox = $(this)
                 $(this).change(function () {
                     var val = $(this).prop('checked')
                     $("input[pk=" + pk + "]").each(function () {
@@ -126,7 +126,7 @@
                 var all_selected = true
                 $("input[pk=" + pk + "]").each(function () {
                     $(this).click(function () {
-                        $(company_checkbox).prop('checked', false)
+                        $(organization_checkbox).prop('checked', false)
                     })
                     if (!$(this).prop('checked')) {
                         all_selected = false

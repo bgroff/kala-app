@@ -1,6 +1,6 @@
 import datetime
 from django import forms
-from companies.models import Company
+from organizations.models import Organization
 from .models import DocumentVersion, Document
 
 
@@ -42,9 +42,9 @@ class ProjectForm(forms.Form):
         super(ProjectForm, self).__init__(*args, **kwargs)
 
         choices = []
-        for company in Company.with_projects.all():
-            projects = [(project.pk, project.name) for project in company.get_projects()]
-            choices.append((company.name, projects))
+        for organization in Organization.with_projects.all():
+            projects = [(project.pk, project.name) for project in organization.get_projects()]
+            choices.append((organization.name, projects))
 
         self.fields['project'] = forms.ChoiceField(choices=choices, initial=self.document.project.pk)
 

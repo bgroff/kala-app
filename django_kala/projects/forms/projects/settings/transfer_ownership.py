@@ -1,6 +1,6 @@
 from django import forms
 
-from companies.models import Company
+from organizations.models import Organization
 
 
 class TransferOwnershipForm(forms.Form):
@@ -8,14 +8,14 @@ class TransferOwnershipForm(forms.Form):
         self.project = kwargs.pop('project')
         super(TransferOwnershipForm, self).__init__(*args, **kwargs)
 
-        self.fields['company'] = forms.ModelChoiceField(
-            queryset=Company.objects.active(),
-            initial=self.project.company,
+        self.fields['organization'] = forms.ModelChoiceField(
+            queryset=Organization.objects.active(),
+            initial=self.project.organization,
             widget=forms.Select(attrs={'class': 'ui search dropdown'})
         )
 
     def save(self, commit=True):
-        self.project.company = self.cleaned_data['company']
+        self.project.organization = self.cleaned_data['organization']
         if commit:
             self.project.save()
         return self.project

@@ -14,7 +14,7 @@ class Home(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            'companies': self.request.user.get_companies(),
+            'organizations': self.request.user.get_organizations(),
             'documents': Document.objects.active().filter(
                 pk__in=DocumentVersion.objects.filter(person=get_user(self.request)).values('document__pk'))[:10],
         }

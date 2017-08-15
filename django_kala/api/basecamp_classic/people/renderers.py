@@ -121,7 +121,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.endElement('phone-number-fax')
             xml.startElement('company-id', {'type': 'integer'})
             try:
-                xml.characters(smart_text(user.companies.first().id if user.companies.first().id else ''))
+                xml.characters(smart_text(user.organizations.first().id if user.organizations.first().id else ''))
             except AttributeError:
                 xml.characters(smart_text(''))
             xml.endElement('company-id')

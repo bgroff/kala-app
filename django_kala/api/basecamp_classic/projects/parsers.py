@@ -64,9 +64,9 @@ class XMLProjectParser(BaseParser):
             if field.tag == 'company':
                 for _field in field:
                     if _field.tag == 'id':
-                        data['company'] = int(str(_field.text).strip())
+                        data['organization'] = int(str(_field.text).strip())
                     if field.tag == 'name':
-                        data['company_name'] = str(_field.text)
+                        data['organization_name'] = str(_field.text)
 
         return data
 
