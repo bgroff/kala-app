@@ -51,64 +51,31 @@
                 <div class="item">
                     <div class="header">Organizations</div>
                     <div class="menu">
-                        <a class="active item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>
+                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>
                     </div>
                 </div>
                 <div class="item">
                     <div class="header">Categories</div>
                     <div class="menu">
                         <a class="item" href="{% url 'projects:categories' project.pk %}">Manage categories</a>
-                        <a class="item" href="{% url 'projects:new_category' project.pk %}">New category</a>
+                        <a class="active item" href="{% url 'projects:new_category' project.pk %}">New category</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="twelve wide column">
-            <form id="form" class="ui form" method="post">
+            <form class="ui form" method="post">
                 {% csrf_token %}
                 <div class="field">
-                    <label>{{ form.organization.label }}</label>
-                    {{ form.organization }}
+                    <label>{{ form.name.label }}</label>
+                    <input id={{ form.name.auto_id }} type="text" name="{{ form.name.name }}" placeholder="Category Name" value="{{ form.name.value }}" maxlength="{{ form.fields.name.max_length }} required">
                 </div>
-                <button id="submit-button" class="ui button primary" type="button">Transfer ownership</button>
+                <div class="field">
+                    <label>{{ form.type.label }}</label>
+                    {{ form.type }}
+                </div>
+                <button class="ui button primary" type="submit">Edit category</button>
             </form>
-            <div class="ui basic modal">
-                <div class="ui icon header">
-                    <i class="organization icon"></i>
-                    Transfer Project Ownership
-                </div>
-                <div class="content">
-                    <p>Are you sure that you want to transfer this project to another organization?</p>
-                </div>
-                <div class="actions">
-                    <div class="ui red basic cancel inverted button">
-                        <i class="trashcan icon"></i>
-                        No
-                    </div>
-                    <div class="ui green ok inverted button">
-                        <i class="check icon"></i>
-                        Yes
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
-
 {% endblock content %}
-
-{% block scripts %}
-    <script>
-        $('.ui.basic.modal')
-            .modal({
-                onApprove: function () {
-                    $('#form').submit();
-                }
-            })
-            .modal('attach events', '#submit-button', 'show')
-        ;
-
-        $('select.search.dropdown')
-            .dropdown()
-        ;
-    </script>
-{% endblock scripts %}

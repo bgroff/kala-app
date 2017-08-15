@@ -1,4 +1,5 @@
 from .projects.settings.archive import ArchiveView
+from .projects.settings.categories import CategoriesView, NewCategoryView, EditCategoryView
 from .projects.settings.details import DetailsView
 from .projects.settings.manage_access import ManageAccessView
 from .projects.settings.transfer_ownership import TransferOwnershipView

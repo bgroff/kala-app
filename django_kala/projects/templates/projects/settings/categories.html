@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load kala_tags %}
+
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <a class="section">{{ project.organization }}</a>
+                <div class="divider"> /</div>
+                <a class="active section">{{ project }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui tabular menu">
+        <div class="ui container">
+            <a class="item" href="{% url 'projects:project' project.pk %}">
+                <i class="book icon"></i>
+                Documents
+            </a>
+            <a class="item">
+                <i class="issue opened icon"></i>
+                Issues
+                <span class="ui small label">593</span>
+            </a>
+            <a class="active item" href="{% url 'projects:details' project.pk %}">
+                <i class="gear icon"></i>
+                Settings
+            </a>
+        </div>
+    </div>
+
+
+    <div class="ui two column grid container">
+        <div class="four wide column">
+            <div class="ui vertical menu">
+                <div class="item">
+                    <div class="header">Project</div>
+                    <div class="menu">
+                        <a class="item" href="{% url 'projects:details' project.pk %}">Details</a>
+                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="header">People</div>
+                    <div class="menu">
+                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">Manage access</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="header">Organizations</div>
+                    <div class="menu">
+                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="header">Categories</div>
+                    <div class="menu">
+                        <a class="active item" href="{% url 'projects:categories' project.pk %}">Manage categories</a>
+                        <a class="item" href="{% url 'projects:new_category' project.pk %}">New category</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="twelve wide column">
+            <table class="ui celled table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for category in categories %}
+                    <tr>
+                        <td>
+                            {{ category.name }}
+                        </td>
+                        <td>
+                            <a href="{% url 'projects:edit_category' project.pk category.pk %}">
+                                <button class="ui primary button">Edit</button>
+                            </a>
+                        </td>
+                        <td>
+                            <button onclick="deleteCategory({{ category.pk }});" class="ui negative button">Delete</button>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="3">There are no categories for this project.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="ui basic modal">
+        <div class="ui icon header">
+            <i class="organization icon"></i>
+            Delete Category
+        </div>
+        <div class="content">
+            <p>Are you sure that you want to delete this category?</p>
+        </div>
+        <div class="actions">
+            <div class="ui green cancel inverted button">
+                <i class="stop icon"></i>
+                No
+            </div>
+            <div class="ui red basic ok inverted button">
+                <i class="trashcan icon"></i>
+                Yes
+            </div>
+        </div>
+    </div>
+    {% csrf_token %}
+{% endblock content %}
+
+{% block scripts %}
+<script>
+    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+    function deleteCategory(pk) {
+        $('.ui.basic.modal')
+            .modal({
+                onApprove: function () {
+                $.ajax({
+                        url: '{% url 'projects:categories' project.pk %}' + '/' + pk,
+                        type: 'DELETE',
+                        success: function () {
+                            location.reload();
+                        },
+                        error: $.noop
+                    });
+                }
+            })
+            .modal('show')
+        ;
+    }
+</script>
+{% endblock %}

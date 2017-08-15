@@ -51,8 +51,14 @@
                 <div class="item">
                     <div class="header">Organizations</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer
-                            ownership</a>
+                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="header">Categories</div>
+                    <div class="menu">
+                        <a class="item" href="{% url 'projects:categories' project.pk %}">Manage categories</a>
+                        <a class="item" href="{% url 'projects:new_category' project.pk %}">New category</a>
                     </div>
                 </div>
             </div>
