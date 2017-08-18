@@ -60,7 +60,7 @@
                         {% if forloop.first %}
                             <div id="document-owner"></div>
                         {% endif %}
-                        by {{ document.person|pretty_user }}
+                        by {{ document.user|pretty_user }}
                         {% if forloop.first %}
                             <div id="document-created"></div>
                         {% endif %}
@@ -166,7 +166,7 @@
             <p>This is the textual description of the changes/purpose of this document.</p>
         </li>
         <li data-id="document-owner">
-            <p>This is the name of the person that uploaded this document.</p>
+            <p>This is the name of the user that uploaded this document.</p>
         </li>
         <li data-id="document-created">
             <p>This is the date that this version of the document was uploaded.</p>
@@ -175,7 +175,7 @@
             <p>You can use this link to upload a new version of this document.</p>
         </li>
 
-        {% if request.user.is_admin %}
+        {% if request.user.is_superuser %}
             <li data-id="edit-permissions">
                 <p>If you want to add or remove people from the project, you can do so by clicking on the edit
                     permissions.</p>

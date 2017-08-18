@@ -137,13 +137,13 @@ class XMLPeopleRenderer(BaseRenderer):
             except AttributeError:
                 xml.characters(smart_text(''))
             xml.endElement('avatar-url')
-            if request_user.is_admin:
+            if request_user.is_superuser:
                 xml.startElement('user-name', {})
                 xml.characters(smart_text(user.username))
                 xml.endElement('user-name')
 
                 xml.startElement('administrator', {'type': 'boolean'})
-                xml.characters(smart_text(str(user.is_admin).lower()))
+                xml.characters(smart_text(str(user.is_superuser).lower()))
                 xml.endElement('administrator')
 
                 xml.startElement('deleted', {'type': 'boolean'})
@@ -300,9 +300,9 @@ class XMLPeopleRenderer(BaseRenderer):
                 xml.endElement('error')
             xml.endElement('avatar-url')
 
-        if data.get('is_admin', False):
+        if data.get('is_superuser', False):
             xml.startElement('administrator', {})
-            for error in data['is_admin']:
+            for error in data['is_superuser']:
                 xml.startElement('error', {})
                 xml.characters(smart_text(error))
                 xml.endElement('error')

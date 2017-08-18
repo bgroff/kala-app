@@ -49,10 +49,10 @@ class Document(models.Model):
         return self.document.description
 
     @property
-    def person(self):
+    def user(self):
         if not hasattr(self, 'document'):
             self.document = self.get_latest()
-        return self.document.person
+        return self.document.user
 
     @property
     def created(self):
@@ -98,7 +98,7 @@ class DocumentVersion(models.Model):
     created = models.DateTimeField(default=timezone.now) # Update save method
     changed = models.DateTimeField(default=timezone.now) # Update save method
     mime = models.CharField(max_length=255, null=True)
-    person = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
     name = models.CharField(max_length=255)
 
     class Meta:

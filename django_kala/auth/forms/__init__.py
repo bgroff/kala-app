@@ -80,14 +80,14 @@ class DeletedCompanyForm(forms.Form):
         return organization
 
 
-def permission_forms(request, person):
-    return [PermissionsForm(request.POST or None, person=person, organization=organization) for organization in
+def permission_forms(request, user):
+    return [PermissionsForm(request.POST or None, user=user, organization=organization) for organization in
             Organization.objects.active().filter(pk__in=Project.objects.active().values('organization__pk'))]
 
 
 class PermissionsForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        self.person = kwargs.pop('person')
+        self.user = kwargs.pop('user')
         self.organization = kwargs.pop('organization')
         self.projects = Project.objects.active().filter(organization=self.organization)
         super(PermissionsForm, self).__init__(*args, **kwargs)
@@ -99,7 +99,7 @@ class PermissionsForm(forms.Form):
         for project in self.projects:
             self.fields['%i' % project.pk] = forms.BooleanField(required=False, label=project,
                                                                 initial=True if project.clients.filter(
-                                                                    pk=self.person.pk).exists() else False,
+                                                                    pk=self.user.pk).exists() else False,
                                                                 widget=forms.CheckboxInput(
                                                                     attrs={'pk': self.organization.pk}))
 
@@ -107,8 +107,8 @@ class PermissionsForm(forms.Form):
         for project in self.projects:
             is_selected = self.cleaned_data['%i' % project.pk]
             if is_selected:
-                if not project.clients.filter(pk=self.person.pk).exists():
-                    project.clients.add(self.person)
+                if not project.clients.filter(pk=self.user.pk).exists():
+                    project.clients.add(self.user)
             else:
-                if project.clients.filter(pk=self.person.pk).exists():
-                    project.clients.remove(self.person)
+                if project.clients.filter(pk=self.user.pk).exists():
+                    project.clients.remove(self.user)

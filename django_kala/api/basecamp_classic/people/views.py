@@ -38,7 +38,7 @@ class MeView(APIView):
 
 class PeopleView(APIView):
     """
-    View to list all users in the system. You can also POST to this view with an xml person if you are an
+    View to list all users in the system. You can also POST to this view with an xml user if you are an
     administrator.
 
     """
@@ -56,7 +56,7 @@ class PeopleView(APIView):
         Return a list of all users.
         """
         include_deleted = request.GET.get('include_deleted', False)
-        if request.user.is_admin and include_deleted == 'true':
+        if request.user.is_superuser and include_deleted == 'true':
             # TODO: Use an is_active mixin to filter between deleted and non-deleted
             users = User.objects.all()
         else:
@@ -64,7 +64,7 @@ class PeopleView(APIView):
         return Response({'users': users, 'request_user': request.user})
 
     def post(self, request, format=None):
-        if not request.user.is_admin:
+        if not request.user.is_superuser:
             raise PermissionDenied()
 
         user_data = UserSerializer(data=request.data)

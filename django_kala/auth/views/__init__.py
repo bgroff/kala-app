@@ -20,35 +20,35 @@ class EditProfile(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = {
             'form': self.form,
-            'person': self.person,
+            'user': self.user,
         }
-        if self.request.user.is_admin:
+        if self.request.user.c:
             context['permission_forms'] = self.permission_forms
         return context
 
     def dispatch(self, request, pk, *args, **kwargs):
-        self.person = get_object_or_404(get_user_model(), pk=pk)
-        if self.person != request.user and not request.user.is_admin:
-            messages.error(request, 'You do not have permission to edit this persons account')
+        self.user = get_object_or_404(get_user_model(), pk=pk)
+        if self.user != request.user and not request.user.is_superuser:
+            messages.error(request, 'You do not have permission to edit this users account')
             return redirect(reverse('home'))
-        self.form = PersonForm(request.POST or None, instance=self.person)
-        if request.user.is_admin:
-            self.permission_forms = permission_forms(request, self.person)
+        self.form = PersonForm(request.POST or None, instance=self.user)
+        if request.user.is_superuser:
+            self.permission_forms = permission_forms(request, self.user)
         return super(EditProfile, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if 'toggle-admin' in request.POST and request.user.is_admin:
-            self.person.is_admin = not self.person.is_admin
-            self.person.save()
-            if self.person.is_admin:
+        if 'toggle-admin' in request.POST and request.user.is_superuser:
+            self.user.is_superuser = not self.user.is_superuser
+            self.user.save()
+            if self.user.is_superuser:
                 messages.success(request, 'This user has been granted administrator privileges')
             else:
                 messages.success(request, 'This user has had it\'s administrator privileges revoked')
-            return redirect(reverse('edit_profile', args=[self.person.pk]))
+            return redirect(reverse('edit_profile', args=[self.user.pk]))
 
-        if 'delete' in request.POST and request.user.is_admin:
-            self.person.set_active(False)
-            messages.success(request, 'The person has been removed')
+        if 'delete' in request.POST and request.user.is_superuser:
+            self.user.set_active(False)
+            messages.success(request, 'The user has been removed')
             return redirect(reverse('accounts'))
 
         if 'save-permissions' in request.POST:
@@ -56,10 +56,10 @@ class EditProfile(LoginRequiredMixin, TemplateView):
                 if form.is_valid():
                     form.save()
             messages.success(request, 'The permissions have been updated')
-            return redirect(reverse('edit_profile', args=[self.person.pk]))
+            return redirect(reverse('edit_profile', args=[self.user.pk]))
 
         if self.form.is_valid():
             self.form.save()
             messages.success(request, 'Profile data has been saved')
-            return redirect(reverse('edit_profile', args=[self.person.pk]))
+            return redirect(reverse('edit_profile', args=[self.user.pk]))
         return self.render_to_response(self.get_context_data())

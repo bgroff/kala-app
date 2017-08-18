@@ -30,7 +30,7 @@ class DocumentSerializer(serializers.Serializer):
             url=validated_data['url'],
             size=validated_data['size'],
             created=validated_data['created'],
-            person=validated_data['person'],
+            user=validated_data['user'],
             name=validated_data['name'],
             description=validated_data['description']
         )
@@ -41,7 +41,7 @@ class DocumentSerializer(serializers.Serializer):
     size = serializers.IntegerField()
     category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(), required=False)
     project = serializers.PrimaryKeyRelatedField(queryset=Project.objects.all())
-    person = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
     created = serializers.DateTimeField()
     url = serializers.URLField()
     collection = serializers.IntegerField()

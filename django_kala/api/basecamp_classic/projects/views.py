@@ -40,7 +40,7 @@ class ProjectsView(APIView):
         return Response({'projects': Project.objects.all().prefetch_related(), 'request_user': request.user})
 
     def post(self, request, format=None):
-        if not request.user.is_admin:
+        if not request.user.is_superuser:
             raise PermissionDenied()
 
         project_data = ProjectSerializer(data=request.data)
@@ -147,7 +147,7 @@ class DocumentsView(APIView):
         return Response({'documents': project.document_set.all().prefetch_related(), 'request_user': request.user})
 
     def post(self, request, pk, format=None):
-        if not request.user.is_admin:
+        if not request.user.is_superuser:
             raise PermissionDenied()
 
         project = get_object_or_404(Project, pk=pk)

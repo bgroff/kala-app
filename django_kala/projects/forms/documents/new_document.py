@@ -25,7 +25,7 @@ class NewDocumentForm(forms.ModelForm):
 class NewDocumentVersionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.project = kwargs.pop('project')
-        self.person = kwargs.pop('person')
+        self.user = kwargs.pop('user')
         super(NewDocumentVersionForm, self).__init__(*args, **kwargs)
 
     class Meta:
@@ -34,5 +34,5 @@ class NewDocumentVersionForm(forms.ModelForm):
 
     def save(self, document, commit=True):
         self.instance.document = document
-        self.instance.person = self.person
+        self.instance.user = self.user
         return super(NewDocumentVersionForm, self).save(commit)

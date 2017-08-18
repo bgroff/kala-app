@@ -24,19 +24,19 @@ class ManageAccessForm(forms.Form):
                                                                   'pk_id': self.organization.pk,
                                                            }))
 
-        for person in self.people:
-            self.fields['%i' % person.pk] = forms.BooleanField(required=False, label=str(person),
-                                                               initial=True if person.pk in client_ids else False,
+        for user in self.users:
+            self.fields['%i' % user.pk] = forms.BooleanField(required=False, label=str(user),
+                                                               initial=True if user.pk in client_ids else False,
                                                                widget=forms.CheckboxInput(
                                                                    attrs={'pk': self.organization.pk}))
 
     def save(self):
-        for person in self.people:
-            is_selected = self.cleaned_data['%i' % person.pk]
+        for user in self.users:
+            is_selected = self.cleaned_data['%i' % user.pk]
             if is_selected:
-                if not self.project.clients.filter(pk=person.pk).exists():
-                    self.project.clients.add(person)
+                if not self.project.clients.filter(pk=user.pk).exists():
+                    self.project.clients.add(user)
             else:
-                if self.project.clients.filter(pk=person.pk).exists():
-                    self.project.clients.remove(person)
+                if self.project.clients.filter(pk=user.pk).exists():
+                    self.project.clients.remove(user)
 

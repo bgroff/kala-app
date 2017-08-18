@@ -52,7 +52,7 @@ class Migration(migrations.Migration):
                 ('mime', models.CharField(max_length=255, null=True)),
                 ('name', models.CharField(max_length=255)),
                 ('document', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='documents.Document')),
-                ('person', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'get_latest_by': 'created',

@@ -10,7 +10,7 @@ from .models import Document, DocumentVersion
 
 class BaseDocumentView(LoginRequiredMixin, View):
     def check_permission(self):
-        if not self.project.clients.filter(pk=self.request.user.pk).exists() and not self.request.user.is_admin:
+        if not self.project.clients.filter(pk=self.request.user.pk).exists() and not self.request.user.is_superuser:
             return False
         return True
 
@@ -28,10 +28,10 @@ class DocumentView(TemplateView, BaseDocumentView):
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.document = get_object_or_404(Document.objects.active(), pk=pk)
-        self.person = get_object_or_404(User.objects.filter(is_active=True), pk=request.user.pk)
+        self.user = get_object_or_404(User.objects.filter(is_active=True), pk=request.user.pk)
         self.project = self.document.project
         self.form = DocumentForm(request.POST or None, request.FILES or None, project=self.project,
-                                 document=self.document, person=self.person)
+                                 document=self.document, user=self.user)
         self.project_form = ProjectForm(request.POST or None, document=self.document)
 
         if not self.check_permission():
@@ -40,12 +40,12 @@ class DocumentView(TemplateView, BaseDocumentView):
         return super(DocumentView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if 'delete' in request.POST and request.user.is_admin:
+        if 'delete' in request.POST and request.user.is_superuser:
             self.document.set_active(False)
             messages.success(request, 'The document has been deleted')
             return redirect(reverse('project', args=[self.project.pk]))
 
-        if 'move' in request.POST and request.user.is_admin and self.project_form.is_valid():
+        if 'move' in request.POST and request.user.is_superuser and self.project_form.is_valid():
             self.project_form.save()
             messages.success(request, 'The document has been moved')
             return redirect(reverse('document', args=[self.document.pk]))

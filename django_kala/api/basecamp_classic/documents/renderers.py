@@ -75,7 +75,7 @@ class XMLDocumentRenderer(BaseRenderer):
         xml.endElement('created-on')
 
         xml.startElement('person-id', {'type': 'integer'})
-        xml.characters(smart_text(version.person.pk))
+        xml.characters(smart_text(version.user.pk))
         xml.endElement('person-id')
 
         xml.startElement('collection', {'type': 'integer'})
@@ -140,9 +140,9 @@ class XMLDocumentRenderer(BaseRenderer):
                 xml.endElement('error')
             xml.endElement('created-on')
 
-        if data.get('person', False):
+        if data.get('user', False):
             xml.startElement('person-id', {})
-            for error in data['person']:
+            for error in data['user']:
                 xml.startElement('error', {})
                 xml.characters(smart_text(error))
                 xml.endElement('error')

@@ -16,7 +16,7 @@ class Home(LoginRequiredMixin, TemplateView):
         return {
             'organizations': self.request.user.get_organizations(),
             'documents': Document.objects.active().filter(
-                pk__in=DocumentVersion.objects.filter(person=get_user(self.request)).values('document__pk'))[:10],
+                pk__in=DocumentVersion.objects.filter(user=get_user(self.request)).values('document__pk'))[:10],
         }
 
 
@@ -36,7 +36,7 @@ class SearchView(LoginRequiredMixin, TemplateView):
         for document in self.documents:
             for version in document.documentversion_set.all():
                 version_ids.append(str(version.uuid))
-        versions = DocumentVersion.objects.filter(uuid__in=version_ids).order_by('person_id')
+        versions = DocumentVersion.objects.filter(uuid__in=version_ids).order_by('user_id')
 
         if hasattr(self, 'sort_order'):
             if self.sort_order == 'AZ':
@@ -58,7 +58,7 @@ class SearchView(LoginRequiredMixin, TemplateView):
             'current_page': page,
             'sort_form': self.sort_form,
             'version_count': versions.count(),
-            'user_count': versions.distinct('person').count()
+            'user_count': versions.distinct('user').count()
         }
 
     def dispatch(self, request, *args, **kwargs):
@@ -73,7 +73,7 @@ class SearchView(LoginRequiredMixin, TemplateView):
         ).filter(
             project__in=request.user.get_projects()
         ).prefetch_related(
-            'documentversion_set', 'documentversion_set__person', 'project'
+            'documentversion_set', 'documentversion_set__user', 'project'
         )
         self.sort_order = request.GET.get('search')
 

@@ -7,7 +7,7 @@ from .models import DocumentVersion, Document
 class DocumentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.project = kwargs.pop('project')
-        self.person = kwargs.pop('person')
+        self.user = kwargs.pop('user')
         # If a document is passed, then this is a version.
         try:
             self.document = kwargs.pop('document')
@@ -28,7 +28,7 @@ class DocumentForm(forms.ModelForm):
         if self.document is None:
             self.document = Document.objects.create(project=self.project, date=now)
         self.instance.project = self.project
-        self.instance.person = self.person
+        self.instance.user = self.user
         self.instance.document = self.document
         self.instance.mime = self.cleaned_data['file'].content_type
         self.instance.name = self.cleaned_data['file'].name

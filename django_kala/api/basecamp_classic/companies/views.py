@@ -37,7 +37,7 @@ class CompaniesView(APIView):
         return Response({'companies': Organization.objects.all(), 'request_user': request.user})
 
     def post(self, request, format=None):
-        if not request.user.is_admin:
+        if not request.user.is_superuser:
             raise PermissionDenied()
 
         company_data = CompanySerializer(data=request.data)

@@ -59,7 +59,7 @@ class XMLDocumentParser(BaseParser):
                 data['created'] = dateparser.parse(field.text)
 
             if field.tag == 'person-id':
-                data['person'] = int(str(field.text))
+                data['user'] = int(str(field.text))
 
             if field.tag == 'project-id':
                 data['project'] = int(str(field.text))

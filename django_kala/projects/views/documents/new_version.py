@@ -26,7 +26,7 @@ class NewDocumentVersionView(LoginRequiredMixin, TemplateView):
             request.FILES or None,
             document=self.document,
             project=self.project,
-            person=request.user
+            user=request.user
         )
         return super(NewDocumentVersionView, self).dispatch(request, *args, **kwargs)
 

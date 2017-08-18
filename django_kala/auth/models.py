@@ -20,8 +20,6 @@ class User(AbstractUser):
     timezone = TimeZoneField(default=settings.TIME_ZONE, blank=True)
     access_new_projects = models.BooleanField(default=False)
 
-    is_admin = models.BooleanField(default=False)
-
     # Phone numbers
     fax = PhoneNumberField(null=True, blank=True)
     home = PhoneNumberField(null=True, blank=True)
@@ -40,7 +38,7 @@ class User(AbstractUser):
 
     class Meta:
         ordering = ['first_name', 'last_name']
-        db_table = 'kala_person'
+        db_table = 'kala_user'
 
     def set_active(self, active):
         self.is_active = active
@@ -49,7 +47,7 @@ class User(AbstractUser):
         self.save()
 
     def get_organizations(self, has_projects=True):
-        if self.is_admin:
+        if self.is_superuser:
             _organizations = organizations.models.Organization.objects.active()
         else:
             _organizations = organizations.models.Organization.objects.active().filter(
@@ -64,7 +62,7 @@ class User(AbstractUser):
         return _organizations
 
     def get_projects(self):
-        if self.is_admin:
+        if self.is_superuser:
             return projects.models.Project.objects.active()
         else:
             return projects.models.Project.objects.active().filter(
@@ -72,7 +70,7 @@ class User(AbstractUser):
             )
 
     def get_users(self):
-        if self.is_admin:
+        if self.is_superuser:
             return User.objects.all()
         else:
             organizations = self.get_organizations().values_list('pk')

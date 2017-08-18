@@ -39,7 +39,6 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(blank=True, max_length=255, null=True)),
                 ('timezone', timezone_field.fields.TimeZoneField(blank=True, default='UTC')),
                 ('access_new_projects', models.BooleanField(default=False)),
-                ('is_admin', models.BooleanField(default=False)),
                 ('fax', django_localflavor_us.models.PhoneNumberField(blank=True, max_length=20, null=True)),
                 ('home', django_localflavor_us.models.PhoneNumberField(blank=True, max_length=20, null=True)),
                 ('mobile', django_localflavor_us.models.PhoneNumberField(blank=True, max_length=20, null=True)),
@@ -54,7 +53,7 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ['first_name', 'last_name'],
-                'db_table': 'kala_person',
+                'db_table': 'kala_user',
             },
             managers=[
                 ('objects', django.contrib.auth.models.UserManager()),

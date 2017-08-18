@@ -18,7 +18,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
         for document in self.documents:
             for version in document.documentversion_set.all():
                 version_ids.append(str(version.uuid))
-        versions = DocumentVersion.objects.filter(uuid__in=version_ids).order_by('person_id')
+        versions = DocumentVersion.objects.filter(uuid__in=version_ids).order_by('user_id')
 
         if hasattr(self, 'sort_order'):
             if self.sort_order == 'AZ':
@@ -41,7 +41,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'project': self.project,
             'sort_form': self.sort_form,
             'version_count': versions.count(),
-            'user_count': versions.distinct('person').count()
+            'user_count': versions.distinct('user').count()
         }
 
     def dispatch(self, request, pk, *args, **kwargs):
@@ -55,12 +55,12 @@ class ProjectView(LoginRequiredMixin, TemplateView):
                 ).filter(
                     search=request.GET.get('search', '')
                 ).values_list('document_id', flat=True)
-            ).filter(project=self.project).prefetch_related('documentversion_set', 'documentversion_set__person')
+            ).filter(project=self.project).prefetch_related('documentversion_set', 'documentversion_set__user')
             self.sort_order = request.GET.get('search')
         else:
             self.documents = Document.objects.active().filter(project=self.project).select_related().prefetch_related(
                 'documentversion_set',
-                'documentversion_set__person'
+                'documentversion_set__user'
             )
 
         return super(ProjectView, self).dispatch(request, *args, **kwargs)

@@ -19,7 +19,7 @@ class DocumentView(LoginRequiredMixin, TemplateView):
         self.document = get_object_or_404(
             Document.objects.active().prefetch_related(
                 'documentversion_set',
-                'documentversion_set__person'
+                'documentversion_set__user'
             ),
             pk=document_pk)
         return super(DocumentView, self).dispatch(request, *args, **kwargs)

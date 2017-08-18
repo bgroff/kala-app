@@ -57,7 +57,7 @@
                     </div>
                 </div>
             </div>
-            {% if request.user.is_admin %}
+            {% if request.user.is_superuser %}
                 <a class="ui positive compact icon button" href="{% url 'users:invite_user' %}">
                     + Invite user
                 </a>
@@ -72,7 +72,7 @@
                         <div class="content">
                             <img class="right floated avatar ui image" src="{{ user.avatar_url }}">
                             <div class="header">
-                                {% if request.user.is_admin %}
+                                {% if request.user.is_superuser %}
                                     <a href="{% url 'users:details' user.pk %}">
                                         {{ user }}
                                     </a>

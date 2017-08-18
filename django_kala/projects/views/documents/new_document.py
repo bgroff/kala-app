@@ -24,7 +24,7 @@ class NewDocumentView(LoginRequiredMixin, TemplateView):
             request.POST or None,
             request.FILES or None,
             project=self.project,
-            person=request.user
+            user=request.user
         )
         return super(NewDocumentView, self).dispatch(request, *args, **kwargs)
 

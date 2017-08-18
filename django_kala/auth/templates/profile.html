@@ -32,7 +32,7 @@
                 <li class="active">
                     <a href="#profile" data-toggle="tab">Profile</a>
                 </li>
-                {% if request.user.is_admin %}
+                {% if request.user.is_superuser %}
                 <li><a href="#projects" data-toggle="tab">Projects</a></li>
                 {% endif %}
             </ul>
@@ -148,7 +148,7 @@
                         </fieldset>
                     </form>
                 </div>
-                {% if user.is_admin %}
+                {% if user.is_superuser %}
                 <div class="tab-pane" id="projects">
                     <p>To grant {{ person|pretty_user }} access to projects, click on the checkboxes below.
                         When you are finished,
@@ -220,7 +220,7 @@
 </div> <!-- /span8 -->
 
 
-{% if user.is_admin %}
+{% if user.is_superuser %}
 <div class="span4 pull-right">
     <div class="widget stacked widget-box">
         <div class="widget-header">
@@ -230,7 +230,7 @@
             <form method="post" action="{% url 'edit_profile' person.pk %}">
                 {% csrf_token %}
 
-                {% if person.is_admin %}
+                {% if person.is_superuser %}
                 <p style="margin-top: 5px;">To remove administration privileges from this user, click
                     the button below.</p>
 

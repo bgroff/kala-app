@@ -57,7 +57,7 @@ class Organization(models.Model):
 
     def get_projects(self, person=None):
     #        assert type(person) is People, 'The user parameter must be of type People'
-        if not person or person.is_admin:
+        if not person or person.is_superuser:
             return Project.objects.active().filter(organization=self)
         else:
             return Project.objects.active().filter(organization=self,

@@ -32,7 +32,7 @@
                                                                  alt="{{ document.get_alt }}"
                                                                  style="width: 64px; height: 64px;"/></td>
                             <td><a href="{% url 'projects:document' document.project.pk document.pk %}">{{ document.name }}</a></td>
-                            <td>{{ document.person|pretty_user }}</td>
+                            <td>{{ document.user|pretty_user }}</td>
                             <td style="text-align: center;">{{ document.created|date:"M j" }}</td>
                         </tr>
                         {% empty %}

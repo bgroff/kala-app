@@ -100,7 +100,7 @@
                                 {% else %}
                                     <span class="date">Updated on {{ document.date }}</span>
                                 {% endif %}
-                                by {{ document.documentversion_set.all.0.person }}
+                                by {{ document.documentversion_set.all.0.user }}
                             </div>
                             {% if document.documentversion_set.all.0.description %}
                                 <div class="description" style="word-wrap: break-word;">
@@ -123,7 +123,7 @@
                                             <div class="item">
                                                 <div class="content">
                                                     <a class="header">{{ document_version.name }}</a>
-                                                    <div class="description">By {{ document_version.person }} on {{ document_version.created|date:"SHORT_DATETIME_FORMAT" }}</div>
+                                                    <div class="description">By {{ document_version.user }} on {{ document_version.created|date:"SHORT_DATETIME_FORMAT" }}</div>
                                                 </div>
                                             </div>
                                         {% endfor %}
