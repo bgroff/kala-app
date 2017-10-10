@@ -66,3 +66,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = '/tmp/kala/'
+
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login'

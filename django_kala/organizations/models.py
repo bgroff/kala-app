@@ -1,12 +1,15 @@
 from django.conf import settings
+from django.contrib.auth.models import Permission
 from django.db import models
-from django_localflavor_us.models import PhoneNumberField, USStateField
+from django_localflavor_us.models import PhoneNumberField
 from timezone_field import TimeZoneField
 from uuid import uuid4
 
+from auth.models import Permissions
 from django_kala.managers import ActiveManager
 from projects.models import Project
 
+import documents
 import datetime
 
 
@@ -55,15 +58,32 @@ class Organization(models.Model):
             self.removed = datetime.date.today()
         self.save()
 
-    def get_projects(self, person=None):
-    #        assert type(person) is People, 'The user parameter must be of type People'
-        if not person or person.is_superuser:
+    def get_projects(self, user):
+        if user.is_superuser:
             return Project.objects.active().filter(organization=self)
+        if Permissions.has_perms([
+            'change_organization',
+            'add_organization',
+            'delete_organization'
+        ], user, self.uuid):
+            return self.project_set.all()
         else:
-            return Project.objects.active().filter(organization=self,
-                                                   pk__in=Project.clients.through.objects.filter(
-                                                       person=person
-                                                   ).values('project__pk'))
+            document_project_uuids = Permissions.objects.filter(permission__codename__in=[
+                'change_document',
+                'add_document',
+                'delete_document'
+            ], user=user).values_list('object_uuid', flat=True)
+            document_projects = documents.models.Document.objects.filter(
+                project__organization=self,
+                uuid__in=document_project_uuids
+            ).values_list('project__uuid', flat=True)
+
+            project__uuids = self.project_set.all().values_list('uuid', flat=True)
+            perm_uuids = Permissions.objects.filter(
+                user=user,
+                object_uuid__in=project__uuids
+            ).values_list('object_uuid', flat=True)
+            return Project.objects.filter(uuid__in=list(perm_uuids) + list(document_projects))
 
     def get_people(self):
         return self.user_set.all()  # Todo: only show people that are active
@@ -74,3 +94,27 @@ class Organization(models.Model):
 
     def __str__(self):
         return self.name
+
+    def add_read(self, user):
+        perm = Permission.objects.get(codename='change_organization')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_read(self, user):
+        perm = Permission.objects.get(codename='change_organization')
+        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def add_delete(self, user):
+        perm = Permission.objects.get(codename='delete_organization')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_delete(self, user):
+        perm = Permission.objects.get(codename='delete_organization')
+        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def add_create(self, user):
+        perm = Permission.objects.get(codename='add_organization')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_create(self, user):
+        perm = Permission.objects.get(codename='add_organization')
+        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)

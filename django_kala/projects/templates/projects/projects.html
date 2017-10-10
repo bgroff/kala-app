@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static kala_tags %}
 
 {% block content %}
     <div class="repo ribbon">
@@ -32,7 +32,7 @@
                     <div class="content {% if forloop.first %}active{% endif %}">
                         <div class="transition visible" style="display: block !important;">
                             <div class="ui grid">
-                                {% for project in organization.project_set.all %}
+                                {% for project in organization|users_projects:request.user %}
                                     <div class="four wide column">
                                     <a href="{% url 'projects:project' project.pk %}">
                                         {{ project }}

@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth.models import UserManager, AbstractUser
+from django.contrib.auth.models import UserManager, AbstractUser, Permission
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django_localflavor_us.models import PhoneNumberField
@@ -8,6 +8,7 @@ from uuid import uuid4
 
 import organizations
 import projects
+import documents
 import datetime
 
 
@@ -48,18 +49,38 @@ class User(AbstractUser):
 
     def get_organizations(self, has_projects=True):
         if self.is_superuser:
-            _organizations = organizations.models.Organization.objects.active()
-        else:
-            _organizations = organizations.models.Organization.objects.active().filter(
-                pk__in=projects.models.Project.clients.through.objects.filter(
-                    user__pk=self.pk
-                ).values('project__organization__pk')
-            )
-        if has_projects:
-            has_projects = organizations.models.Organization.objects.active().filter(
-                pk__in=projects.models.Project.objects.active().values('organization__pk'))
-            return _organizations & has_projects
-        return _organizations
+            return organizations.models.Organization.objects.active()
+        project_uuids = Permissions.objects.filter(
+            user=self,
+            permission__codename__in=[
+                'change_project',
+                'add_project',
+                'delete_project'
+            ]
+        ).values_list('object_uuid', flat=True)
+        project_org_uuids = projects.models.Project.objects.filter(
+            uuid__in=project_uuids
+        ).values_list('organization__uuid', flat=True)
+        org_uuids = Permissions.objects.filter(
+            user=self,
+            permission__codename__in=[
+                'change_organization',
+                'add_organization',
+                'delete_organization'
+            ]
+        ).values_list('object_uuid', flat=True)
+        document_project_uuids = Permissions.objects.filter(permission__codename__in=[
+            'change_document',
+            'add_document',
+            'delete_document'
+        ], user=self).values_list('object_uuid', flat=True)
+        document_projects = documents.models.Document.objects.filter(
+            uuid__in=document_project_uuids
+        ).values_list('project__organization__uuid', flat=True)
+        print(document_projects)
+        return organizations.models.Organization.objects.filter(
+            uuid__in=list(project_org_uuids) + list(org_uuids) + list(document_projects)
+        )
 
     def get_projects(self):
         if self.is_superuser:
@@ -79,5 +100,67 @@ class User(AbstractUser):
     def send_invite(self):
         pass
 
+    def add_perm(self, perm, uuid):
+        Permissions.add_perm(perm=perm, user=self, uuid=uuid)
+
+    def has_perm(self, perm, uuid):
+        return Permissions.has_perm(perm=perm, user=self, uuid=uuid)
+
+    def add_read(self, user):
+        perm = Permission.objects.get(codename='change_user')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_read(self, user):
+        perm = Permission.objects.get(codename='change_user')
+        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def add_delete(self, user):
+        perm = Permission.objects.get(codename='delete_user')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_delete(self, user):
+        perm = Permission.objects.get(codename='delete_user')
+        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def add_create(self, user):
+        perm = Permission.objects.get(codename='add_user')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_create(self, user):
+        perm = Permission.objects.get(codename='add_user')
+        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
+
     def __str__(self):  # pragma: no cover
         return "{0} {1}".format(self.first_name, self.last_name)
+
+
+class Permissions(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    permission = models.ForeignKey(Permission)
+    object_uuid = models.UUIDField()
+
+    @classmethod
+    def has_perm(cls, perm, user, uuid):
+        if user.is_superuser:
+            return True
+        try:
+            cls.objects.get(user=user, permission=perm, object_uuid=uuid)
+            return True
+        except Permissions.DoesNotExist:
+            return False
+        return False
+
+    @classmethod
+    def has_perms(cls, perms, user, uuid):
+        if user.is_superuser:
+            return True
+        try:
+            cls.objects.get(user=user, permission__codename__in=perms, object_uuid=uuid)
+            return True
+        except Permissions.DoesNotExist:
+            return False
+        return False
+
+    @classmethod
+    def add_perm(cls, perm, user, uuid):
+        cls.objects.create(user=user, permission=perm, object_uuid=uuid)
