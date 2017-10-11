@@ -9,7 +9,7 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section">{{ project.company }}</a>
+                <a class="section">{{ project.organization }}</a>
                 <div class="divider"> /</div>
                 <a class="active section">{{ project }}</a>
             </div>
@@ -21,15 +21,17 @@
                     <i class="book icon"></i>
                     Documents
                 </a>
-                <a class="item">
-                    <i class="issue opened icon"></i>
-                    Issues
-                    <span class="ui small label">593</span>
-                </a>
+    {#                <a class="item">#}
+    {#                    <i class="issue opened icon"></i>#}
+    {#                    Issues#}
+    {#                    <span class="ui small label">593</span>#}
+    {#                </a>#}
+                {% if can_change %}
                 <a class="item" href="{% url 'projects:details' project.pk %}">
                     <i class="gear icon"></i>
                     Settings
                 </a>
+                {% endif %}
             </div>
         </div>
 
@@ -96,9 +98,13 @@
                     </div>
                 </div>
             </div>
+        {% if can_create %}
             <a class="ui positive compact icon button" href="{% url 'projects:new_document' project.pk %}">
                 + New document
             </a>
+        {% else %}
+            <p>You do not have permission to create new documents for this project.</p>
+        {% endif %}
         </div>
         <div class="ui divider">
         </div>

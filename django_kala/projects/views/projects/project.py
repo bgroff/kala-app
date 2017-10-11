@@ -44,7 +44,9 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'project': self.project,
             'sort_form': self.sort_form,
             'version_count': versions.count(),
-            'user_count': versions.distinct('user').count()
+            'user_count': versions.distinct('user').count(),
+            'can_change': self.project.has_change(self.request.user),
+            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user)
         }
 
     def dispatch(self, request, pk, *args, **kwargs):

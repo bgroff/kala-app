@@ -47,7 +47,7 @@ class User(AbstractUser):
             self.removed = datetime.date.today()
         self.save()
 
-    def get_organizations(self, has_projects=True):
+    def get_organizations(self):
         if self.is_superuser:
             return organizations.models.Organization.objects.active()
         project_uuids = Permissions.objects.filter(
@@ -87,8 +87,29 @@ class User(AbstractUser):
             return projects.models.Project.objects.active()
         else:
             return projects.models.Project.objects.active().filter(
-                organization__id=self.get_organizations().values_list('organization__pk')
+                organization__id=self.get_organizations().values_list('pk', flat=True)
             )
+
+    def get_documents(self):
+        if self.is_superuser:
+            return documents.models.Document.all()
+        else:
+            projects = self.get_organizations().values_list('project__uuid', flat=True)
+            document_uuids = documents.models.Document.objects.filter(
+                project__uuid__in=projects
+            ).values_list('uuid', flat=True)
+
+            perm_uuids = Permissions.objects.filter(
+                user=self,
+                object_uuid__in=document_uuids
+            ).values_list('object_uuid', flat=True)
+
+            return documents.models.Document.objects.filter(
+                uuid__in=list(perm_uuids) + list(document_uuids)
+            ).prefetch_related(
+                'documentversion_set',
+                'documentversion_set__user',
+            ).select_related('project')
 
     def get_users(self):
         if self.is_superuser:

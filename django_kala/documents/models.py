@@ -82,11 +82,11 @@ class Document(models.Model):
     def list_versions(self):
         return self.documentversion_set.all()
 
-    def add_read(self, user):
+    def add_change(self, user):
         perm = Permission.objects.get(codename='change_document')
         Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
 
-    def has_read(self, user):
+    def has_change(self, user):
         perm = Permission.objects.get(codename='change_document')
         org_perm = Permission.objects.get(codename='change_organization')
         project_perm = Permission.objects.get(codename='change_project')
@@ -103,6 +103,7 @@ class Document(models.Model):
             user=user,
             uuid=self.project.uuid
         )
+
     def add_delete(self, user):
         perm = Permission.objects.get(codename='delete_document')
         Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
@@ -124,6 +125,7 @@ class Document(models.Model):
             user=user,
             uuid=self.project.uuid
         )
+
     def add_create(self, user):
         perm = Permission.objects.get(codename='add_document')
         Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
