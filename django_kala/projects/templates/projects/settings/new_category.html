@@ -19,11 +19,11 @@
                 <i class="book icon"></i>
                 Documents
             </a>
-            <a class="item">
-                <i class="issue opened icon"></i>
-                Issues
-                <span class="ui small label">593</span>
-            </a>
+{#            <a class="item">#}
+{#                <i class="issue opened icon"></i>#}
+{#                Issues#}
+{#                <span class="ui small label">593</span>#}
+{#            </a>#}
             <a class="active item" href="{% url 'projects:details' project.pk %}">
                 <i class="gear icon"></i>
                 Settings
@@ -68,7 +68,7 @@
                 {% csrf_token %}
                 <div class="field">
                     <label>{{ form.name.label }}</label>
-                    <input id={{ form.name.auto_id }} type="text" name="{{ form.name.name }}" placeholder="Category Name" value="{{ form.name.value }}" maxlength="{{ form.fields.name.max_length }} required">
+                    <input id={{ form.name.auto_id }} type="text" name="{{ form.name.name }}" placeholder="Category Name" maxlength="{{ form.fields.name.max_length }} required">
                 </div>
                 <div class="field">
                     <label>{{ form.type.label }}</label>

@@ -95,11 +95,11 @@ class Organization(models.Model):
     def __str__(self):
         return self.name
 
-    def add_read(self, user):
+    def add_change(self, user):
         perm = Permission.objects.get(codename='change_organization')
         Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
 
-    def has_read(self, user):
+    def has_change(self, user):
         perm = Permission.objects.get(codename='change_organization')
         return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
 

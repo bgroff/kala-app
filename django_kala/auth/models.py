@@ -47,6 +47,13 @@ class User(AbstractUser):
             self.removed = datetime.date.today()
         self.save()
 
+    def get_organizations_with_create(self):
+        if self.is_superuser:
+            return organizations.models.Organization.objects.all()
+        return organizations.models.Organization.objects.filter(
+            uuid__in=Permissions.objects.filter(user=self, permission__codename='add_organization').values_list(
+                'object_uuid', flat=True))
+
     def get_organizations(self):
         if self.is_superuser:
             return organizations.models.Organization.objects.active()
@@ -175,12 +182,7 @@ class Permissions(models.Model):
     def has_perms(cls, perms, user, uuid):
         if user.is_superuser:
             return True
-        try:
-            cls.objects.get(user=user, permission__codename__in=perms, object_uuid=uuid)
-            return True
-        except Permissions.DoesNotExist:
-            return False
-        return False
+        return cls.objects.filter(user=user, permission__codename__in=perms, object_uuid=uuid).exists()
 
     @classmethod
     def add_perm(cls, perm, user, uuid):

@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
@@ -15,6 +16,8 @@ class NewOrganizationView(LoginRequiredMixin, TemplateView):
         }
 
     def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            raise PermissionDenied('You do not have permission to create a new organization.')
         self.form = DetailsForm(request.POST or None, request.FILES or None)
         return super(NewOrganizationView, self).dispatch(request, *args, **kwargs)
 
