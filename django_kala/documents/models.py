@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.db import models
 from django.shortcuts import redirect
@@ -11,6 +12,8 @@ from django_kala.managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
 
 import boto3 as boto3
+
+User = get_user_model()
 
 
 class Document(models.Model):
@@ -81,6 +84,24 @@ class Document(models.Model):
 
     def list_versions(self):
         return self.documentversion_set.all()
+
+    def get_people(self, user):
+        if user.is_superuser:
+            return User.objects.all()
+        # If you have permissions for the org, or permissions for the
+        # project, then you can see everyone in the org.
+        if Permissions.has_perms([
+            'change_organization',
+            'add_organization',
+            'delete_organization'
+        ], user, self.project.organization.uuid) or Permissions.has_perms([
+            'change_project',
+            'delete_project'
+        ], user, self.uuid):
+            return self.project.organization.user_set.all()
+        if True: #  TODO: If you have project permission, then you can see everyone on the project.
+            pass
+        return None
 
     def add_change(self, user):
         perm = Permission.objects.get(codename='change_document')

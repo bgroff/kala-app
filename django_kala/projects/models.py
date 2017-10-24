@@ -1,15 +1,16 @@
+from auth.models import Permissions
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
-from uuid import uuid4
-from taggit.managers import TaggableManager
-
-from auth.models import Permissions
 from django_kala.managers import ActiveManager
+from taggit.managers import TaggableManager
+from uuid import uuid4
 
 import datetime
-import documents
+
+User = get_user_model()
 
 
 class Project(models.Model):
@@ -38,16 +39,6 @@ class Project(models.Model):
             self.removed = datetime.date.today()
         self.save()
 
-    def add_client(self, client):
-        # Check if the client is in the clients list, add if not.
-        try:
-            self.clients.get(client)
-        except ObjectDoesNotExist:
-            self.clients.add(client)
-
-    def remove_client(self, client):
-        self.clients.remove(client)
-
     def __str__(self):
         return self.name
 
@@ -73,7 +64,23 @@ class Project(models.Model):
             return self.document_set.filter(uuid__in=perm_uuids).prefetch_related('documentversion_set',
                                                                                   'documentversion_set__user')
 
-    def add_changet(self, user):
+    def get_people(self, user):
+        if user.is_superuser:
+            return User.objects.all()
+        # If you have permissions for the org, or permissions for the
+        # project, then you can see everyone in the org.
+        if Permissions.has_perms([
+            'change_organization',
+            'add_organization',
+            'delete_organization'
+        ], user, self.organization.uuid) or Permissions.has_perms([
+            'change_project',
+            'delete_project'
+        ], user, self.uuid):
+            return self.organization.user_set.all()
+        return None
+
+    def add_change(self, user):
         perm = Permission.objects.filter(codename='change_project')
         Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
 

@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.contrib.auth.models import Permission
 from django.db import models
@@ -11,6 +12,8 @@ from projects.models import Project
 
 import documents
 import datetime
+
+User = get_user_model()
 
 
 class OrganizationsWithProjectManager(models.Manager):
@@ -85,12 +88,17 @@ class Organization(models.Model):
             ).values_list('object_uuid', flat=True)
             return Project.objects.filter(uuid__in=list(perm_uuids) + list(document_projects))
 
-    def get_people(self):
-        return self.user_set.all()  # Todo: only show people that are active
-
-    def add_person_to_projects(self, person):
-        for project in Project.active.filter(organization=self):
-            project.clients.add(person)
+    def get_people(self, user):
+        # If you are a super user or you have permissions on
+        # an organization, then you can see everyone.
+        if user.is_superuser or Permissions.has_perms([
+            'change_organization',
+            'add_organization',
+            'delete_organization'
+        ], user, self.uuid):
+            return User.objects.all()
+        else:
+            return None
 
     def __str__(self):
         return self.name
