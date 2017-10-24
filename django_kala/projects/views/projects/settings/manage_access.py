@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
@@ -19,6 +20,9 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
+        if not self.project.has_change(request.user):
+            raise PermissionDenied('You do not have permission to edit this project')
+
         self.forms = manage_access_forms(request, self.project)
         return super(ManageAccessView, self).dispatch(request, *args, **kwargs)
 

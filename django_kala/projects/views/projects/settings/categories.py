@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -42,6 +43,9 @@ class NewCategoryView(LoginRequiredMixin, TemplateView):
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
+        if not self.project.has_change(request.user):
+            raise PermissionDenied('You do not have permission to edit this project')
+
         self.form = CategoryForm(request.POST or None, project=self.project)
         return super(NewCategoryView, self).dispatch(request, *args, **kwargs)
 

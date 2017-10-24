@@ -7,5 +7,6 @@ class OrganizationsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
-            'organizations': self.request.user.get_organizations(has_projects=False),
+            'organizations': self.request.user.get_organizations(),
+            'can_create': self.request.user.is_superuser,
         }

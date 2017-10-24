@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic.base import TemplateView
@@ -18,6 +19,10 @@ class DetailsView(LoginRequiredMixin, TemplateView):
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.user = get_object_or_404(get_user_model().objects.all(), pk=pk)
+
+        if not request.user.is_superuser and request.user != self.user:
+            raise PermissionDenied('You do not have permission to edit this user.')
+
         self.form = DetailsForm(request.POST or None, instance=self.user)
         return super(DetailsView, self).dispatch(request, *args, **kwargs)
 

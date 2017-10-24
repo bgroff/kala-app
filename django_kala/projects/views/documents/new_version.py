@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic.base import TemplateView
@@ -21,6 +22,9 @@ class NewDocumentVersionView(LoginRequiredMixin, TemplateView):
     def dispatch(self, request, project_pk, document_pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=project_pk)
         self.document = get_object_or_404(Document.objects.active(), pk=document_pk)
+        if not self.project.has_create(request.user) and not self.document.has_create(request.user):
+            raise PermissionDenied('You do not have permission to create a new version for this document.')
+
         self.form = NewDocumentVersionForm(
             request.POST or None,
             request.FILES or None,

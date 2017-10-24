@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic.base import TemplateView
@@ -21,6 +22,10 @@ class DocumentDetailsView(LoginRequiredMixin, TemplateView):
     def dispatch(self, request, project_pk, document_pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=project_pk)
         self.document = get_object_or_404(Document.objects.active(), pk=document_pk)
+
+        if not self.document.has_change(request.user):
+            raise PermissionDenied('You do not have permission to edit this project')
+
         self.form = DetailsForm(request.POST or None, instance=self.document, project=self.project)
         return super(DocumentDetailsView, self).dispatch(request, *args, **kwargs)
 

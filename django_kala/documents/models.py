@@ -1,13 +1,19 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
 from django.db import models
 from django.shortcuts import redirect
 from django.utils import timezone
 from uuid import uuid4
-from django_kala.managers import ActiveManager
 from taggit.managers import TaggableManager
 
+from auth.models import Permissions
+from django_kala.managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
+
 import boto3 as boto3
+
+User = get_user_model()
 
 
 class Document(models.Model):
@@ -18,6 +24,7 @@ class Document(models.Model):
     mime = models.CharField(max_length=255, null=True)
     category = models.ForeignKey('projects.Category', null=True, blank=True)
     is_active = models.BooleanField(default=True)
+    uuid = models.UUIDField(unique=True, db_index=True, default=uuid4, editable=False)
 
     tags = TaggableManager(blank=True)
     objects = ActiveManager()
@@ -35,12 +42,6 @@ class Document(models.Model):
     def delete(self, using=None):
         DocumentVersion.objects.filter(document=self).delete()
         super(Document, self).delete(using)
-
-    @property
-    def uuid(self):
-        if not hasattr(self, 'document'):
-            self.document = self.get_latest()
-        return self.document.uuid
 
     @property
     def description(self):
@@ -83,6 +84,90 @@ class Document(models.Model):
 
     def list_versions(self):
         return self.documentversion_set.all()
+
+    def get_people(self, user):
+        if user.is_superuser:
+            return User.objects.all()
+        # If you have permissions for the org, or permissions for the
+        # project, then you can see everyone in the org.
+        if Permissions.has_perms([
+            'change_organization',
+            'add_organization',
+            'delete_organization'
+        ], user, self.project.organization.uuid) or Permissions.has_perms([
+            'change_project',
+            'delete_project'
+        ], user, self.uuid):
+            return self.project.organization.user_set.all()
+        if True: #  TODO: If you have project permission, then you can see everyone on the project.
+            pass
+        return None
+
+    def add_change(self, user):
+        perm = Permission.objects.get(codename='change_document')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_change(self, user):
+        perm = Permission.objects.get(codename='change_document')
+        org_perm = Permission.objects.get(codename='change_organization')
+        project_perm = Permission.objects.get(codename='change_project')
+        return Permissions.has_perm(
+            perm=perm,
+            user=user,
+            uuid=self.uuid
+        ) or Permissions.has_perm(
+            perm=org_perm,
+            user=user,
+            uuid=self.project.organization.uuid
+        ) or Permissions.has_perm(
+            perm=project_perm,
+            user=user,
+            uuid=self.project.uuid
+        )
+
+    def add_delete(self, user):
+        perm = Permission.objects.get(codename='delete_document')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_delete(self, user):
+        perm = Permission.objects.get(codename='delete_document')
+        org_perm = Permission.objects.get(codename='delete_organization')
+        project_perm = Permission.objects.get(codename='delete_project')
+        return Permissions.has_perm(
+            perm=perm,
+            user=user,
+            uuid=self.uuid
+        ) or Permissions.has_perm(
+            perm=org_perm,
+            user=user,
+            uuid=self.project.organization.uuid
+        ) or Permissions.has_perm(
+            perm=project_perm,
+            user=user,
+            uuid=self.project.uuid
+        )
+
+    def add_create(self, user):
+        perm = Permission.objects.get(codename='add_document')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_create(self, user):
+        perm = Permission.objects.get(codename='add_document')
+        org_perm = Permission.objects.get(codename='add_organization')
+        project_perm = Permission.objects.get(codename='add_project')
+        return Permissions.has_perm(
+            perm=perm,
+            user=user,
+            uuid=self.uuid
+        ) or Permissions.has_perm(
+            perm=org_perm,
+            user=user,
+            uuid=self.project.organization.uuid
+        ) or Permissions.has_perm(
+            perm=project_perm,
+            user=user,
+            uuid=self.project.uuid
+        )
 
     def __str__(self):
         return self.name
