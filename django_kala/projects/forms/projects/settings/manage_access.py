@@ -1,42 +1,114 @@
 from django import forms
 
-from organizations.models import Organization
+from auth.models import Permissions
+from django.contrib.auth.models import Permission
 
 
 def manage_access_forms(request, project):
-    client_ids = project.clients.all().values_list('id', flat=True)
-    forms = [ManageAccessForm(request.POST or None, project=project, organization=project.organization, client_ids=client_ids)]
-    for organization in Organization.objects.active().exclude(pk=project.organization.pk).prefetch_related('user_set'):
-        forms.append(ManageAccessForm(request.POST or None, project=project, organization=organization, client_ids=client_ids))
+    add_project_permission = Permission.objects.get(codename='add_project')
+    change_project_permission = Permission.objects.get(codename='change_project')
+    delete_project_permission = Permission.objects.get(codename='delete_project')
+    permissions = Permissions.objects.filter(
+        object_uuid=project.uuid
+    ).select_related(
+        'permission'
+    )
+
+    users = project.get_users(request.user)
+    forms = []
+    for user in users:
+        forms.append(ManageAccessForm(
+            request.POST or None,
+            project=project,
+            user=user,
+            add_project=add_project_permission,
+            change_project=change_project_permission,
+            delete_project=delete_project_permission,
+            permissions=permissions,
+        ))
     return forms
 
 
 class ManageAccessForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        self.project = kwargs.pop('project')
-        client_ids = kwargs.pop('client_ids')
-        self.organization = kwargs.pop('organization')
-        self.people = self.organization.user_set.all()
-        super(ManageAccessForm, self).__init__(*args, **kwargs)
-        self.fields[self.organization] = forms.BooleanField(required=False, label='Select/Unselect All',
-                                                       widget=forms.CheckboxInput(
-                                                           attrs={'class': 'organization_checkbox',
-                                                                  'pk_id': self.organization.pk,
-                                                           }))
 
-        for user in self.users:
-            self.fields['%i' % user.pk] = forms.BooleanField(required=False, label=str(user),
-                                                               initial=True if user.pk in client_ids else False,
-                                                               widget=forms.CheckboxInput(
-                                                                   attrs={'pk': self.organization.pk}))
+        self.add_project_permission = kwargs.pop('add_project')
+        self.change_project_permission = kwargs.pop('change_project')
+        self.delete_project_permission = kwargs.pop('delete_project')
+
+        self.project = kwargs.pop('project')
+        self.user = kwargs.pop('user')
+        self.permissions_dict = {}
+        for permission in kwargs.pop('permissions'):
+            try:
+                self.permissions_dict[permission.user.pk].append(permission.permission.codename)
+            except KeyError:
+                self.permissions_dict[permission.user.pk] = [permission.permission.codename]
+
+        super(ManageAccessForm, self).__init__(*args, **kwargs)
+        self.fields['add_project_{0}'.format(self.user.pk)] = forms.BooleanField(
+            required=False,
+            label='',
+            initial=True if 'add_project' in self.permissions_dict.get(self.user.pk, []) else False,
+            widget=forms.CheckboxInput(
+                attrs={'pk': self.project.pk}
+            )
+        )
+        self.fields['change_project_{0}'.format(self.user.pk)] = forms.BooleanField(
+            required=False,
+            label='',
+            initial=True if 'change_project' in self.permissions_dict.get(self.user.pk, []) else False,
+            widget=forms.CheckboxInput(
+                attrs={'pk': self.project.pk}
+            )
+        )
+        self.fields['delete_project_{0}'.format(self.user.pk)] = forms.BooleanField(
+            required=False,
+            label='',
+            initial=True if 'delete_project' in self.permissions_dict.get(self.user.pk, []) else False,
+            widget=forms.CheckboxInput(
+                attrs={'pk': self.project.pk}
+            )
+        )
 
     def save(self):
-        for user in self.users:
-            is_selected = self.cleaned_data['%i' % user.pk]
-            if is_selected:
-                if not self.project.clients.filter(pk=user.pk).exists():
-                    self.project.clients.add(user)
-            else:
-                if self.project.clients.filter(pk=user.pk).exists():
-                    self.project.clients.remove(user)
-
+        # TODO, this can be sped up by using the permissions dict.
+        if self.cleaned_data['add_project_{0}'.format(self.user.pk)]:
+            if 'add_project' not in self.permissions_dict.get(self.user.pk, []):
+                Permissions.objects.create(
+                    user=self.user,
+                    permission=self.add_project_permission,
+                    object_uuid=self.project.uuid
+                )
+        elif 'add_project' in self.permissions_dict.get(self.user.pk, []):
+            Permissions.objects.filter(
+                user=self.user,
+                permission=self.add_project_permission,
+                object_uuid=self.project.uuid
+            ).delete()
+        if self.cleaned_data['change_project_{0}'.format(self.user.pk)]:
+            if 'change_project' not in self.permissions_dict.get(self.user.pk, []):
+                Permissions.objects.create(
+                    user=self.user,
+                    permission=self.change_project_permission,
+                    object_uuid=self.project.uuid
+                )
+        elif 'change_project' in self.permissions_dict.get(self.user.pk, []):
+            Permissions.objects.filter(
+                user=self.user,
+                permission=self.change_project_permission,
+                object_uuid=self.project.uuid
+            ).delete()
+        if self.cleaned_data['delete_project_{0}'.format(self.user.pk)]:
+            if 'delete_project' not in self.permissions_dict.get(self.user.pk, []):
+                Permissions.objects.create(
+                    user=self.user,
+                    permission=self.delete_project_permission,
+                    object_uuid=self.project.uuid
+                )
+        elif 'delete_project' in self.permissions_dict.get(self.user.pk, []):
+            Permissions.objects.filter(
+                user=self.user,
+                permission=self.delete_project_permission,
+                object_uuid=self.project.uuid
+            ).delete()

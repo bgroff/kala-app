@@ -68,37 +68,39 @@
                 {% csrf_token %}
                 <div class="ui styled fluid accordion">
                     {% for form in forms %}
-                        <div class="title active">
-                            <i class="dropdown icon"></i>
-                            {{ form.organization }}
-                        </div>
-                        <div class="content {% if forloop.first %}active{% endif %}">
-                            <div class="transition visible" style="display: block !important;">
-                                <div class="ui grid">
-                                    {% for field in form %}
-                                        {% if forloop.first %}
-                                            <div class="four wide column">
-
-                                                <div class="ui checkbox">
-                                                    {{ field }}
-                                                    <label>{{ field.label }}</label>
-                                                </div>
-                                            </div>
-                                            </div>
-                                            <div class="ui divider"></div>
-                                            <div class="ui grid">
-                                        {% else %}
-                                            <div class="four wide column">
-                                                <div class="ui checkbox">
-                                                    {{ field }}
-                                                    <label>{{ field.label }}</label>
-                                                </div>
-                                            </div>
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </div>
-                        </div>
+{#                        <div class="title active">#}
+{#                            <i class="dropdown icon"></i>#}
+{#                            {{ form.organization }}#}
+{#                        </div>#}
+{#                        <div class="content {% if forloop.first %}active{% endif %}">#}
+{#                            <div class="transition visible" style="display: block !important;">#}
+{#                                <div class="ui grid">#}
+{#                                    {% for field in form %}#}
+{#                                        {% if forloop.first %}#}
+{#                                            <div class="four wide column">#}
+{##}
+{#                                                <div class="ui checkbox">#}
+{#                                                    {{ field }}#}
+{#                                                    <label>{{ field.label }}</label>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            </div>#}
+{#                                            <div class="ui divider"></div>#}
+{#                                            <div class="ui grid">#}
+{#                                        {% else %}#}
+{#                                            <div class="four wide column">#}
+{#                                                <div class="ui checkbox">#}
+{#                                                    {{ field }}#}
+{#                                                    <label>{{ field.label }}</label>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </div>#}
+                        {{ form.user }}
+                        {{ form }}
                     {% endfor %}
                 </div>
             <div class="field"></div>
