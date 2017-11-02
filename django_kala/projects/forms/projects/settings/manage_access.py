@@ -11,10 +11,11 @@ def manage_access_forms(request, project):
     permissions = Permissions.objects.filter(
         object_uuid=project.uuid
     ).select_related(
-        'permission'
+        'permission',
+        'user'
     )
 
-    users = project.get_users(request.user)
+    users = request.user.get_users()
     forms = []
     for user in users:
         forms.append(ManageAccessForm(
