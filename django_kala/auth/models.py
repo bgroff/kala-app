@@ -99,7 +99,7 @@ class User(AbstractUser):
 
     def get_documents(self):
         if self.is_superuser:
-            return documents.models.Document.all()
+            return documents.models.Document.objects.all()
         else:
             projects = self.get_organizations().values_list('project__uuid', flat=True)
             document_uuids = documents.models.Document.objects.filter(
