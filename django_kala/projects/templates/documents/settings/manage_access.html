@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load kala_tags %}
+
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <a class="section">{{ document.project.organization }}</a>
+                <div class="divider"> /</div>
+                <a class="active section">{{ document.project }}</a>
+                <div class="divider"> /</div>
+                <a class="active section">{{ document }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui tabular menu">
+        <div class="ui container">
+            <a class="item" href="{% url 'projects:document' document.project.pk document.pk %}">
+                <i class="book icon"></i>
+                Document
+            </a>
+            {#            <a class="item">#}
+            {#                <i class="issue opened icon"></i>#}
+            {#                Issues#}
+            {#                <span class="ui small label">593</span>#}
+            {#            </a>#}
+            <a class="active item" href="{% url 'projects:document_details' document.project.pk document.pk %}">
+                <i class="gear icon"></i>
+                Settings
+            </a>
+        </div>
+    </div>
+
+
+    <div class="ui two column grid container">
+        <div class="four wide column">
+            <div class="ui vertical menu">
+                <div class="item">
+                    <div class="header">Document</div>
+                    <div class="menu">
+                        <a class="item" href="{% url 'projects:document_details' document.project.pk document.pk %}">Details</a>
+                        <a class="item" href="">Archive</a>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="header">People</div>
+                    <div class="menu">
+                        <a class="active item" href="{% url 'projects:document_manage_access' document.project.pk document.pk %}">Manage access</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="twelve wide column">
+            <form id="form" class="ui form" method="post">
+                {% csrf_token %}
+                <table class="ui very basic collapsing celled table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Create versions</th>
+                        <th>Manage document</th>
+                        <th>Delete document</th>
+                    </tr>
+                    </thead>
+                    {% for form in forms %}
+                        <tr>
+                            <td>
+                                <h4 class="ui header">
+                                    <div class="content">
+                                        {{ form.user }}
+                                    </div>
+                                </h4>
+                            </td>
+                            <td>
+                                <div class="ui toggle checkbox">
+                                    {% for field in form %}
+                                        {% if 'add_document' in field.name %}
+                                            {{ field }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui toggle checkbox">
+                                    {% for field in form %}
+                                        {% if 'change_document' in field.name %}
+                                            {{ field }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui toggle checkbox">
+                                    {% for field in form %}
+                                        {% if 'delete_document' in field.name %}
+                                            {{ field }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                <div class="field"></div>
+                <button class="ui button primary" type="submit">Manage access</button>
+            </form>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+{#        $('.ui.styled.fluid.accordion')#}
+{#            .accordion()#}
+{#        ;#}
+        $('.ui.checkbox')
+            .checkbox()
+        ;
+    </script>
+{% endblock %}
