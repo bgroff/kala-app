@@ -50,6 +50,11 @@ You will now be able to open http://localhost:9090 and see the Kala application.
 
 teststaff and testuser both have the password set to test
 
+
+===========
+Screen Shot
+===========
+
 .. figure:: https://raw.githubusercontent.com/bgroff/kala-app/master/docs/_images/screenshot.png
    :alt: screenshot of a projects documents
 
