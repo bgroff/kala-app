@@ -25,24 +25,18 @@
         <div class="four wide column">
             <div class="ui vertical menu">
                 <div class="item">
-                    <div class="header">Ogranization</div>
+                    <div class="header">Organization</div>
                     <div class="menu">
                         <a class="active item" href="{% url 'organizations:details' organization.pk %}">Details</a>
-{#                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>#}
+                        <a class="item" href="">Archive</a>
                     </div>
                 </div>
-{#                <div class="item">#}
-{#                    <div class="header">People</div>#}
-{#                    <div class="menu">#}
-{#                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">Manage access</a>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="item">#}
-{#                    <div class="header">Organizations</div>#}
-{#                    <div class="menu">#}
-{#                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>#}
-{#                    </div>#}
-{#                </div>#}
+                <div class="item">
+                    <div class="header">People</div>
+                    <div class="menu">
+                        <a class="item" href="{% url 'organizations:manage_access' organization.pk %}">Manage access</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="twelve wide column">

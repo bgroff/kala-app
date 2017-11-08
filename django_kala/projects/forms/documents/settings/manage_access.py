@@ -5,9 +5,9 @@ from django.contrib.auth.models import Permission
 
 
 def manage_access_forms(request, document):
-    add_project_permission = Permission.objects.get(codename='add_document')
-    change_project_permission = Permission.objects.get(codename='change_document')
-    delete_project_permission = Permission.objects.get(codename='delete_document')
+    add_document_permission = Permission.objects.get(codename='add_document')
+    change_document_permission = Permission.objects.get(codename='change_document')
+    delete_document_permission = Permission.objects.get(codename='delete_document')
     permissions = Permissions.objects.filter(
         object_uuid=document.uuid
     ).select_related(
@@ -22,9 +22,9 @@ def manage_access_forms(request, document):
             request.POST or None,
             document=document,
             user=user,
-            add_document=add_project_permission,
-            change_document=change_project_permission,
-            delete_document=delete_project_permission,
+            add_document=add_document_permission,
+            change_document=change_document_permission,
+            delete_document=delete_document_permission,
             permissions=permissions,
         ))
     return forms
