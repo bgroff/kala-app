@@ -6,25 +6,23 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section">{{ project.organization }}</a>
-                <div class="divider"> /</div>
-                <a class="active section">{{ project }}</a>
+                <a class="section">{{ organization }}</a>
             </div>
         </div>
     </div>
 
     <div class="ui tabular menu">
         <div class="ui container">
-            <a class="item" href="{% url 'projects:project' project.pk %}">
+            <a class="item" href="{% url 'organizations:organization' organization.pk %}">
                 <i class="book icon"></i>
-                Documents
+                Document
             </a>
             {#            <a class="item">#}
             {#                <i class="issue opened icon"></i>#}
             {#                Issues#}
             {#                <span class="ui small label">593</span>#}
             {#            </a>#}
-            <a class="active item" href="{% url 'projects:details' project.pk %}">
+            <a class="active item" href="{% url 'organizations:details' organization.pk %}">
                 <i class="gear icon"></i>
                 Settings
             </a>
@@ -36,29 +34,16 @@
         <div class="four wide column">
             <div class="ui vertical menu">
                 <div class="item">
-                    <div class="header">Project</div>
+                    <div class="header">Organization</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:details' project.pk %}">Details</a>
-                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>
+                        <a class="item" href="{% url 'organizations:details' organization.pk %}">Details</a>
+                        <a class="item" href="">Archive</a>
                     </div>
                 </div>
                 <div class="item">
                     <div class="header">People</div>
                     <div class="menu">
-                        <a class="active item" href="{% url 'projects:manage_access' project.pk %}">Manage access</a>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="header">Organizations</div>
-                    <div class="menu">
-                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="header">Categories</div>
-                    <div class="menu">
-                        <a class="item" href="{% url 'projects:categories' project.pk %}">Manage categories</a>
-                        <a class="item" href="{% url 'projects:new_category' project.pk %}">New category</a>
+                        <a class="active item" href="{% url 'organizations:manage_access' organization.pk %}">Manage access</a>
                     </div>
                 </div>
             </div>
@@ -70,9 +55,9 @@
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Create documents</th>
-                        <th>Manage people</th>
-                        <th>Delete documents</th>
+                        <th>Create projects</th>
+                        <th>Manage organization</th>
+                        <th>Delete organization</th>
                     </tr>
                     </thead>
                     {% for form in forms %}
@@ -87,7 +72,7 @@
                             <td>
                                 <div class="ui toggle checkbox">
                                     {% for field in form %}
-                                        {% if 'add_project' in field.name %}
+                                        {% if 'add_organization' in field.name %}
                                             {{ field }}
                                         {% endif %}
                                     {% endfor %}
@@ -96,7 +81,7 @@
                             <td>
                                 <div class="ui toggle checkbox">
                                     {% for field in form %}
-                                        {% if 'change_project' in field.name %}
+                                        {% if 'change_organization' in field.name %}
                                             {{ field }}
                                         {% endif %}
                                     {% endfor %}
@@ -105,7 +90,7 @@
                             <td>
                                 <div class="ui toggle checkbox">
                                     {% for field in form %}
-                                        {% if 'delete_project' in field.name %}
+                                        {% if 'delete_organization' in field.name %}
                                             {{ field }}
                                         {% endif %}
                                     {% endfor %}
@@ -124,9 +109,9 @@
 
 {% block scripts %}
     <script>
-        $('.ui.styled.fluid.accordion')
-            .accordion()
-        ;
+{#        $('.ui.styled.fluid.accordion')#}
+{#            .accordion()#}
+{#        ;#}
         $('.ui.checkbox')
             .checkbox()
         ;

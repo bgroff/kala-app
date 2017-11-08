@@ -64,7 +64,7 @@ class Project(models.Model):
             return self.document_set.filter(uuid__in=perm_uuids).prefetch_related('documentversion_set',
                                                                                   'documentversion_set__user')
 
-    def get_people(self, user):
+    def get_users(self, user):
         if user.is_superuser:
             return User.objects.all()
         # If you have permissions for the org, or permissions for the

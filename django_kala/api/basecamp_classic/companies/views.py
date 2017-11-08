@@ -86,4 +86,4 @@ class PeopleView(APIView):
         Return a list of all users for a specific company.
         """
         company = get_object_or_404(Organization, pk=pk)
-        return Response({'users': company.get_people(), 'request_user': request.user})
+        return Response({'users': company.get_users(), 'request_user': request.user})

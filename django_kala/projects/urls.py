@@ -50,6 +50,13 @@ urlpatterns = [
         name='document_details'
     ),
 
+
+    url(
+        regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/manage_access$',
+        view=DocumentManageAccessView.as_view(),
+        name='document_manage_access'
+    ),
+
     url(
         regex=r'^(?P<pk>\d+)/settings/details$',
         view=DetailsView.as_view(),

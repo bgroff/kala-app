@@ -5,31 +5,28 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import TemplateView
 
-from projects.forms.documents.settings.manage_access import manage_access_forms
-from documents.models import Document
+from organizations.forms.settings.manage_access import manage_access_forms
+from organizations.models import Organization
 
 
 class ManageAccessView(LoginRequiredMixin, TemplateView):
-    template_name = 'documents/settings/manage_access.html'
+    template_name = 'organizations/settings/manage_access.html'
 
     def get_context_data(self, **kwargs):
         return {
             'forms': self.forms,
-            'document': self.document,
+            'organization': self.organization,
         }
 
-    def dispatch(self, request, project_pk, document_pk, *args, **kwargs):
-        self.document = get_object_or_404(
-            Document.objects.active().select_related(
-                'project',
-                'project__organization'
-            ),
-            pk=document_pk
+    def dispatch(self, request, pk, *args, **kwargs):
+        self.organization = get_object_or_404(
+            Organization.objects.active(),
+            pk=pk
         )
-        if not self.document.has_change(request.user):
+        if not self.organization.has_change(request.user):
             raise PermissionDenied('You do not have permission to edit this project')
 
-        self.forms = manage_access_forms(request, self.document)
+        self.forms = manage_access_forms(request, self.organization)
         return super(ManageAccessView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -43,10 +40,9 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
             messages.success(request, 'The permissions have been updated.')
             return redirect(
                 reverse(
-                    'projects:document_manage_access',
+                    'organizations:manage_access',
                     args=[
-                        self.document.project.pk,
-                        self.document.pk
+                        self.organization.pk
                     ]
                 )
             )
