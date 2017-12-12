@@ -81,7 +81,7 @@ class Project(models.Model):
         return None
 
     def add_change(self, user):
-        perm = Permission.objects.filter(codename='change_project')
+        perm = Permission.objects.get(codename='change_project')
         Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
 
     def has_change(self, user):
@@ -103,7 +103,7 @@ class Project(models.Model):
 
     def has_delete(self, user):
         perm = Permission.objects.get(codename='delete_project')
-        org_perm = Permission.objects.get(codename='change_organization')
+        org_perm = Permission.objects.get(codename='delete_organization')
         return Permissions.has_perm(
             perm=perm,
             user=user,
@@ -120,7 +120,7 @@ class Project(models.Model):
 
     def has_create(self, user):
         perm = Permission.objects.get(codename='add_project')
-        org_perm = Permission.objects.get(codename='change_organization')
+        org_perm = Permission.objects.get(codename='add_organization')
         return Permissions.has_perm(
             perm=perm,
             user=user,

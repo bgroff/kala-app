@@ -1,0 +1,15 @@
+machine:
+  python:
+    version: 3.5.2
+
+compile:
+   override:
+
+test:
+   pre:
+     - rm -rf /home/ubuntu/kala-app/django_kala/build/lib/django_kala
+   override:
+     - tox
+
+general:
+  build_dir: django_kala

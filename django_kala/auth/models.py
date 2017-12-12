@@ -84,7 +84,6 @@ class User(AbstractUser):
         document_projects = documents.models.Document.objects.filter(
             uuid__in=document_project_uuids
         ).values_list('project__organization__uuid', flat=True)
-        print(document_projects)
         return organizations.models.Organization.objects.filter(
             uuid__in=list(project_org_uuids) + list(org_uuids) + list(document_projects)
         )
