@@ -1,5 +1,5 @@
 .. image:: https://circleci.com/gh/bgroff/kala-app.svg?style=svg
-    :target: https://circleci.com/gh/bgroff/kala-app
+     :target: https://circleci.com/gh/bgroff/kala-app
      :alt: CircleCI
 
 .. image:: https://requires.io/github/bgroff/kala-app/requirements.svg?branch=master
