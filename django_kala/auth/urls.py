@@ -28,7 +28,7 @@ urlpatterns = [
    url(
        regex=r'^logout/$',
        view=logout_then_login,
-       kwargs={'login_url': '/login'},
+       kwargs={'login_url': '/accounts/login'},
        name='logout'
    ),
    #    url(r'^create_account$', CreateAccount.as_view(), name='create_account'),
