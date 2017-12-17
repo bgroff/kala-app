@@ -9,9 +9,9 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section">{{ project.organization }}</a>
+                <a class="section" href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
                 <div class="divider"> /</div>
-                <a class="active section">{{ project }}</a>
+                <span class="active section">{{ project }}</span>
             </div>
         </div>
 

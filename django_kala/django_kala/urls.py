@@ -24,7 +24,7 @@ urlpatterns = [
     ),
 
     url(
-        r'^ogranizations/',
+        r'^organizations/',
         include('organizations.urls', namespace='organizations'),
     ),
 
