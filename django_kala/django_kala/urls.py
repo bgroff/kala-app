@@ -29,11 +29,6 @@ urlpatterns = [
     ),
 
     url(
-        r'^documents/',
-        include('documents.urls'),
-    ),
-
-    url(
         r'^accounts/',
         include('auth.urls', namespace='users'),
     ),

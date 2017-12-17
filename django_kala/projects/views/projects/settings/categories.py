@@ -16,6 +16,8 @@ class CategoriesView(LoginRequiredMixin, TemplateView):
         return {
             'categories': self.project.category_set.all(),
             'project': self.project,
+            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
+            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
         }
 
     def dispatch(self, request, pk, category_pk=None, *args, **kwargs):
@@ -39,6 +41,8 @@ class NewCategoryView(LoginRequiredMixin, TemplateView):
         return {
             'form': self.form,
             'project': self.project,
+            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
+            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
         }
 
     def dispatch(self, request, pk, *args, **kwargs):

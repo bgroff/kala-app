@@ -15,6 +15,8 @@ class DetailsView(LoginRequiredMixin, TemplateView):
         return {
             'form': self.form,
             'organization': self.organization,
+            'can_invite': self.organization.has_change(self.request.user) or self.organization.has_create(
+                self.request.user),
         }
 
     def dispatch(self, request, pk, *args, **kwargs):

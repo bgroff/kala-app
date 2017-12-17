@@ -16,6 +16,9 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
         return {
             'forms': self.forms,
             'organization': self.organization,
+            'can_invite': self.organization.has_change(self.request.user) or self.organization.has_create(
+                self.request.user),
+
         }
 
     def dispatch(self, request, pk, *args, **kwargs):
