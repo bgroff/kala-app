@@ -162,8 +162,8 @@ class User(AbstractUser):
 
 
 class Permissions(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
-    permission = models.ForeignKey(Permission)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    permission = models.ForeignKey(Permission, on_delete=models.DO_NOTHING)
     object_uuid = models.UUIDField()
 
     @classmethod

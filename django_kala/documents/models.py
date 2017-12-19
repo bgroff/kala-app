@@ -17,12 +17,12 @@ User = get_user_model()
 
 
 class Document(models.Model):
-    project = models.ForeignKey('projects.Project')
+    project = models.ForeignKey('projects.Project', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     date = models.DateTimeField(default=timezone.now)
     removed = models.DateField(null=True)
     mime = models.CharField(max_length=255, null=True)
-    category = models.ForeignKey('projects.Category', null=True, blank=True)
+    category = models.ForeignKey('projects.Category', null=True, blank=True, on_delete=models.DO_NOTHING)
     is_active = models.BooleanField(default=True)
     uuid = models.UUIDField(unique=True, db_index=True, default=uuid4, editable=False)
 
@@ -189,7 +189,7 @@ class Document(models.Model):
 
 class DocumentVersion(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
-    document = models.ForeignKey('Document', null=True)
+    document = models.ForeignKey('Document', null=True, on_delete=models.CASCADE)
     file = models.FileField(null=True)
     url = models.URLField(max_length=3000)
     size = models.IntegerField(default=0)
@@ -197,7 +197,7 @@ class DocumentVersion(models.Model):
     created = models.DateTimeField(default=timezone.now) # Update save method
     changed = models.DateTimeField(default=timezone.now) # Update save method
     mime = models.CharField(max_length=255, null=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=255)
 
     class Meta:
