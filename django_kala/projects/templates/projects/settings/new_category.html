@@ -64,12 +64,25 @@
             </div>
         </div>
         <div class="twelve wide column">
-            <form class="ui form" method="post">
+            <form class="ui form {% if form.errors %}error{% endif %}" method="post">
                 {% csrf_token %}
                 <div class="field">
                     <label>{{ form.name.label }}</label>
                     <input id={{ form.name.auto_id }} type="text" name="{{ form.name.name }}" placeholder="Category Name" maxlength="{{ form.fields.name.max_length }} required">
                 </div>
+            <div class="ui error message">
+                <ul class="list">
+                    {% for error in form.name.errors %}
+                        <li>
+                            {{ error }}
+                        </li>
+                        {% empty %}
+                        <li>
+                            Could not create category.
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
                 <div class="field">
                     <label>{{ form.type.label }}</label>
                     {{ form.type }}
