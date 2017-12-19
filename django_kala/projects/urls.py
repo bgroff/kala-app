@@ -52,6 +52,13 @@ urlpatterns = [
 
 
     url(
+        regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/archive',
+        view=DocumentArchiveView.as_view(),
+        name='document_archive'
+    ),
+
+
+    url(
         regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/manage_access$',
         view=DocumentManageAccessView.as_view(),
         name='document_manage_access'

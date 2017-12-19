@@ -41,8 +41,8 @@
                 <div class="item">
                     <div class="header">Document</div>
                     <div class="menu">
-                        <a class="active item" href="{% url 'projects:document_details' document.project.pk document.pk %}">Details</a>
-                        <a class="item" href="{% url 'projects:document_archive' document.project.pk document.pk %}"">Archive</a>
+                        <a class="item" href="{% url 'projects:document_details' document.project.pk document.pk %}">Details</a>
+                        <a class="item active" href="{% url 'projects:document_archive' document.project.pk document.pk %}">Archive</a>
                     </div>
                 </div>
                 <div class="item">
@@ -55,30 +55,34 @@
         </div>
         </div>
         <div class="twelve wide column">
-            <form class="ui form" method="post" novalidate>
+           <form class="ui form" method="post">
                 {% csrf_token %}
                 <div class="field">
-                    <label>{{ form.name.label }}</label>
-                    <input id={{ form.name.auto_id }} type="text" name="{{ form.name.name }}" placeholder="Project Name" value="{{ form.name.value }}" maxlength="{{ form.fields.name.max_length }} required">
+                    <label>Re-enter projects name to archive the project</label>
+                    <input id="projectName" type="text" name="documentName" placeholder="Document Name" required>
                 </div>
-                <div class="field">
-                    <label>{{ form.category.label }}</label>
-                    {{ form.category }}
-                </div>
-                <div class="field">
-                    <label>{{ form.tags.label }}</label>
-                    {{ form.tags }}
-                </div>
-                <button class="ui button primary" type="submit">Update details</button>
+                  <div class="ui error message"></div>
+                <div class="ui submit button primary">Archive document</div>
             </form>
         </div>
     </div>
 {% endblock content %}
 
 {% block scripts %}
-    <script>
-        $('select.search.dropdown')
-            .dropdown()
+<script>
+        $('.ui.form')
+            .form({
+                fields: {
+                    projectName: {
+                        rules: [
+                            {
+                                type: 'isExactly[{{ document.name }}]',
+                                prompt: 'You must enter the documentpytho name as it appears in the application.'
+                            }
+                        ]
+                    }
+                }
+            })
         ;
     </script>
 {% endblock scripts %}

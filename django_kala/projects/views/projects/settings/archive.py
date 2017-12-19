@@ -19,8 +19,8 @@ class ArchiveView(LoginRequiredMixin, TemplateView):
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
-        if not self.project.has_change(request.user):
-            raise PermissionDenied('You do not have permission to edit this project')
+        if not self.project.has_delete(request.user):
+            raise PermissionDenied('You do not have permission to archive this project')
 
         return super(ArchiveView, self).dispatch(request, *args, **kwargs)
 

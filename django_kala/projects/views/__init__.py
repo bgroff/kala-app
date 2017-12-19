@@ -10,6 +10,7 @@ from .documents.document import DocumentView
 from .documents.download import DocumentDownload
 from .documents.settings.details import DocumentDetailsView
 from .documents.settings.manage_access import ManageAccessView as DocumentManageAccessView
+from .documents.settings.archive import ArchiveView as DocumentArchiveView
 from .projects.new_project import NewProjectView
 from .projects.project import ProjectView
 from .projects.projects import ProjectsView

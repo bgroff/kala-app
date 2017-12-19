@@ -41,7 +41,7 @@
                     <div class="header">Document</div>
                     <div class="menu">
                         <a class="item" href="{% url 'projects:document_details' document.project.pk document.pk %}">Details</a>
-                        <a class="item" href="">Archive</a>
+                        <a class="item" href="{% url 'projects:document_archive' document.project.pk document.pk %}"">Archive</a>
                     </div>
                 </div>
                 <div class="item">

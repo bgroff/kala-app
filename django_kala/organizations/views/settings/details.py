@@ -28,8 +28,6 @@ class DetailsView(LoginRequiredMixin, TemplateView):
 
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
-            self.form.save(commit=False)
-            self.form.save_m2m()
             self.form.save()
             return redirect(reverse('organizations:details', args=[self.organization.pk]))
         return self.render_to_response(self.get_context_data())

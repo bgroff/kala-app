@@ -16,6 +16,7 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
         return {
             'forms': self.forms,
             'document': self.document,
+            'project': self.project,
             'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
             'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
 
@@ -33,6 +34,7 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
             raise PermissionDenied('You do not have permission to edit this project')
 
         self.forms = manage_access_forms(request, self.document)
+        self.project = self.document.project
         return super(ManageAccessView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
