@@ -1,6 +1,6 @@
 boto3
 dateparser
-Django>=1.11,<2.0
+Django>=2.0,<2.1
 django-countries
 django-localflavor-us
 django-storages
