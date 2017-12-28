@@ -93,7 +93,7 @@ class User(AbstractUser):
             return projects.models.Project.objects.active()
         else:
             return projects.models.Project.objects.active().filter(
-                organization__id=self.get_organizations().values_list('pk', flat=True)
+                organization__id__in=self.get_organizations().values_list('pk', flat=True)
             )
 
     def get_documents(self):
