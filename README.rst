@@ -32,7 +32,7 @@ Main Features
 
 * People, Companies and Projects can all provide access control
 * Written in Python 3 and Django
-* MIt License, use as you please
+* MIT License, use as you please
 * Easy to use (IMHO)
 * Extensible if you know Python and Django
 
