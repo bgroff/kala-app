@@ -37,7 +37,9 @@
                 <div class="item">
                     <div class="header">User</div>
                     <div class="menu">
-                        <a class="active item" href="{% url 'users:details' user.pk %}">Details</a>
+                        <a class="item" href="{% url 'users:details' user.pk %}">Details</a>
+                        <a class="active item" href="{% url 'users:avatar' user.pk %}">Avatar</a>
+
 {#                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>#}
                     </div>
                 </div>
