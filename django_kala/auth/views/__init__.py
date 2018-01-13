@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .settings.details import DetailsView
+from .settings.avatar import AvatarView
 from .invite_user import InviteUserView
 from .users import UsersView
 

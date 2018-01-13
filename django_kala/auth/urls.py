@@ -19,6 +19,11 @@ urlpatterns = [
        name='details',
    ),
 
+   url(regex=r'^(?P<pk>\d+)/settings/avatar',
+       view=AvatarView.as_view(),
+       name='avatar',
+   ),
+
    url(
        regex=r'^login/$',
        view=login,

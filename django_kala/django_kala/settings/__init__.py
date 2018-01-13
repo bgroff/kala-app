@@ -14,12 +14,12 @@ import os
 
 from .apps import INSTALLED_APPS
 from .authentication import *
-from .aws import *
 from .basecamp import BASECAMP
 from .databases import DATABASES
 from .email import *
 from .functions import get_env_variable
 from .middleware import MIDDLEWARE
+from .platforms import *
 from .storage import *
 from .templates import TEMPLATES
 from .validators import AUTH_PASSWORD_VALIDATORS

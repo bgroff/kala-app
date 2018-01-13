@@ -8,6 +8,7 @@ django-taggit
 django-timezone-field
 djangorestframework
 packaging
+pillow
 psycopg2
 pyparsing
 pytz

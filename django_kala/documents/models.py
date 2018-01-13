@@ -22,7 +22,7 @@ class Document(models.Model):
     date = models.DateTimeField(default=timezone.now)
     removed = models.DateField(null=True)
     mime = models.CharField(max_length=255, null=True)
-    category = models.ForeignKey('projects.Category', null=True, blank=True, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey('projects.Category', null=True, blank=True, on_delete=models.PROTECT)
     is_active = models.BooleanField(default=True)
     uuid = models.UUIDField(unique=True, db_index=True, default=uuid4, editable=False)
 
@@ -197,7 +197,7 @@ class DocumentVersion(models.Model):
     created = models.DateTimeField(default=timezone.now) # Update save method
     changed = models.DateTimeField(default=timezone.now) # Update save method
     mime = models.CharField(max_length=255, null=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.DO_NOTHING)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.PROTECT)
     name = models.CharField(max_length=255)
 
     class Meta:
