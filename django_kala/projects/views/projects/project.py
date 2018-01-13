@@ -23,12 +23,17 @@ class ProjectView(LoginRequiredMixin, TemplateView):
                 version_ids.append(str(version.uuid))
         versions = DocumentVersion.objects.filter(uuid__in=version_ids).order_by('user_id')
 
-        if hasattr(self, 'sort_order'):
-            if self.sort_order == 'AZ':
+        sort_order = self.request.GET.get('sort', None)
+        if sort_order:
+            if sort_order == 'Alphabetically':
                 self.documents = self.documents.order_by('name')
-        if hasattr(self, 'category'):
-            mimes = get_mimes_for_category(self.category)
-            self.documents = self.documents.filter(mime__in=mimes)
+            else:
+                self.documents = self.documents.order_by('date')
+
+        category = self.request.GET.get('category', None)
+        if category:
+            self.documents = self.documents.filter(category__name=category)
+
         per_page = self.request.GET.get('per_page', 20)
         page = self.request.GET.get('page', 1)
         paginator = Paginator(self.documents, per_page)

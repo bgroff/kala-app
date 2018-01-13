@@ -21,9 +21,6 @@ from documents.models import Document
 #
 
 class SortForm(forms.Form):
-    search = forms.ChoiceField(choices=(('DATE', 'Sort by Date'), ('AZ', 'Sort Alphabetically')),
+    sort = forms.ChoiceField(choices=(('Date', 'Sort by Date'), ('Alphabetically', 'Sort Alphabetically')),
                                widget=forms.RadioSelect,
-                               initial='DATE')
-
-
-
+                               initial='Date')

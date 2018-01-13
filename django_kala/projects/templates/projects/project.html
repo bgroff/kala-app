@@ -2,14 +2,15 @@
 {% load static %}
 
 {% block search_bar %}
-{% include 'projects/includes/project_search_bar.html' %}
+    {% include 'projects/includes/project_search_bar.html' %}
 {% endblock %}
 
 {% block content %}
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section" href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
+                <a class="section"
+                   href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
                 <div class="divider"> /</div>
                 <span class="active section">{{ project }}</span>
             </div>
@@ -21,16 +22,16 @@
                     <i class="book icon"></i>
                     Documents
                 </a>
-    {#                <a class="item">#}
-    {#                    <i class="issue opened icon"></i>#}
-    {#                    Issues#}
-    {#                    <span class="ui small label">593</span>#}
-    {#                </a>#}
+                {#                <a class="item">#}
+                {#                    <i class="issue opened icon"></i>#}
+                {#                    Issues#}
+                {#                    <span class="ui small label">593</span>#}
+                {#                </a>#}
                 {% if can_change %}
-                <a class="item" href="{% url 'projects:details' project.pk %}">
-                    <i class="gear icon"></i>
-                    Settings
-                </a>
+                    <a class="item" href="{% url 'projects:details' project.pk %}">
+                        <i class="gear icon"></i>
+                        Settings
+                    </a>
                 {% endif %}
             </div>
         </div>
@@ -73,10 +74,13 @@
                         <input type="hidden" value="watching">
                         <i class="checklist icon"></i> Filter
                         <i class="dropdown icon"></i>
-                        <div class="menu">
+                        <div class="menu" id="category-menu">
+                            <div class="item">
+                                <h4 data-value="">No Filter</h4>
+                            </div>
                             {% for category in project.category_set.all %}
-                                <div class="item" data-value="not-watching">
-                                    <h4>{{ category }}</h4>
+                                <div class="item">
+                                    <h4 data-value="{{ category }}">{{ category }}</h4>
                                 </div>
                             {% endfor %}
                         </div>
@@ -87,24 +91,24 @@
                         <input type="hidden" value="watching">
                         <i class="checklist icon"></i> Sort
                         <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <div class="item" data-value="not-watching">
-                                <h4>Alphabetically</h4>
+                        <div class="menu" id="sort-menu">
+                            <div class="item">
+                                <h4 data-value="Alphabetically">Alphabetically</h4>
                             </div>
-                            <div class="item" data-value="watching">
-                                <h4>Date</h4>
+                            <div class="item">
+                                <h4 data-value="Date">Date</h4>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% if can_create %}
-            <a class="ui positive compact icon button" href="{% url 'projects:new_document' project.pk %}">
-                + New document
-            </a>
-        {% else %}
-            <p>You do not have permission to create new documents for this project.</p>
-        {% endif %}
+            {% if can_create %}
+                <a class="ui positive compact icon button" href="{% url 'projects:new_document' project.pk %}">
+                    + New document
+                </a>
+            {% else %}
+                <p>You do not have permission to create new documents for this project.</p>
+            {% endif %}
         </div>
         <div class="ui divider">
         </div>
@@ -119,10 +123,11 @@
                                      alt="{{ document.documentversion_set.all.0.get_alt }}">
                                 <img class="hidden content" src="{% static "images/icons/android-download.png" %}"
                                      alt="{{ document.documentversion_set.all.0.get_alt }}">
-                        </div>
+                            </div>
                         </a>
                         <div class="content">
-                            <a class="header" style="word-wrap: break-word;" href="{% url 'projects:document' project.pk document.pk %}">{{ document.name }}</a>
+                            <a class="header" style="word-wrap: break-word;"
+                               href="{% url 'projects:document' project.pk document.pk %}">{{ document.name }}</a>
                             <div class="meta">
                                 {% if document.documentversion_set.all.count == 1 %}
                                     <span class="date">Created on {{ document.date }}</span>
@@ -147,22 +152,25 @@
                                         <div class="ui divider"></div>
                                     </div>
                                     <div class="item">
-                                    <div class="ui relaxed divided list">
-                                        {% for document_version in document.documentversion_set.all %}
-                                            <div class="item">
-                                                <div class="content">
-                                                    <a class="header" href="{% url 'projects:download' project.pk document_version.document.pk document_version.uuid %}">{{ document_version.name }}</a>
-                                                    <div class="description">By {{ document_version.user }} on {{ document_version.created|date:"SHORT_DATETIME_FORMAT" }}</div>
+                                        <div class="ui relaxed divided list">
+                                            {% for document_version in document.documentversion_set.all %}
+                                                <div class="item">
+                                                    <div class="content">
+                                                        <a class="header"
+                                                           href="{% url 'projects:download' project.pk document_version.document.pk document_version.uuid %}">{{ document_version.name }}</a>
+                                                        <div class="description">By {{ document_version.user }} on
+                                                            {{ document_version.created|date:"SHORT_DATETIME_FORMAT" }}</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
+                                            {% endfor %}
+                                        </div>
 
                                     </div>
                                 </div>
                             </div>
                             <div class="ui divider"></div>
-                            <a class="ui compact button primary" href="{% url 'projects:new_version' project.pk document.pk %}">
+                            <a class="ui compact button primary"
+                               href="{% url 'projects:new_version' project.pk document.pk %}">
                                 + New version
                             </a>
                         </div>
@@ -190,10 +198,26 @@
 
 {% block scripts %}
     <script>
+        var queryParameters = {}, queryString = location.search.substring(1),
+            re = /([^&=]+)=([^&]*)/g, m;
+
+        // Creates a map with the query string parameters
+        while (m = re.exec(queryString)) {
+            queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+        }
+
         $('.dropdown')
             .dropdown({
                 direction: 'upward'
             })
         ;
+        $('#category-menu h4').click(function (item) {
+            queryParameters['category'] = item.toElement.dataset['value'];
+            location.search = $.param(queryParameters);
+        });
+        $('#sort-menu h4').click(function (item) {
+            queryParameters['sort'] = item.toElement.dataset['value'];
+            location.search = $.param(queryParameters);
+        });
     </script>
 {% endblock scripts %}
