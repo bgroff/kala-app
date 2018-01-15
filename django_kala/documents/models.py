@@ -220,16 +220,9 @@ class DocumentVersion(models.Model):
         super(DocumentVersion, self).delete(using)
 
     def http_response(self):
-        s3 = boto3.client('s3')
-        url = s3.generate_presigned_url(
-            ClientMethod='get_object',
-            Params={
-                'Bucket': settings.S3_STORAGE_BUCKET,
-                'Key': 'media/{0}'.format(self.file.name)
-            }
-        )
+        manager = settings.PLATFORM_MANAGER()
+        url = manager.get_document_url(self)
         return redirect(url)
-
 
     def get_icon(self):
         return get_icon_for_mime(self.mime)

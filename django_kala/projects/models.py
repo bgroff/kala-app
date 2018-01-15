@@ -1,3 +1,5 @@
+from django.contrib.postgres.fields import JSONField
+
 from auth.models import Permissions
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -134,7 +136,13 @@ class Project(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=255)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    type = models.CharField(max_length=20, db_index=True, blank=True)
+    type = models.CharField(max_length=20, db_index=True, null=True, blank=True)
 
     def __str__(self):
         return '{0}'.format(self.name)
+
+
+class Export(models.Model):
+    details = JSONField(default={})
+    user = models.ForeignKey(User)
+    key = models.CharField(max_length=255)

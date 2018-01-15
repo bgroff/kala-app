@@ -40,6 +40,11 @@ SECRET_KEY = get_env_variable('SECRET_KEY', default='(e^h^f=)*li=uq3@u(965ghns0f
 
 ALLOWED_HOSTS = [get_env_variable('HOST_NAME')]
 
+APPLICATION_URL = get_env_variable(
+    'APPLICATION_URL',
+    default='http://localhost:9090'
+)
+
 # Application definition
 
 ROOT_URLCONF = 'django_kala.urls'

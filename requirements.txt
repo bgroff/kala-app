@@ -1,4 +1,5 @@
 boto3
+celery
 dateparser
 Django>=2.0,<2.1
 django-countries
@@ -13,5 +14,6 @@ psycopg2
 pyparsing
 pytz
 ipython
+requests
 six
 defusedxml
