@@ -21,6 +21,12 @@ urlpatterns = [
     ),
 
     url(
+        regex=r'^(?P<pk>\d+)/download$',
+        view=ExportProjectView.as_view(),
+        name='export_project'
+    ),
+
+    url(
         regex=r'^(?P<project_pk>\d+)/new_document$',
         view=NewDocumentView.as_view(),
         name='new_document'
@@ -30,6 +36,12 @@ urlpatterns = [
         regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)$',
         view=DocumentView.as_view(),
         name='document'
+    ),
+
+    url(
+        regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/download$',
+        view=ExportDocumentView.as_view(),
+        name='export_document'
     ),
 
     url(

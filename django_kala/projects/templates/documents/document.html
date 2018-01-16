@@ -40,9 +40,9 @@
     <div class="ui container">
         <div class="repo title">
             <div class="repo options">
-                <div class="ui compact button">
+                <a class="ui compact button" href="{% url 'projects:export_document' project.pk document.pk %}">
                     Download ZIP
-                </div>
+                </a>
             </div>
             {% if can_create %}
             <a class="ui positive compact icon button" href="{% url 'projects:new_version' project.pk document.pk %}">

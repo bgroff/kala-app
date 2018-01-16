@@ -66,9 +66,9 @@
 
         <div class="repo title">
             <div class="repo options">
-                <div class="ui compact button">
+                <a class="ui compact button" href="{% url 'projects:export_project' project.pk %}">
                     Download ZIP
-                </div>
+                </a>
                 <div class="ui labeled button">
                     <div class="ui compact floating watch dropdown button" data-content="Choose display options">
                         <input type="hidden" value="watching">
