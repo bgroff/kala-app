@@ -16,7 +16,7 @@ class DocumentHandler():
             }
         )
 
-    def upload_project_export(self, export_path):
+    def upload_export(self, export_path):
         key = 'exports/{0}'.format(uuid4())
 
         s3 = boto3.client('s3')

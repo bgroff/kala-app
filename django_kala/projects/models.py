@@ -143,6 +143,7 @@ class Category(models.Model):
 
 
 class Export(models.Model):
-    details = JSONField(default={})
+    name = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     key = models.CharField(max_length=255)
+    details = JSONField(default={})
