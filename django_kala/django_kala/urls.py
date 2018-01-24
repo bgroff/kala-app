@@ -20,22 +20,22 @@ urlpatterns = [
 
     url(
         r'^',
-        include('api.basecamp_classic.urls', namespace='basecamp_classic'),
+        include('api.basecamp_classic.urls'),
     ),
 
     url(
         r'^organizations/',
-        include('organizations.urls', namespace='organizations'),
+        include('organizations.urls'),
     ),
 
     url(
         r'^accounts/',
-        include('auth.urls', namespace='users'),
+        include('auth.urls'),
     ),
 
     url(
         r'^projects/',
-        include('projects.urls', namespace='projects'),
+        include('projects.urls'),
     ),
 
     url(

@@ -1,6 +1,8 @@
 from django.conf.urls import url
 from .views import *
 
+app_name='projects'
+
 urlpatterns = [
     url(
         regex=r'^$',

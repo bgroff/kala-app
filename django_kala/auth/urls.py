@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.contrib.auth.views import login, logout_then_login
 from .views import *
 
+app_name='users'
 
 urlpatterns = [
    url(regex=r'^$',

@@ -1,6 +1,8 @@
 from django.conf.urls import url
 from .views import OrganizationsView, NewOrganizationView, DetailsView, ManageAccessView
 
+app_name='organizations'
+
 urlpatterns = [
     url(
         regex=r'^$',
