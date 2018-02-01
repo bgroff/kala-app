@@ -34,6 +34,9 @@ class Document(models.Model):
         db_table = 'kala_documents'
 
     def set_active(self, active):
+        manager = settings.PLATFORM_MANAGER()
+        manager.archive_document(self) if active else manager.retrieve_document(self)
+
         self.is_active = active
         if not self.is_active:
             self.removed = timezone.now().date()
@@ -190,6 +193,7 @@ class Document(models.Model):
 class DocumentVersion(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     document = models.ForeignKey('Document', null=True, on_delete=models.CASCADE)
+    # This is so that the bc api can create documents without getting the file.
     file = models.FileField(null=True)
     url = models.URLField(max_length=3000)
     size = models.IntegerField(default=0)
