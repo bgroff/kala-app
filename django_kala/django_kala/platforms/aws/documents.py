@@ -27,3 +27,9 @@ class DocumentHandler():
         )
 
         return {'Key': key}
+
+    def archive_document(self, document):
+        raise NotImplementedError()
+
+    def retrieve_document(self, document):
+        raise NotImplementedError()
