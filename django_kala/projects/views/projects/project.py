@@ -29,7 +29,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             if sort_order == 'Alphabetically':
                 self.documents = self.documents.order_by('name')
             else:
-                self.documents = self.documents.order_by('date')
+                self.documents = self.documents.order_by('-date')
 
         category = self.request.GET.get('category', None)
         if category:
