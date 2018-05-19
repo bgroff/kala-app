@@ -67,3 +67,8 @@ Screen Shot
    objects.
 
 
+===========
+Logo
+===========
+
+Designed by linadesteem.
