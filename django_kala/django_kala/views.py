@@ -67,7 +67,13 @@ class SearchView(LoginRequiredMixin, TemplateView):
         documents = request.user.get_documents()
         self.documents = documents.filter(
             id__in=DocumentVersion.objects.annotate(
-                search=SearchVector('name', 'description')
+                search=SearchVector(
+                    'name',
+                    'description',
+                    'user__first_name',
+                    'user__last_name',
+                    'user__username'
+                )
             ).filter(
                 search=request.GET.get('search', '')
             ).values_list('document_id', flat=True)
