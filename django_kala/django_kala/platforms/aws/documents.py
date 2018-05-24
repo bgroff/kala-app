@@ -12,9 +12,11 @@ class DocumentHandler():
             ClientMethod='get_object',
             Params={
                 'Bucket': settings.S3_STORAGE_BUCKET,
-                'Key': 'media/{0}'.format(document.file.name)
+                'Key': 'media/{0}'.format(document.file.name),
+                'ResponseContentDisposition': 'attachment; filename={0}'.format(document.name),
             }
         )
+        return url
 
     def upload_export(self, export_path):
         key = 'exports/{0}'.format(uuid4())
