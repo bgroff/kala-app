@@ -194,7 +194,7 @@ class DocumentVersion(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid4, editable=False)
     document = models.ForeignKey('Document', null=True, on_delete=models.CASCADE)
     # This is so that the bc api can create documents without getting the file.
-    file = models.FileField(null=True)
+    file = models.FileField(null=True, max_length=255)
     url = models.URLField(max_length=3000)
     size = models.IntegerField(default=0)
     description = models.TextField(null=True)
