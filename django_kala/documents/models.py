@@ -11,8 +11,6 @@ from auth.models import Permissions
 from django_kala.managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
 
-import boto3 as boto3
-
 User = get_user_model()
 
 
@@ -212,8 +210,6 @@ class DocumentVersion(models.Model):
     def save(self, force_insert=False, force_update=False, using=None,
              update_fields=None, save_document=False):
         if save_document:
-            #self.document.name = self.name
-            #self.document.date = self.created
             self.document.mime = self.mime
             self.document.save()
         super(DocumentVersion, self).save(force_insert, force_update, using, update_fields)

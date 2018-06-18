@@ -1,5 +1,6 @@
 import datetime
 from django import forms
+from django.conf import settings
 from organizations.models import Organization
 from .models import DocumentVersion, Document
 
@@ -32,6 +33,11 @@ class DocumentForm(forms.ModelForm):
         self.instance.document = self.document
         self.instance.mime = self.cleaned_data['file'].content_type
         self.instance.name = self.cleaned_data['file'].name
+        manager = settings.PLATFORM_MANAGER()
+        manager.upload_document(self.cleaned_data['file'].read(), str(self.instance.uuid))
+        # TODO: Remove this when file uploading becomes more civilized.
+        self.file = None
+
         self.instance.created = now
         return super(DocumentForm, self).save(*args, **kwargs)
 
