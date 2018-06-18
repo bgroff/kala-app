@@ -12,7 +12,7 @@ class DocumentHandler():
             ClientMethod='get_object',
             Params={
                 'Bucket': settings.S3_STORAGE_BUCKET,
-                'Key': 'media/documents/{0}'.format(document.uuid),
+                'Key': 'media/documents/"{0}"'.format(document.uuid),
                 'ResponseContentDisposition': 'attachment; filename={0}'.format(document.name),
             }
         )
@@ -20,14 +20,13 @@ class DocumentHandler():
 
     def upload_document(self, content, key):
         s3 = boto3.client('s3')
-        s3.put(
+        s3.put_object(
             ACL='private',
             Body=content,
             Bucket=settings.S3_STORAGE_BUCKET,
             Key='media/documents/{0}'.format(key),
             ServerSideEncryption='AES256'
         )
-
 
     def upload_export(self, export_path):
         key = 'exports/{0}'.format(uuid4())
