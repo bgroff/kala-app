@@ -12,8 +12,8 @@ class DocumentHandler():
             ClientMethod='get_object',
             Params={
                 'Bucket': settings.S3_STORAGE_BUCKET,
-                'Key': 'media/documents/"{0}"'.format(document.uuid),
-                'ResponseContentDisposition': 'attachment; filename={0}'.format(document.name),
+                'Key': 'media/documents/{0}'.format(document.uuid),
+                'ResponseContentDisposition': 'attachment; filename="{0}"'.format(document.name),
             }
         )
         return url
