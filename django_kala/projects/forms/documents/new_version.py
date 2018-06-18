@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 
 from documents.models import Document, DocumentVersion
 
@@ -17,4 +18,9 @@ class NewDocumentVersionForm(forms.ModelForm):
     def save(self, commit=True):
         self.instance.document = self.document
         self.instance.user = self.user
+        manager = settings.PLATFORM_MANAGER()
+        manager.upload_document(self.cleaned_data['file'].read(), str(self.instance.uuid))
+        # TODO: Remove this when file uploading becomes more civilized.
+        self.file = None
+
         return super(NewDocumentVersionForm, self).save(commit)
