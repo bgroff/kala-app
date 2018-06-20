@@ -1,6 +1,8 @@
 from django.conf.urls import url
 from .views import *
 
+app_name='projects'
+
 urlpatterns = [
     url(
         regex=r'^$',
@@ -45,6 +47,12 @@ urlpatterns = [
     ),
 
     url(
+        regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/download$',
+        view=ExportDocumentView.as_view(),
+        name='export_document'
+    ),
+
+    url(
         regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/new_version$',
         view=NewDocumentVersionView.as_view(),
         name='new_version'
@@ -60,6 +68,20 @@ urlpatterns = [
         regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/details$',
         view=DocumentDetailsView.as_view(),
         name='document_details'
+    ),
+
+
+    url(
+        regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/archive',
+        view=DocumentArchiveView.as_view(),
+        name='document_archive'
+    ),
+
+
+    url(
+        regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/manage_access$',
+        view=DocumentManageAccessView.as_view(),
+        name='document_manage_access'
     ),
 
     url(

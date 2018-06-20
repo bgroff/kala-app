@@ -7,9 +7,9 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section">{{ project.company }}</a>
+                <a class="section" href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
                 <div class="divider"> /</div>
-                <a class="active section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
+                <a class="section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
                 <div class="divider"> /</div>
                 <span class="active section">{{ document }}</span>
             </div>
@@ -21,15 +21,17 @@
                     <i class="git branch icon"></i>
                     Versions
                 </a>
-                <a class="item">
-                    <i class="issue opened icon"></i>
-                    Issues
-                    <span class="ui small label">593</span>
-                </a>
+{#                <a class="item">#}
+{#                    <i class="issue opened icon"></i>#}
+{#                    Issues#}
+{#                    <span class="ui small label">593</span>#}
+{#                </a>#}
+                {% if can_change %}
                 <a class="item" href="{% url 'projects:document_details' project.pk document.pk %}">
                     <i class="gear icon"></i>
                     Settings
                 </a>
+                {% endif %}
             </div>
         </div>
 
@@ -38,13 +40,17 @@
     <div class="ui container">
         <div class="repo title">
             <div class="repo options">
-                <div class="ui compact button">
+                <a class="ui compact button" href="{% url 'projects:export_document' project.pk document.pk %}">
                     Download ZIP
-                </div>
+                </a>
             </div>
+            {% if can_create %}
             <a class="ui positive compact icon button" href="{% url 'projects:new_version' project.pk document.pk %}">
                 + New version
             </a>
+            {% else %}
+                <p>You do not have permission to create new versions for this document.</p>
+            {% endif %}
         </div>
         <div class="ui divider">
         </div>

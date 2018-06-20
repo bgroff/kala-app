@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.contrib.auth.views import login, logout_then_login
 from .views import *
 
+app_name='users'
 
 urlpatterns = [
    url(regex=r'^$',
@@ -19,6 +20,11 @@ urlpatterns = [
        name='details',
    ),
 
+   url(regex=r'^(?P<pk>\d+)/settings/avatar',
+       view=AvatarView.as_view(),
+       name='avatar',
+   ),
+
    url(
        regex=r'^login/$',
        view=login,
@@ -28,7 +34,7 @@ urlpatterns = [
    url(
        regex=r'^logout/$',
        view=logout_then_login,
-       kwargs={'login_url': '/login'},
+       kwargs={'login_url': '/accounts/login'},
        name='logout'
    ),
    #    url(r'^create_account$', CreateAccount.as_view(), name='create_account'),

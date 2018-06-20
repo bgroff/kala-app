@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load kala_tags %}
+
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <a class="section" href="{% url 'users:users' %}">Users</a>
+                <div class="divider"> /</div>
+                <span class="active section">{{ user }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui tabular menu">
+        <div class="ui container">
+            <a class="item" href="{% url 'users:users' %}">
+                <i class="organization icon"></i>
+                Users
+            </a>
+{#            <a class="item">#}
+{#                <i class="merge icon"></i>#}
+{#                Merge users#}
+{#            </a>#}
+            <a class="active item" href="{% url 'users:details' user.pk %}">
+                <i class="gear icon"></i>
+                Settings
+            </a>
+        </div>
+    </div>
+
+
+    <div class="ui two column grid container">
+        <div class="four wide column">
+            <div class="ui vertical menu">
+                <div class="item">
+                    <div class="header">User</div>
+                    <div class="menu">
+                        <a class="item" href="{% url 'users:details' user.pk %}">Details</a>
+                        <a class="active item" href="{% url 'users:avatar' user.pk %}">Avatar</a>
+
+{#                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>#}
+                    </div>
+                </div>
+{#                <div class="item">#}
+{#                    <div class="header">People</div>#}
+{#                    <div class="menu">#}
+{#                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">Manage access</a>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="item">#}
+{#                    <div class="header">Organizations</div>#}
+{#                    <div class="menu">#}
+{#                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+        <div class="twelve wide column">
+            <form class="ui form" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="field">
+                    <label>{{ form.avatar.label }}</label>
+                    {{ form.avatar }}
+                </div>
+                <button class="ui button primary" type="submit">Update avatar</button>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

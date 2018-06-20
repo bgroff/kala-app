@@ -64,17 +64,20 @@ class SearchView(LoginRequiredMixin, TemplateView):
     def dispatch(self, request, *args, **kwargs):
         self.sort_form = SortForm(request.GET or None)
 
-        self.documents = Document.objects.filter(
+        documents = request.user.get_documents()
+        self.documents = documents.filter(
             id__in=DocumentVersion.objects.annotate(
-                search=SearchVector('name', 'description')
+                search=SearchVector(
+                    'name',
+                    'description',
+                    'user__first_name',
+                    'user__last_name',
+                    'user__username'
+                )
             ).filter(
                 search=request.GET.get('search', '')
             ).values_list('document_id', flat=True)
-        ).filter(
-            project__in=request.user.get_projects()
-        ).prefetch_related(
-            'documentversion_set', 'documentversion_set__user', 'project'
-        )
+        ).prefetch_related('documentversion_set', 'documentversion_set__user')
         self.sort_order = request.GET.get('search')
 
         return super(SearchView, self).dispatch(request, *args, **kwargs)

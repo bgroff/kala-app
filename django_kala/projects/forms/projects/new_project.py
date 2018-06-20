@@ -6,9 +6,10 @@ from projects.models import Project
 class NewProjectForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
+        self.organizations = kwargs.pop('organizations')
         super(NewProjectForm, self).__init__(*args, **kwargs)
         self.fields['organization'] = forms.ModelChoiceField(
-            queryset=self.user.get_organizations(),
+            queryset=self.organizations,
             widget=forms.Select(attrs={'class': 'ui search dropdown', 'required': 'true'})
         )
 

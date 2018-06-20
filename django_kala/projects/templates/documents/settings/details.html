@@ -6,11 +6,11 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section">{{ project.organization }}</a>
+                <a class="section" href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
                 <div class="divider"> /</div>
-                <a class="active section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
+                <a class="section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
                 <div class="divider"> /</div>
-                <a class="active section">{{ document }}</a>
+                <span class="active section">{{ document }}</span>
             </div>
         </div>
     </div>
@@ -21,11 +21,11 @@
                 <i class="book icon"></i>
                 Documents
             </a>
-            <a class="item">
-                <i class="issue opened icon"></i>
-                Issues
-                <span class="ui small label">593</span>
-            </a>
+{#            <a class="item">#}
+{#                <i class="issue opened icon"></i>#}
+{#                Issues#}
+{#                <span class="ui small label">593</span>#}
+{#            </a>#}
             <a class="active item" href="{% url 'projects:details' project.pk %}">
                 <i class="gear icon"></i>
                 Settings
@@ -36,30 +36,26 @@
 
     <div class="ui two column grid container">
         <div class="four wide column">
+            <div class="four wide column">
             <div class="ui vertical menu">
                 <div class="item">
                     <div class="header">Document</div>
                     <div class="menu">
-                        <a class="active item" href="{% url 'projects:details' project.pk %}">Details</a>
-                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>
+                        <a class="active item" href="{% url 'projects:document_details' document.project.pk document.pk %}">Details</a>
+                        <a class="item" href="{% url 'projects:document_archive' document.project.pk document.pk %}"">Archive</a>
                     </div>
                 </div>
                 <div class="item">
                     <div class="header">People</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">Manage access</a>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="header">Projects</div>
-                    <div class="menu">
-                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>
+                        <a class="item" href="{% url 'projects:document_manage_access' document.project.pk document.pk %}">Manage access</a>
                     </div>
                 </div>
             </div>
         </div>
+        </div>
         <div class="twelve wide column">
-            <form class="ui form" method="post">
+            <form class="ui form" method="post" novalidate>
                 {% csrf_token %}
                 <div class="field">
                     <label>{{ form.name.label }}</label>

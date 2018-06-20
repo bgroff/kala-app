@@ -12,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/image.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/transition.css" %}">
     <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/checkbox.css" %}">
+    <link rel="icon" href="{% static 'images/kala_ico.png' %}" type="image/png"/>
 
     <!--
       These css files are pre-compiled
@@ -81,94 +82,83 @@
             max-width: 450px;
         }
     </style>
-{#    <script>#}
-{#        $(document)#}
-{#            .ready(function () {#}
-{#                $('.ui.form')#}
-{#                    .form({#}
-{#                        fields: {#}
-{#                            email: {#}
-{#                                identifier: 'email',#}
-{#                                rules: [#}
-{#                                    {#}
-{#                                        type: 'empty',#}
-{#                                        prompt: 'Please enter your e-mail'#}
-{#                                    },#}
-{#                                    {#}
-{#                                        type: 'email',#}
-{#                                        prompt: 'Please enter a valid e-mail'#}
-{#                                    }#}
-{#                                ]#}
-{#                            },#}
-{#                            password: {#}
-{#                                identifier: 'password',#}
-{#                                rules: [#}
-{#                                    {#}
-{#                                        type: 'empty',#}
-{#                                        prompt: 'Please enter your password'#}
-{#                                    },#}
-{#                                    {#}
-{#                                        type: 'length[6]',#}
-{#                                        prompt: 'Your password must be at least 6 characters'#}
-{#                                    }#}
-{#                                ]#}
-{#                            }#}
-{#                        }#}
-{#                    })#}
-{#                ;#}
-{#            })#}
-{#        ;#}
-{#    </script>#}
+    <script>
+        $(document)
+            .ready(function () {
+                $('.ui.form')
+                    .form({
+                        fields: {
+                            email: {
+                                identifier: 'id_username',
+                                rules: [
+                                    {
+                                        type: 'empty',
+                                        prompt: 'Please enter your e-mail'
+                                    },
+                                    {
+                                        type: 'email',
+                                        prompt: 'Please enter a valid e-mail address'
+                                    }
+                                ]
+                            },
+                            password: {
+                                identifier: 'id_password',
+                                rules: [
+                                    {
+                                        type: 'empty',
+                                        prompt: 'Please enter your password'
+                                    }
+                                ]
+                            }
+                        }
+                    })
+                ;
+            })
+        ;
+    </script>
 </head>
 <body>
 
 <div class="ui middle aligned center aligned grid">
     <div class="column">
-        <h2 class="ui teal image header">
-            <img src="{% static 'images/malolo.png' %}" class="image">
+                <img src="{% static 'images/Kala Logotype.svg' %}"  style="flex-grow: 1">
 
-
-            <div class="content">
-                Log-in to Malolo Document Management
-            </div>
-        </h2>
-        <form class="ui large form" method="post" action="{% url 'users:login' %}">
+        <form class="ui large form {% if form.non_field_errors %}error{% endif %}" method="post" action="{% url 'users:login' %}" novalidate>
             {% csrf_token %}
             <div class="ui stacked segment">
                 <div class="field">
                     <div class="ui left icon input">
-                        <i class="user icon"></i>
-                        <input type="text" id="id_username" name="username" value="" placeholder="
-                                {% if form.username.errors %}{{ form.username.errors.0 }}{% else %}Username{% endif %}"
+                        <i class="person icon"></i>
+                        <input type="text" id="id_username" name="username" value=""
+                               placeholder="{% if form.username.errors %}{{ form.username.errors.0 }}{% else %}Email{% endif %}"
                                class="login username-field"/>
                     </div>
                 </div>
                 <div class="field">
                     <div class="ui left icon input">
                         <i class="lock icon"></i>
-                        <input type="password" id="id_password" name="password" value="" placeholder="
-                                {% if form.password.errors %}{{ form.password.errors.0 }}{% else %}Password{% endif %}"
+                        <input type="password" id="id_password" name="password" value=""
+                               placeholder="{% if form.password.errors %}{{ form.password.errors.0 }}{% else %}Password{% endif %}"
                                class="login password-field"/>
                     </div>
                 </div>
-                <button type="submit" class="ui fluid large teal submit button">Login</button>
+                <button type="submit" class="ui fluid large blue submit button">Login</button>
             </div>
 
             <div class="ui error message">
-                {% for error in form.non_field_errors %}
-                <div class="alert alert-error">
-                    <a class="close" data-dismiss="alert">×</a>
-                    {{ error }}
-                </div>
-
-            {% endfor %}
+                <ul class="list">
+                    {% for error in form.non_field_errors %}
+                        <li>
+                            {{ error }}
+                        </li>
+                        {% empty %}
+                        <li>
+                            Could not authenticate with your email and password.
+                        </li>
+                    {% endfor %}
+                </ul>
             </div>
-
         </form>
-
-        <div class="ui message">
-            New to us? <a href="#">Sign Up</a>
-        </div>
     </div>
 </div>
 

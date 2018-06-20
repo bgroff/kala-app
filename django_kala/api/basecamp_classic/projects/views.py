@@ -114,7 +114,7 @@ class CategoriesView(APIView):
         return Response({'categories': project.category_set.all().prefetch_related(), 'request_user': request.user})
 
     def post(self, request, pk, format=None):
-        if not request.user.is_admin:
+        if not request.user.is_superuser:
             raise PermissionDenied()
 
         project = get_object_or_404(Project, pk=pk)

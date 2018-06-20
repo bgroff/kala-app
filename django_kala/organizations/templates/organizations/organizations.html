@@ -12,13 +12,16 @@
     </div>
 
     <div class="ui container">
-        <div class="repo title">
-            <a class="ui positive compact icon button" href="{% url 'organizations:new_organization' %}">
-                + New organization
-            </a>
-        </div>
-        <div class="ui divider">
-        </div>
+        {% if can_create %}
+            <div class="repo title">
+                <a class="ui positive compact icon button" href="{% url 'organizations:new_organization' %}">
+                    + New organization
+                </a>
+            </div>
+            <div class="ui divider">
+            </div>
+        {% endif %}
+
         <div class="ui container">
             <div class="ui cards">
                 {% for organization in organizations %}

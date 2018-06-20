@@ -1,13 +1,19 @@
+from django.contrib.auth import get_user_model
 from django.conf import settings
+from django.contrib.auth.models import Permission
 from django.db import models
-from django_localflavor_us.models import PhoneNumberField, USStateField
+from django_localflavor_us.models import PhoneNumberField
 from timezone_field import TimeZoneField
 from uuid import uuid4
 
+from auth.models import Permissions
 from django_kala.managers import ActiveManager
 from projects.models import Project
 
+import documents
 import datetime
+
+User = get_user_model()
 
 
 class OrganizationsWithProjectManager(models.Manager):
@@ -24,9 +30,9 @@ class Organization(models.Model):
     address = models.CharField(max_length=255, null=True, blank=True)
     address1 = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)
-    state = models.CharField(null=True, blank=True, max_length=80)
+    state = models.CharField(max_length=80, null=True, blank=True)
     zip = models.CharField(max_length=25, null=True, blank=True)
-    country = models.CharField(default='US', null=True, blank=True, max_length=80)
+    country = models.CharField(max_length=80, null=True, blank=True, default='US')
     fax = PhoneNumberField(null=True, blank=True)
     phone = PhoneNumberField(null=True, blank=True)
     locale = models.CharField(max_length=2, null=True, blank=True, default='en')
@@ -55,22 +61,68 @@ class Organization(models.Model):
             self.removed = datetime.date.today()
         self.save()
 
-    def get_projects(self, person=None):
-    #        assert type(person) is People, 'The user parameter must be of type People'
-        if not person or person.is_superuser:
+    def get_projects(self, user):
+        if user.is_superuser:
             return Project.objects.active().filter(organization=self)
+        if Permissions.has_perms([
+            'change_organization',
+            'add_organization',
+            'delete_organization'
+        ], user, self.uuid):
+            return self.project_set.all()
         else:
-            return Project.objects.active().filter(organization=self,
-                                                   pk__in=Project.clients.through.objects.filter(
-                                                       person=person
-                                                   ).values('project__pk'))
+            document_project_uuids = Permissions.objects.filter(permission__codename__in=[
+                'change_document',
+                'add_document',
+                'delete_document'
+            ], user=user).values_list('object_uuid', flat=True)
+            document_projects = documents.models.Document.objects.filter(
+                project__organization=self,
+                uuid__in=document_project_uuids
+            ).values_list('project__uuid', flat=True)
 
-    def get_people(self):
-        return self.user_set.all()  # Todo: only show people that are active
+            project__uuids = self.project_set.all().values_list('uuid', flat=True)
+            perm_uuids = Permissions.objects.filter(
+                user=user,
+                object_uuid__in=project__uuids
+            ).values_list('object_uuid', flat=True)
+            return Project.objects.filter(uuid__in=list(perm_uuids) + list(document_projects))
 
-    def add_person_to_projects(self, person):
-        for project in Project.active.filter(organization=self):
-            project.clients.add(person)
+    def get_people(self, user):
+        # If you are a super user or you have permissions on
+        # an organization, then you can see everyone.
+        if user.is_superuser or Permissions.has_perms([
+            'change_organization',
+            'add_organization',
+            'delete_organization'
+        ], user, self.uuid):
+            return User.objects.all()
+        else:
+            return None
 
     def __str__(self):
         return self.name
+
+    def add_change(self, user):
+        perm = Permission.objects.get(codename='change_organization')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_change(self, user):
+        perm = Permission.objects.get(codename='change_organization')
+        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def add_delete(self, user):
+        perm = Permission.objects.get(codename='delete_organization')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_delete(self, user):
+        perm = Permission.objects.get(codename='delete_organization')
+        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def add_create(self, user):
+        perm = Permission.objects.get(codename='add_organization')
+        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+
+    def has_create(self, user):
+        perm = Permission.objects.get(codename='add_organization')
+        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)

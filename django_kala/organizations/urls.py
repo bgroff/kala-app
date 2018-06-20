@@ -1,5 +1,7 @@
 from django.conf.urls import url
-from .views import OrganizationsView, NewOrganizationView, DetailsView
+from .views import OrganizationsView, NewOrganizationView, DetailsView, ManageAccessView
+
+app_name='organizations'
 
 urlpatterns = [
     url(
@@ -24,6 +26,12 @@ urlpatterns = [
         regex=r'^(?P<pk>\d+)/settings/details$',
         view=DetailsView.as_view(),
         name='details'
+    ),
+
+    url(
+        regex=r'^(?P<pk>\d+)/settings/manage_access',
+        view=ManageAccessView.as_view(),
+        name='manage_access'
     ),
 
 ]

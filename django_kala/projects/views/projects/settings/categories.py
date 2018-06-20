@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -15,6 +16,8 @@ class CategoriesView(LoginRequiredMixin, TemplateView):
         return {
             'categories': self.project.category_set.all(),
             'project': self.project,
+            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
+            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
         }
 
     def dispatch(self, request, pk, category_pk=None, *args, **kwargs):
@@ -38,10 +41,15 @@ class NewCategoryView(LoginRequiredMixin, TemplateView):
         return {
             'form': self.form,
             'project': self.project,
+            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
+            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
         }
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
+        if not self.project.has_change(request.user):
+            raise PermissionDenied('You do not have permission to edit this project')
+
         self.form = CategoryForm(request.POST or None, project=self.project)
         return super(NewCategoryView, self).dispatch(request, *args, **kwargs)
 

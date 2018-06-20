@@ -1,6 +1,4 @@
 {% load static %}
-{% load kala_tags %}
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,8 +7,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-    <link rel="icon" href="{% static 'images/icons/malolo.ico' %}" type="image/x-icon"/>
-
+    <link rel="icon" href="{% static 'images/kala_ico.png' %}" type="image/png"/>
     <!-- Site Properities -->
     <title>Kala Document Management</title>
 
@@ -65,23 +62,32 @@
 {#            <a class="launch icon item" data-content="Select a theme">#}
 {#                <i class="disabled link paintcan icon"></i>#}
 {#            </a>#}
-            <a class="item" data-content="You have unread notification in this repository.">
-                <span class="ui empty mini floating circular blue notification label"></span>
-                <i class="bell icon"></i>
-            </a>
+{#            <a class="item" data-content="You have unread notification in this repository.">#}
+{#                <span class="ui empty mini floating circular blue notification label"></span>#}
+{#                <i class="bell icon"></i>#}
+{#            </a>#}
             <div class="ui add top right pointing dropdown item" data-content="Create new...">
-                <i class="large plus icon"></i>
-                <i class="dropdown icon"></i>
-                <div class="menu">
-                    <a class="item" href="{% url 'organizations:new_organization' %}">New organization</a>
-                    <a class="item" href="{% url 'projects:new_project' %}">New project</a>
-                    <div class="divider"></div>
-                    <div class="header">This organization</div>
-                    <a class="item">Invite someone</a>
-                    <div class="divider"></div>
-                    <div class="header">This project</div>
-                    <a class="item">New document</a>
-                </div>
+                {% if request.user.is_superuser or can_invite or can_create %}
+                    <i class="large plus icon"></i>
+                    <i class="dropdown icon"></i>
+                    <div class="menu">
+                    {% if request.user.is_superuser %}
+                        <a class="item" href="{% url 'organizations:new_organization' %}">New organization</a>
+                        <a class="item" href="{% url 'projects:new_project' %}">New project</a>
+                        <div class="divider"></div>
+                    {% endif %}
+                    {% if can_invite  %}
+                        <div class="header">This organization</div>
+                        <a class="item">Invite someone</a>
+                        <div class="divider"></div>
+                    {% endif %}
+                    {% if project and can_create %}
+                        <div class="header">This project</div>
+                        <a class="item" href="{% url 'projects:new_document' project.pk %}">New document</a>
+                        <a class="item">Invite someone</a>
+                    {% endif %}
+                    </div>
+                {% endif %}
             </div>
             <div class="user top right pointing ui dropdown item" data-content="View profile and more">
                 <img class="ui mini rounded image" src="{{ request.user.avatar_url }}">

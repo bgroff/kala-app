@@ -9,3 +9,5 @@ docs/_build
 celerybeat-schedule
 reload
 MANIFEST
+django_kala/django_kala/static/admin
+django_kala/django_kala/static/debug_toolbar

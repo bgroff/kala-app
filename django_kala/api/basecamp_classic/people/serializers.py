@@ -15,7 +15,7 @@ class UserSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
-        companies = validated_data.pop('companies')
+        organizations = validated_data.pop('organizations')
         user = User.objects.create(**validated_data)
-        user.organizations.add(*companies)
+        user.organizations.add(*organizations)
         return user

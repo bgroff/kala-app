@@ -14,12 +14,12 @@ import os
 
 from .apps import INSTALLED_APPS
 from .authentication import *
-from .aws import *
 from .basecamp import BASECAMP
 from .databases import DATABASES
 from .email import *
 from .functions import get_env_variable
 from .middleware import MIDDLEWARE
+from .platforms import *
 from .storage import *
 from .templates import TEMPLATES
 from .validators import AUTH_PASSWORD_VALIDATORS
@@ -39,6 +39,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = get_env_variable('SECRET_KEY', default='(e^h^f=)*li=uq3@u(965ghns0f1sd@v(i8hrc12d#0*-cnedu')
 
 ALLOWED_HOSTS = [get_env_variable('HOST_NAME')]
+
+APPLICATION_URL = get_env_variable(
+    'APPLICATION_URL',
+    default='http://localhost:9090'
+)
 
 # Application definition
 
@@ -66,3 +71,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 MEDIA_ROOT = '/tmp/kala/'
+
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/accounts/login'

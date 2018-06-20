@@ -6,9 +6,9 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section">{{ project.organization }}</a>
+                <a class="section" href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
                 <div class="divider"> /</div>
-                <a class="active section">{{ project }}</a>
+                <span class="active section">{{ project }}</span>
             </div>
         </div>
     </div>
@@ -70,42 +70,55 @@
         <div class="twelve wide column">
             <form id="form" class="ui form" method="post">
                 {% csrf_token %}
-                <div class="ui styled fluid accordion">
+                <table class="ui very basic collapsing celled table">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Create documents</th>
+                        <th>Manage people</th>
+                        <th>Delete documents</th>
+                    </tr>
+                    </thead>
                     {% for form in forms %}
-                        <div class="title active">
-                            <i class="dropdown icon"></i>
-                            {{ form.organization }}
-                        </div>
-                        <div class="content {% if forloop.first %}active{% endif %}">
-                            <div class="transition visible" style="display: block !important;">
-                                <div class="ui grid">
+                        <tr>
+                            <td>
+                                <h4 class="ui header">
+                                    <div class="content">
+                                        {{ form.user }}
+                                    </div>
+                                </h4>
+                            </td>
+                            <td>
+                                <div class="ui toggle checkbox">
                                     {% for field in form %}
-                                        {% if forloop.first %}
-                                            <div class="four wide column">
-
-                                                <div class="ui checkbox">
-                                                    {{ field }}
-                                                    <label>{{ field.label }}</label>
-                                                </div>
-                                            </div>
-                                            </div>
-                                            <div class="ui divider"></div>
-                                            <div class="ui grid">
-                                        {% else %}
-                                            <div class="four wide column">
-                                                <div class="ui checkbox">
-                                                    {{ field }}
-                                                    <label>{{ field.label }}</label>
-                                                </div>
-                                            </div>
+                                        {% if 'add_project' in field.name %}
+                                            {{ field }}
                                         {% endif %}
                                     {% endfor %}
                                 </div>
-                            </div>
-                        </div>
+                            </td>
+                            <td>
+                                <div class="ui toggle checkbox">
+                                    {% for field in form %}
+                                        {% if 'change_project' in field.name %}
+                                            {{ field }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="ui toggle checkbox">
+                                    {% for field in form %}
+                                        {% if 'delete_project' in field.name %}
+                                            {{ field }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </td>
+                        </tr>
                     {% endfor %}
-                </div>
-            <div class="field"></div>
+                </table>
+                <div class="field"></div>
                 <button class="ui button primary" type="submit">Manage access</button>
             </form>
         </div>
@@ -118,35 +131,8 @@
         $('.ui.styled.fluid.accordion')
             .accordion()
         ;
-
-        $(document).ready(function () {
-            // For each group, add the event handler to select/unselect all the checkboxes
-            $(".organization_checkbox").each(function () {
-                var pk = $(this).attr('pk_id')
-                var organization_checkbox = $(this)
-                $(this).change(function () {
-                    var val = $(this).prop('checked')
-                    $("input[pk=" + pk + "]").each(function () {
-                        $(this).prop('checked', val);
-                    })
-                })
-
-                // If a checkbox in a group is changed, unselect the main checkbox.
-                // Also see if all the items in a group are selected, if thats true check the select/unselect all.
-                var all_selected = true
-                $("input[pk=" + pk + "]").each(function () {
-                    $(this).click(function () {
-                        $(organization_checkbox).prop('checked', false)
-                    })
-                    if (!$(this).prop('checked')) {
-                        all_selected = false
-                    }
-                })
-                if (all_selected) {
-                    $(this).prop('checked', true)
-                }
-            })
-        })
-
+        $('.ui.checkbox')
+            .checkbox()
+        ;
     </script>
 {% endblock %}

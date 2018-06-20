@@ -1,3 +1,7 @@
+.. image:: https://circleci.com/gh/bgroff/kala-app.svg?style=svg
+     :target: https://circleci.com/gh/bgroff/kala-app
+     :alt: CircleCI
+
 .. image:: https://requires.io/github/bgroff/kala-app/requirements.svg?branch=master
      :target: https://requires.io/github/bgroff/kala-app/requirements/?branch=master
      :alt: Requirements Status
@@ -28,7 +32,7 @@ Main Features
 
 * People, Companies and Projects can all provide access control
 * Written in Python 3 and Django
-* MIt License, use as you please
+* MIT License, use as you please
 * Easy to use (IMHO)
 * Extensible if you know Python and Django
 
@@ -49,3 +53,22 @@ In order to run the development environment, you should install vagrant. Once yo
 You will now be able to open http://localhost:9090 and see the Kala application. There are two users created:
 
 teststaff and testuser both have the password set to test
+
+
+===========
+Screen Shot
+===========
+
+.. figure:: https://raw.githubusercontent.com/bgroff/kala-app/master/docs/_images/screenshot.png
+   :alt: screenshot of a projects documents
+
+   Showing the Projects page with multiple documents. Each document can have multiple versions. There are additional searching
+   and filter options. The settings page allows for configuration of things like permissions and metadata about the various
+   objects.
+
+
+===========
+Logo
+===========
+
+Designed by linadesteem.
