@@ -12,3 +12,4 @@ from .documents.settings.details import DocumentDetailsView
 from .projects.new_project import NewProjectView
 from .projects.project import ProjectView
 from .projects.projects import ProjectsView
+from .projects.invite_user import InviteUserView as ProjectInviteUserView

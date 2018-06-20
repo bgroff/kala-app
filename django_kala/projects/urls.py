@@ -21,6 +21,18 @@ urlpatterns = [
     ),
 
     url(
+        regex=r'^(?P<pk>\d+)/invite_user$',
+        view=ProjectInviteUserView.as_view(),
+        name='project_invite_user'
+    ),
+
+    url(
+        regex=r'^(?P<pk>\d+)/download$',
+        view=ExportProjectView.as_view(),
+        name='export_project'
+    ),
+
+    url(
         regex=r'^(?P<project_pk>\d+)/new_document$',
         view=NewDocumentView.as_view(),
         name='new_document'

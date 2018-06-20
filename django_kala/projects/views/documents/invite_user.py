@@ -1,9 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.shortcuts import redirect
 from django.views.generic import TemplateView
 
-from ..forms.invite_user import InviteUserForm
+from ...forms.invite_user import InviteUserForm
 
 
 class InviteUserView(LoginRequiredMixin, TemplateView):
@@ -17,6 +17,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
     def dispatch(self, request, *args, **kwargs):
         self.form = InviteUserForm(request.POST or None)
         return super(InviteUserView, self).dispatch(request, *args, **kwargs)
+
 
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
