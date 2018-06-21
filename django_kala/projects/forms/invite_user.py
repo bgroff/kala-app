@@ -15,4 +15,4 @@ class InviteUserForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['email']
+        fields = ['email', 'first_name', 'last_name']

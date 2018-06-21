@@ -18,7 +18,7 @@
 
         <div class="ui tabular menu">
             <div class="ui container">
-                <a class="item">
+                <a class="item" href="{% url 'projects:project' project.pk %}">
                     <i class="book icon"></i>
                     Documents
                 </a>
@@ -57,6 +57,14 @@
                         {{ form.email }}
                     </div>
                     <div class="field">
+                        <label>{{ form.first_name.label }}</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.last_name.label }}</label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="field">
                         <label>{{ form.organizations.label }}</label>
                         {{ form.organizations }}
                     </div>
@@ -71,29 +79,3 @@
 
     </div>
 {% endblock content %}
-
-{% block scripts %}
-    <script>
-        var queryParameters = {}, queryString = location.search.substring(1),
-            re = /([^&=]+)=([^&]*)/g, m;
-
-        // Creates a map with the query string parameters
-        while (m = re.exec(queryString)) {
-            queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-        }
-
-        $('.dropdown')
-            .dropdown({
-                direction: 'upward'
-            })
-        ;
-        $('#category-menu h4').click(function (item) {
-            queryParameters['category'] = item.toElement.dataset['value'];
-            location.search = $.param(queryParameters);
-        });
-        $('#sort-menu h4').click(function (item) {
-            queryParameters['sort'] = item.toElement.dataset['value'];
-            location.search = $.param(queryParameters);
-        });
-    </script>
-{% endblock scripts %}

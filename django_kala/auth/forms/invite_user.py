@@ -7,4 +7,9 @@ class InviteUserForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['email', 'organizations']
+        fields = ['email', 'organizations', 'first_name', 'last_name']
+
+    def __init__(self, *args, **kwargs):
+        super(InviteUserForm, self).__init__(*args, **kwargs)
+        self.fields['organizations'].widget.attrs['class'] = 'ui fluid dropdown'
+        self.fields['user_type'].widget.attrs['class'] = 'ui fluid dropdown'
