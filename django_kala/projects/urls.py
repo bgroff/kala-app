@@ -65,6 +65,12 @@ urlpatterns = [
     ),
 
     url(
+        regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/invite_user$',
+        view=DocumentInviteUserView.as_view(),
+        name='document_invite_user'
+    ),
+
+    url(
         regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/details$',
         view=DocumentDetailsView.as_view(),
         name='document_details'

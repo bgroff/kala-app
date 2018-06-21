@@ -8,6 +8,7 @@ from .documents.new_document import NewDocumentView
 from .documents.new_version import NewDocumentVersionView
 from .documents.document import DocumentView, ExportDocumentView
 from .documents.download import DocumentDownload
+from .documents.invite_user import InviteUserView as DocumentInviteUserView
 from .documents.settings.details import DocumentDetailsView
 from .documents.settings.manage_access import ManageAccessView as DocumentManageAccessView
 from .documents.settings.archive import ArchiveView as DocumentArchiveView
