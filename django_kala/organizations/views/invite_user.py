@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect, get_object_or_404
@@ -48,7 +49,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             if self.form.cleaned_data['user_type'] == 'Admin':
                 self.organization.add_change(user)
                 self.organization.add_delete(user)
-            user.send_invite()
+            user.send_invite(settings.EMAIL_APP, 'invite_organization', 'Invitation to collaborate', self.organization)
             return redirect(
                 reverse(
                     'organizations:invite_user',

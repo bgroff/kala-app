@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
@@ -55,7 +56,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             if self.form.cleaned_data['user_type'] == 'Admin':
                 self.document.add_change(user)
                 self.document.add_delete(user)
-            user.send_invite()
+            user.send_invite(settings.EMAIL_APP, 'invite_document', 'Invitation to collaborate', user)
             return redirect(
                 reverse(
                     'projects:document',

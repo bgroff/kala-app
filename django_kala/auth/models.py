@@ -1,6 +1,9 @@
 from django.conf import settings
 from django.contrib.auth.models import UserManager, AbstractUser, Permission
+from django.core.mail import send_mail
 from django.db import models
+from django.shortcuts import render
+from django.template import loader
 from django.utils.translation import ugettext_lazy as _
 from django_localflavor_us.models import PhoneNumberField
 from timezone_field import TimeZoneField
@@ -124,8 +127,21 @@ class User(AbstractUser):
             organizations = self.get_organizations().values_list('pk')
             return User.objects.filter(organizations__in=organizations)
 
-    def send_invite(self):
-        pass
+    def send_invite(self, app, template, subject, object):
+        template_txt = loader.get_template('{0}/{1}.txt'.format(app, template))
+        template_html = loader.get_template('{0}/{1}.html'.format(app, template))
+        context = {
+            'object': object,
+            'user': self
+        }
+        send_mail(
+            subject,
+            render(None, template_txt, context),
+            settings.FROM_EMAIL,
+            [self.email],
+            fail_silently=False,
+            html_message=render(None, template_html, context) if settings.USE_HTML_EMAIL else None
+        )
 
     def add_perm(self, perm, uuid):
         Permissions.add_perm(perm=perm, user=self, uuid=uuid)
