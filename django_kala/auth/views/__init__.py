@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .settings.details import DetailsView
 from .settings.avatar import AvatarView
 from .invite_user import InviteUserView
+from .password_reset_confirmation import PasswordResetConfirmView
 from .users import UsersView
 
 from django.contrib import messages

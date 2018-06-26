@@ -56,7 +56,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             if self.form.cleaned_data['user_type'] == 'Admin':
                 self.document.add_change(user)
                 self.document.add_delete(user)
-            user.send_invite(settings.EMAIL_APP, 'invite_document', 'Invitation to collaborate', user)
+            user.send_invite(settings.EMAIL_APP, 'email/invite_document', 'Invitation to collaborate', user)
             return redirect(
                 reverse(
                     'projects:document',

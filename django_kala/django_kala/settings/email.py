@@ -9,11 +9,12 @@ EMAIL_PORT = get_env_variable('EMAIL_PORT', default=25)
 EMAIL_SUBJECT_PREFIX = get_env_variable('EMAIL_SUBJECT_PREFIX', default='')
 EMAIL_USE_TLS = get_env_variable('EMAIL_USE_TLS', default=False)
 EMAIL_USE_SSL = get_env_variable('EMAIL_USE_SSL', default=False)
-EMAIL_SSL_CERTFILE = get_env_variable('EMAIL_SSL_CERTFILE', default=None)
-EMAIL_SSL_KEYFILE = get_env_variable('EMAIL_SSL_KEYFILE', default=None)
-EMAIL_TIMEOUT = get_env_variable('EMAIL_TIMEOUT', default=None)
+EMAIL_SSL_CERTFILE = get_env_variable('EMAIL_SSL_CERTFILE', default=False)
+EMAIL_SSL_KEYFILE = get_env_variable('EMAIL_SSL_KEYFILE', default=False)
+EMAIL_TIMEOUT = get_env_variable('EMAIL_TIMEOUT', default=False)
 
 # Kala settings
-FROM_EMAIL = get_env_variable('FROM_EMAIL', default='kala@ndptc.hawaii.edu')
+FROM_EMAIL = get_env_variable('FROM_EMAIL', default='kala@maloloindustries.com')
+HELP_EMAIL = get_env_variable('HELP_EMAIL', default='help')
 EMAIL_APP = get_env_variable('EMAIL_APP', default='kala') # Use this to customize the email templates.
 USE_HTML_EMAIL = get_env_variable('USE_HTML_EMAIL', default=False)
