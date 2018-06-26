@@ -8,6 +8,7 @@ compile:
 test:
    pre:
      - rm -rf /home/ubuntu/kala-app/django_kala/build/lib/django_kala
+     - rm -rf /home/ubuntu/kala-app/django_kala/django_kala/static/debug_toolbar
    override:
      - tox
 
