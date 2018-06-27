@@ -156,7 +156,7 @@ class User(AbstractUser):
             settings.FROM_EMAIL,
             [self.email],
             fail_silently=False,
-            html_message=render(None, template_html, context) if settings.USE_HTML_EMAIL else None
+            #html_message=render(None, template_html, context) if settings.USE_HTML_EMAIL else None
         )
 
     def add_perm(self, perm, uuid):
