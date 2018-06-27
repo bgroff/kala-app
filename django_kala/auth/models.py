@@ -19,6 +19,13 @@ import documents
 import datetime
 
 
+# TODO: This does not work.
+class KalaUserManager(UserManager):
+
+    def get_query_set(self):
+        return super(KalaUserManager, self).get_query_set().filter(is_active=True)
+
+
 class User(AbstractUser):
     email = models.EmailField(_('email address'), unique=True)
 
@@ -39,7 +46,7 @@ class User(AbstractUser):
     removed = models.DateField(null=True)
     avatar_url = models.URLField(max_length=1200)
 
-    objects = UserManager()
+    objects = KalaUserManager()
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []

@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from django.contrib.auth.views import login, logout_then_login
-from django.urls import path
-from django.contrib.auth import views
+from django.urls import path, include
 
 
 from .views import *
@@ -44,14 +43,17 @@ urlpatterns = [
     ),
     #    url(r'^create_account$', CreateAccount.as_view(), name='create_account'),
     url(
-       regex=r'^edit_profile/(?P<pk>\d+)/$',
+       regex=r'^edit_profile/(?P<pk>\d+)',
        view=EditProfile.as_view(),
        name='edit_profile'
     ),
 
-    path('password_reset/', views.PasswordResetView.as_view(), name='password_reset'),
-    path('password_reset/done/', views.PasswordResetDoneView.as_view(), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(), name='password_reset_confirm'),
-    path('reset/done/', views.PasswordResetCompleteView.as_view(), name='password_reset_complete'),
+    path('', include('django.contrib.auth.urls')),
+
+    path(
+        'reset/<uidb64>/<token>',
+        PasswordResetConfirmView.as_view(),
+        name='password_reset_confirm'
+    ),
 
 ]
