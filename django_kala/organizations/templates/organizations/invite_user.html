@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load kala_tags %}
+
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <a class="section">{{ organization }}</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui tabular menu">
+        <div class="ui container">
+            <a class="active item" href="{% url 'organizations:invite_user' organization.pk %}">
+                <i class="person icon"></i>
+                Invite User
+            </a>
+            <a class="item" href="{% url 'organizations:details' organization.pk %}">
+                <i class="gear icon"></i>
+                Settings
+            </a>
+        </div>
+    </div>
+
+
+     <div class="ui container">
+        <div class="repo ribbon">
+            <div class="ui container">
+                <div class="ui big breadcrumb">
+                    <h2 class="active section">Invite User
+                    </h2>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+        </div>
+        {{ form.errors }}
+        <div class="ui one column grid container">
+            <div class="twelve wide column">
+                <form class="ui form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="field">
+                        <label>{{ form.email.label }}</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.first_name.label }}</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.last_name.label }}</label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.user_type.label }}</label>
+                        {{ form.user_type }}
+                    </div>
+                    <button id="submit-button" class="ui button primary" type="submit">Invite user</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

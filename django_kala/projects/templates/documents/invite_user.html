@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block search_bar %}
+    {% include 'projects/includes/project_search_bar.html' %}
+{% endblock %}
+
+{% block content %}
+    <div class="repo ribbon">
+        <div class="ui container">
+            <div class="ui big breadcrumb">
+                <a class="section" href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
+                <div class="divider"> /</div>
+                <a class="section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
+                <div class="divider"> /</div>
+                <span class="active section">{{ document }}</span>
+            </div>
+        </div>
+
+        <div class="ui tabular menu">
+            <div class="ui container">
+                <a class="item" href="{% url 'projects:document' project.pk document.pk %}">
+                    <i class="git branch icon"></i>
+                    Versions
+                </a>
+                {% if can_invite %}
+                <a class="active item" href="{% url 'projects:document_invite_user' project.pk document.pk %}">
+                    <i class="person icon"></i>
+                    Invite User
+                </a>
+                {% endif %}
+                {% if can_change %}
+                <a class="item" href="{% url 'projects:document_details' project.pk document.pk %}">
+                    <i class="gear icon"></i>
+                    Settings
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="ui container">
+        <div class="repo ribbon">
+            <div class="ui container">
+                <div class="ui big breadcrumb">
+                    <h2 class="active section">Invite User
+                    </h2>
+                </div>
+            </div>
+            <div class="ui divider"></div>
+        </div>
+        {{ form.errors }}
+        <div class="ui one column grid container">
+            <div class="twelve wide column">
+                <form class="ui form" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="field">
+                        <label>{{ form.email.label }}</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.first_name.label }}</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.last_name.label }}</label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.organizations.label }}</label>
+                        {{ form.organizations }}
+                    </div>
+                    <div class="field">
+                        <label>{{ form.user_type.label }}</label>
+                        {{ form.user_type }}
+                    </div>
+                    <button id="submit-button" class="ui button primary" type="submit">Invite user</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}

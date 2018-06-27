@@ -6,33 +6,35 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section" href="{% url 'organizations:organization' project.organization.pk %}">{{ document.project.organization }}</a>
+                <a class="section"
+                   href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
                 <div class="divider"> /</div>
-                <a class="section">{{ document.project }}</a>
+                <a class="section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
                 <div class="divider"> /</div>
                 <span class="active section">{{ document }}</span>
             </div>
         </div>
-    </div>
 
-    <div class="ui tabular menu">
-        <div class="ui container">
-            <a class="item" href="{% url 'projects:document' document.project.pk document.pk %}">
-                <i class="book icon"></i>
-                Document
-            </a>
-            {#            <a class="item">#}
-            {#                <i class="issue opened icon"></i>#}
-            {#                Issues#}
-            {#                <span class="ui small label">593</span>#}
-            {#            </a>#}
-            <a class="active item" href="{% url 'projects:document_details' document.project.pk document.pk %}">
-                <i class="gear icon"></i>
-                Settings
-            </a>
+        <div class="ui tabular menu">
+            <div class="ui container">
+                <a class="item">
+                    <i class="git branch icon"></i>
+                    Versions
+                </a>
+                {% if can_invite %}
+                    <a class="item" href="{% url 'projects:document_invite_user' project.pk document.pk %}">
+                        <i class="person icon"></i>
+                        Invite User
+                    </a>
+                {% endif %}
+                <a class="active item" href="{% url 'projects:document_details' project.pk document.pk %}">
+                    <i class="gear icon"></i>
+                    Settings
+                </a>
+            </div>
         </div>
-    </div>
 
+    </div>
 
     <div class="ui two column grid container">
         <div class="four wide column">
@@ -47,7 +49,9 @@
                 <div class="item">
                     <div class="header">People</div>
                     <div class="menu">
-                        <a class="active item" href="{% url 'projects:document_manage_access' document.project.pk document.pk %}">Manage access</a>
+                        <a class="active item"
+                           href="{% url 'projects:document_manage_access' document.project.pk document.pk %}">Manage
+                            access</a>
                     </div>
                 </div>
             </div>
@@ -113,9 +117,9 @@
 
 {% block scripts %}
     <script>
-{#        $('.ui.styled.fluid.accordion')#}
-{#            .accordion()#}
-{#        ;#}
+        {#        $('.ui.styled.fluid.accordion')#}
+        {#            .accordion()#}
+        {#        ;#}
         $('.ui.checkbox')
             .checkbox()
         ;

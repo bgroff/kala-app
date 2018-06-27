@@ -1,0 +1,9 @@
+You have been invited to collaborate! Please click the link below to activate your account with Kala.
+{{ application_url }}{% url 'users:password_reset_confirm' uid token %}
+
+-------
+If you did not initiate this action, please contact the Kala admins at the email below.
+Do NOT reply to this message as this email address does not accept incoming email.
+
+Website:  https://{{ application_url }}
+Email:  {{ help_email }}@{{ application_url }}

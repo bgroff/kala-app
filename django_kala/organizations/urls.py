@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from .views import OrganizationsView, NewOrganizationView, DetailsView, ManageAccessView
+from .views import OrganizationsView, InviteUserView, NewOrganizationView, DetailsView, ManageAccessView
 
 app_name='organizations'
 
@@ -14,6 +14,12 @@ urlpatterns = [
         regex=r'^(?P<pk>\d+)/$',
         view=OrganizationsView.as_view(),
         name='organization',
+    ),
+
+    url(
+        regex=r'^(?P<pk>\d+)/invite_user$',
+        view=InviteUserView.as_view(),
+        name='invite_user',
     ),
 
     url(

@@ -12,5 +12,6 @@ if type(deployment) is str:
         INSTALLED_APPS += ['debug_toolbar']
         MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware']
         INTERNAL_IPS = ['10.0.2.2']
+        EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
     DEBUG = True

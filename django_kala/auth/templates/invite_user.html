@@ -22,8 +22,20 @@
                     {{ form.email }}
                 </div>
                 <div class="field">
+                    <label>{{ form.first_name.label }}</label>
+                    {{ form.first_name }}
+                </div>
+                <div class="field">
+                    <label>{{ form.last_name.label }}</label>
+                    {{ form.last_name }}
+                </div>
+                <div class="field">
                     <label>{{ form.organizations.label }}</label>
                     {{ form.organizations }}
+                </div>
+                <div class="field">
+                    <label>{{ form.user_type.label }}</label>
+                    {{ form.user_type }}
                 </div>
                 <button id="submit-button" class="ui button primary" type="submit">Invite user</button>
             </form>

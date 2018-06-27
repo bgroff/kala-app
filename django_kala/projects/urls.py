@@ -23,6 +23,12 @@ urlpatterns = [
     ),
 
     url(
+        regex=r'^(?P<pk>\d+)/invite_user$',
+        view=ProjectInviteUserView.as_view(),
+        name='project_invite_user'
+    ),
+
+    url(
         regex=r'^(?P<pk>\d+)/download$',
         view=ExportProjectView.as_view(),
         name='export_project'
@@ -56,6 +62,12 @@ urlpatterns = [
         regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/(?P<version_uuid>[a-f0-9]{8}-?[a-f0-9]{4}-?[1-5][a-f0-9]{3}-?[89ab][a-f0-9]{3}-?[a-f0-9]{12})/download$',
         view=DocumentDownload.as_view(),
         name='download'
+    ),
+
+    url(
+        regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/invite_user$',
+        view=DocumentInviteUserView.as_view(),
+        name='document_invite_user'
     ),
 
     url(

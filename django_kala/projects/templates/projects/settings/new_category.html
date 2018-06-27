@@ -24,6 +24,10 @@
 {#                Issues#}
 {#                <span class="ui small label">593</span>#}
 {#            </a>#}
+            <a class="item" href="{% url 'projects:project_invite_user' project.pk %}">
+                <i class="person icon"></i>
+                Invite User
+            </a>
             <a class="active item" href="{% url 'projects:details' project.pk %}">
                 <i class="gear icon"></i>
                 Settings

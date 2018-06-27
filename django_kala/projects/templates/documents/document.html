@@ -21,11 +21,12 @@
                     <i class="git branch icon"></i>
                     Versions
                 </a>
-{#                <a class="item">#}
-{#                    <i class="issue opened icon"></i>#}
-{#                    Issues#}
-{#                    <span class="ui small label">593</span>#}
-{#                </a>#}
+                {% if can_invite %}
+                <a class="item" href="{% url 'projects:document_invite_user' project.pk document.pk %}">
+                    <i class="person icon"></i>
+                    Invite User
+                </a>
+                {% endif %}
                 {% if can_change %}
                 <a class="item" href="{% url 'projects:document_details' project.pk document.pk %}">
                     <i class="gear icon"></i>
