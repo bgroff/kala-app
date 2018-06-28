@@ -15,24 +15,43 @@
 
     <div class="ui one column grid container">
         <div class="twelve wide column">
-            <form class="ui form" method="post">
+            <form class="ui form {% if form.errors %}error{% endif %}" method="post">
                 {% csrf_token %}
                 <div class="field">
                     <label>{{ form.organization.label }}</label>
                     {{ form.organization }}
+                    {% if form.organization.errors %}
+                    <div class="ui error message">
+                        {{ form.organization.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.name.label }}</label>
                     {{ form.name }}
+                    {% if form.name.errors %}
+                    <div class="ui error message">
+                        {{ form.name.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.description.label }}</label>
                     {{ form.description }}
+                    {% if form.description.errors %}
+                    <div class="ui error message">
+                        {{ form.description.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.tags.label }}</label>
                     {{ form.tags }}
-                    {#                    <input id={{ form.tags.auto_id }} type="text" name="{{ form.name.name }}" placeholder="Project Name" value="{{ form.name.value }}" maxlength="{{ form.fields.name.max_length }} required">#}
+                    {% if form.tags.errors %}
+                    <div class="ui error message">
+                        {{ form.tags.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <button class="ui button primary" type="submit">Create project</button>
             </form>

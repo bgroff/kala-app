@@ -18,15 +18,25 @@
 
     <div class="ui one column grid container">
         <div class="twelve wide column">
-            <form class="ui form" method="post" enctype="multipart/form-data">
+            <form class="ui form {% if form.errors %}error{% endif %}" enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 <div class="field">
                     <label>{{ form.file.label }}</label>
                     {{ form.file }}
+                    {% if form.file.errors %}
+                    <div class="ui error message">
+                        {{ form.file.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.description.label }}</label>
-                    {{ form.description }}
+                    {{ form.description.errors }}
+                    {% if form.description %}
+                    <div class="ui error message">
+                        {{ form.description.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <button id="submit-button" class="ui button primary" type="submit">Create version</button>
             </form>

@@ -72,24 +72,21 @@
                 {% csrf_token %}
                 <div class="field">
                     <label>{{ form.name.label }}</label>
-                    <input id={{ form.name.auto_id }} type="text" name="{{ form.name.name }}" placeholder="Category Name" maxlength="{{ form.fields.name.max_length }} required">
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <div class="ui error message">
+                        {{ form.name.errors }}
+                    </div>
+                    {% endif %}
                 </div>
-            <div class="ui error message">
-                <ul class="list">
-                    {% for error in form.name.errors %}
-                        <li>
-                            {{ error }}
-                        </li>
-                        {% empty %}
-                        <li>
-                            Could not create category.
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
                 <div class="field">
                     <label>{{ form.type.label }}</label>
                     {{ form.type }}
+                    {% if form.type.errors %}
+                    <div class="ui error message">
+                        {{ form.type.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <button class="ui button primary" type="submit">Create category</button>
             </form>

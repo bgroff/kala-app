@@ -18,23 +18,43 @@
 
     <div class="ui one column grid container">
         <div class="twelve wide column">
-            <form class="ui form" method="post" enctype="multipart/form-data">
+            <form class="ui form {% if form.errors or version_form.errors %}error{% endif %}" enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 <div class="field">
                     <label>{{ version_form.file.label }}</label>
                     {{ version_form.file }}
+                    {% if version_form.file.errors %}
+                    <div class="ui error message">
+                        {{ version_form.file.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ version_form.description.label }}</label>
                     {{ version_form.description }}
+                    {% if version_form.description.errors %}
+                    <div class="ui error message">
+                        {{ version_form.description.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.category.label }}</label>
                     {{ form.category }}
+                    {% if form.category.errors %}
+                    <div class="ui error message">
+                        {{ form.category.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.tags.label }}</label>
                     {{ form.tags }}
+                    {% if form.tags.errors %}
+                    <div class="ui error message">
+                        {{ form.tags.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <button id="submit-button" class="ui button primary" type="submit">Create document</button>
             </form>

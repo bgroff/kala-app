@@ -57,35 +57,70 @@
             </div>
         </div>
         <div class="twelve wide column">
-            <form class="ui form" method="post">
+            <form class="ui form {% if form.errors %}error{% endif %}" method="post">
                 {% csrf_token %}
                 <div class="field">
                     <label>{{ form.email.label }}</label>
                     {{ form.email }}
+                    {% if form.email.errors %}
+                    <div class="ui error message">
+                        {{ form.email.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.first_name.label }}</label>
                     {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                    <div class="ui error message">
+                        {{ form.first_name.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.last_name.label }}</label>
                     {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                    <div class="ui error message">
+                        {{ form.last_name.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.title.label }}</label>
                     {{ form.title }}
+                    {% if form.title.errors %}
+                    <div class="ui error message">
+                        {{ form.title.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.timezone.label }}</label>
                     {{ form.timezone }}
+                    {% if form.timezone.errors %}
+                    <div class="ui error message">
+                        {{ form.timezone.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.mobile.label }}</label>
                     {{ form.mobile }}
+                    {% if form.mobile.errors %}
+                    <div class="ui error message">
+                        {{ form.mobile.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.office.label }}</label>
                     {{ form.office }}
+                    {% if form.office.errors %}
+                    <div class="ui error message">
+                        {{ form.office.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <button class="ui button primary" type="submit">Update details</button>
             </form>

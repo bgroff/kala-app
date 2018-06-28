@@ -60,20 +60,34 @@
             </div>
         </div>
         <div class="twelve wide column">
-            <form class="ui form" method="post" novalidate>
+            <form class="ui form {% if form.errors %}error{% endif %}" method="post">
                 {% csrf_token %}
                 <div class="field">
                     <label>{{ form.name.label }}</label>
-                    <input id={{ form.name.auto_id }} type="text" name="{{ form.name.name }}" placeholder="Project Name"
-                           value="{{ form.name.value }}" maxlength="{{ form.fields.name.max_length }} required">
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <div class="ui error message">
+                        {{ form.name.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.category.label }}</label>
                     {{ form.category }}
+                    {% if form.category.errors %}
+                    <div class="ui error message">
+                        {{ form.category.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.tags.label }}</label>
                     {{ form.tags }}
+                    {% if form.tags.errors %}
+                    <div class="ui error message">
+                        {{ form.tags.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <button class="ui button primary" type="submit">Update details</button>
             </form>

@@ -58,11 +58,16 @@
             </div>
         </div>
         <div class="twelve wide column">
-            <form class="ui form" method="post" enctype="multipart/form-data">
+            <form class="ui form {% if form.errors %}error{% endif %}" enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 <div class="field">
                     <label>{{ form.avatar.label }}</label>
                     {{ form.avatar }}
+                    {% if form.avatar.errors %}
+                    <div class="ui error message">
+                        {{ form.avatar.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <button class="ui button primary" type="submit">Update avatar</button>
             </form>
