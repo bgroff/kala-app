@@ -12,30 +12,54 @@
         </div>
         <div class="ui divider"></div>
     </div>
-    {{ form.errors }}
     <div class="ui one column grid container">
         <div class="twelve wide column">
-            <form class="ui form" method="post" enctype="multipart/form-data">
+            <form class="ui form {% if form.errors %}error{% endif %}" method="post">
                 {% csrf_token %}
                 <div class="field">
                     <label>{{ form.email.label }}</label>
                     {{ form.email }}
+                    {% if form.email.errors %}
+                    <div class="ui error message">
+                        {{ form.email.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.first_name.label }}</label>
                     {{ form.first_name }}
+                    {% if form.first_name.errors %}
+                    <div class="ui error message">
+                        {{ form.first_name.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.last_name.label }}</label>
                     {{ form.last_name }}
+                    {% if form.last_name.errors %}
+                    <div class="ui error message">
+                        {{ form.last_name.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.organizations.label }}</label>
                     {{ form.organizations }}
+                    {% if form.organizations.errors %}
+                    <div class="ui error message">
+                        {{ form.organizations.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="field">
                     <label>{{ form.user_type.label }}</label>
                     {{ form.user_type }}
+                    {% if form.user_type.errors %}
+                    <div class="ui error message">
+                        {{ form.user_type.errors }}
+                    </div>
+                    {% endif %}
                 </div>
                 <button id="submit-button" class="ui button primary" type="submit">Invite user</button>
             </form>

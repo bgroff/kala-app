@@ -11,7 +11,11 @@ class InviteUserForm(forms.ModelForm):
         else:
             user_type_choice = [['User', 'User']]
 
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
         self.fields['user_type'] = forms.ChoiceField(choices=user_type_choice)
+        self.fields['user_type'].widget.attrs['class'] = 'ui fluid dropdown'
+
 
     class Meta:
         model = get_user_model()

@@ -13,6 +13,8 @@ class InviteUserForm(forms.ModelForm):
         super(InviteUserForm, self).__init__(*args, **kwargs)
         self.fields['organizations'].widget.attrs['class'] = 'ui fluid dropdown'
         self.fields['user_type'].widget.attrs['class'] = 'ui fluid dropdown'
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
 
     def save(self, commit=True):
         self.instance.is_active = False
