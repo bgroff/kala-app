@@ -19,11 +19,6 @@
                 <i class="book icon"></i>
                 Documents
             </a>
-{#            <a class="item">#}
-{#                <i class="issue opened icon"></i>#}
-{#                Issues#}
-{#                <span class="ui small label">593</span>#}
-{#            </a>#}
             <a class="item" href="{% url 'projects:project_invite_user' project.pk %}">
                 <i class="person icon"></i>
                 Invite User
@@ -68,6 +63,16 @@
             </div>
         </div>
         <div class="twelve wide column">
+            {% if messages %}
+                <div class="ui success message">
+                    <i class="close icon"></i>
+                    <ul class="messages" style="margin-top: 0">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
             <form id="form" class="ui form" method="post">
                 {% csrf_token %}
                 <div class="field">

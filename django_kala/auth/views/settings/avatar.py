@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib import messages
 
 from auth.forms.settings.avatar import AvatarForm
 from django.contrib.auth import get_user_model
@@ -46,6 +47,8 @@ class AvatarView(LoginRequiredMixin, TemplateView):
 
             except Exception as exception:
                 print(exception)
+            messages.success(request, 'The avatar has been updated.')
+
             return redirect(reverse('users:avatar', args=[self.user.pk]))
         return self.render_to_response(self.get_context_data())
 

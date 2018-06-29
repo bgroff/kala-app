@@ -14,6 +14,7 @@ class ArchiveView(LoginRequiredMixin, TemplateView):
         return {
             'document': self.document,
             'project': self.project,
+            'organization': self.project.organization,
             'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
             'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
         }

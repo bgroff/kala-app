@@ -15,6 +15,7 @@ class DocumentView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         return {
             'project': self.project,
+            'organization': self.project.organization,
             'document': self.document,
             'can_change': self.document.has_change(self.request.user),
             'can_create': self.has_change or self.has_create,

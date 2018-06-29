@@ -48,6 +48,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'page_range': paginator.page_range,
             'current_page': page,
             'project': self.project,
+            'organization': self.project.organization,
             'sort_form': self.sort_form,
             'version_count': versions.count(),
             'user_count': versions.distinct('user').count(),

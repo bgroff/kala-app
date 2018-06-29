@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect, get_object_or_404
@@ -50,6 +51,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
                 self.organization.add_change(user)
                 self.organization.add_delete(user)
             user.send_invite(settings.EMAIL_APP, 'email/invite_organization', 'Invitation to collaborate', self.organization)
+            messages.success(request, 'The invitation has been sent.')
             return redirect(
                 reverse(
                     'organizations:invite_user',

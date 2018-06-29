@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
@@ -29,5 +30,6 @@ class DetailsView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
             self.form.save()
+            messages.success(request, 'The user has been updated.')
             return redirect(reverse('users:details', args=[self.user.pk]))
         return self.render_to_response(self.get_context_data())

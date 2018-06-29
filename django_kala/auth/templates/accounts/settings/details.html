@@ -57,6 +57,16 @@
             </div>
         </div>
         <div class="twelve wide column">
+            {% if messages %}
+                <div class="ui success message">
+                    <i class="close icon"></i>
+                    <ul class="messages" style="margin-top: 0">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
             <form class="ui form {% if form.errors %}error{% endif %}" method="post">
                 {% csrf_token %}
                 <div class="field">

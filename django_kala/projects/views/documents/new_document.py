@@ -16,6 +16,7 @@ class NewDocumentView(LoginRequiredMixin, TemplateView):
             'form': self.form,
             'version_form': self.version_form,
             'project': self.project,
+            'organization': self.project.organization,
             'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
             'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
         }
@@ -44,5 +45,6 @@ class NewDocumentView(LoginRequiredMixin, TemplateView):
             version.mime = request.FILES['file'].content_type
             version.save()
             self.form.save_m2m()
+            messages.success(request, 'The document has been saved.')
             return redirect(reverse('projects:document', args=[self.project.pk, document.pk]))
         return self.render_to_response(self.get_context_data())

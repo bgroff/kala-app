@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
@@ -15,6 +16,7 @@ class DetailsView(LoginRequiredMixin, TemplateView):
         return {
             'form': self.form,
             'project': self.project,
+            'organization': self.project.organization,
             'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
             'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
         }
@@ -32,5 +34,6 @@ class DetailsView(LoginRequiredMixin, TemplateView):
             self.form.save(commit=False)
             self.form.save_m2m()
             self.form.save()
+            messages.success(request, 'The project has been updated.')
             return redirect(reverse('projects:details', args=[self.project.pk]))
         return self.render_to_response(self.get_context_data())

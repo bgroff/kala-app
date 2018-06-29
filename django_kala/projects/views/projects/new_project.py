@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
@@ -30,5 +31,6 @@ class NewProjectView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
             project = self.form.save()
+            messages.success(request, 'The project has been saved.')
             return redirect(reverse('projects:project', args=[project.pk]))
         return self.render_to_response(self.get_context_data())

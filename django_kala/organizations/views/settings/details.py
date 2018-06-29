@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
@@ -29,5 +30,6 @@ class DetailsView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
             self.form.save()
+            messages.success(request, 'The organization has been updated.')
             return redirect(reverse('organizations:details', args=[self.organization.pk]))
         return self.render_to_response(self.get_context_data())

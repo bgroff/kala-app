@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
@@ -17,6 +18,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
         return {
             'form': self.form,
             'project': self.project,
+            'organization': self.project.organization,
             'can_change': self.project.has_change(self.request.user),
             'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
             'can_invite': self.project.organization.has_change(
@@ -68,5 +70,6 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
                 self.project.add_change(user)
                 self.project.add_delete(user)
             user.send_invite(settings.EMAIL_APP, 'email/invite_project', 'Invitation to collaborate', user)
+            messages.success(request, 'The invitation has been sent.')
             return redirect(reverse('projects:project_invite_user', args=[self.project.pk]))
         return self.render_to_response(self.get_context_data())

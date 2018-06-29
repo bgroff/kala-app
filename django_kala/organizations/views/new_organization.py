@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
@@ -24,5 +25,6 @@ class NewOrganizationView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
             company = self.form.save()
+            messages.success(request, 'The organization has been saved.')
             return redirect(reverse('organizations:organization', args=[company.pk]))
         return self.render_to_response(self.get_context_data())

@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
@@ -17,6 +18,7 @@ class NewDocumentVersionView(LoginRequiredMixin, TemplateView):
             'form': self.form,
             'document': self.document,
             'project': self.project,
+            'organization': self.project.organization,
             'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
             'can_invite': self.project.organization.has_change(
                 self.request.user) or self.project.organization.has_create(self.request.user)
@@ -43,5 +45,6 @@ class NewDocumentVersionView(LoginRequiredMixin, TemplateView):
             version.name = request.FILES['file'].name
             version.mime = request.FILES['file'].content_type
             version.save()
+            messages.success(request, 'The version has been saved.')
             return redirect(reverse('projects:document', args=[self.project.pk, self.document.pk]))
         return self.render_to_response(self.get_context_data())

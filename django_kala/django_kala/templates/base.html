@@ -83,13 +83,13 @@
                     {% endif %}
                     {% if can_invite  %}
                         <div class="header">This organization</div>
-                        <a class="item">Invite someone</a>
+                        <a class="item" href="{% url 'organizations:invite_user' organization.pk %}">Invite someone</a>
                         <div class="divider"></div>
                     {% endif %}
                     {% if project and can_create %}
                         <div class="header">This project</div>
                         <a class="item" href="{% url 'projects:new_document' project.pk %}">New document</a>
-                        <a class="item">Invite someone</a>
+                        <a class="item" href="{% url 'projects:project_invite_user' project.pk %}">Invite someone</a>
                     {% endif %}
                     </div>
                 {% endif %}
