@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load i18n static %}
 
 {% block search_bar %}
     {% include 'projects/includes/project_search_bar.html' %}
@@ -20,16 +20,16 @@
             <div class="ui container">
                 <a class="active item">
                     <i class="book icon"></i>
-                    Documents
+                    {% trans 'Documents' %}
                 </a>
                 {% if can_change %}
                     <a class="item" href="{% url 'projects:project_invite_user' project.pk %}">
                         <i class="person icon"></i>
-                        Invite User
+                        {% trans 'Invite User' %}
                     </a>
                     <a class="item" href="{% url 'projects:details' project.pk %}">
                         <i class="gear icon"></i>
-                        Settings
+                        {% trans 'Settings' %}
                     </a>
                 {% endif %}
             </div>
@@ -52,19 +52,19 @@
         <div class="ui four item top attached borderless stats menu">
             <a class="item">
                 <i class="book icon"></i>
-                <b>{{ project.document_set.all.count }}</b> documents
+                <b>{{ project.document_set.all.count }}</b> {% trans 'documents' %}
             </a>
             <a class="item">
                 <i class="git branch icon"></i>
-                <b>{{ version_count }}</b> versions
+                <b>{{ version_count }}</b> {% trans 'versions' %}
             </a>
             <a class="item">
                 <i class="tag icon"></i>
-                <b>{{ project.category_set.all.count }}</b> categories
+                <b>{{ project.category_set.all.count }}</b> {% trans 'categories' %}
             </a>
             <a class="item">
                 <i class="organization icon"></i>
-                <b>{{ user_count }}</b> contributors
+                <b>{{ user_count }}</b> {% trans 'contributors' %}
             </a>
         </div>
         <div class="ui bottom attached horizontal language segments">
@@ -76,16 +76,16 @@
         <div class="repo title">
             <div class="repo options">
                 <a class="ui compact button" href="{% url 'projects:export_project' project.pk %}">
-                    Download ZIP
+                    {% trans 'Download ZIP' %}
                 </a>
                 <div class="ui labeled button">
                     <div class="ui compact floating watch dropdown button" data-content="Choose display options">
                         <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> Filter
+                        <i class="checklist icon"></i> {% trans 'Filter' %}
                         <i class="dropdown icon"></i>
                         <div class="menu" id="category-menu">
                             <div class="item">
-                                <h4 data-value="">No Filter</h4>
+                                <h4 data-value="">{% trans 'No Filter' %}</h4>
                             </div>
                             {% for category in project.category_set.all %}
                                 <div class="item">
@@ -98,14 +98,14 @@
                 <div class="ui labeled button">
                     <div class="ui compact floating watch dropdown button" data-content="Choose display options">
                         <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> Sort
+                        <i class="checklist icon"></i> {% trans 'Sort' %}
                         <i class="dropdown icon"></i>
                         <div class="menu" id="sort-menu">
                             <div class="item">
-                                <h4 data-value="Alphabetically">Alphabetically</h4>
+                                <h4 data-value="Alphabetically">{% trans 'Alphabetically' %}</h4>
                             </div>
                             <div class="item">
-                                <h4 data-value="Date">Date</h4>
+                                <h4 data-value="Date">{% trans 'Date' %}</h4>
                             </div>
                         </div>
                     </div>
@@ -113,10 +113,10 @@
             </div>
             {% if can_create %}
                 <a class="ui positive compact icon button" href="{% url 'projects:new_document' project.pk %}">
-                    + New document
+                    + {% trans 'New document' %}
                 </a>
             {% else %}
-                <p>You do not have permission to create new documents for this project.</p>
+                <p>{% trans 'You do not have permission to create new documents for this project.' %}</p>
             {% endif %}
         </div>
         <div class="ui divider">
@@ -139,9 +139,9 @@
                                href="{% url 'projects:document' project.pk document.pk %}">{{ document.name }}</a>
                             <div class="meta">
                                 {% if document.documentversion_set.all.count == 1 %}
-                                    <span class="date">Created on {{ document.date }}</span>
+                                    <span class="date">{% trans 'Created on {{ document.date }}' %}</span>
                                 {% else %}
-                                    <span class="date">Updated on {{ document.date }}</span>
+                                    <span class="date">{% trans 'Updated on {{ document.date }}' %}</span>
                                 {% endif %}
                                 by {{ document.documentversion_set.all.0.user }}
                             </div>
@@ -154,10 +154,10 @@
                         <div class="extra content">
                             <div class="ui top left pointing dropdown">
                                 <i class="git branch icon"></i>
-                                <span class="text">Versions {{ document.documentversion_set.all.count }}</span>
+                                <span class="text">{% trans 'Versions {{ document.documentversion_set.all.count }}' %}</span>
                                 <div class="menu">
                                     <div class="header">
-                                        Download version
+                                        {% trans 'Download version' %}
                                         <div class="ui divider"></div>
                                     </div>
                                     <div class="item">
@@ -180,12 +180,12 @@
                             <div class="ui divider"></div>
                             <a class="ui compact button primary"
                                href="{% url 'projects:new_version' project.pk document.pk %}">
-                                + New version
+                                + {% trans 'New version' %}
                             </a>
                         </div>
                     </div>
                     {% empty %}
-                    <div class="ui container">There are no documents uploaded for this project.</div>
+                    <div class="ui container">{% trans 'There are no documents uploaded for this project.' %}</div>
                 {% endfor %}
 
             </div>

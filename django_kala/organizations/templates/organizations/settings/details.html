@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load kala_tags %}
+{% load i18n static kala_tags %}
 
 {% block content %}
     <div class="repo ribbon">
@@ -15,11 +14,11 @@
         <div class="ui container">
             <a class="item" href="{% url 'organizations:invite_user' organization.pk %}">
                 <i class="person icon"></i>
-                Invite User
+                {% trans 'Invite User' %}
             </a>
             <a class="active item" href="{% url 'organizations:details' organization.pk %}">
                 <i class="gear icon"></i>
-                Settings
+                {% trans 'Settings' %}
             </a>
         </div>
     </div>
@@ -29,16 +28,16 @@
         <div class="four wide column">
             <div class="ui vertical menu">
                 <div class="item">
-                    <div class="header">Organization</div>
+                    <div class="header">{% trans 'Organization' %}</div>
                     <div class="menu">
-                        <a class="active item" href="{% url 'organizations:details' organization.pk %}">Details</a>
-                        <a class="item" href="">Archive</a>
+                        <a class="active item" href="{% url 'organizations:details' organization.pk %}">{% trans 'Details' %}</a>
+                        <a class="item" href="">{% trans 'Archive' %}</a>
                     </div>
                 </div>
                 <div class="item">
-                    <div class="header">People</div>
+                    <div class="header">{% trans 'People' %}</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'organizations:manage_access' organization.pk %}">Manage access</a>
+                        <a class="item" href="{% url 'organizations:manage_access' organization.pk %}">{% trans 'Manage access' %}</a>
                     </div>
                 </div>
             </div>
@@ -138,7 +137,7 @@
                     </div>
                     {% endif %}
                 </div>
-               <button class="ui button primary" type="submit">Update details</button>
+               <button class="ui button primary" type="submit">{% trans 'Update details' %}</button>
             </form>
         </div>
     </div>

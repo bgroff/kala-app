@@ -1,3 +1,4 @@
 {% extends 'base_error.html' %}
+{% load i18n %}
 
-{% block message %}Sorry, we could not find what you were looking for.{% endblock %}
+{% block message %}{% trans 'Sorry, we could not find what you were looking for.' %}{% endblock %}

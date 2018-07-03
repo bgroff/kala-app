@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
 from projects.forms import NewProjectForm
@@ -19,7 +20,7 @@ class NewProjectView(LoginRequiredMixin, TemplateView):
     def dispatch(self, request, *args, **kwargs):
         self.organizations = request.user.get_organizations_with_create()
         if not self.organizations:
-            raise PermissionDenied('You do not have permissions to create projects.')
+            raise PermissionDenied(_('You do not have permissions to create projects.'))
         self.form = NewProjectForm(
             request.POST or None,
             request.FILES or None,
@@ -31,6 +32,6 @@ class NewProjectView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
             project = self.form.save()
-            messages.success(request, 'The project has been saved.')
+            messages.success(request, _('The project has been saved.'))
             return redirect(reverse('projects:project', args=[project.pk]))
         return self.render_to_response(self.get_context_data())

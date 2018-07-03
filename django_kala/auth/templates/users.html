@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load i18n static %}
 
 {% block projects_class %}active{% endblock %}
 {% block content %}
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <span class="active section">Users</span>
+                <span class="active section">{% trans 'Users' %}</span>
             </div>
         </div>
     </div>
@@ -15,7 +15,7 @@
         <div class="ui container">
             <a class="active item" href="{% url 'users:users' %}">
                 <i class="organization icon"></i>
-                Users
+                {% trans 'Users' %}
             </a>
 {#            <a class="item">#}
 {#                <i class="merge icon"></i>#}
@@ -30,7 +30,7 @@
                 <div class="ui labeled button">
                     <div class="ui compact floating watch dropdown button" data-content="Choose display options">
                         <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> Filter
+                        <i class="checklist icon"></i> {% trans 'Filter' %}
                         <i class="dropdown icon"></i>
                         <div class="menu">
                             {% for organization in organizations %}
@@ -42,16 +42,16 @@
                     </div>
                 </div>
                 <div class="ui labeled button">
-                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
+                    <div class="ui compact floating watch dropdown button" data-content="{% trans 'Choose display options' %}">
                         <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> Sort
+                        <i class="checklist icon"></i> {% trans 'Sort' %}
                         <i class="dropdown icon"></i>
                         <div class="menu">
                             <div class="item" data-value="not-watching">
-                                <h4>Alphabetically</h4>
+                                <h4>{% trans 'Alphabetically' %}</h4>
                             </div>
                             <div class="item" data-value="watching">
-                                <h4>Organization</h4>
+                                <h4>{% trans 'Organization' %}</h4>
                             </div>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
             </div>
             {% if request.user.is_superuser %}
                 <a class="ui positive compact icon button" href="{% url 'users:invite_user' %}">
-                    + Invite user
+                    + {% trans 'Invite user' %}
                 </a>
             {% endif %}
         </div>
@@ -89,7 +89,7 @@
                         </div>
                     </div>
                     {% empty %}
-                    <div class="ui container">There are no users.</div>
+                    <div class="ui container">{% trans 'There are no users.' %}</div>
                 {% endfor %}
             </div>
         </div>

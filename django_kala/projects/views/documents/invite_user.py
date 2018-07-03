@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
@@ -37,7 +38,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
         self.has_create = self.document.has_create(request.user)
         self.has_change = self.document.has_change(request.user)
         if not self.has_create and not self.has_change and not self.document.has_delete(request.user):
-            raise PermissionDenied('You do not have permissions to view this document.')
+            raise PermissionDenied(_('You do not have permissions to view this document.'))
         self.form = InviteUserForm(
             request.POST or None,
             admin_permission=(
@@ -58,8 +59,9 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             if self.form.cleaned_data['user_type'] == 'Admin':
                 self.document.add_change(user)
                 self.document.add_delete(user)
-            user.send_invite(settings.EMAIL_APP, 'email/invite_document', 'Invitation to collaborate', user)
-            messages.success(request, 'The invitation has been sent.')
+
+            user.send_invite(settings.EMAIL_APP, 'email/invite_document', _('Invitation to collaborate'), user)
+            messages.success(request, _('The invitation has been sent.'))
             return redirect(
                 reverse(
                     'projects:document_invite_user',

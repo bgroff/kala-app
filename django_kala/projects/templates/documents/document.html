@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load kala_tags %}
+{% load i18n static kala_tags %}
 
 {% block projects_class %}active{% endblock %}
 {% block content %}
@@ -19,18 +18,18 @@
             <div class="ui container">
                 <a class="active item">
                     <i class="git branch icon"></i>
-                    Versions
+                    {% trans 'Versions' %}
                 </a>
                 {% if can_invite %}
                 <a class="item" href="{% url 'projects:document_invite_user' project.pk document.pk %}">
                     <i class="person icon"></i>
-                    Invite User
+                    {% trans 'Invite User' %}
                 </a>
                 {% endif %}
                 {% if can_change %}
                 <a class="item" href="{% url 'projects:document_details' project.pk document.pk %}">
                     <i class="gear icon"></i>
-                    Settings
+                    {% trans 'Settings' %}
                 </a>
                 {% endif %}
             </div>
@@ -42,15 +41,15 @@
         <div class="repo title">
             <div class="repo options">
                 <a class="ui compact button" href="{% url 'projects:export_document' project.pk document.pk %}">
-                    Download ZIP
+                    {% trans 'Download ZIP' %}
                 </a>
             </div>
             {% if can_create %}
             <a class="ui positive compact icon button" href="{% url 'projects:new_version' project.pk document.pk %}">
-                + New version
+                + {% trans 'New version' %}
             </a>
             {% else %}
-                <p>You do not have permission to create new versions for this document.</p>
+                <p>{% trans 'You do not have permission to create new versions for this document.' %}</p>
             {% endif %}
         </div>
         <div class="ui divider">
@@ -93,7 +92,7 @@
                         </div>
                     </div>
                     {% empty %}
-                    <div class="ui container">There are no documents uploaded for this project.</div>
+                    <div class="ui container">{% trans 'There are no documents uploaded for this project.' %}</div>
                 {% endfor %}
             </div>
         </div>

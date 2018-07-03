@@ -1,9 +1,11 @@
+import datetime
+from uuid import uuid4
+
 from django.conf import settings
 from django.contrib.auth.models import UserManager, AbstractUser, Permission
 from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import send_mail
 from django.db import models
-from django.shortcuts import render
 from django.template import loader
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
@@ -11,12 +13,10 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import ugettext_lazy as _
 from django_localflavor_us.models import PhoneNumberField
 from timezone_field import TimeZoneField
-from uuid import uuid4
 
+import documents
 import organizations
 import projects
-import documents
-import datetime
 
 
 # TODO: This does not work.

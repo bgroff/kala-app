@@ -1,4 +1,4 @@
-{% load static %}
+{% load i18n static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -130,7 +130,7 @@
                     <div class="ui left icon input">
                         <i class="person icon"></i>
                         <input type="text" id="id_username" name="username" value=""
-                               placeholder="{% if form.username.errors %}{{ form.username.errors.0 }}{% else %}Email{% endif %}"
+                               placeholder="{% if form.username.errors %}{{ form.username.errors.0 }}{% else %}{% trans 'Email' %}{% endif %}"
                                class="login username-field"/>
                     </div>
                 </div>
@@ -138,11 +138,11 @@
                     <div class="ui left icon input">
                         <i class="lock icon"></i>
                         <input type="password" id="id_password" name="password" value=""
-                               placeholder="{% if form.password.errors %}{{ form.password.errors.0 }}{% else %}Password{% endif %}"
+                               placeholder="{% if form.password.errors %}{{ form.password.errors.0 }}{% else %}{% trans 'Password' %}{% endif %}"
                                class="login password-field"/>
                     </div>
                 </div>
-                <button type="submit" class="ui fluid large blue submit button">Login</button>
+                <button type="submit" class="ui fluid large blue submit button">{% trans 'Login' %}</button>
             </div>
 
             <div class="ui error message">
@@ -153,7 +153,7 @@
                         </li>
                         {% empty %}
                         <li>
-                            Could not authenticate with your email and password.
+                            {% trans 'Could not authenticate with your email and password.' %}
                         </li>
                     {% endfor %}
                 </ul>

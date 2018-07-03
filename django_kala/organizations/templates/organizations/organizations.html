@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load i18n static %}
 
 {% block content %}
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <h2 class="section">Organizations</h2>
+                <h2 class="section">{% trans 'Organizations' %}</h2>
             </div>
         </div>
         <div class="ui divider"></div>
@@ -15,7 +15,7 @@
         {% if can_create %}
             <div class="repo title">
                 <a class="ui positive compact icon button" href="{% url 'organizations:new_organization' %}">
-                    + New organization
+                    + {% trans 'New organization' %}
                 </a>
             </div>
             <div class="ui divider">
@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     {% empty %}
-                    <div class="ui container">There are no organizations. Please add one with the button above.</div>
+                    <div class="ui container">{% trans 'There are no organizations. Please add one with the button above.' %}</div>
                 {% endfor %}
             </div>
         </div>

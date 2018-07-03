@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load kala_tags %}
+{% load i18n static kala_tags %}
 
 {% block content %}
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <h2 class="active section">New Organization</h2>
+                <h2 class="active section">{% trans 'New Organization' %}</h2>
             </div>
         </div>
         <div class="ui divider">
@@ -98,7 +97,7 @@
                     </div>
                     {% endif %}
                 </div>
-                <button class="ui button primary" type="submit">Create ogranization</button>
+                <button class="ui button primary" type="submit">{% trans 'Create ogranization' %}</button>
             </form>
         </div>
     </div>

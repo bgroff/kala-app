@@ -4,11 +4,12 @@ from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, InvalidPage
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 from django.views import View
 from django.views.generic import TemplateView
 
 from auth.models import Permissions
-from documents.models import Document, DocumentVersion
+from documents.models import DocumentVersion
 from projects.forms import CategoryForm, SortForm
 from projects.models import Project
 from projects.tasks.export_project import ExportProjectTask
@@ -76,7 +77,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
                     'delete_document'
                 ], user=request.user).values_list('object_uuid', flat=True)).exists():
             raise PermissionDenied(
-                'You do not have permission to view this project.'
+                _('You do not have permission to view this project.')
             )
         self.categories_form = CategoryForm(request.GET or None, project=self.project)
         self.sort_form = SortForm(request.GET or None)
@@ -122,7 +123,7 @@ class ExportProjectView(LoginRequiredMixin, View):
                     'delete_document'
                 ], user=request.user).values_list('object_uuid', flat=True)).exists():
             raise PermissionDenied(
-                'You do not have permission to view this project.'
+                _('You do not have permission to view this project.')
             )
         return super(ExportProjectView, self).dispatch(request, *args, **kwargs)
 

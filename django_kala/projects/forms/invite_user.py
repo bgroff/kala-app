@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
 
 
 class InviteUserForm(forms.ModelForm):
@@ -7,7 +8,7 @@ class InviteUserForm(forms.ModelForm):
         admin_permission = kwargs.pop('admin_permission')
         super(InviteUserForm, self).__init__(*args, **kwargs)
         if admin_permission:
-            user_type_choice = [['User', 'User'], ['Admin', 'Admin']]
+            user_type_choice = [['User', _('User')], ['Admin', _('Admin')]]
         else:
             user_type_choice = [['User', 'User']]
 
@@ -15,7 +16,6 @@ class InviteUserForm(forms.ModelForm):
         self.fields['last_name'].required = True
         self.fields['user_type'] = forms.ChoiceField(choices=user_type_choice)
         self.fields['user_type'].widget.attrs['class'] = 'ui fluid dropdown'
-
 
     class Meta:
         model = get_user_model()

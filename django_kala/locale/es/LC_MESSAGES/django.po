@@ -1,0 +1,882 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-07-03 04:40+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: auth/forms/invite_user.py:7 auth/templates/accounts/settings/avatar.html:33
+#: auth/templates/accounts/settings/details.html:37
+#: projects/forms/invite_user.py:11
+msgid "User"
+msgstr ""
+
+#: auth/forms/invite_user.py:7 projects/forms/invite_user.py:11
+msgid "Admin"
+msgstr ""
+
+#: auth/forms/settings/avatar.py:16
+msgid "The image provided was not readable"
+msgstr ""
+
+#: auth/forms/settings/avatar.py:18
+#, python-brace-format
+msgid "The image must be a JPEG, PNG or GIF, found {0}"
+msgstr ""
+
+#: auth/models.py:30
+msgid "email address"
+msgstr ""
+
+#: auth/templates/accounts/settings/avatar.html:8
+#: auth/templates/accounts/settings/avatar.html:19
+#: auth/templates/accounts/settings/details.html:8 auth/templates/users.html:9
+#: auth/templates/users.html:18 django_kala/templates/base.html:128
+msgid "Users"
+msgstr ""
+
+#: auth/templates/accounts/settings/avatar.html:23
+#: auth/templates/accounts/settings/details.html:27
+#: organizations/templates/organizations/invite_user.html:21
+#: organizations/templates/organizations/settings/details.html:21
+#: organizations/templates/organizations/settings/manage_access.html:21
+#: projects/templates/documents/document.html:32
+#: projects/templates/documents/invite_user.html:35
+#: projects/templates/documents/settings/archive.html:31
+#: projects/templates/documents/settings/details.html:31
+#: projects/templates/documents/settings/manage_access.html:32
+#: projects/templates/projects/invite_user.html:32
+#: projects/templates/projects/project.html:32
+#: projects/templates/projects/settings/archive.html:32
+#: projects/templates/projects/settings/categories.html:27
+#: projects/templates/projects/settings/details.html:32
+#: projects/templates/projects/settings/edit_category.html:32
+#: projects/templates/projects/settings/manage_access.html:32
+#: projects/templates/projects/settings/new_category.html:32
+#: projects/templates/projects/settings/transfer_ownership.html:27
+msgid "Settings"
+msgstr ""
+
+#: auth/templates/accounts/settings/avatar.html:35
+#: auth/templates/accounts/settings/details.html:39
+#: organizations/templates/organizations/settings/details.html:33
+#: organizations/templates/organizations/settings/manage_access.html:33
+#: projects/templates/documents/settings/archive.html:45
+#: projects/templates/documents/settings/details.html:45
+#: projects/templates/documents/settings/manage_access.html:45
+#: projects/templates/projects/settings/archive.html:44
+#: projects/templates/projects/settings/categories.html:39
+#: projects/templates/projects/settings/details.html:44
+#: projects/templates/projects/settings/edit_category.html:44
+#: projects/templates/projects/settings/manage_access.html:44
+#: projects/templates/projects/settings/new_category.html:44
+#: projects/templates/projects/settings/transfer_ownership.html:39
+msgid "Details"
+msgstr ""
+
+#: auth/templates/accounts/settings/avatar.html:36
+#: auth/templates/accounts/settings/details.html:40
+msgid "Avatar"
+msgstr ""
+
+#: auth/templates/accounts/settings/avatar.html:77
+msgid "Update avatar"
+msgstr ""
+
+#: auth/templates/accounts/settings/details.html:134
+#: organizations/templates/organizations/settings/details.html:140
+#: projects/templates/documents/settings/details.html:99
+#: projects/templates/projects/settings/details.html:109
+msgid "Update details"
+msgstr ""
+
+#: auth/templates/invite_user.html:8
+#: organizations/templates/organizations/invite_user.html:17
+#: organizations/templates/organizations/invite_user.html:31
+#: organizations/templates/organizations/settings/details.html:17
+#: organizations/templates/organizations/settings/manage_access.html:17
+#: projects/templates/documents/document.html:26
+#: projects/templates/documents/invite_user.html:29
+#: projects/templates/documents/settings/archive.html:26
+#: projects/templates/documents/settings/details.html:26
+#: projects/templates/documents/settings/manage_access.html:27
+#: projects/templates/projects/invite_user.html:28
+#: projects/templates/projects/invite_user.html:45
+#: projects/templates/projects/project.html:28
+#: projects/templates/projects/settings/archive.html:28
+#: projects/templates/projects/settings/categories.html:23
+#: projects/templates/projects/settings/details.html:28
+#: projects/templates/projects/settings/edit_category.html:28
+#: projects/templates/projects/settings/manage_access.html:28
+#: projects/templates/projects/settings/new_category.html:28
+#: projects/templates/projects/settings/transfer_ownership.html:23
+msgid "Invite User"
+msgstr ""
+
+#: auth/templates/kala/email/invite_document.txt:2
+#: auth/templates/kala/email/invite_organization.txt:2
+#: auth/templates/kala/email/invite_project.txt:2
+#: auth/templates/kala/email/invite_user.txt:2
+msgid ""
+"You have been invited to collaborate! Please click the link below to "
+"activate your account with Kala."
+msgstr ""
+
+#: auth/templates/kala/email/invite_document.txt:5
+#: auth/templates/kala/email/invite_organization.txt:5
+#: auth/templates/kala/email/invite_project.txt:5
+#: auth/templates/kala/email/invite_user.txt:5
+#, python-format
+msgid ""
+"\n"
+"-------\n"
+"If you did not initiate this action, please contact the Kala admins at the "
+"email below.\n"
+"Do NOT reply to this message as this email address does not accept incoming "
+"email.\n"
+"\n"
+"Website:  https://%(application_url)s\n"
+"Email:  %(help_email)s@%(application_url)s\n"
+msgstr ""
+
+#: auth/templates/login.html:133
+msgid "Email"
+msgstr ""
+
+#: auth/templates/login.html:141
+msgid "Password"
+msgstr ""
+
+#: auth/templates/login.html:145
+msgid "Login"
+msgstr ""
+
+#: auth/templates/login.html:156
+msgid "Could not authenticate with your email and password."
+msgstr ""
+
+#: auth/templates/registration/password_reset_complete.html:98
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+
+#: auth/templates/registration/password_reset_complete.html:100
+msgid "Log in"
+msgstr ""
+
+#: auth/templates/registration/password_reset_confirm.html:96
+msgid ""
+"Please enter your new password twice so we can verify you typed it in "
+"correctly."
+msgstr ""
+
+#: auth/templates/registration/password_reset_confirm.html:103
+msgid "New password:"
+msgstr ""
+
+#: auth/templates/registration/password_reset_confirm.html:108
+msgid "Confirm password:"
+msgstr ""
+
+#: auth/templates/registration/password_reset_confirm.html:111
+msgid "Change my password"
+msgstr ""
+
+#: auth/templates/registration/password_reset_confirm.html:116
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: auth/templates/users.html:33 django_kala/templates/search.html:51
+#: projects/templates/projects/project.html:84
+msgid "Filter"
+msgstr ""
+
+#: auth/templates/users.html:45
+msgid "Choose display options"
+msgstr ""
+
+#: auth/templates/users.html:47 projects/templates/projects/project.html:101
+msgid "Sort"
+msgstr ""
+
+#: auth/templates/users.html:51 django_kala/templates/search.html:69
+#: projects/templates/projects/project.html:105
+msgid "Alphabetically"
+msgstr ""
+
+#: auth/templates/users.html:54
+#: organizations/templates/organizations/settings/details.html:31
+#: organizations/templates/organizations/settings/manage_access.html:31
+msgid "Organization"
+msgstr ""
+
+#: auth/templates/users.html:62
+#: organizations/templates/organizations/invite_user.html:87
+#: projects/templates/projects/invite_user.html:101
+msgid "Invite user"
+msgstr ""
+
+#: auth/templates/users.html:92
+msgid "There are no users."
+msgstr ""
+
+#: auth/views/invite_user.py:35 organizations/views/invite_user.py:55
+#: projects/views/documents/invite_user.py:63
+#: projects/views/projects/invite_user.py:74
+msgid "Invitation to collaborate"
+msgstr ""
+
+#: auth/views/invite_user.py:36 organizations/views/invite_user.py:56
+#: projects/views/documents/invite_user.py:64
+#: projects/views/projects/invite_user.py:75
+msgid "The invitation has been sent."
+msgstr ""
+
+#: auth/views/settings/avatar.py:31 auth/views/settings/details.py:26
+msgid "You do not have permission to edit this user."
+msgstr ""
+
+#: auth/views/settings/avatar.py:51
+msgid "The avatar has been updated."
+msgstr ""
+
+#: auth/views/settings/details.py:34
+msgid "The user has been updated."
+msgstr ""
+
+#: django_kala/templates/403.html:4
+msgid "You do not have permission to access this resource."
+msgstr ""
+
+#: django_kala/templates/404.html:4
+msgid "Sorry, we could not find what you were looking for."
+msgstr ""
+
+#: django_kala/templates/500.html:4
+msgid ""
+"Sorry, something is not right. We have contacted the admins, they should be "
+"fixing the problem soon."
+msgstr ""
+
+#: django_kala/templates/base.html:12
+msgid "Kala Document Management"
+msgstr ""
+
+#: django_kala/templates/base.html:74
+msgid "Create new..."
+msgstr ""
+
+#: django_kala/templates/base.html:80
+#: organizations/templates/organizations/organizations.html:18
+msgid "New organization"
+msgstr ""
+
+#: django_kala/templates/base.html:81
+#: projects/templates/projects/projects.html:19
+msgid "New project"
+msgstr ""
+
+#: django_kala/templates/base.html:85
+msgid "This organization"
+msgstr ""
+
+#: django_kala/templates/base.html:86 django_kala/templates/base.html:92
+msgid "Invite someone"
+msgstr ""
+
+#: django_kala/templates/base.html:90
+msgid "This project"
+msgstr ""
+
+#: django_kala/templates/base.html:91 django_kala/templates/search.html:79
+#: projects/templates/projects/project.html:116
+msgid "New document"
+msgstr ""
+
+#: django_kala/templates/base.html:97
+msgid "View profile and more"
+msgstr ""
+
+#: django_kala/templates/base.html:102
+msgid "Signed in as"
+msgstr ""
+
+#: django_kala/templates/base.html:105
+msgid "Your Profile"
+msgstr ""
+
+#: django_kala/templates/base.html:106
+msgid "Help"
+msgstr ""
+
+#: django_kala/templates/base.html:108
+msgid "Sign Out"
+msgstr ""
+
+#: django_kala/templates/base.html:122
+#: projects/templates/projects/projects.html:8
+msgid "Projects"
+msgstr ""
+
+#: django_kala/templates/base.html:125
+#: organizations/templates/organizations/organizations.html:8
+#: projects/templates/projects/settings/archive.html:55
+#: projects/templates/projects/settings/categories.html:50
+#: projects/templates/projects/settings/details.html:55
+#: projects/templates/projects/settings/edit_category.html:55
+#: projects/templates/projects/settings/manage_access.html:55
+#: projects/templates/projects/settings/new_category.html:55
+#: projects/templates/projects/settings/transfer_ownership.html:50
+msgid "Organizations"
+msgstr ""
+
+#: django_kala/templates/document_upload_form.html:22
+msgid "Description:"
+msgstr ""
+
+#: django_kala/templates/document_upload_form.html:29
+msgid "This field is required."
+msgstr ""
+
+#: django_kala/templates/document_upload_form.html:36
+msgid "Upload Document"
+msgstr ""
+
+#: django_kala/templates/home.html:8
+msgid "Home"
+msgstr ""
+
+#: django_kala/templates/home.html:17
+msgid "Current Documents"
+msgstr ""
+
+#: django_kala/templates/home.html:21
+msgid "Type"
+msgstr ""
+
+#: django_kala/templates/home.html:22
+#: organizations/templates/organizations/settings/manage_access.html:62
+#: projects/templates/documents/settings/manage_access.html:74
+#: projects/templates/projects/settings/categories.html:78
+#: projects/templates/projects/settings/manage_access.html:85
+msgid "Name"
+msgstr ""
+
+#: django_kala/templates/home.html:23
+msgid "Uploaded by"
+msgstr ""
+
+#: django_kala/templates/home.html:24
+msgid "Upload date"
+msgstr ""
+
+#: django_kala/templates/home.html:39
+msgid "You have not uploaded any documents."
+msgstr ""
+
+#: django_kala/templates/home.html:48
+msgid "Your Projects"
+msgstr ""
+
+#: django_kala/templates/home.html:60
+msgid "You are not assigned to any projects by this organization."
+msgstr ""
+
+#: django_kala/templates/search.html:9
+msgid "Search Results"
+msgstr ""
+
+#: django_kala/templates/search.html:22
+#: projects/templates/projects/project.html:55
+msgid "documents"
+msgstr ""
+
+#: django_kala/templates/search.html:26
+#: projects/templates/projects/project.html:59
+msgid "versions"
+msgstr ""
+
+#: django_kala/templates/search.html:34
+#: projects/templates/projects/project.html:67
+msgid "contributors"
+msgstr ""
+
+#: django_kala/templates/search.html:46
+#: projects/templates/documents/document.html:44
+#: projects/templates/projects/project.html:79
+msgid "Download ZIP"
+msgstr ""
+
+#: django_kala/templates/search.html:72
+#: projects/templates/projects/project.html:108
+msgid "Date"
+msgstr ""
+
+#: django_kala/templates/search.html:99
+#: projects/templates/projects/project.html:142
+msgid "Created on {{ document.date }}"
+msgstr ""
+
+#: django_kala/templates/search.html:101
+#: projects/templates/projects/project.html:144
+msgid "Updated on {{ document.date }}"
+msgstr ""
+
+#: django_kala/templates/search.html:114
+#: projects/templates/projects/project.html:157
+msgid "Versions {{ document.documentversion_set.all.count }}"
+msgstr ""
+
+#: django_kala/templates/search.html:117
+#: projects/templates/projects/project.html:160
+msgid "Download version"
+msgstr ""
+
+#: django_kala/templates/search.html:126
+msgid ""
+"By {{ document_version.user }} on {{ document_version.created|date:"
+"\"SHORT_DATETIME_FORMAT\" }}"
+msgstr ""
+
+#: django_kala/templates/search.html:137
+#: projects/templates/documents/document.html:49
+#: projects/templates/projects/project.html:183
+msgid "New version"
+msgstr ""
+
+#: django_kala/templates/search.html:142
+#: projects/templates/documents/document.html:95
+#: projects/templates/projects/project.html:188
+msgid "There are no documents uploaded for this project."
+msgstr ""
+
+#: django_kala/templatetags/kala_tags.py:11
+msgid "Lost in translation"
+msgstr ""
+
+#: organizations/templates/organizations/new_organization.html:8
+msgid "New Organization"
+msgstr ""
+
+#: organizations/templates/organizations/new_organization.html:100
+msgid "Create ogranization"
+msgstr ""
+
+#: organizations/templates/organizations/organizations.html:52
+msgid "There are no organizations. Please add one with the button above."
+msgstr ""
+
+#: organizations/templates/organizations/settings/details.html:34
+#: organizations/templates/organizations/settings/manage_access.html:34
+#: projects/templates/documents/settings/archive.html:46
+#: projects/templates/documents/settings/details.html:46
+#: projects/templates/documents/settings/manage_access.html:46
+#: projects/templates/projects/settings/archive.html:45
+#: projects/templates/projects/settings/categories.html:40
+#: projects/templates/projects/settings/details.html:45
+#: projects/templates/projects/settings/edit_category.html:45
+#: projects/templates/projects/settings/manage_access.html:45
+#: projects/templates/projects/settings/new_category.html:45
+#: projects/templates/projects/settings/transfer_ownership.html:40
+msgid "Archive"
+msgstr ""
+
+#: organizations/templates/organizations/settings/details.html:38
+#: organizations/templates/organizations/settings/manage_access.html:38
+#: projects/templates/documents/settings/archive.html:50
+#: projects/templates/documents/settings/details.html:50
+#: projects/templates/documents/settings/manage_access.html:50
+#: projects/templates/projects/settings/archive.html:49
+#: projects/templates/projects/settings/categories.html:44
+#: projects/templates/projects/settings/details.html:49
+#: projects/templates/projects/settings/edit_category.html:49
+#: projects/templates/projects/settings/manage_access.html:49
+#: projects/templates/projects/settings/new_category.html:49
+#: projects/templates/projects/settings/transfer_ownership.html:44
+msgid "People"
+msgstr ""
+
+#: organizations/templates/organizations/settings/details.html:40
+#: organizations/templates/organizations/settings/manage_access.html:40
+#: organizations/templates/organizations/settings/manage_access.html:108
+#: projects/templates/documents/settings/archive.html:52
+#: projects/templates/documents/settings/details.html:53
+#: projects/templates/documents/settings/manage_access.html:53
+#: projects/templates/documents/settings/manage_access.html:120
+#: projects/templates/projects/settings/archive.html:51
+#: projects/templates/projects/settings/categories.html:46
+#: projects/templates/projects/settings/details.html:51
+#: projects/templates/projects/settings/edit_category.html:51
+#: projects/templates/projects/settings/manage_access.html:51
+#: projects/templates/projects/settings/manage_access.html:131
+#: projects/templates/projects/settings/new_category.html:51
+#: projects/templates/projects/settings/transfer_ownership.html:46
+msgid "Manage access"
+msgstr ""
+
+#: organizations/templates/organizations/settings/manage_access.html:63
+msgid "Create projects"
+msgstr ""
+
+#: organizations/templates/organizations/settings/manage_access.html:64
+msgid "Manage organization"
+msgstr ""
+
+#: organizations/templates/organizations/settings/manage_access.html:65
+msgid "Delete organization"
+msgstr ""
+
+#: organizations/views/invite_user.py:30
+msgid "You do not have permission to invite users to this organization."
+msgstr ""
+
+#: organizations/views/new_organization.py:22
+msgid "You do not have permission to create a new organization."
+msgstr ""
+
+#: organizations/views/new_organization.py:29
+msgid "The organization has been saved."
+msgstr ""
+
+#: organizations/views/settings/details.py:27
+msgid "You do not have permission to change this organization."
+msgstr ""
+
+#: organizations/views/settings/details.py:34
+msgid "The organization has been updated."
+msgstr ""
+
+#: organizations/views/settings/manage_access.py:31
+#: projects/views/documents/settings/details.py:33
+#: projects/views/documents/settings/manage_access.py:36
+#: projects/views/projects/settings/categories.py:59
+#: projects/views/projects/settings/details.py:28
+#: projects/views/projects/settings/manage_access.py:28
+#: projects/views/projects/settings/transfer_ownership.py:28
+msgid "You do not have permission to edit this project"
+msgstr ""
+
+#: organizations/views/settings/manage_access.py:44
+#: projects/views/documents/settings/manage_access.py:50
+#: projects/views/projects/settings/manage_access.py:41
+msgid "The permissions have been updated."
+msgstr ""
+
+#: projects/forms/projects/new_project.py:21
+msgid "Project name"
+msgstr ""
+
+#: projects/forms/projects/new_project.py:24
+msgid "Comma separated tags"
+msgstr ""
+
+#: projects/templates/documents/document.html:21
+#: projects/templates/documents/invite_user.html:24
+#: projects/templates/documents/settings/archive.html:21
+#: projects/templates/documents/settings/details.html:21
+#: projects/templates/documents/settings/manage_access.html:22
+msgid "Versions"
+msgstr ""
+
+#: projects/templates/documents/document.html:52
+msgid "You do not have permission to create new versions for this document."
+msgstr ""
+
+#: projects/templates/documents/new_document.html:12
+msgid "New Document"
+msgstr ""
+
+#: projects/templates/documents/new_document.html:68
+msgid "Create document"
+msgstr ""
+
+#: projects/templates/documents/new_document.html:76
+#: projects/templates/documents/new_version.html:58
+msgid "Uploading document"
+msgstr ""
+
+#: projects/templates/documents/new_document.html:79
+#: projects/templates/documents/new_version.html:61
+msgid "Please wait while your document is being uploaded"
+msgstr ""
+
+#: projects/templates/documents/new_version.html:11
+msgid "New Version"
+msgstr ""
+
+#: projects/templates/documents/new_version.html:50
+msgid "Create version"
+msgstr ""
+
+#: projects/templates/documents/settings/archive.html:43
+#: projects/templates/documents/settings/details.html:42
+#: projects/templates/documents/settings/manage_access.html:43
+msgid "Document"
+msgstr ""
+
+#: projects/templates/documents/settings/archive.html:62
+#: projects/templates/projects/settings/archive.html:73
+msgid "Re-enter projects name to archive the project"
+msgstr ""
+
+#: projects/templates/documents/settings/archive.html:66
+msgid "Archive document"
+msgstr ""
+
+#: projects/templates/documents/settings/manage_access.html:75
+msgid "Create versions"
+msgstr ""
+
+#: projects/templates/documents/settings/manage_access.html:76
+msgid "Manage document"
+msgstr ""
+
+#: projects/templates/documents/settings/manage_access.html:77
+msgid "Delete document"
+msgstr ""
+
+#: projects/templates/projects/includes/project_search_bar.html:4
+msgid "Project documents"
+msgstr ""
+
+#: projects/templates/projects/includes/project_search_bar.html:6
+msgid "Search"
+msgstr ""
+
+#: projects/templates/projects/invite_user.html:23
+#: projects/templates/projects/project.html:23
+#: projects/templates/projects/settings/archive.html:19
+#: projects/templates/projects/settings/categories.html:19
+#: projects/templates/projects/settings/details.html:19
+#: projects/templates/projects/settings/edit_category.html:19
+#: projects/templates/projects/settings/manage_access.html:19
+#: projects/templates/projects/settings/new_category.html:19
+#: projects/templates/projects/settings/transfer_ownership.html:19
+msgid "Documents"
+msgstr ""
+
+#: projects/templates/projects/new_project.html:8
+msgid "New Project"
+msgstr ""
+
+#: projects/templates/projects/new_project.html:65
+msgid "Create project"
+msgstr ""
+
+#: projects/templates/projects/project.html:63
+msgid "categories"
+msgstr ""
+
+#: projects/templates/projects/project.html:88
+msgid "No Filter"
+msgstr ""
+
+#: projects/templates/projects/project.html:119
+msgid "You do not have permission to create new documents for this project."
+msgstr ""
+
+#: projects/templates/projects/settings/archive.html:42
+#: projects/templates/projects/settings/categories.html:37
+#: projects/templates/projects/settings/details.html:42
+#: projects/templates/projects/settings/edit_category.html:42
+#: projects/templates/projects/settings/manage_access.html:42
+#: projects/templates/projects/settings/new_category.html:42
+#: projects/templates/projects/settings/transfer_ownership.html:37
+msgid "Project"
+msgstr ""
+
+#: projects/templates/projects/settings/archive.html:57
+#: projects/templates/projects/settings/categories.html:52
+#: projects/templates/projects/settings/details.html:57
+#: projects/templates/projects/settings/edit_category.html:57
+#: projects/templates/projects/settings/manage_access.html:57
+#: projects/templates/projects/settings/new_category.html:57
+#: projects/templates/projects/settings/transfer_ownership.html:52
+#: projects/templates/projects/settings/transfer_ownership.html:81
+msgid "Transfer ownership"
+msgstr ""
+
+#: projects/templates/projects/settings/archive.html:61
+#: projects/templates/projects/settings/categories.html:56
+#: projects/templates/projects/settings/details.html:61
+#: projects/templates/projects/settings/edit_category.html:61
+#: projects/templates/projects/settings/manage_access.html:61
+#: projects/templates/projects/settings/new_category.html:61
+#: projects/templates/projects/settings/transfer_ownership.html:56
+msgid "Categories"
+msgstr ""
+
+#: projects/templates/projects/settings/archive.html:63
+#: projects/templates/projects/settings/categories.html:58
+#: projects/templates/projects/settings/details.html:63
+#: projects/templates/projects/settings/edit_category.html:63
+#: projects/templates/projects/settings/manage_access.html:63
+#: projects/templates/projects/settings/new_category.html:63
+#: projects/templates/projects/settings/transfer_ownership.html:58
+msgid "Manage categories"
+msgstr ""
+
+#: projects/templates/projects/settings/archive.html:64
+#: projects/templates/projects/settings/categories.html:59
+#: projects/templates/projects/settings/details.html:64
+#: projects/templates/projects/settings/edit_category.html:64
+#: projects/templates/projects/settings/manage_access.html:64
+#: projects/templates/projects/settings/new_category.html:64
+#: projects/templates/projects/settings/transfer_ownership.html:59
+msgid "New category"
+msgstr ""
+
+#: projects/templates/projects/settings/archive.html:74
+msgid "Project Name"
+msgstr ""
+
+#: projects/templates/projects/settings/archive.html:77
+msgid "Archive project"
+msgstr ""
+
+#: projects/templates/projects/settings/categories.html:79
+#: projects/templates/projects/settings/categories.html:91
+msgid "Edit"
+msgstr ""
+
+#: projects/templates/projects/settings/categories.html:80
+#: projects/templates/projects/settings/categories.html:95
+msgid "Delete"
+msgstr ""
+
+#: projects/templates/projects/settings/categories.html:100
+msgid "There are no categories for this project."
+msgstr ""
+
+#: projects/templates/projects/settings/categories.html:110
+msgid "Delete Category"
+msgstr ""
+
+#: projects/templates/projects/settings/categories.html:113
+msgid "Are you sure that you want to delete this category?"
+msgstr ""
+
+#: projects/templates/projects/settings/categories.html:118
+#: projects/templates/projects/settings/transfer_ownership.html:94
+msgid "No"
+msgstr ""
+
+#: projects/templates/projects/settings/categories.html:122
+#: projects/templates/projects/settings/transfer_ownership.html:98
+msgid "Yes"
+msgstr ""
+
+#: projects/templates/projects/settings/edit_category.html:100
+msgid "Edit category"
+msgstr ""
+
+#: projects/templates/projects/settings/manage_access.html:86
+msgid "Create documents"
+msgstr ""
+
+#: projects/templates/projects/settings/manage_access.html:87
+msgid "Manage people"
+msgstr ""
+
+#: projects/templates/projects/settings/manage_access.html:88
+msgid "Delete documents"
+msgstr ""
+
+#: projects/templates/projects/settings/new_category.html:100
+msgid "Create category"
+msgstr ""
+
+#: projects/templates/projects/settings/transfer_ownership.html:86
+msgid "Transfer Project Ownership"
+msgstr ""
+
+#: projects/templates/projects/settings/transfer_ownership.html:89
+msgid ""
+"Are you sure that you want to transfer this project to another organization?"
+msgstr ""
+
+#: projects/views/documents/document.py:37
+#: projects/views/documents/document.py:53
+#: projects/views/documents/download.py:23
+#: projects/views/documents/invite_user.py:41
+msgid "You do not have permissions to view this document."
+msgstr ""
+
+#: projects/views/documents/new_document.py:29
+msgid "You do not have permission to create a new document for this project."
+msgstr ""
+
+#: projects/views/documents/new_document.py:50
+msgid "The document has been saved."
+msgstr ""
+
+#: projects/views/documents/new_version.py:32
+msgid "You do not have permission to create a new version for this document."
+msgstr ""
+
+#: projects/views/documents/new_version.py:49
+msgid "The version has been saved."
+msgstr ""
+
+#: projects/views/documents/settings/archive.py:32
+msgid "You do not have permission to archive this document"
+msgstr ""
+
+#: projects/views/documents/settings/details.py:43
+msgid "The document has been updated."
+msgstr ""
+
+#: projects/views/projects/invite_user.py:48
+#: projects/views/projects/project.py:80 projects/views/projects/project.py:126
+msgid "You do not have permission to view this project."
+msgstr ""
+
+#: projects/views/projects/new_project.py:23
+msgid "You do not have permissions to create projects."
+msgstr ""
+
+#: projects/views/projects/new_project.py:35
+msgid "The project has been saved."
+msgstr ""
+
+#: projects/views/projects/settings/archive.py:25
+msgid "You do not have permission to archive this project"
+msgstr ""
+
+#: projects/views/projects/settings/categories.py:35
+msgid "You do not have permission to delete this category."
+msgstr ""
+
+#: projects/views/projects/settings/categories.py:39
+msgid "The category has been deleted."
+msgstr ""
+
+#: projects/views/projects/settings/categories.py:67
+msgid "The category has been saved."
+msgstr ""
+
+#: projects/views/projects/settings/categories.py:91
+msgid "The category has been updated."
+msgstr ""
+
+#: projects/views/projects/settings/details.py:38
+msgid "The project has been updated."
+msgstr ""
+
+#: projects/views/projects/settings/transfer_ownership.py:36
+msgid "The project has been transferred."
+msgstr ""

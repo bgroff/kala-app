@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 from django.views import View
 from django.views.generic import TemplateView
 from documents.models import Document
@@ -33,7 +34,7 @@ class DocumentView(LoginRequiredMixin, TemplateView):
         self.has_create = self.document.has_create(request.user)
         self.has_change = self.document.has_change(request.user)
         if not self.has_create and not self.has_change and not self.document.has_delete(request.user):
-            raise PermissionDenied('You do not have permissions to view this document.')
+            raise PermissionDenied(_('You do not have permissions to view this document.'))
         return super(DocumentView, self).dispatch(request, *args, **kwargs)
 
 
@@ -49,7 +50,7 @@ class ExportDocumentView(LoginRequiredMixin, View):
         has_change = self.document.has_change(request.user)
         has_delete = self.document.has_delete(request.user)
         if not has_create and not has_change and not has_delete:
-            raise PermissionDenied('You do not have permissions to view this document.')
+            raise PermissionDenied(_('You do not have permissions to view this document.'))
         return super(ExportDocumentView, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):

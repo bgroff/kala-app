@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
-{% load static kala_tags %}
+{% load i18n static kala_tags %}
 
 {% block content %}
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <h2>Projects</h2>
+                <h2>{% trans 'Projects' %}</h2>
             </div>
         </div>
         <div class="ui divider"></div>
@@ -16,7 +16,7 @@
         <div class="repo title">
             <a href="{% url 'projects:new_project' %}">
                 <div class="ui positive compact icon button">
-                    + New project
+                    + {% trans 'New project' %}
                 </div>
             </a>
         </div>

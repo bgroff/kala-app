@@ -1,9 +1,10 @@
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
 
 
 class InviteUserForm(forms.ModelForm):
-    user_type = forms.ChoiceField(choices=[['User', 'User'], ['Admin', 'Admin']])
+    user_type = forms.ChoiceField(choices=[['User', _('User')], ['Admin', _('Admin')]])
 
     class Meta:
         model = get_user_model()

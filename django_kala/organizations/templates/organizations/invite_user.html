@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load kala_tags %}
+{% load i18n static kala_tags %}
 
 {% block content %}
     <div class="repo ribbon">
@@ -15,11 +14,11 @@
         <div class="ui container">
             <a class="active item" href="{% url 'organizations:invite_user' organization.pk %}">
                 <i class="person icon"></i>
-                Invite User
+                {% trans 'Invite User' %}
             </a>
             <a class="item" href="{% url 'organizations:details' organization.pk %}">
                 <i class="gear icon"></i>
-                Settings
+                {% trans 'Settings' %}
             </a>
         </div>
     </div>
@@ -29,7 +28,7 @@
         <div class="repo ribbon">
             <div class="ui container">
                 <div class="ui big breadcrumb">
-                    <h2 class="active section">Invite User
+                    <h2 class="active section">{% trans 'Invite User' %}
                     </h2>
                 </div>
             </div>
@@ -85,7 +84,7 @@
                     </div>
                     {% endif %}
                 </div>
-                    <button id="submit-button" class="ui button primary" type="submit">Invite user</button>
+                    <button id="submit-button" class="ui button primary" type="submit">{% trans 'Invite user' %}</button>
                 </form>
             </div>
         </div>

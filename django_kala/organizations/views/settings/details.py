@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView
 
 from organizations.models import Organization
@@ -23,13 +24,13 @@ class DetailsView(LoginRequiredMixin, TemplateView):
     def dispatch(self, request, pk, *args, **kwargs):
         self.organization = get_object_or_404(Organization.objects.active(), pk=pk)
         if not self.organization.has_change(request.user):
-            raise PermissionDenied('You do not have permission to change this organization.')
+            raise PermissionDenied(_('You do not have permission to change this organization.'))
         self.form = DetailsForm(request.POST or None, instance=self.organization)
         return super(DetailsView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
             self.form.save()
-            messages.success(request, 'The organization has been updated.')
+            messages.success(request, _('The organization has been updated.'))
             return redirect(reverse('organizations:details', args=[self.organization.pk]))
         return self.render_to_response(self.get_context_data())

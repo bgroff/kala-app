@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load kala_tags %}
+{% load i18n static kala_tags %}
 
 {% block content %}
     <div class="repo ribbon">
@@ -17,15 +16,15 @@
         <div class="ui container">
             <a class="item" href="{% url 'projects:project' project.pk %}">
                 <i class="book icon"></i>
-                Documents
+                {% trans 'Documents' %}
             </a>
             <a class="item" href="{% url 'projects:project_invite_user' project.pk %}">
                 <i class="person icon"></i>
-                Invite User
+                {% trans 'Invite User' %}
             </a>
             <a class="active item" href="{% url 'projects:details' project.pk %}">
                 <i class="gear icon"></i>
-                Settings
+                {% trans 'Settings' %}
             </a>
         </div>
     </div>
@@ -35,29 +34,29 @@
         <div class="four wide column">
             <div class="ui vertical menu">
                 <div class="item">
-                    <div class="header">Project</div>
+                    <div class="header">{% trans 'Project' %}</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:details' project.pk %}">Details</a>
-                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>
+                        <a class="item" href="{% url 'projects:details' project.pk %}">{% trans 'Details' %}</a>
+                        <a class="item" href="{% url 'projects:archive' project.pk %}">{% trans 'Archive' %}</a>
                     </div>
                 </div>
                 <div class="item">
-                    <div class="header">People</div>
+                    <div class="header">{% trans 'People' %}</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">Manage access</a>
+                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">{% trans 'Manage access' %}</a>
                     </div>
                 </div>
                 <div class="item">
-                    <div class="header">Organizations</div>
+                    <div class="header">{% trans 'Organizations' %}</div>
                     <div class="menu">
-                        <a class="active item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>
+                        <a class="active item" href="{% url 'projects:transfer_ownership' project.pk %}">{% trans 'Transfer ownership' %}</a>
                     </div>
                 </div>
                 <div class="item">
-                    <div class="header">Categories</div>
+                    <div class="header">{% trans 'Categories' %}</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:categories' project.pk %}">Manage categories</a>
-                        <a class="item" href="{% url 'projects:new_category' project.pk %}">New category</a>
+                        <a class="item" href="{% url 'projects:categories' project.pk %}">{% trans 'Manage categories' %}</a>
+                        <a class="item" href="{% url 'projects:new_category' project.pk %}">{% trans 'New category' %}</a>
                     </div>
                 </div>
             </div>
@@ -79,24 +78,24 @@
                     <label>{{ form.organization.label }}</label>
                     {{ form.organization }}
                 </div>
-                <button id="submit-button" class="ui button primary" type="button">Transfer ownership</button>
+                <button id="submit-button" class="ui button primary" type="button">{% trans 'Transfer ownership' %}</button>
             </form>
             <div class="ui basic modal">
                 <div class="ui icon header">
                     <i class="organization icon"></i>
-                    Transfer Project Ownership
+                    {% trans 'Transfer Project Ownership' %}
                 </div>
                 <div class="content">
-                    <p>Are you sure that you want to transfer this project to another organization?</p>
+                    <p>{% trans 'Are you sure that you want to transfer this project to another organization?' %}</p>
                 </div>
                 <div class="actions">
                     <div class="ui red basic cancel inverted button">
                         <i class="trashcan icon"></i>
-                        No
+                        {% trans 'No' %}
                     </div>
                     <div class="ui green ok inverted button">
                         <i class="check icon"></i>
-                        Yes
+                        {% trans 'Yes' %}
                     </div>
                 </div>
             </div>

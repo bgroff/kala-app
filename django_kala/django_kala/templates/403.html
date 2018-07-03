@@ -1,3 +1,4 @@
 {% extends 'base_error.html' %}
+{% load i18n %}
 
-{% block message %}You do not have permission to access this resource.{% endblock %}
+{% block message %}{% trans 'You do not have permission to access this resource.'%}{% endblock %}

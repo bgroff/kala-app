@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
     <link rel="icon" href="{% static 'images/kala_ico.png' %}" type="image/png"/>
     <!-- Site Properities -->
-    <title>Kala Document Management</title>
+    <title>{% trans 'Kala Document Management' %}</title>
 
     <!-- Always Use Same -->
     <link rel="stylesheet" type="text/css" href="{% static "css/ui/components/icon.css" %}">
@@ -71,41 +71,41 @@
 {#                <span class="ui empty mini floating circular blue notification label"></span>#}
 {#                <i class="bell icon"></i>#}
 {#            </a>#}
-            <div class="ui add top right pointing dropdown item" data-content="Create new...">
+            <div class="ui add top right pointing dropdown item" data-content="{% trans 'Create new...' %}">
                 {% if request.user.is_superuser or can_invite or can_create %}
                     <i class="large plus icon"></i>
                     <i class="dropdown icon"></i>
                     <div class="menu">
                     {% if request.user.is_superuser %}
-                        <a class="item" href="{% url 'organizations:new_organization' %}">New organization</a>
-                        <a class="item" href="{% url 'projects:new_project' %}">New project</a>
+                        <a class="item" href="{% url 'organizations:new_organization' %}">{% trans 'New organization' %}</a>
+                        <a class="item" href="{% url 'projects:new_project' %}">{% trans 'New project' %}</a>
                         <div class="divider"></div>
                     {% endif %}
                     {% if can_invite  %}
-                        <div class="header">This organization</div>
-                        <a class="item" href="{% url 'organizations:invite_user' organization.pk %}">Invite someone</a>
+                        <div class="header">{% trans 'This organization' %}</div>
+                        <a class="item" href="{% url 'organizations:invite_user' organization.pk %}">{% trans 'Invite someone' %}</a>
                         <div class="divider"></div>
                     {% endif %}
                     {% if project and can_create %}
-                        <div class="header">This project</div>
-                        <a class="item" href="{% url 'projects:new_document' project.pk %}">New document</a>
-                        <a class="item" href="{% url 'projects:project_invite_user' project.pk %}">Invite someone</a>
+                        <div class="header">{% trans 'This project' %}</div>
+                        <a class="item" href="{% url 'projects:new_document' project.pk %}">{% trans 'New document' %}</a>
+                        <a class="item" href="{% url 'projects:project_invite_user' project.pk %}">{% trans 'Invite someone' %}</a>
                     {% endif %}
                     </div>
                 {% endif %}
             </div>
-            <div class="user top right pointing ui dropdown item" data-content="View profile and more">
+            <div class="user top right pointing ui dropdown item" data-content="{% trans 'View profile and more' %}">
                 <img class="ui mini rounded image" src="{{ request.user.avatar_url }}">
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <div class="user header">
-                        Signed in as <b>{{ request.user }}</b>
+                        {% trans 'Signed in as' %} <b>{{ request.user }}</b>
                     </div>
                     <div class="divider"></div>
-                    <a class="item" href="{% url 'users:details' request.user.pk %}">Your Profile</a>
-                    <a class="item">Help</a>
+                    <a class="item" href="{% url 'users:details' request.user.pk %}">{% trans 'Your Profile' %}</a>
+                    <a class="item">{% trans 'Help' %}</a>
                     <div class="divider"></div>
-                    <a class="item" href="{% url 'users:logout' %}">Sign Out</a>
+                    <a class="item" href="{% url 'users:logout' %}">{% trans 'Sign Out' %}</a>
                 </div>
             </div>
         </div>
@@ -119,13 +119,13 @@
                     {% include 'includes/search_bar.html' %}
                 {% endblock %}
                 <a class="item" href="{% url 'projects:projects' %}">
-                    <b>Projects</b>
+                    <b>{% trans 'Projects' %}</b>
                 </a>
                 <a class="item" href="{% url 'organizations:organizations' %}">
-                    <b>Organizations</b>
+                    <b>{% trans 'Organizations' %}</b>
                 </a>
                 <a class="item" href="{% url 'users:users' %}">
-                    <b>Users</b>
+                    <b>{% trans 'Users' %}</b>
                 </a>
             </div>
         </div>

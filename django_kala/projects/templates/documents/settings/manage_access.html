@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load i18n static kala_tags %}
 {% load kala_tags %}
 
 {% block content %}
@@ -19,17 +19,17 @@
             <div class="ui container">
                 <a class="item" href="{% url 'projects:document' project.pk document.pk %}">
                     <i class="git branch icon"></i>
-                    Versions
+                    {% trans 'Versions' %}
                 </a>
                 {% if can_invite %}
                     <a class="item" href="{% url 'projects:document_invite_user' project.pk document.pk %}">
                         <i class="person icon"></i>
-                        Invite User
+                        {% trans 'Invite User' %}
                     </a>
                 {% endif %}
                 <a class="active item" href="{% url 'projects:document_details' project.pk document.pk %}">
                     <i class="gear icon"></i>
-                    Settings
+                    {% trans 'Settings' %}
                 </a>
             </div>
         </div>
@@ -40,18 +40,17 @@
         <div class="four wide column">
             <div class="ui vertical menu">
                 <div class="item">
-                    <div class="header">Document</div>
+                    <div class="header">{% trans 'Document' %}</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:document_details' document.project.pk document.pk %}">Details</a>
-                        <a class="item" href="{% url 'projects:document_archive' document.project.pk document.pk %}"">Archive</a>
+                        <a class="item" href="{% url 'projects:document_details' document.project.pk document.pk %}">{% trans 'Details' %}</a>
+                        <a class="item" href="{% url 'projects:document_archive' document.project.pk document.pk %}">{% trans 'Archive' %}</a>
                     </div>
                 </div>
                 <div class="item">
-                    <div class="header">People</div>
+                    <div class="header">{% trans 'People' %}</div>
                     <div class="menu">
                         <a class="active item"
-                           href="{% url 'projects:document_manage_access' document.project.pk document.pk %}">Manage
-                            access</a>
+                           href="{% url 'projects:document_manage_access' document.project.pk document.pk %}">{% trans 'Manage access' %}</a>
                     </div>
                 </div>
             </div>
@@ -72,10 +71,10 @@
                 <table class="ui very basic table">
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Create versions</th>
-                        <th>Manage document</th>
-                        <th>Delete document</th>
+                        <th>{% trans 'Name' %}</th>
+                        <th>{% trans 'Create versions' %}</th>
+                        <th>{% trans 'Manage document' %}</th>
+                        <th>{% trans 'Delete document' %}</th>
                     </tr>
                     </thead>
                     {% for form in forms %}
@@ -118,7 +117,7 @@
                     {% endfor %}
                 </table>
                 <div class="field"></div>
-                <button class="ui button primary" type="submit">Manage access</button>
+                <button class="ui button primary" type="submit">{% trans 'Manage access' %}</button>
             </form>
         </div>
     </div>

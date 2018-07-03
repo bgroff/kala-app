@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load kala_tags %}
+{% load i18n static kala_tags %}
 
 {% block content %}
     <div class="repo ribbon">
@@ -9,7 +8,7 @@
                 <h2>
                     <a class="section" href="{% url 'projects:document' project.pk document.pk %}">{{ document }}</a>
                     <div class="divider"> /</div>
-                    <span class="active section">New Version</span>
+                    <span class="active section">{% trans 'New Version' %}</span>
                 </h2>
             </div>
         </div>
@@ -48,7 +47,7 @@
                     </div>
                     {% endif %}
                 </div>
-                <button id="submit-button" class="ui button primary" type="submit">Create version</button>
+                <button id="submit-button" class="ui button primary" type="submit">{% trans 'Create version' %}</button>
             </form>
         </div>
     </div>
@@ -56,10 +55,10 @@
     <div class="ui basic modal">
         <div class="ui icon header">
             <i class="organization icon"></i>
-            Uploading document
+            {% trans 'Uploading document' %}
         </div>
         <div class="content">
-            <p>Please wait while your document is being uploaded</p>
+            <p>{% trans 'Please wait while your document is being uploaded' %}</p>
         </div>
     </div>
 {% endblock %}

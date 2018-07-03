@@ -1,12 +1,11 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load kala_tags %}
+{% load i18n static kala_tags %}
 
 {% block content %}
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <h2 class="active section">Invite User
+                <h2 class="active section">{% trans 'Invite User' %}
                 </h2>
             </div>
         </div>

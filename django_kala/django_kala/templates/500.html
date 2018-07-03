@@ -1,3 +1,4 @@
 {% extends 'base_error.html' %}
+{% load i18n %}
 
-{% block message %}Sorry, something is not right. We have contacted the admins, they should be fixing the problem soon.{% endblock %}
+{% block message %}{% trans 'Sorry, something is not right. We have contacted the admins, they should be fixing the problem soon.' %}{% endblock %}

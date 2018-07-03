@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
 from organizations.models import Organization
@@ -26,7 +27,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
 
         self.can_invite = self.organization.has_change(self.request.user) or self.organization.has_create(self.request.user)
         if not self.can_invite:
-            raise PermissionDenied('You do not have permission to invite users to this organization.')
+            raise PermissionDenied(_('You do not have permission to invite users to this organization.'))
 
         self.has_create = self.organization.has_create(request.user)
         self.has_change = self.organization.has_change(request.user)
@@ -50,8 +51,9 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             if self.form.cleaned_data['user_type'] == 'Admin':
                 self.organization.add_change(user)
                 self.organization.add_delete(user)
-            user.send_invite(settings.EMAIL_APP, 'email/invite_organization', 'Invitation to collaborate', self.organization)
-            messages.success(request, 'The invitation has been sent.')
+
+            user.send_invite(settings.EMAIL_APP, 'email/invite_organization', _('Invitation to collaborate'), self.organization)
+            messages.success(request, _('The invitation has been sent.'))
             return redirect(
                 reverse(
                     'organizations:invite_user',

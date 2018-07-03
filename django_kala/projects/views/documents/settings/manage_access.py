@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
 from projects.forms.documents.settings.manage_access import manage_access_forms
@@ -32,7 +33,7 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
             pk=document_pk
         )
         if not self.document.has_change(request.user):
-            raise PermissionDenied('You do not have permission to edit this project')
+            raise PermissionDenied(_('You do not have permission to edit this project'))
 
         self.forms = manage_access_forms(request, self.document)
         self.project = self.document.project
@@ -46,7 +47,7 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
             else:
                 all_valid = False
         if all_valid:
-            messages.success(request, 'The permissions have been updated.')
+            messages.success(request, _('The permissions have been updated.'))
             return redirect(
                 reverse(
                     'projects:document_manage_access',

@@ -4,6 +4,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView
 
 from projects.forms import CategoryForm
@@ -31,11 +32,11 @@ class CategoriesView(LoginRequiredMixin, TemplateView):
     def delete(self, *args, **kwargs):
         if not self.project.has_delete(self.request.user):
             raise PermissionDenied(
-                'You do not have permission to delete this category.'
+                _('You do not have permission to delete this category.')
             )
         if self.category:
             self.category.delete()
-            messages.success(self.request, 'The category has been deleted.')
+            messages.success(self.request, _('The category has been deleted.'))
             return HttpResponse(status=202)
         return self.render_to_response(self.get_context_data())
 
@@ -55,7 +56,7 @@ class NewCategoryView(LoginRequiredMixin, TemplateView):
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
         if not self.project.has_change(request.user):
-            raise PermissionDenied('You do not have permission to edit this project')
+            raise PermissionDenied(_('You do not have permission to edit this project'))
 
         self.form = CategoryForm(request.POST or None, project=self.project)
         return super(NewCategoryView, self).dispatch(request, *args, **kwargs)
@@ -63,7 +64,7 @@ class NewCategoryView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
             self.form.save()
-            messages.success(request, 'The category has been saved.')
+            messages.success(request, _('The category has been saved.'))
             return redirect(reverse('projects:categories', args=[self.project.pk]))
         return self.render_to_response(self.get_context_data())
 
@@ -87,6 +88,6 @@ class EditCategoryView(LoginRequiredMixin, TemplateView):
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
             self.form.save()
-            messages.success(request, 'The category has been updated.')
+            messages.success(request, _('The category has been updated.'))
             return redirect(reverse('projects:edit_category', args=[self.project.pk, self.category.pk]))
         return self.render_to_response(self.get_context_data())

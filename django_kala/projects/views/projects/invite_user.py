@@ -3,6 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
@@ -44,7 +45,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
                     'delete_document'
                 ], user=request.user).values_list('object_uuid', flat=True)).exists():
             raise PermissionDenied(
-                'You do not have permission to view this project.'
+                _('You do not have permission to view this project.')
             )
 
         # Do we have permission to add people?
@@ -69,7 +70,8 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             if self.form.cleaned_data['user_type'] == 'Admin':
                 self.project.add_change(user)
                 self.project.add_delete(user)
-            user.send_invite(settings.EMAIL_APP, 'email/invite_project', 'Invitation to collaborate', user)
-            messages.success(request, 'The invitation has been sent.')
+
+            user.send_invite(settings.EMAIL_APP, 'email/invite_project', _('Invitation to collaborate'), user)
+            messages.success(request, _('The invitation has been sent.'))
             return redirect(reverse('projects:project_invite_user', args=[self.project.pk]))
         return self.render_to_response(self.get_context_data())

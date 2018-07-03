@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView
 
 from projects.models import Project
@@ -24,7 +25,7 @@ class DetailsView(LoginRequiredMixin, TemplateView):
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
         if not self.project.has_change(request.user):
-            raise PermissionDenied('You do not have permission to edit this project')
+            raise PermissionDenied(_('You do not have permission to edit this project'))
 
         self.form = DetailsForm(request.POST or None, instance=self.project)
         return super(DetailsView, self).dispatch(request, *args, **kwargs)
@@ -34,6 +35,6 @@ class DetailsView(LoginRequiredMixin, TemplateView):
             self.form.save(commit=False)
             self.form.save_m2m()
             self.form.save()
-            messages.success(request, 'The project has been updated.')
+            messages.success(request, _('The project has been updated.'))
             return redirect(reverse('projects:details', args=[self.project.pk]))
         return self.render_to_response(self.get_context_data())

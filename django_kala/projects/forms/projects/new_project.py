@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 
 from projects.models import Project
 
@@ -17,8 +18,8 @@ class NewProjectForm(forms.ModelForm):
         model = Project
         fields = ['name', 'description', 'tags', 'organization']
         widgets = {
-            'name': forms.TextInput(attrs={'placeholder': 'Project name'}),
+            'name': forms.TextInput(attrs={'placeholder': _('Project name')}),
             'description': forms.Textarea(
                 attrs={'placeholder': 'Project description'}),
-            'tags': forms.TextInput(attrs={'placeholder': 'Comma separated tags'})
+            'tags': forms.TextInput(attrs={'placeholder': _('Comma separated tags')})
         }

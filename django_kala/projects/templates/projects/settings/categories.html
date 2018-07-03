@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
-{% load kala_tags %}
+{% load i18n static kala_tags %}
 
 {% block content %}
     <div class="repo ribbon">
@@ -17,15 +16,15 @@
         <div class="ui container">
             <a class="item" href="{% url 'projects:project' project.pk %}">
                 <i class="book icon"></i>
-                Documents
+                {% trans 'Documents' %}
             </a>
             <a class="item" href="{% url 'projects:project_invite_user' project.pk %}">
                 <i class="person icon"></i>
-                Invite User
+                {% trans 'Invite User' %}
             </a>
             <a class="active item" href="{% url 'projects:details' project.pk %}">
                 <i class="gear icon"></i>
-                Settings
+                {% trans 'Settings' %}
             </a>
         </div>
     </div>
@@ -35,29 +34,29 @@
         <div class="four wide column">
             <div class="ui vertical menu">
                 <div class="item">
-                    <div class="header">Project</div>
+                    <div class="header">{% trans 'Project' %}</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:details' project.pk %}">Details</a>
-                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>
+                        <a class="item" href="{% url 'projects:details' project.pk %}">{% trans 'Details' %}</a>
+                        <a class="item" href="{% url 'projects:archive' project.pk %}">{% trans 'Archive' %}</a>
                     </div>
                 </div>
                 <div class="item">
-                    <div class="header">People</div>
+                    <div class="header">{% trans 'People' %}</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">Manage access</a>
+                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">{% trans 'Manage access' %}</a>
                     </div>
                 </div>
                 <div class="item">
-                    <div class="header">Organizations</div>
+                    <div class="header">{% trans 'Organizations' %}</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>
+                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">{% trans 'Transfer ownership' %}</a>
                     </div>
                 </div>
                 <div class="item">
-                    <div class="header">Categories</div>
+                    <div class="header">{% trans 'Categories'%}</div>
                     <div class="menu">
-                        <a class="active item" href="{% url 'projects:categories' project.pk %}">Manage categories</a>
-                        <a class="item" href="{% url 'projects:new_category' project.pk %}">New category</a>
+                        <a class="active item" href="{% url 'projects:categories' project.pk %}">{% trans 'Manage categories' %}</a>
+                        <a class="item" href="{% url 'projects:new_category' project.pk %}">{% trans 'New category' %}</a>
                     </div>
                 </div>
             </div>
@@ -76,9 +75,9 @@
             <table class="ui celled table">
                 <thead>
                 <tr>
-                    <th>Name</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>{% trans 'Name' %}</th>
+                    <th>{% trans 'Edit' %}</th>
+                    <th>{% trans 'Delete' %}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -89,16 +88,16 @@
                         </td>
                         <td>
                             <a href="{% url 'projects:edit_category' project.pk category.pk %}">
-                                <button class="ui primary button">Edit</button>
+                                <button class="ui primary button">{% trans 'Edit' %}</button>
                             </a>
                         </td>
                         <td>
-                            <button onclick="deleteCategory({{ category.pk }});" class="ui negative button">Delete</button>
+                            <button onclick="deleteCategory({{ category.pk }});" class="ui negative button">{% trans 'Delete' %}</button>
                         </td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="3">There are no categories for this project.</td>
+                        <td colspan="3">{% trans 'There are no categories for this project.' %}</td>
                     </tr>
                 {% endfor %}
                 </tbody>
@@ -108,19 +107,19 @@
     <div class="ui basic modal">
         <div class="ui icon header">
             <i class="organization icon"></i>
-            Delete Category
+            {% trans 'Delete Category' %}
         </div>
         <div class="content">
-            <p>Are you sure that you want to delete this category?</p>
+            <p>{% trans 'Are you sure that you want to delete this category?' %}</p>
         </div>
         <div class="actions">
             <div class="ui green cancel inverted button">
                 <i class="stop icon"></i>
-                No
+                {% trans 'No' %}
             </div>
             <div class="ui red basic ok inverted button">
                 <i class="trashcan icon"></i>
-                Yes
+                {% trans 'Yes' %}
             </div>
         </div>
     </div>

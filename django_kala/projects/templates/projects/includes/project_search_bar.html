@@ -1,9 +1,9 @@
 <form method="get">
     <div class="ui small labeled input">
         <div class="ui label">
-            Project documents
+            {% trans 'Project documents' %}
         </div>
-        <input type="text" name="search" placeholder="Search" value="{{ request.GET.search }}">
+        <input type="text" name="search" placeholder="{% trans 'Search' %}" value="{{ request.GET.search }}">
         <input type="submit" style="visibility: hidden; position: absolute;" />
     </div>
 </form>

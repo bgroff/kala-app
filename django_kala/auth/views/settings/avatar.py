@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView
 from PIL import Image
 from io import BytesIO
@@ -27,7 +28,7 @@ class AvatarView(LoginRequiredMixin, TemplateView):
         self.user = get_object_or_404(get_user_model().objects.all(), pk=pk)
 
         if not request.user.is_superuser and request.user != self.user:
-            raise PermissionDenied('You do not have permission to edit this user.')
+            raise PermissionDenied(_('You do not have permission to edit this user.'))
 
         self.form = AvatarForm(request.POST or None, request.FILES or None)
         return super(AvatarView, self).dispatch(request, *args, **kwargs)
@@ -47,7 +48,7 @@ class AvatarView(LoginRequiredMixin, TemplateView):
 
             except Exception as exception:
                 print(exception)
-            messages.success(request, 'The avatar has been updated.')
+            messages.success(request, _('The avatar has been updated.'))
 
             return redirect(reverse('users:avatar', args=[self.user.pk]))
         return self.render_to_response(self.get_context_data())
