@@ -15,6 +15,7 @@ import os
 from .apps import INSTALLED_APPS
 from .authentication import *
 from .basecamp import BASECAMP
+from .celery import *
 from .databases import DATABASES
 from .email import *
 from .functions import get_env_variable
