@@ -7,6 +7,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'taggit',
+    'celery',
 
     'auth.apps.AuthConfig',
     'organizations.apps.OrganizationsConfig',
