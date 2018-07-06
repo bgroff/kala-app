@@ -2,7 +2,7 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -10,43 +10,43 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-07-03 04:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"Last-Translator: Bryce Groff <brycegroff@gmail.com>, 2018\n"
+"Language-Team: Spanish (https://www.transifex.com/kala/teams/10196/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: auth/forms/invite_user.py:7 auth/templates/accounts/settings/avatar.html:33
 #: auth/templates/accounts/settings/details.html:37
 #: projects/forms/invite_user.py:11
 msgid "User"
-msgstr ""
+msgstr "Usuario"
 
 #: auth/forms/invite_user.py:7 projects/forms/invite_user.py:11
 msgid "Admin"
-msgstr ""
+msgstr "Administrador"
 
 #: auth/forms/settings/avatar.py:16
 msgid "The image provided was not readable"
-msgstr ""
+msgstr "La imagen no es legible"
 
 #: auth/forms/settings/avatar.py:18
 #, python-brace-format
 msgid "The image must be a JPEG, PNG or GIF, found {0}"
-msgstr ""
+msgstr "La imagen debe ser JPEG, PNG o GIF,  {0} encontradas"
 
 #: auth/models.py:30
 msgid "email address"
-msgstr ""
+msgstr "correo electrónico"
 
 #: auth/templates/accounts/settings/avatar.html:8
 #: auth/templates/accounts/settings/avatar.html:19
 #: auth/templates/accounts/settings/details.html:8 auth/templates/users.html:9
 #: auth/templates/users.html:18 django_kala/templates/base.html:128
 msgid "Users"
-msgstr ""
+msgstr "Usuarios"
 
 #: auth/templates/accounts/settings/avatar.html:23
 #: auth/templates/accounts/settings/details.html:27
@@ -68,7 +68,7 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:32
 #: projects/templates/projects/settings/transfer_ownership.html:27
 msgid "Settings"
-msgstr ""
+msgstr "Ajustes"
 
 #: auth/templates/accounts/settings/avatar.html:35
 #: auth/templates/accounts/settings/details.html:39
@@ -85,23 +85,23 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:44
 #: projects/templates/projects/settings/transfer_ownership.html:39
 msgid "Details"
-msgstr ""
+msgstr "Detalles"
 
 #: auth/templates/accounts/settings/avatar.html:36
 #: auth/templates/accounts/settings/details.html:40
 msgid "Avatar"
-msgstr ""
+msgstr "Avatar"
 
 #: auth/templates/accounts/settings/avatar.html:77
 msgid "Update avatar"
-msgstr ""
+msgstr "Actualizar avatar"
 
 #: auth/templates/accounts/settings/details.html:134
 #: organizations/templates/organizations/settings/details.html:140
 #: projects/templates/documents/settings/details.html:99
 #: projects/templates/projects/settings/details.html:109
 msgid "Update details"
-msgstr ""
+msgstr "Actualizar detalles "
 
 #: auth/templates/invite_user.html:8
 #: organizations/templates/organizations/invite_user.html:17
@@ -124,7 +124,7 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:28
 #: projects/templates/projects/settings/transfer_ownership.html:23
 msgid "Invite User"
-msgstr ""
+msgstr "Invitar Usuario"
 
 #: auth/templates/kala/email/invite_document.txt:2
 #: auth/templates/kala/email/invite_organization.txt:2
@@ -134,6 +134,8 @@ msgid ""
 "You have been invited to collaborate! Please click the link below to "
 "activate your account with Kala."
 msgstr ""
+"Ha sido invitado/a para colaborar! Por favor, utilice el enlace para activar"
+" su cuenta con Kala."
 
 #: auth/templates/kala/email/invite_document.txt:5
 #: auth/templates/kala/email/invite_organization.txt:5
@@ -143,194 +145,205 @@ msgstr ""
 msgid ""
 "\n"
 "-------\n"
-"If you did not initiate this action, please contact the Kala admins at the "
-"email below.\n"
-"Do NOT reply to this message as this email address does not accept incoming "
-"email.\n"
+"If you did not initiate this action, please contact the Kala admins at the email below.\n"
+"Do NOT reply to this message as this email address does not accept incoming email.\n"
 "\n"
 "Website:  https://%(application_url)s\n"
 "Email:  %(help_email)s@%(application_url)s\n"
 msgstr ""
+"\n"
+"-------\n"
+"Si usted no ha iniciado esta acción, por favor contactar a los administradores en el correo electrónico que aparece abajo.\n"
+"NO responda a este correo, ya que esta dirección no acepta correos entrantes.\n"
+"\n"
+"Sitio Wen:  https://%(application_url)s\n"
+"Correo electrónico:  %(help_email)s@%(application_url)s\n"
 
 #: auth/templates/login.html:133
 msgid "Email"
-msgstr ""
+msgstr "Correo"
 
 #: auth/templates/login.html:141
 msgid "Password"
-msgstr ""
+msgstr "Contraseña"
 
 #: auth/templates/login.html:145
 msgid "Login"
-msgstr ""
+msgstr "iniciar sesión"
 
 #: auth/templates/login.html:156
 msgid "Could not authenticate with your email and password."
-msgstr ""
+msgstr "No se pudo autenticar su correo y contraseña."
 
 #: auth/templates/registration/password_reset_complete.html:98
 msgid "Your password has been set.  You may go ahead and log in now."
-msgstr ""
+msgstr "Su contraseña ha sido agregada. Ya puede iniciar sesión."
 
 #: auth/templates/registration/password_reset_complete.html:100
 msgid "Log in"
-msgstr ""
+msgstr "Iniciar sesión"
 
 #: auth/templates/registration/password_reset_confirm.html:96
 msgid ""
 "Please enter your new password twice so we can verify you typed it in "
 "correctly."
 msgstr ""
+"Por favor ingrese su nueva contraseña dos veces para verificar que la haya "
+"ingresado correctamente."
 
 #: auth/templates/registration/password_reset_confirm.html:103
 msgid "New password:"
-msgstr ""
+msgstr "Nueva contraseña:"
 
 #: auth/templates/registration/password_reset_confirm.html:108
 msgid "Confirm password:"
-msgstr ""
+msgstr "Confirme contraseña:"
 
 #: auth/templates/registration/password_reset_confirm.html:111
 msgid "Change my password"
-msgstr ""
+msgstr "Cambiar mi contraseña "
 
 #: auth/templates/registration/password_reset_confirm.html:116
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
 msgstr ""
+"El enlace para reiniciar contraseña es inválido, posiblemente porque ya fue "
+"usado. Por favor pida reiniciar su contraseña de nuevo."
 
 #: auth/templates/users.html:33 django_kala/templates/search.html:51
 #: projects/templates/projects/project.html:84
 msgid "Filter"
-msgstr ""
+msgstr "Filtrar"
 
 #: auth/templates/users.html:45
 msgid "Choose display options"
-msgstr ""
+msgstr "Escoja opciones de exposición"
 
 #: auth/templates/users.html:47 projects/templates/projects/project.html:101
 msgid "Sort"
-msgstr ""
+msgstr "Ordenar"
 
 #: auth/templates/users.html:51 django_kala/templates/search.html:69
 #: projects/templates/projects/project.html:105
 msgid "Alphabetically"
-msgstr ""
+msgstr "Alfabéticamente"
 
 #: auth/templates/users.html:54
 #: organizations/templates/organizations/settings/details.html:31
 #: organizations/templates/organizations/settings/manage_access.html:31
 msgid "Organization"
-msgstr ""
+msgstr "Organización"
 
 #: auth/templates/users.html:62
 #: organizations/templates/organizations/invite_user.html:87
 #: projects/templates/projects/invite_user.html:101
 msgid "Invite user"
-msgstr ""
+msgstr "Invitar Usuario"
 
 #: auth/templates/users.html:92
 msgid "There are no users."
-msgstr ""
+msgstr "No existen usuarios."
 
 #: auth/views/invite_user.py:35 organizations/views/invite_user.py:55
 #: projects/views/documents/invite_user.py:63
 #: projects/views/projects/invite_user.py:74
 msgid "Invitation to collaborate"
-msgstr ""
+msgstr "Invite a colaborar"
 
 #: auth/views/invite_user.py:36 organizations/views/invite_user.py:56
 #: projects/views/documents/invite_user.py:64
 #: projects/views/projects/invite_user.py:75
 msgid "The invitation has been sent."
-msgstr ""
+msgstr "La invitación ha sido enviada."
 
 #: auth/views/settings/avatar.py:31 auth/views/settings/details.py:26
 msgid "You do not have permission to edit this user."
-msgstr ""
+msgstr "No tiene permiso de editar a este usuario."
 
 #: auth/views/settings/avatar.py:51
 msgid "The avatar has been updated."
-msgstr ""
+msgstr "El acatar ha sido actualizado."
 
 #: auth/views/settings/details.py:34
 msgid "The user has been updated."
-msgstr ""
+msgstr "El usuario ha sido actualizado."
 
 #: django_kala/templates/403.html:4
 msgid "You do not have permission to access this resource."
-msgstr ""
+msgstr "No tiene permiso de acceder este recurso."
 
 #: django_kala/templates/404.html:4
 msgid "Sorry, we could not find what you were looking for."
-msgstr ""
+msgstr "Perdón, no pudimos encontrar lo que buscas."
 
 #: django_kala/templates/500.html:4
 msgid ""
 "Sorry, something is not right. We have contacted the admins, they should be "
 "fixing the problem soon."
 msgstr ""
+"Perdón, algo no está bien. Hemos contactado a los administradores y lo "
+"arreglarán pronto."
 
 #: django_kala/templates/base.html:12
 msgid "Kala Document Management"
-msgstr ""
+msgstr "Kala Manejo de Dcoumentos"
 
 #: django_kala/templates/base.html:74
 msgid "Create new..."
-msgstr ""
+msgstr "Crear nuevo..."
 
 #: django_kala/templates/base.html:80
 #: organizations/templates/organizations/organizations.html:18
 msgid "New organization"
-msgstr ""
+msgstr "Nueva organización"
 
 #: django_kala/templates/base.html:81
 #: projects/templates/projects/projects.html:19
 msgid "New project"
-msgstr ""
+msgstr "Nuevo proyecto"
 
 #: django_kala/templates/base.html:85
 msgid "This organization"
-msgstr ""
+msgstr "Esta organización"
 
 #: django_kala/templates/base.html:86 django_kala/templates/base.html:92
 msgid "Invite someone"
-msgstr ""
+msgstr "Invite a alguien"
 
 #: django_kala/templates/base.html:90
 msgid "This project"
-msgstr ""
+msgstr "Este proyecto"
 
 #: django_kala/templates/base.html:91 django_kala/templates/search.html:79
 #: projects/templates/projects/project.html:116
 msgid "New document"
-msgstr ""
+msgstr "Nuevo documento"
 
 #: django_kala/templates/base.html:97
 msgid "View profile and more"
-msgstr ""
+msgstr "Ver perfil y más"
 
 #: django_kala/templates/base.html:102
 msgid "Signed in as"
-msgstr ""
+msgstr "Inició sesión como"
 
 #: django_kala/templates/base.html:105
 msgid "Your Profile"
-msgstr ""
+msgstr "Su Perfil"
 
 #: django_kala/templates/base.html:106
 msgid "Help"
-msgstr ""
+msgstr "Ayuda"
 
 #: django_kala/templates/base.html:108
 msgid "Sign Out"
-msgstr ""
+msgstr "Cerrar sesión"
 
 #: django_kala/templates/base.html:122
 #: projects/templates/projects/projects.html:8
 msgid "Projects"
-msgstr ""
+msgstr "Proyectos"
 
 #: django_kala/templates/base.html:125
 #: organizations/templates/organizations/organizations.html:8
@@ -342,31 +355,31 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:55
 #: projects/templates/projects/settings/transfer_ownership.html:50
 msgid "Organizations"
-msgstr ""
+msgstr "Organizaciones"
 
 #: django_kala/templates/document_upload_form.html:22
 msgid "Description:"
-msgstr ""
+msgstr "Descripción:"
 
 #: django_kala/templates/document_upload_form.html:29
 msgid "This field is required."
-msgstr ""
+msgstr "Este campo es requerido."
 
 #: django_kala/templates/document_upload_form.html:36
 msgid "Upload Document"
-msgstr ""
+msgstr "Subir Documento"
 
 #: django_kala/templates/home.html:8
 msgid "Home"
-msgstr ""
+msgstr "Página de inicio"
 
 #: django_kala/templates/home.html:17
 msgid "Current Documents"
-msgstr ""
+msgstr "Documentos actuales"
 
 #: django_kala/templates/home.html:21
 msgid "Type"
-msgstr ""
+msgstr "Tipo"
 
 #: django_kala/templates/home.html:22
 #: organizations/templates/organizations/settings/manage_access.html:62
@@ -374,111 +387,114 @@ msgstr ""
 #: projects/templates/projects/settings/categories.html:78
 #: projects/templates/projects/settings/manage_access.html:85
 msgid "Name"
-msgstr ""
+msgstr "Nombre"
 
 #: django_kala/templates/home.html:23
 msgid "Uploaded by"
-msgstr ""
+msgstr "Subido por"
 
 #: django_kala/templates/home.html:24
 msgid "Upload date"
-msgstr ""
+msgstr "Fecha subido"
 
 #: django_kala/templates/home.html:39
 msgid "You have not uploaded any documents."
-msgstr ""
+msgstr "No ha subido ningún documento."
 
 #: django_kala/templates/home.html:48
 msgid "Your Projects"
-msgstr ""
+msgstr "Sus Proyectos"
 
 #: django_kala/templates/home.html:60
 msgid "You are not assigned to any projects by this organization."
-msgstr ""
+msgstr "No esta asignado a ningún proyecto en esta organización."
 
 #: django_kala/templates/search.html:9
 msgid "Search Results"
-msgstr ""
+msgstr "Resultados de búsqueda"
 
 #: django_kala/templates/search.html:22
 #: projects/templates/projects/project.html:55
 msgid "documents"
-msgstr ""
+msgstr "documentos"
 
 #: django_kala/templates/search.html:26
 #: projects/templates/projects/project.html:59
 msgid "versions"
-msgstr ""
+msgstr "versiones"
 
 #: django_kala/templates/search.html:34
 #: projects/templates/projects/project.html:67
 msgid "contributors"
-msgstr ""
+msgstr "contribuyentes"
 
 #: django_kala/templates/search.html:46
 #: projects/templates/documents/document.html:44
 #: projects/templates/projects/project.html:79
 msgid "Download ZIP"
-msgstr ""
+msgstr "Descargar ZIP"
 
 #: django_kala/templates/search.html:72
 #: projects/templates/projects/project.html:108
 msgid "Date"
-msgstr ""
+msgstr "Fecha"
 
 #: django_kala/templates/search.html:99
 #: projects/templates/projects/project.html:142
 msgid "Created on {{ document.date }}"
-msgstr ""
+msgstr "Creado en {{ document.date }}"
 
 #: django_kala/templates/search.html:101
 #: projects/templates/projects/project.html:144
 msgid "Updated on {{ document.date }}"
-msgstr ""
+msgstr "Actualizado en {{ document.date }}"
 
 #: django_kala/templates/search.html:114
 #: projects/templates/projects/project.html:157
 msgid "Versions {{ document.documentversion_set.all.count }}"
-msgstr ""
+msgstr "Versiones  {{ document.documentversion_set.all.count }}"
 
 #: django_kala/templates/search.html:117
 #: projects/templates/projects/project.html:160
 msgid "Download version"
-msgstr ""
+msgstr "Descargar versión"
 
 #: django_kala/templates/search.html:126
 msgid ""
-"By {{ document_version.user }} on {{ document_version.created|date:"
-"\"SHORT_DATETIME_FORMAT\" }}"
+"By {{ document_version.user }} on {{ "
+"document_version.created|date:\"SHORT_DATETIME_FORMAT\" }}"
 msgstr ""
+"Por {{ document_version.user }} en {{ "
+"document_version.created|date:\"SHORT_DATETIME_FORMAT\" }}"
 
 #: django_kala/templates/search.html:137
 #: projects/templates/documents/document.html:49
 #: projects/templates/projects/project.html:183
 msgid "New version"
-msgstr ""
+msgstr "Nueva versión"
 
 #: django_kala/templates/search.html:142
 #: projects/templates/documents/document.html:95
 #: projects/templates/projects/project.html:188
 msgid "There are no documents uploaded for this project."
-msgstr ""
+msgstr "No hay ningún documento subido para este proyecto."
 
 #: django_kala/templatetags/kala_tags.py:11
 msgid "Lost in translation"
-msgstr ""
+msgstr "Perdido en la traducción"
 
 #: organizations/templates/organizations/new_organization.html:8
 msgid "New Organization"
-msgstr ""
+msgstr "Nueva Organización"
 
 #: organizations/templates/organizations/new_organization.html:100
 msgid "Create ogranization"
-msgstr ""
+msgstr "Crear organización"
 
 #: organizations/templates/organizations/organizations.html:52
 msgid "There are no organizations. Please add one with the button above."
 msgstr ""
+"No existen organizaciones. Por favor agregue una con el botón de arriba."
 
 #: organizations/templates/organizations/settings/details.html:34
 #: organizations/templates/organizations/settings/manage_access.html:34
@@ -493,7 +509,7 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:45
 #: projects/templates/projects/settings/transfer_ownership.html:40
 msgid "Archive"
-msgstr ""
+msgstr "Archivar"
 
 #: organizations/templates/organizations/settings/details.html:38
 #: organizations/templates/organizations/settings/manage_access.html:38
@@ -508,7 +524,7 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:49
 #: projects/templates/projects/settings/transfer_ownership.html:44
 msgid "People"
-msgstr ""
+msgstr "Personas"
 
 #: organizations/templates/organizations/settings/details.html:40
 #: organizations/templates/organizations/settings/manage_access.html:40
@@ -526,39 +542,39 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:51
 #: projects/templates/projects/settings/transfer_ownership.html:46
 msgid "Manage access"
-msgstr ""
+msgstr "Manejar acceso"
 
 #: organizations/templates/organizations/settings/manage_access.html:63
 msgid "Create projects"
-msgstr ""
+msgstr "Crear proyectos"
 
 #: organizations/templates/organizations/settings/manage_access.html:64
 msgid "Manage organization"
-msgstr ""
+msgstr "Manejar organización"
 
 #: organizations/templates/organizations/settings/manage_access.html:65
 msgid "Delete organization"
-msgstr ""
+msgstr "Borrar organización"
 
 #: organizations/views/invite_user.py:30
 msgid "You do not have permission to invite users to this organization."
-msgstr ""
+msgstr "No tiene permiso para invitar usuarios a esta organización."
 
 #: organizations/views/new_organization.py:22
 msgid "You do not have permission to create a new organization."
-msgstr ""
+msgstr "No tiene permiso para crear una nueva organización."
 
 #: organizations/views/new_organization.py:29
 msgid "The organization has been saved."
-msgstr ""
+msgstr "Esta organización ha sido guardada."
 
 #: organizations/views/settings/details.py:27
 msgid "You do not have permission to change this organization."
-msgstr ""
+msgstr "No tiene permiso de cambiar esta organización."
 
 #: organizations/views/settings/details.py:34
 msgid "The organization has been updated."
-msgstr ""
+msgstr "Esta organización ha sido actualizada."
 
 #: organizations/views/settings/manage_access.py:31
 #: projects/views/documents/settings/details.py:33
@@ -568,21 +584,21 @@ msgstr ""
 #: projects/views/projects/settings/manage_access.py:28
 #: projects/views/projects/settings/transfer_ownership.py:28
 msgid "You do not have permission to edit this project"
-msgstr ""
+msgstr "No tiene permiso de editar este proyecto."
 
 #: organizations/views/settings/manage_access.py:44
 #: projects/views/documents/settings/manage_access.py:50
 #: projects/views/projects/settings/manage_access.py:41
 msgid "The permissions have been updated."
-msgstr ""
+msgstr "Los permisos han sido actualizados."
 
 #: projects/forms/projects/new_project.py:21
 msgid "Project name"
-msgstr ""
+msgstr "Nombre del Proyecto"
 
 #: projects/forms/projects/new_project.py:24
 msgid "Comma separated tags"
-msgstr ""
+msgstr "Etiqueta separada por comas"
 
 #: projects/templates/documents/document.html:21
 #: projects/templates/documents/invite_user.html:24
@@ -590,72 +606,72 @@ msgstr ""
 #: projects/templates/documents/settings/details.html:21
 #: projects/templates/documents/settings/manage_access.html:22
 msgid "Versions"
-msgstr ""
+msgstr "Versiones"
 
 #: projects/templates/documents/document.html:52
 msgid "You do not have permission to create new versions for this document."
-msgstr ""
+msgstr "No tiene permiso de crear nuevas versiones para este documento. "
 
 #: projects/templates/documents/new_document.html:12
 msgid "New Document"
-msgstr ""
+msgstr "Nuevo Documento"
 
 #: projects/templates/documents/new_document.html:68
 msgid "Create document"
-msgstr ""
+msgstr "Crear documento"
 
 #: projects/templates/documents/new_document.html:76
 #: projects/templates/documents/new_version.html:58
 msgid "Uploading document"
-msgstr ""
+msgstr "Subiendo documento"
 
 #: projects/templates/documents/new_document.html:79
 #: projects/templates/documents/new_version.html:61
 msgid "Please wait while your document is being uploaded"
-msgstr ""
+msgstr "Por favor espere mientras su documento sube"
 
 #: projects/templates/documents/new_version.html:11
 msgid "New Version"
-msgstr ""
+msgstr "Nueva Versión"
 
 #: projects/templates/documents/new_version.html:50
 msgid "Create version"
-msgstr ""
+msgstr "Crear versión"
 
 #: projects/templates/documents/settings/archive.html:43
 #: projects/templates/documents/settings/details.html:42
 #: projects/templates/documents/settings/manage_access.html:43
 msgid "Document"
-msgstr ""
+msgstr "Documento"
 
 #: projects/templates/documents/settings/archive.html:62
 #: projects/templates/projects/settings/archive.html:73
 msgid "Re-enter projects name to archive the project"
-msgstr ""
+msgstr "Re-ingresar el nombre del proyecto para archivarlo"
 
 #: projects/templates/documents/settings/archive.html:66
 msgid "Archive document"
-msgstr ""
+msgstr "Archivar documento"
 
 #: projects/templates/documents/settings/manage_access.html:75
 msgid "Create versions"
-msgstr ""
+msgstr "Crear versiones"
 
 #: projects/templates/documents/settings/manage_access.html:76
 msgid "Manage document"
-msgstr ""
+msgstr "Manejar documento"
 
 #: projects/templates/documents/settings/manage_access.html:77
 msgid "Delete document"
-msgstr ""
+msgstr "Borrar documento"
 
 #: projects/templates/projects/includes/project_search_bar.html:4
 msgid "Project documents"
-msgstr ""
+msgstr "Documentos del Proyecto"
 
 #: projects/templates/projects/includes/project_search_bar.html:6
 msgid "Search"
-msgstr ""
+msgstr "Buscar"
 
 #: projects/templates/projects/invite_user.html:23
 #: projects/templates/projects/project.html:23
@@ -667,27 +683,27 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:19
 #: projects/templates/projects/settings/transfer_ownership.html:19
 msgid "Documents"
-msgstr ""
+msgstr "Documentos"
 
 #: projects/templates/projects/new_project.html:8
 msgid "New Project"
-msgstr ""
+msgstr "Nuevo Proyecto"
 
 #: projects/templates/projects/new_project.html:65
 msgid "Create project"
-msgstr ""
+msgstr "Crear proyecto"
 
 #: projects/templates/projects/project.html:63
 msgid "categories"
-msgstr ""
+msgstr "categorías"
 
 #: projects/templates/projects/project.html:88
 msgid "No Filter"
-msgstr ""
+msgstr "No hay filtro"
 
 #: projects/templates/projects/project.html:119
 msgid "You do not have permission to create new documents for this project."
-msgstr ""
+msgstr "No tiene permiso de crear nuevos documentos para este proyecto."
 
 #: projects/templates/projects/settings/archive.html:42
 #: projects/templates/projects/settings/categories.html:37
@@ -697,7 +713,7 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:42
 #: projects/templates/projects/settings/transfer_ownership.html:37
 msgid "Project"
-msgstr ""
+msgstr "Proyecto"
 
 #: projects/templates/projects/settings/archive.html:57
 #: projects/templates/projects/settings/categories.html:52
@@ -708,7 +724,7 @@ msgstr ""
 #: projects/templates/projects/settings/transfer_ownership.html:52
 #: projects/templates/projects/settings/transfer_ownership.html:81
 msgid "Transfer ownership"
-msgstr ""
+msgstr "Transferir propiedad"
 
 #: projects/templates/projects/settings/archive.html:61
 #: projects/templates/projects/settings/categories.html:56
@@ -718,7 +734,7 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:61
 #: projects/templates/projects/settings/transfer_ownership.html:56
 msgid "Categories"
-msgstr ""
+msgstr "Categorías"
 
 #: projects/templates/projects/settings/archive.html:63
 #: projects/templates/projects/settings/categories.html:58
@@ -728,7 +744,7 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:63
 #: projects/templates/projects/settings/transfer_ownership.html:58
 msgid "Manage categories"
-msgstr ""
+msgstr "Manejar categorías"
 
 #: projects/templates/projects/settings/archive.html:64
 #: projects/templates/projects/settings/categories.html:59
@@ -738,145 +754,146 @@ msgstr ""
 #: projects/templates/projects/settings/new_category.html:64
 #: projects/templates/projects/settings/transfer_ownership.html:59
 msgid "New category"
-msgstr ""
+msgstr "Nueva categoría"
 
 #: projects/templates/projects/settings/archive.html:74
 msgid "Project Name"
-msgstr ""
+msgstr "Nombre del Proyecto"
 
 #: projects/templates/projects/settings/archive.html:77
 msgid "Archive project"
-msgstr ""
+msgstr "Archivar proyecto"
 
 #: projects/templates/projects/settings/categories.html:79
 #: projects/templates/projects/settings/categories.html:91
 msgid "Edit"
-msgstr ""
+msgstr "Editar"
 
 #: projects/templates/projects/settings/categories.html:80
 #: projects/templates/projects/settings/categories.html:95
 msgid "Delete"
-msgstr ""
+msgstr "Borrar"
 
 #: projects/templates/projects/settings/categories.html:100
 msgid "There are no categories for this project."
-msgstr ""
+msgstr "No existen categorías para este proyecto."
 
 #: projects/templates/projects/settings/categories.html:110
 msgid "Delete Category"
-msgstr ""
+msgstr "Borrar Categoría"
 
 #: projects/templates/projects/settings/categories.html:113
 msgid "Are you sure that you want to delete this category?"
-msgstr ""
+msgstr "¿Está seguro/a que desea borrar esta categoría?"
 
 #: projects/templates/projects/settings/categories.html:118
 #: projects/templates/projects/settings/transfer_ownership.html:94
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: projects/templates/projects/settings/categories.html:122
 #: projects/templates/projects/settings/transfer_ownership.html:98
 msgid "Yes"
-msgstr ""
+msgstr "Sí"
 
 #: projects/templates/projects/settings/edit_category.html:100
 msgid "Edit category"
-msgstr ""
+msgstr "Editar categoría"
 
 #: projects/templates/projects/settings/manage_access.html:86
 msgid "Create documents"
-msgstr ""
+msgstr "Crear documentos"
 
 #: projects/templates/projects/settings/manage_access.html:87
 msgid "Manage people"
-msgstr ""
+msgstr "Manejar personas"
 
 #: projects/templates/projects/settings/manage_access.html:88
 msgid "Delete documents"
-msgstr ""
+msgstr "Borrar documentos"
 
 #: projects/templates/projects/settings/new_category.html:100
 msgid "Create category"
-msgstr ""
+msgstr "Crear categoría"
 
 #: projects/templates/projects/settings/transfer_ownership.html:86
 msgid "Transfer Project Ownership"
-msgstr ""
+msgstr "Transferir Propiedad del Proyecto"
 
 #: projects/templates/projects/settings/transfer_ownership.html:89
 msgid ""
 "Are you sure that you want to transfer this project to another organization?"
-msgstr ""
+msgstr "¿Está seguro/a que desea tranferir este proyecto a otra organización?"
 
 #: projects/views/documents/document.py:37
 #: projects/views/documents/document.py:53
 #: projects/views/documents/download.py:23
 #: projects/views/documents/invite_user.py:41
 msgid "You do not have permissions to view this document."
-msgstr ""
+msgstr "No tiene permiso de ver este documento."
 
 #: projects/views/documents/new_document.py:29
 msgid "You do not have permission to create a new document for this project."
-msgstr ""
+msgstr "No tiene permiso de crear un nuevo documento para este proyecto."
 
 #: projects/views/documents/new_document.py:50
 msgid "The document has been saved."
-msgstr ""
+msgstr "El documento ha sido guardado."
 
 #: projects/views/documents/new_version.py:32
 msgid "You do not have permission to create a new version for this document."
-msgstr ""
+msgstr "No tiene permiso de crear una nueva versión para este documento."
 
 #: projects/views/documents/new_version.py:49
 msgid "The version has been saved."
-msgstr ""
+msgstr "La versión ha sido guardada. "
 
 #: projects/views/documents/settings/archive.py:32
 msgid "You do not have permission to archive this document"
-msgstr ""
+msgstr "No tiene permiso para archivar este documento"
 
 #: projects/views/documents/settings/details.py:43
 msgid "The document has been updated."
-msgstr ""
+msgstr "El documento ha sido guardado."
 
 #: projects/views/projects/invite_user.py:48
-#: projects/views/projects/project.py:80 projects/views/projects/project.py:126
+#: projects/views/projects/project.py:80
+#: projects/views/projects/project.py:126
 msgid "You do not have permission to view this project."
-msgstr ""
+msgstr "No tiene permiso de ver este proyecto. "
 
 #: projects/views/projects/new_project.py:23
 msgid "You do not have permissions to create projects."
-msgstr ""
+msgstr "No tiene permiso de crear proyectos."
 
 #: projects/views/projects/new_project.py:35
 msgid "The project has been saved."
-msgstr ""
+msgstr "El proyecto ha sido guardado."
 
 #: projects/views/projects/settings/archive.py:25
 msgid "You do not have permission to archive this project"
-msgstr ""
+msgstr "No tiene permiso para archivar este proyecto"
 
 #: projects/views/projects/settings/categories.py:35
 msgid "You do not have permission to delete this category."
-msgstr ""
+msgstr "No tiene permiso para borrar esta categoría."
 
 #: projects/views/projects/settings/categories.py:39
 msgid "The category has been deleted."
-msgstr ""
+msgstr "La categoría ha sido borrada."
 
 #: projects/views/projects/settings/categories.py:67
 msgid "The category has been saved."
-msgstr ""
+msgstr "La categoría ha sido guardada."
 
 #: projects/views/projects/settings/categories.py:91
 msgid "The category has been updated."
-msgstr ""
+msgstr "La categoría ha sido actualizada."
 
 #: projects/views/projects/settings/details.py:38
 msgid "The project has been updated."
-msgstr ""
+msgstr "El proyecto ha sido actualizado."
 
 #: projects/views/projects/settings/transfer_ownership.py:36
 msgid "The project has been transferred."
-msgstr ""
+msgstr "El proyecto ha sido transferido."
