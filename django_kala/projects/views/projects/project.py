@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector
 from django.core.exceptions import PermissionDenied
@@ -129,7 +130,7 @@ class ExportProjectView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         task = ExportProjectTask()
-        task.apply_async([self.project.pk, request.user.pk])
+        task.apply_async([self.project.pk, request.user.pk], queue=settings.EXPORT_QUEUE)
 
         return redirect(
             reverse(

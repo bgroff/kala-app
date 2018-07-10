@@ -55,7 +55,7 @@ class ExportDocumentView(LoginRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         task = ExportDocumentTask()
-        task.apply_async([self.document.pk, request.user.pk])
+        task.apply_async([self.document.pk, request.user.pk], queue=settings.EXPORT_QUEUE)
 
         return redirect(
             reverse(
