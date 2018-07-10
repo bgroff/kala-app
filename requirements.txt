@@ -11,6 +11,7 @@ djangorestframework
 packaging
 pillow
 psycopg2
+pycurl
 pyparsing
 pytz
 ipython

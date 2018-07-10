@@ -1,10 +1,10 @@
+from celery.task import Task
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
 
 from projects.models import Project, Export
 
-import celery
 import os
 import requests
 import tempfile
@@ -13,7 +13,7 @@ import shutil
 User = get_user_model()
 
 
-class ExportProjectTask(celery.Task):
+class ExportProjectTask(Task):
 
     def run(self, *args, **kwargs):
         project = Project.objects.get(pk=args[0])
