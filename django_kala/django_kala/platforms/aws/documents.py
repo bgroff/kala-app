@@ -31,7 +31,7 @@ class DocumentHandler():
     def upload_export(self, export_path):
         key = 'exports/{0}'.format(uuid4())
 
-        s3 = boto3.client('s3')
+        s3 = boto3.resource('s3')
         s3.meta.client.upload_file(
             export_path,
             settings.S3_STORAGE_BUCKET,

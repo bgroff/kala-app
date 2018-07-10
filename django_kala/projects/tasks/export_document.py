@@ -33,10 +33,12 @@ class ExportDocumentTask(Task):
         # Save the path on the task for later cleanup
         self.path = path
 
+        # TODO: If the file exists, we should append a unique id so that
+        # the files do not overwrite each other.
         # Download all the documents into the documents dir.
         for version in document.documentversion_set.all():
             response = requests.get(manager.get_document_url(version), stream=True)
-            with open('{0}/{1}/{2}'.format(path, 'documents', version.file.name), 'wb') as f:
+            with open('{0}/{1}/{2}'.format(path, 'documents', version.name), 'wb') as f:
                 for chunk in response.iter_content(chunk_size=1024):
                     if chunk:  # filter out keep-alive new chunks
                         f.write(chunk)
