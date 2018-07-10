@@ -135,8 +135,13 @@ class User(AbstractUser):
         if self.is_superuser:
             return User.objects.all()
         else:
-            organizations = self.get_organizations().values_list('pk')
-            return User.objects.filter(organizations__in=organizations)
+            organization_uuids = self.get_organizations().values_list('uuid')
+
+            return User.objects.filter(pk__in=Permissions.perms_for_objects([
+                'change_organization',
+                'add_organization',
+                'delete_organization'
+            ], organization_uuids).distinct('user').values_list('user__pk', flat=True))
 
     def send_invite(self, app, template, subject, object):
         template_txt = '{0}/{1}.txt'.format(app, template)
@@ -218,3 +223,7 @@ class Permissions(models.Model):
     @classmethod
     def add_perm(cls, perm, user, uuid):
         cls.objects.create(user=user, permission=perm, object_uuid=uuid)
+
+    @classmethod
+    def perms_for_objects(cls, perms, uuids):
+        return cls.objects.filter(permission__codename__in=perms, object_uuid__in=uuids)

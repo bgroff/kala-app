@@ -97,6 +97,7 @@ class Organization(models.Model):
             'delete_organization'
         ], user, self.uuid):
             return User.objects.all()
+        # TODO: This is a little to restrictive, but I think it needs some thinking about what should happen.
         else:
             return None
 

@@ -32,10 +32,10 @@
                         <input type="hidden" value="watching">
                         <i class="checklist icon"></i> {% trans 'Filter' %}
                         <i class="dropdown icon"></i>
-                        <div class="menu">
+                        <div class="menu" id="organization-menu">
                             {% for organization in organizations %}
-                                <div class="item" data-value="not-watching">
-                                    <h4>{{ organization }}</h4>
+                                <div class="item" >
+                                    <h4 data-value="{{ organization }}">{{ organization }}</h4>
                                 </div>
                             {% endfor %}
                         </div>
@@ -46,12 +46,12 @@
                         <input type="hidden" value="watching">
                         <i class="checklist icon"></i> {% trans 'Sort' %}
                         <i class="dropdown icon"></i>
-                        <div class="menu">
+                        <div class="menu" id="sort-menu">
                             <div class="item" data-value="not-watching">
-                                <h4>{% trans 'Alphabetically' %}</h4>
+                                <h4 data-value="alphabetically">{% trans 'Alphabetically' %}</h4>
                             </div>
-                            <div class="item" data-value="watching">
-                                <h4>{% trans 'Organization' %}</h4>
+                            <div class="item">
+                                <h4 data-value="organization">{% trans 'Organization' %}</h4>
                             </div>
                         </div>
                     </div>
@@ -103,5 +103,20 @@
                 direction: 'upward'
             })
         ;
+        var queryParameters = {}, queryString = location.search.substring(1),
+        re = /([^&=]+)=([^&]*)/g, m;
+
+        // Creates a map with the query string parameters
+        while (m = re.exec(queryString)) {
+            queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+        }
+        $('#organization-menu h4').click(function (item) {
+            queryParameters['organization'] = item.toElement.dataset['value'];
+            location.search = $.param(queryParameters);
+        });
+        $('#sort-menu h4').click(function (item) {
+            queryParameters['sort'] = item.toElement.dataset['value'];
+            location.search = $.param(queryParameters);
+        });
     </script>
 {% endblock scripts %}
