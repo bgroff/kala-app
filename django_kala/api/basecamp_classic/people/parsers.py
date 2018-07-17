@@ -82,7 +82,7 @@ class XMLParser(BaseParser):
                 data['avatar_url'] = str(field.text)
 
             if field.tag == 'administrator':
-                data['is_admin'] = bool(distutils.util.strtobool(field.text))
+                data['is_superuser'] = bool(distutils.util.strtobool(field.text))
             if field.tag == 'deleted':
                 data['is_active'] = not(bool(distutils.util.strtobool(field.text)))
             if field.tag == 'has-access-to-new-projects':
