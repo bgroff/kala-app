@@ -1,6 +1,6 @@
-.. image:: https://circleci.com/gh/bgroff/kala-app.svg?style=svg
-     :target: https://circleci.com/gh/bgroff/kala-app
-     :alt: CircleCI
+.. image:: https://travis-ci.org/bgroff/kala-app.svg?branch=master
+     :target: https://travis-ci.org/bgroff/kala-app
+     :alt: TravisCI
 
 .. image:: https://requires.io/github/bgroff/kala-app/requirements.svg?branch=master
      :target: https://requires.io/github/bgroff/kala-app/requirements/?branch=master
