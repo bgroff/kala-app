@@ -40,7 +40,7 @@ class Document(models.Model):
             self.removed = timezone.now().date()
         self.save()
 
-    def delete(self, using=None):
+    def delete(self, using=None, **kwargs):
         DocumentVersion.objects.filter(document=self).delete()
         super(Document, self).delete(using)
 

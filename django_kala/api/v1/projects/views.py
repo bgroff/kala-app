@@ -60,16 +60,6 @@ class ProjectPermissionsView(ListCreateAPIView, UpdateModelMixin):
         serializer = self.serializer_class(permissions, many=True)
         return Response(serializer.data)
 
-    def create(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data, many=True)
-        if serializer.is_valid():
-            serializer.save()
-        raise Response("Bad data", status=status.HTTP_400_BAD_REQUEST)
-
-
-
-
-
 class DocumentPermissionsView(APIView):
     pass
 

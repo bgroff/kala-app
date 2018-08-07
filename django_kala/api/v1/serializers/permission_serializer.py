@@ -20,9 +20,6 @@ class PermissionSerializer(serializers.ModelSerializer):
 
 
 class PermissionsSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    permission = PermissionSerializer()
-
     class Meta:
         model = Permissions
-        fields = ('user', 'permission', 'object_uuid')
+        fields = ['user', 'permission', 'object_uuid']
