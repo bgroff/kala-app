@@ -1,6 +1,15 @@
-#!/bin/bash
-PROJECT=$1
-PROJECT_URL=$2
+#!/usr/bin/env bash
+
+apt install -y postgresql
+
+# Create the database, check if the role and database exist first though.
+if ! sudo -u postgres -- psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='kala'" | grep -q 1; then
+	sudo -u postgres -- psql -c "CREATE ROLE kala WITH LOGIN PASSWORD 'kala';"
+fi
+
+if ! sudo -u postgres -- psql -tAc "SELECT 1 from pg_database WHERE datname='kala'"  | grep -q 1; then
+	sudo -u postgres -- psql -c "CREATE DATABASE kala WITH OWNER kala;"
+fi
 
 # Load Data
 source /home/vagrant/.zshrc
