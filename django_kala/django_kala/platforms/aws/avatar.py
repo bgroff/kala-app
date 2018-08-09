@@ -11,6 +11,10 @@ class AvatarUploader():
             Key='avatars/{0}.png'.format(user.uuid),
             Bucket=settings.S3_STORAGE_BUCKET
         )
-        # TODO: Fix this
-        user.avatar_url = 'https://s3-us-west-2.amazonaws.com/ndptc-kala/avatars/{0}.png'.format(user.uuid)
+
+        user.avatar_url = 'https://s3-{0}.amazonaws.com/{1}/avatars/{1}.png'.format(
+            settings.AWS_REGION,
+            settings.S3_STORAGE_BUCKET,
+            user.uuid
+        )
         user.save()
