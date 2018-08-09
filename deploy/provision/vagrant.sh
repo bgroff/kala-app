@@ -2,6 +2,7 @@
 
 export PROJECT=$1
 export PROJECT_URL=$2
+export USER=vagrant
 export HOME=/home/vagrant
 export DEPLOYMENT=dev
 export WORKING_DIR=/srv/kala-app

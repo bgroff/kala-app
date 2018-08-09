@@ -18,7 +18,7 @@ processes = 2
 chdir = /srv/$PROJECT-app/django_$PROJECT
 module = django_$PROJECT.wsgi:application
 touch-reload = /srv/$PROJECT-app/reload
-virtualenv = /home/vagrant/.virtualenvs/$PROJECT
+virtualenv = $HOME/.virtualenvs/$PROJECT
 
 env = DEPLOYMENT_ENVIRONMENT=$DEPLOYMENT
 env = DATABASE_USER=$DATABASE_USER

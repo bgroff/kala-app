@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+export USER=ubuntu
+export WORKING_DIR=/srv/kala
 export PROJECT=kala
 export PROJECT_URL=`curl -s http://169.254.169.254/latest/meta-data/public-hostname`
 export HOME=/home/ubuntu

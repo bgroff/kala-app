@@ -1,5 +1,4 @@
 #!/bin/bash
-export
 bash $WORKING_DIR/deploy/provision/packages.sh
 bash $WORKING_DIR/deploy/provision/virtualenv.sh
 if [ "$DEPLOYMENT" == "dev" ]; then
