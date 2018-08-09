@@ -20,11 +20,12 @@ module = django_$PROJECT.wsgi:application
 touch-reload = /srv/$PROJECT-app/reload
 virtualenv = /home/vagrant/.virtualenvs/$PROJECT
 
-env = DEPLOYMENT=$DEPLYOMENT
+env = DEPLOYMENT_ENVIRONMENT=$DEPLOYMENT
 env = DATABASE_USER=$DATABASE_USER
 env = DATABASE_PASSWORD=$DATABASE_PASSWORD
 env = DATABASE_NAME=$DATABASE_NAME
-env = HOST_NAME=$DATABASE_HOST
+env = DATABASE_HOST=$DATABASE_HOST
+env = HOST_NAME=$HOST_NAME
 EOM
 
 

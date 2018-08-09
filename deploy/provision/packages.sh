@@ -13,4 +13,4 @@ LC_ALL=en_US.UTF-8
 LANG=en_US.UTF-8
 EOM
 
-sudo apt install postgresql-client libcurl4-openssl-dev uwsgi uwsgi-plugin-python3 nginx
+apt install -y postgresql-client libcurl4-openssl-dev uwsgi uwsgi-plugin-python3 nginx python3-pip python3

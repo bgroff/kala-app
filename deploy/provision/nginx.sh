@@ -3,7 +3,7 @@
 
 # Clear out the nginx config if needed
 if [ -f /etc/nginx/sites-available/default ]; then
-    rm /etc/nginx/sites-enabled/defaultx
+    rm /etc/nginx/sites-enabled/default
     rm /etc/nginx/sites-available/default
 fi
 
