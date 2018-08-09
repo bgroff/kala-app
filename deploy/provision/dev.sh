@@ -3,12 +3,12 @@
 apt install -y postgresql
 
 # Create the database, check if the role and database exist first though.
-if ! sudo -u postgres -- psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='kala'" | grep -q 1; then
-	sudo -u postgres -- psql -c "CREATE ROLE kala WITH LOGIN PASSWORD 'kala';"
+if ! sudo -u postgres -- psql -tAc "SELECT 1 FROM pg_roles WHERE rolname='$DATABASE_USER'" | grep -q 1; then
+	sudo -u postgres -- psql -c "CREATE ROLE $DATABASE_USER WITH LOGIN PASSWORD '$DATABASE_PASSWORD';"
 fi
 
-if ! sudo -u postgres -- psql -tAc "SELECT 1 from pg_database WHERE datname='kala'"  | grep -q 1; then
-	sudo -u postgres -- psql -c "CREATE DATABASE kala WITH OWNER kala;"
+if ! sudo -u postgres -- psql -tAc "SELECT 1 from pg_database WHERE datname='$DATABASE_NAME'"  | grep -q 1; then
+	sudo -u postgres -- psql -c "CREATE DATABASE $DATABASE_NAME WITH OWNER $DATABASE_USER;"
 fi
 
 # Load Data
