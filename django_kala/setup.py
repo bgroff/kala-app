@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
     name='kala',
-    version='0.3',
+    version='0.4',
     url='https://github.com/bgroff/kala-app',
     author='Bryce Groff',
     author_email='bgroff@hawaii.edu',
@@ -15,8 +15,10 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
         'Topic :: Internet :: WWW/HTTP',
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Internet :: WWW/HTTP :: WSGI',
