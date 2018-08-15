@@ -4,3 +4,4 @@ build:
 python:
     version: 3.5
 
+requirements_file: requirements-docs.txt
