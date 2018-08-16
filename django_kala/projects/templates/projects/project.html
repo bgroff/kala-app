@@ -139,9 +139,9 @@
                                href="{% url 'projects:document' project.pk document.pk %}">{{ document.name }}</a>
                             <div class="meta">
                                 {% if document.documentversion_set.all.count == 1 %}
-                                    <span class="date">{% blocktrans with document=document %}Created on {{ document.date }}{% endblocktrans %}</span>
+                                    <span class="date">{% blocktrans with date=document.date %}Created on {{ date }}{% endblocktrans %}</span>
                                 {% else %}
-                                    <span class="date">{% blocktrans with document=document %}Updated on {{ document.date }}{% endblocktrans %}</span>
+                                    <span class="date">{% blocktrans with date=document.date %}Updated on {{ date }}{% endblocktrans %}</span>
                                 {% endif %}
                                 by {{ document.documentversion_set.all.0.user }}
                             </div>
@@ -154,7 +154,7 @@
                         <div class="extra content">
                             <div class="ui top left pointing dropdown">
                                 <i class="git branch icon"></i>
-                                <span class="text">{% blocktrans with document=document %}Versions {{ document.documentversion_set.all.count }}{% endblocktrans %}</span>
+                                <span class="text">{% blocktrans with count=document.documentversion_set.all.count %}Versions {{ count }}{% endblocktrans %}</span>
                                 <div class="menu">
                                     <div class="header">
                                         {% trans 'Download version' %}
