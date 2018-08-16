@@ -2,21 +2,26 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-03 04:40+0000\n"
+"POT-Creation-Date: 2018-08-16 04:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Bryce Groff <brycegroff@gmail.com>, 2018\n"
 "Language-Team: Spanish (https://www.transifex.com/kala/teams/10196/es/)\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: api/v1/projects/views.py:54 projects/views/projects/invite_user.py:48
+#: projects/views/projects/project.py:81 projects/views/projects/project.py:127
+msgid "You do not have permission to view this project."
+msgstr "No tiene permiso de ver este proyecto. "
 
 #: auth/forms/invite_user.py:7 auth/templates/accounts/settings/avatar.html:33
 #: auth/templates/accounts/settings/details.html:37
@@ -134,8 +139,8 @@ msgid ""
 "You have been invited to collaborate! Please click the link below to "
 "activate your account with Kala."
 msgstr ""
-"Ha sido invitado/a para colaborar! Por favor, utilice el enlace para activar"
-" su cuenta con Kala."
+"Ha sido invitado/a para colaborar! Por favor, utilice el enlace para activar "
+"su cuenta con Kala."
 
 #: auth/templates/kala/email/invite_document.txt:5
 #: auth/templates/kala/email/invite_organization.txt:5
@@ -145,16 +150,20 @@ msgstr ""
 msgid ""
 "\n"
 "-------\n"
-"If you did not initiate this action, please contact the Kala admins at the email below.\n"
-"Do NOT reply to this message as this email address does not accept incoming email.\n"
+"If you did not initiate this action, please contact the Kala admins at the "
+"email below.\n"
+"Do NOT reply to this message as this email address does not accept incoming "
+"email.\n"
 "\n"
 "Website:  https://%(application_url)s\n"
 "Email:  %(help_email)s@%(application_url)s\n"
 msgstr ""
 "\n"
 "-------\n"
-"Si usted no ha iniciado esta acción, por favor contactar a los administradores en el correo electrónico que aparece abajo.\n"
-"NO responda a este correo, ya que esta dirección no acepta correos entrantes.\n"
+"Si usted no ha iniciado esta acción, por favor contactar a los "
+"administradores en el correo electrónico que aparece abajo.\n"
+"NO responda a este correo, ya que esta dirección no acepta correos "
+"entrantes.\n"
 "\n"
 "Sitio Wen:  https://%(application_url)s\n"
 "Correo electrónico:  %(help_email)s@%(application_url)s\n"
@@ -440,17 +449,14 @@ msgid "Date"
 msgstr "Fecha"
 
 #: django_kala/templates/search.html:99
-#: projects/templates/projects/project.html:142
 msgid "Created on {{ document.date }}"
 msgstr "Creado en {{ document.date }}"
 
 #: django_kala/templates/search.html:101
-#: projects/templates/projects/project.html:144
 msgid "Updated on {{ document.date }}"
 msgstr "Actualizado en {{ document.date }}"
 
 #: django_kala/templates/search.html:114
-#: projects/templates/projects/project.html:157
 msgid "Versions {{ document.documentversion_set.all.count }}"
 msgstr "Versiones  {{ document.documentversion_set.all.count }}"
 
@@ -461,11 +467,11 @@ msgstr "Descargar versión"
 
 #: django_kala/templates/search.html:126
 msgid ""
-"By {{ document_version.user }} on {{ "
-"document_version.created|date:\"SHORT_DATETIME_FORMAT\" }}"
+"By {{ document_version.user }} on {{ document_version.created|date:"
+"\"SHORT_DATETIME_FORMAT\" }}"
 msgstr ""
-"Por {{ document_version.user }} en {{ "
-"document_version.created|date:\"SHORT_DATETIME_FORMAT\" }}"
+"Por {{ document_version.user }} en {{ document_version.created|date:"
+"\"SHORT_DATETIME_FORMAT\" }}"
 
 #: django_kala/templates/search.html:137
 #: projects/templates/documents/document.html:49
@@ -491,7 +497,7 @@ msgstr "Nueva Organización"
 msgid "Create ogranization"
 msgstr "Crear organización"
 
-#: organizations/templates/organizations/organizations.html:52
+#: organizations/templates/organizations/organizations.html:48
 msgid "There are no organizations. Please add one with the button above."
 msgstr ""
 "No existen organizaciones. Por favor agregue una con el botón de arriba."
@@ -665,11 +671,11 @@ msgstr "Manejar documento"
 msgid "Delete document"
 msgstr "Borrar documento"
 
-#: projects/templates/projects/includes/project_search_bar.html:4
+#: projects/templates/projects/includes/project_search_bar.html:5
 msgid "Project documents"
 msgstr "Documentos del Proyecto"
 
-#: projects/templates/projects/includes/project_search_bar.html:6
+#: projects/templates/projects/includes/project_search_bar.html:7
 msgid "Search"
 msgstr "Buscar"
 
@@ -704,6 +710,24 @@ msgstr "No hay filtro"
 #: projects/templates/projects/project.html:119
 msgid "You do not have permission to create new documents for this project."
 msgstr "No tiene permiso de crear nuevos documentos para este proyecto."
+
+#: projects/templates/projects/project.html:142
+#, fuzzy, python-format
+#| msgid "Created on {{ document.date }}"
+msgid "Created on %(document.date)s"
+msgstr "Creado en {{ document.date }}"
+
+#: projects/templates/projects/project.html:144
+#, fuzzy, python-format
+#| msgid "Updated on {{ document.date }}"
+msgid "Updated on %(document.date)s"
+msgstr "Actualizado en {{ document.date }}"
+
+#: projects/templates/projects/project.html:157
+#, fuzzy, python-format
+#| msgid "Versions {{ document.documentversion_set.all.count }}"
+msgid "Versions %(document.documentversion_set.all.count)s"
+msgstr "Versiones  {{ document.documentversion_set.all.count }}"
 
 #: projects/templates/projects/settings/archive.html:42
 #: projects/templates/projects/settings/categories.html:37
@@ -825,8 +849,8 @@ msgid ""
 "Are you sure that you want to transfer this project to another organization?"
 msgstr "¿Está seguro/a que desea tranferir este proyecto a otra organización?"
 
-#: projects/views/documents/document.py:37
-#: projects/views/documents/document.py:53
+#: projects/views/documents/document.py:38
+#: projects/views/documents/document.py:54
 #: projects/views/documents/download.py:23
 #: projects/views/documents/invite_user.py:41
 msgid "You do not have permissions to view this document."
@@ -855,12 +879,6 @@ msgstr "No tiene permiso para archivar este documento"
 #: projects/views/documents/settings/details.py:43
 msgid "The document has been updated."
 msgstr "El documento ha sido guardado."
-
-#: projects/views/projects/invite_user.py:48
-#: projects/views/projects/project.py:80
-#: projects/views/projects/project.py:126
-msgid "You do not have permission to view this project."
-msgstr "No tiene permiso de ver este proyecto. "
 
 #: projects/views/projects/new_project.py:23
 msgid "You do not have permissions to create projects."
