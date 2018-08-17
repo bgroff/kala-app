@@ -21,7 +21,9 @@ class DocumentView(LoginRequiredMixin, TemplateView):
             'document': self.document,
             'can_change': self.document.has_change(self.request.user),
             'can_create': self.has_change or self.has_create,
-            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
+            'can_invite': self.project.organization.has_change(self.request.user) or
+                          self.project.organization.has_create(self.request.user) or
+                          self.has_create or self.has_change
         }
 
     def dispatch(self, request, project_pk, document_pk, *args, **kwargs):

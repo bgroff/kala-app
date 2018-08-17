@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse
@@ -9,7 +10,9 @@ from django.views.generic import TemplateView
 
 from documents.models import Document
 from projects.models import Project
-from ...forms.invite_user import InviteUserForm
+from ...forms.invite_user import InviteUserForm, EmailForm
+
+User = get_user_model()
 
 
 class InviteUserView(LoginRequiredMixin, TemplateView):
@@ -18,6 +21,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         return {
             'form': self.form,
+            'email_form': self.email_form,
             'project': self.project,
             'organization': self.project.organization,
             'document': self.document,
@@ -39,6 +43,8 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
         self.has_change = self.document.has_change(request.user)
         if not self.has_create and not self.has_change and not self.document.has_delete(request.user):
             raise PermissionDenied(_('You do not have permissions to view this document.'))
+
+        self.email_form = EmailForm(request.POST or None)
         self.form = InviteUserForm(
             request.POST or None,
             admin_permission=(
@@ -51,10 +57,14 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
         return super(InviteUserView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        if self.form.is_valid():
-            user = self.form.save(commit=False)
-            user.username = user.email
-            user.save()
+        if self.email_form.is_valid() and self.form.is_valid():
+            try:
+                user = User.objects.get(email=self.email_form.cleaned_data['email'])
+            except User.DoesNotExist:
+                user = self.form.save(commit=False)
+                user.email = self.email_form.cleaned_data['email']
+                user.username = user.email
+                user.save()
             self.document.add_create(user)
             if self.form.cleaned_data['user_type'] == 'Admin':
                 self.document.add_change(user)

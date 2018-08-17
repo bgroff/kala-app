@@ -3,6 +3,10 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 
 
+class EmailForm(forms.Form):
+    email = forms.EmailField()
+
+
 class InviteUserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         admin_permission = kwargs.pop('admin_permission')
@@ -19,7 +23,7 @@ class InviteUserForm(forms.ModelForm):
 
     class Meta:
         model = get_user_model()
-        fields = ['email', 'first_name', 'last_name']
+        fields = ['first_name', 'last_name']
 
     def save(self, commit=True):
         self.instance.is_active = False

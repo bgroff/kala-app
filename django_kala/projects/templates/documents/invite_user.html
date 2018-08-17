@@ -64,14 +64,14 @@
                         </ul>
                     </div>
                 {% endif %}
-                <form class="ui form {% if form.errors %}error{% endif %}" method="post">
+                <form class="ui form {% if form.errors or email_form.errors %}error{% endif %}" method="post">
                 {% csrf_token %}
                 <div class="field">
-                    <label>{{ form.email.label }}</label>
-                    {{ form.email }}
-                    {% if form.email.errors %}
+                    <label>{{ email_form.email.label }}</label>
+                    {{ email_form.email }}
+                    {% if email_form.email.errors %}
                     <div class="ui error message">
-                        {{ form.email.errors }}
+                        {{ email_form.email.errors }}
                     </div>
                     {% endif %}
                 </div>

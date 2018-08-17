@@ -80,9 +80,6 @@
                                     {{ user }}
                                 {% endif %}
                             </div>
-                            <div class="meta">
-                                {{ user.organizations.all|join:', ' }}
-                            </div>
                             <div class="description">
                                 <a href="mailto:{{ user.email }}">{{ user.email }}</a>
                             </div>
