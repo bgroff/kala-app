@@ -12,7 +12,7 @@ class AvatarUploader():
             Bucket=settings.S3_STORAGE_BUCKET
         )
 
-        user.avatar_url = 'https://s3-{0}.amazonaws.com/{1}/avatars/{1}.png'.format(
+        user.avatar_url = 'https://s3-{0}.amazonaws.com/{1}/avatars/{2}.png'.format(
             settings.AWS_REGION,
             settings.S3_STORAGE_BUCKET,
             user.uuid
