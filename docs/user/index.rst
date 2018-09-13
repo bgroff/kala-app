@@ -6,6 +6,17 @@ Welcome to the Kala documentation. This guide describes the general philosophy
 of the application, as well as, detailing the specific operations of each section
 of the application.
 
+.. toctree::
+   :maxdepth: 1
+   :caption: Contents:
+
+    Users & Permissions <permissions>
+    Home Page & Navigation <home>
+    Organizations <organizations>
+    Projects <projects>
+    Documents & Versions <documents>
+
+
 The main concept of Kala is a hierarchical layout. At the top of the tree is the Organization. For smaller organizations or businesses there might be only one Organization (as shown in the diagram below) but Kala can be configured to have as many Organizations as you wish. For instance, you may want to give each functional unit it’s own Organization, or perhaps a sub contractor should be an Organization within the application. This guide will attempt to provide suggestions on how to divide the application, but it is left to the users and administrators to find the right balance between Organizations and Projects.
 
 Projects always reside within an Organization. Any permissions given to a User at an Organizational level will be propagated through to all of the Projects in that Organization. Likewise all permissions at the Project level will be passed on to all of the Projects Documents.
@@ -16,15 +27,3 @@ This diagram is a visual representation of how a small business might use Kala t
 
 
 .. image:: _imgs/kala_foundation.png
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Contents:
-
-    Permissions <permissions>
-    Home Page & Navigation <home>
-    Organizations <organizations>
-    Projects <projects>
-    Documents & Versions <documents>
-
-
