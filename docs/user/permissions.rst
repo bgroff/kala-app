@@ -1,18 +1,39 @@
------------
-Permissions
------------
+-------------------
+Users & Permissions
+-------------------
+
+
+++++++++++++++++++++
+Granting Permissions
+++++++++++++++++++++
+
+Permissions in Kala follow the nested approach seen in the previous section. The first level of Permission is the “Create” Permission. This allows a User to create resources at the level that they were given Permission at. For example, if a User has been given “Create” Permission for an Organization, then the User will have the ability to create Projects, Documents and Document Versions within that Organization.
+
+The next level of Permissions is the “Invite” Permission. The “Invite” Permission gives the same Permissions as the “Create” Permission, but also allows the User to invite Users to collaborate at the Organizational, Project, or Document Level. If the User only has “Invite” Permission, then they will only be allowed to give invited Users Permission up to the “Invite” level.
+
+Finally, the “Manage” Permission allow a User to be an Administrator for the resource that the User is being assigned to. The “Manage” Permission has both the “Create” and “Invite” Permissions but also allows the User to modify the attributes of the resource, and perform actions such as Archive and Delete.
+
+.. image:: _imgs/manage_organization_access.png
+
+
+If a User is given a specific Permission on the Project level, then these Permissions will also be enforced on the Documents of the Project. For example, if a User is given the “Invite” Permission on a Project, then that User will be able to invite Users to all of the Documents contained within the Project. The User will also be able to “Create” new Documents and Document Versions for that Project.
+
+.. image:: _imgs/manage_project_access.png
+
+Similar to the example above, if a User is given “Create” Permission on a Document, then that User will be able to create new Document Versions only for the Document that the User has Permissions for. 
+
+.. image:: _imgs/manage_document_access.png
+
++++++
+Users
++++++
+
 
 Every person that requires access to the system must be invited by an administrator or resource owner.
 Once the user has an email registered with a password, they can then go the login page, which will be 
 the default landing page if the user is not logged in.
 
 .. image:: _imgs/login.png
-
-
-
-+++++
-Users
-+++++
 
 The Users page allows a user to view all of the Users that they work with. **If you need to know contact information**
 this is the page to look in.
@@ -40,26 +61,4 @@ this page will take you to the "User Detials" page, which is described below.
 Edit Profile
 ++++++++++++
 
-The Edit Profile page is where you can **edit** either your own information or if you are an administrator, you can edit
-the information of other Users.
 
-You can also **change your password** or that of others as an administrator from this page, by filling in the password
-and confirm text boxes then clicking the "Update Profile" button.
-
-As an administrator you can **delete** a Person here by clicking the "Delete Person", you can also **toggle the
-administrative privileges flag** for a Person click clicking the "Grant/Remove Admin" button.
-
-Finally you can grant a Person access to Projects by clicking on the projects tab, then selecting a Organization name from
-the accordion list, and selecting/unselecting either a single project or you can grant/remove access to all a Organizations
-projects by clicking the "Select/Unselect All" all checkbox. When you are done, click the "Save Permissions" button.
-
-
-++++++++++++++++++++
-Granting Permissions
-++++++++++++++++++++
-
-The Edit Permissions page allows an administrator to **grant access** to Users for a given Project. The page will
-present the administrator with an accordion list of Organizations. To grant access to Users, click on a Organization name, this
-will open the accordion, and display a the list of Users within the Organization. You can then either select/unselect an
-individual Person, or you can select/unselect the entire Organization. When you have completed your changes, click on the
-"Update Permissions" button at the bottom of the page to save the changes you have made.
