@@ -61,4 +61,9 @@ this page will take you to the "User Detials" page, which is described below.
 Edit Profile
 ++++++++++++
 
+Editing your own profile is the same process as editing other users profile (if you are an administrator).
+If you click the dropdown in the top right corner of the screen, and click on the "Your Profile" link, you
+will be taken to your profile. Change the information that needs to be updated and then click the "Update details"
+button.
 
+.. image:: _imgs/your_profile.png
