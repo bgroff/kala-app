@@ -13,6 +13,11 @@ To get **information about Users** that you are working, such as email or phone 
 button. The Users section of the application is also where and administrator can create and manage Users, more
 on this below.
 
-In **My Accounts** you can use the **Edit Profile** link to edit your personal information, such as email address, name,
-phone, etc... you can also use the My Accounts to logout of the application.
+.. image:: _imgs/home.png
 
+You can also use the search box in the top navigation bar to search for documents based on the document name,
+the author, and the description text of the document. Using the search box at this level will search over all of the
+documents that you have permissions to view.
+
+In addition to the search box, there is also the "Add Resources" button in the top right corner (the + button).
+If you click this button then you can add Organizations and Projects if you have the correct permissions.
