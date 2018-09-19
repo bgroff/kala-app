@@ -46,6 +46,11 @@ class ManageAccessForm(forms.Form):
             except KeyError:
                 self.permissions_dict[permission.user.pk] = [permission.permission.codename]
 
+        try:
+            self.permissions_dict[self.user.pk]
+        except KeyError:
+            self.is_empty = True
+
         super(ManageAccessForm, self).__init__(*args, **kwargs)
         self.fields['add_document_{0}'.format(self.user.pk)] = forms.BooleanField(
             required=False,
@@ -73,6 +78,7 @@ class ManageAccessForm(forms.Form):
         )
 
     def save(self):
+        print(self.cleaned_data)
         # TODO, this can be sped up by using the permissions dict.
         if self.cleaned_data['add_document_{0}'.format(self.user.pk)]:
             if 'add_document' not in self.permissions_dict.get(self.user.pk, []):
