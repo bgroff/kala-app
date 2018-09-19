@@ -78,7 +78,6 @@ class ManageAccessForm(forms.Form):
         )
 
     def save(self):
-        print(self.cleaned_data)
         # TODO, this can be sped up by using the permissions dict.
         if self.cleaned_data['add_document_{0}'.format(self.user.pk)]:
             if 'add_document' not in self.permissions_dict.get(self.user.pk, []):

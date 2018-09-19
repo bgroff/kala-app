@@ -60,9 +60,7 @@
                     <thead>
                     <tr>
                         <th>{% trans 'Name' %}</th>
-                        <th>{% trans 'Create projects' %}</th>
-                        <th>{% trans 'Manage organization' %}</th>
-                        <th>{% trans 'Delete organization' %}</th>
+                        <th>{% trans 'Permissions' %}</th>
                     </tr>
                     </thead>
                     {% for form in forms %}
@@ -75,30 +73,23 @@
                                 </h4>
                             </td>
                             <td>
-                                <div class="ui toggle checkbox">
-                                    {% for field in form %}
-                                        {% if 'add_organization' in field.name %}
-                                            {{ field }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ui toggle checkbox">
-                                    {% for field in form %}
-                                        {% if 'change_organization' in field.name %}
-                                            {{ field }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </td>
-                            <td>
-                                <div class="ui toggle checkbox">
-                                    {% for field in form %}
-                                        {% if 'delete_organization' in field.name %}
-                                            {{ field }}
-                                        {% endif %}
-                                    {% endfor %}
+                                <input type="hidden"
+                                       id="{% for field in form %}{% if 'add_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
+                                       name="{% for field in form %}{% if 'add_organization' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
+                                       value="{% for field in form %}{% if 'add_organization' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
+                                <input type="hidden"
+                                       id="{% for field in form %}{% if 'change_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
+                                       name="{% for field in form %}{% if 'change_organization' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
+                                       value="{% for field in form %}{% if 'change_organization' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
+                                <input type="hidden"
+                                       id="{% for field in form %}{% if 'delete_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
+                                       name="{% for field in form %}{% if 'delete_organization' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
+                                       value="{% for field in form %}{% if 'delete_organization' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
+                                <div class="ui buttons">
+                                    <button type="button" class="ui button {% if form.is_empty %}active{% endif %}" data-value="none_{% for field in form %}{% if 'add_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="circle slash icon"></i>None</button>
+                                    <button type="button" class="ui button {% for field in form %}{% if 'add_organization' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'add_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="plus icon"></i>Create</button>
+                                    <button type="button" class="ui button {% for field in form %}{% if 'change_organization' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'change_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="megaphone icon"></i>Invite</button>
+                                    <button type="button" class="ui button {% for field in form %}{% if 'delete_organization' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'delete_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="briefcase icon"></i>Manage</button>
                                 </div>
                             </td>
                         </tr>
@@ -114,11 +105,34 @@
 
 {% block scripts %}
     <script>
-{#        $('.ui.styled.fluid.accordion')#}
-{#            .accordion()#}
-{#        ;#}
         $('.ui.checkbox')
             .checkbox()
         ;
+        var
+            $buttons = $('.ui.buttons .button'),
+            handler = {
+                activate: function () {
+                    $(this)
+                        .addClass('active')
+                        .siblings()
+                        .removeClass('active')
+                    ;
+                    let val = $(this).data('value');
+                    let parts = val.split('_');
+                    $("#id_add_organization_" + parts[parts.length - 1]).val("False");
+                    $("#id_change_organization_" + parts[parts.length - 1]).val("False");
+                    $("#id_delete_organization_" + parts[parts.length - 1]).val("False");
+                    if (parts[0] !== "none") {
+                        $("#" + val).val("True")
+                    }
+                }
+
+            }
+        ;
+
+        $buttons
+            .on('click', handler.activate)
+        ;
     </script>
 {% endblock %}
+

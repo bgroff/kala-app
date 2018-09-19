@@ -46,6 +46,11 @@ class ManageAccessForm(forms.Form):
             except KeyError:
                 self.permissions_dict[permission.user.pk] = [permission.permission.codename]
 
+        try:
+            self.permissions_dict[self.user.pk]
+        except KeyError:
+            self.is_empty = True
+
         super(ManageAccessForm, self).__init__(*args, **kwargs)
         self.fields['add_organization_{0}'.format(self.user.pk)] = forms.BooleanField(
             required=False,

@@ -5,7 +5,8 @@
     <div class="repo ribbon">
         <div class="ui container">
             <div class="ui big breadcrumb">
-                <a class="section" href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
+                <a class="section"
+                   href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
                 <div class="divider"> /</div>
                 <span class="active section">{{ project }}</span>
             </div>
@@ -48,20 +49,24 @@
                 <div class="item">
                     <div class="header">{% trans 'People' %}</div>
                     <div class="menu">
-                        <a class="active item" href="{% url 'projects:manage_access' project.pk %}">{% trans 'Manage access' %}</a>
+                        <a class="active item"
+                           href="{% url 'projects:manage_access' project.pk %}">{% trans 'Manage access' %}</a>
                     </div>
                 </div>
                 <div class="item">
                     <div class="header">{% trans 'Organizations' %}</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">{% trans 'Transfer ownership' %}</a>
+                        <a class="item"
+                           href="{% url 'projects:transfer_ownership' project.pk %}">{% trans 'Transfer ownership' %}</a>
                     </div>
                 </div>
                 <div class="item">
                     <div class="header">{% trans 'Categories' %}</div>
                     <div class="menu">
-                        <a class="item" href="{% url 'projects:categories' project.pk %}">{% trans 'Manage categories' %}</a>
-                        <a class="item" href="{% url 'projects:new_category' project.pk %}">{% trans 'New category' %}</a>
+                        <a class="item"
+                           href="{% url 'projects:categories' project.pk %}">{% trans 'Manage categories' %}</a>
+                        <a class="item"
+                           href="{% url 'projects:new_category' project.pk %}">{% trans 'New category' %}</a>
                     </div>
                 </div>
             </div>
@@ -83,9 +88,7 @@
                     <thead>
                     <tr>
                         <th>{% trans 'Name' %}</th>
-                        <th>{% trans 'Create documents' %}</th>
-                        <th>{% trans 'Manage people' %}</th>
-                        <th>{% trans 'Delete documents' %}</th>
+                        <th>{% trans 'Manage acess' %}</th>
                     </tr>
                     </thead>
                     {% for form in forms %}
@@ -98,32 +101,25 @@
                                 </h4>
                             </td>
                             <td>
-                                <div class="ui toggle checkbox">
-                                    {% for field in form %}
-                                        {% if 'add_project' in field.name %}
-                                            {{ field }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </td>
                             <td>
-                                <div class="ui toggle checkbox">
-                                    {% for field in form %}
-                                        {% if 'change_project' in field.name %}
-                                            {{ field }}
-                                        {% endif %}
-                                    {% endfor %}
+                                <input type="hidden"
+                                       id="{% for field in form %}{% if 'add_project' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
+                                       name="{% for field in form %}{% if 'add_project' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
+                                       value="{% for field in form %}{% if 'add_project' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
+                                <input type="hidden"
+                                       id="{% for field in form %}{% if 'change_project' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
+                                       name="{% for field in form %}{% if 'change_project' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
+                                       value="{% for field in form %}{% if 'change_project' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
+                                <input type="hidden"
+                                       id="{% for field in form %}{% if 'delete_project' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
+                                       name="{% for field in form %}{% if 'delete_project' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
+                                       value="{% for field in form %}{% if 'delete_project' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
+                                <div class="ui buttons">
+                                    <button type="button" class="ui button {% if form.is_empty %}active{% endif %}" data-value="none_{% for field in form %}{% if 'add_project' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="circle slash icon"></i>None</button>
+                                    <button type="button" class="ui button {% for field in form %}{% if 'add_project' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'add_project' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="plus icon"></i>Create</button>
+                                    <button type="button" class="ui button {% for field in form %}{% if 'change_project' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'change_project' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="megaphone icon"></i>Invite</button>
+                                    <button type="button" class="ui button {% for field in form %}{% if 'delete_project' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'delete_project' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="briefcase icon"></i>Manage</button>
                                 </div>
-                            </td>
-                            <td>
-                                <div class="ui toggle checkbox">
-                                    {% for field in form %}
-                                        {% if 'delete_project' in field.name %}
-                                            {{ field }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </div>
-                            </td>
                         </tr>
                     {% endfor %}
                 </table>
@@ -137,11 +133,33 @@
 
 {% block scripts %}
     <script>
-        $('.ui.styled.fluid.accordion')
-            .accordion()
-        ;
         $('.ui.checkbox')
             .checkbox()
+        ;
+        var
+            $buttons = $('.ui.buttons .button'),
+            handler = {
+                activate: function () {
+                    $(this)
+                        .addClass('active')
+                        .siblings()
+                        .removeClass('active')
+                    ;
+                    let val = $(this).data('value');
+                    let parts = val.split('_');
+                    $("#id_add_project_" + parts[parts.length - 1]).val("False");
+                    $("#id_change_project_" + parts[parts.length - 1]).val("False");
+                    $("#id_delete_project_" + parts[parts.length - 1]).val("False");
+                    if (parts[0] !== "none") {
+                        $("#" + val).val("True")
+                    }
+                }
+
+            }
+        ;
+
+        $buttons
+            .on('click', handler.activate)
         ;
     </script>
 {% endblock %}
