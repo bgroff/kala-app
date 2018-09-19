@@ -119,19 +119,12 @@
 
 {% block scripts %}
     <script>
-        {#        $('.ui.styled.fluid.accordion')#}
-        {#            .accordion()#}
-        {#        ;#}
         $('.ui.checkbox')
             .checkbox()
         ;
  var
     $buttons = $('.ui.buttons .button'),
-    $toggle  = $('.main .ui.toggle.button'),
-    $button  = $('.ui.button').not($buttons).not($toggle),
-    // alias
     handler = {
-
       activate: function() {
         $(this)
           .addClass('active')
@@ -153,16 +146,6 @@
 
   $buttons
     .on('click', handler.activate)
-  ;
-
-
-  $toggle
-    .state({
-      text: {
-        inactive : 'Vote',
-        active   : 'Voted'
-      }
-    })
   ;
     </script>
 {% endblock %}
