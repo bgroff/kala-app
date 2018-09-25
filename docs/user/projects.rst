@@ -12,7 +12,7 @@ If you are a manager (or administrator) you will also be able to **create** new 
 you can enter the name of the new Project and select which Organization you want to create the Project under. 
 You must fill out at least the projects name, then click the "Create Project" button and the new Project will be created.
 
-.. image:: _imgs/new_projects.png
+.. image:: _imgs/new_project.png
 
 ++++++++++++
 Project Page
