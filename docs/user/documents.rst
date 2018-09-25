@@ -2,10 +2,16 @@
 Document Page
 +++++++++++++
 
-On the Document page you can **upload** a new version by following the same steps as above, choose the file, fill out
+The Document page will show all of the version for the selected Document. You can also request a zipped 
+copy of all of the version be sent via email by clicking the **Download ZIP** button.
+
+.. image:: _imgs/document.png
+
+On the Document page you can **upload** a new version by clicking the **New version** button, choose the file, fill out
 the description, click upload.
 
-If you are a document manager, you can also **move** a Document to a different Project by selecting the Project in the
-"Projects" select box, then clicking the "Move Document" button.
+.. image:: _imgs/new_version.png
 
-You can also **delete** Documents from this page if you are an administrator.
+Managers can also **maange access** for the Document by clicking on the "Manage acess" link in the navigation bar of the settings page.
+
+.. image:: _imgs/document_manage_access.png

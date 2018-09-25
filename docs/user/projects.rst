@@ -32,6 +32,8 @@ to Z -. You will need to click the "Sort Documents" button to have the sorting t
 Documents by the files type. If you only want to see images in click the "Filter by Category" select box, select images
 then click "Sort Documents".
 
+To view a Documents detail click the name of the Document.
+
 If you would like to **create a new version** of a Document, you can do that from this page as well. To do this, find
 the Document that you would like to upload a new version to, then click the "Add Version" link. Follow the same
 instructions for uploading a Document as listed above.
