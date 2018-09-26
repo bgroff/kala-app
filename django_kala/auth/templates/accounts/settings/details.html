@@ -18,17 +18,12 @@
                 <i class="organization icon"></i>
                 Users
             </a>
-{#            <a class="item">#}
-{#                <i class="merge icon"></i>#}
-{#                Merge users#}
-{#            </a>#}
             <a class="active item" href="{% url 'users:details' user.pk %}">
                 <i class="gear icon"></i>
                 {% trans 'Settings' %}
             </a>
         </div>
     </div>
-
 
     <div class="ui two column grid container">
         <div class="four wide column">
@@ -38,21 +33,9 @@
                     <div class="menu">
                         <a class="active item" href="{% url 'users:details' user.pk %}">{% trans 'Details' %}</a>
                         <a class="item" href="{% url 'users:avatar' user.pk %}">{% trans 'Avatar' %}</a>
-{#                        <a class="item" href="{% url 'projects:archive' project.pk %}">Archive</a>#}
+                        <a class="item" href="{% url 'users:password' user.pk %}">{% trans 'Password' %}</a>
                     </div>
                 </div>
-{#                <div class="item">#}
-{#                    <div class="header">People</div>#}
-{#                    <div class="menu">#}
-{#                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">Manage access</a>#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="item">#}
-{#                    <div class="header">Organizations</div>#}
-{#                    <div class="menu">#}
-{#                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">Transfer ownership</a>#}
-{#                    </div>#}
-{#                </div>#}
             </div>
         </div>
         <div class="twelve wide column">

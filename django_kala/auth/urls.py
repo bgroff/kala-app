@@ -2,7 +2,6 @@ from django.conf.urls import url
 from django.contrib.auth.views import login, logout_then_login
 from django.urls import path, include
 
-
 from .views import *
 
 app_name='users'
@@ -28,6 +27,11 @@ urlpatterns = [
        name='avatar',
     ),
 
+    url(regex=r'^(?P<pk>\d+)/settings/password',
+       view=PasswordView.as_view(),
+       name='password',
+    ),
+
     url(
        regex=r'^login/$',
        view=login,
@@ -40,12 +44,6 @@ urlpatterns = [
        view=logout_then_login,
        kwargs={'login_url': '/accounts/login'},
        name='logout'
-    ),
-    #    url(r'^create_account$', CreateAccount.as_view(), name='create_account'),
-    url(
-       regex=r'^edit_profile/(?P<pk>\d+)',
-       view=EditProfile.as_view(),
-       name='edit_profile'
     ),
 
     path('', include('django.contrib.auth.urls')),
