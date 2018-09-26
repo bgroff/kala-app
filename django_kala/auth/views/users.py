@@ -13,8 +13,8 @@ class UsersView(LoginRequiredMixin, TemplateView):
 
         sort_order = self.request.GET.get('sort', None)
         if sort_order:
-            if sort_order == 'Alphabetically':
-                users = users.order_by('name')
+            if sort_order == 'alphabetically':
+                users = users.order_by('first_name')
             else:
                 users = users.order_by('organizations__name')
 
