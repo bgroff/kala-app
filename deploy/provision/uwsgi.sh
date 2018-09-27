@@ -20,7 +20,7 @@ module = django_$PROJECT.wsgi:application
 touch-reload = /srv/$PROJECT-app/reload
 virtualenv = $HOME/.virtualenvs/$PROJECT
 
-env = DEPLOYMENT_ENVIRONMENT=$DEPLOYMENT
+env = DEPLOYMENT=$DEPLOYMENT
 env = DATABASE_USER=$DATABASE_USER
 env = DATABASE_PASSWORD=$DATABASE_PASSWORD
 env = DATABASE_NAME=$DATABASE_NAME
