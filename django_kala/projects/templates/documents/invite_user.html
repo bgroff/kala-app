@@ -29,7 +29,7 @@
                     {% trans 'Invite User' %}
                 </a>
                 {% endif %}
-                {% if can_change %}
+                {% if can_manage %}
                 <a class="item" href="{% url 'projects:document_details' project.pk document.pk %}">
                     <i class="gear icon"></i>
                     {% trans 'Settings' %}

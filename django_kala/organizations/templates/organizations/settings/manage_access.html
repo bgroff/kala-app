@@ -74,22 +74,22 @@
                             </td>
                             <td>
                                 <input type="hidden"
-                                       id="{% for field in form %}{% if 'add_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
-                                       name="{% for field in form %}{% if 'add_organization' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
-                                       value="{% for field in form %}{% if 'add_organization' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
+                                       id="{% for field in form %}{% if 'can_create' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
+                                       name="{% for field in form %}{% if 'can_create' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
+                                       value="{% for field in form %}{% if 'can_create' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
                                 <input type="hidden"
-                                       id="{% for field in form %}{% if 'change_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
-                                       name="{% for field in form %}{% if 'change_organization' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
-                                       value="{% for field in form %}{% if 'change_organization' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
+                                       id="{% for field in form %}{% if 'can_invite' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
+                                       name="{% for field in form %}{% if 'can_invite' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
+                                       value="{% for field in form %}{% if 'can_invite' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
                                 <input type="hidden"
-                                       id="{% for field in form %}{% if 'delete_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
-                                       name="{% for field in form %}{% if 'delete_organization' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
-                                       value="{% for field in form %}{% if 'delete_organization' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
+                                       id="{% for field in form %}{% if 'can_manage' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
+                                       name="{% for field in form %}{% if 'can_manage' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
+                                       value="{% for field in form %}{% if 'can_manage' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
                                 <div class="ui buttons">
-                                    <button type="button" class="ui button {% if form.is_empty %}active{% endif %}" data-value="none_{% for field in form %}{% if 'add_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="circle slash icon"></i>None</button>
-                                    <button type="button" class="ui button {% for field in form %}{% if 'add_organization' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'add_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="plus icon"></i>Create</button>
-                                    <button type="button" class="ui button {% for field in form %}{% if 'change_organization' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'change_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="megaphone icon"></i>Invite</button>
-                                    <button type="button" class="ui button {% for field in form %}{% if 'delete_organization' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'delete_organization' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="briefcase icon"></i>Manage</button>
+                                    <button type="button" class="ui button {% if form.is_empty %}active{% endif %}" data-value="none_{% for field in form %}{% if 'can_create' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="circle slash icon"></i>None</button>
+                                    <button type="button" class="ui button {% for field in form %}{% if 'can_create' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'can_create' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="plus icon"></i>Create</button>
+                                    <button type="button" class="ui button {% for field in form %}{% if 'can_invite' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'can_invite' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="megaphone icon"></i>Invite</button>
+                                    <button type="button" class="ui button {% for field in form %}{% if 'can_manage' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'can_manage' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="briefcase icon"></i>Manage</button>
                                 </div>
                             </td>
                         </tr>
@@ -119,9 +119,9 @@
                     ;
                     let val = $(this).data('value');
                     let parts = val.split('_');
-                    $("#id_add_organization_" + parts[parts.length - 1]).val("False");
-                    $("#id_change_organization_" + parts[parts.length - 1]).val("False");
-                    $("#id_delete_organization_" + parts[parts.length - 1]).val("False");
+                    $("#id_can_create_" + parts[parts.length - 1]).val("False");
+                    $("#id_can_invite_" + parts[parts.length - 1]).val("False");
+                    $("#id_can_manage_" + parts[parts.length - 1]).val("False");
                     if (parts[0] !== "none") {
                         $("#" + val).val("True")
                     }

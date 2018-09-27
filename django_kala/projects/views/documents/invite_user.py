@@ -25,10 +25,9 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             'project': self.project,
             'organization': self.project.organization,
             'document': self.document,
-            'can_change': self.document.has_change(self.request.user),
-            'can_create': self.has_change or self.has_create,
-            'can_invite': self.project.organization.has_change(
-                self.request.user) or self.project.organization.has_create(self.request.user)
+            'can_manage': self.document.can_manage(self.request.user),
+            'can_create': self.document.can_create(self.request.user),
+            'can_invite': self.document.can_invite(self.request.user)
         }
 
     def dispatch(self, request, project_pk, document_pk, *args, **kwargs):
@@ -39,19 +38,14 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
                 'documentversion_set__user'
             ),
             pk=document_pk)
-        self.has_create = self.document.has_create(request.user)
-        self.has_change = self.document.has_change(request.user)
-        if not self.has_create and not self.has_change and not self.document.has_delete(request.user):
-            raise PermissionDenied(_('You do not have permissions to view this document.'))
+
+        if not self.document.can_invite(self.request.user):
+            raise PermissionDenied(_('You do not have permissions to invite users to this document.'))
 
         self.email_form = EmailForm(request.POST or None)
         self.form = InviteUserForm(
             request.POST or None,
-            admin_permission=(
-                self.has_change and
-                self.has_create and
-                self.document.has_delete(request.user)
-            )
+            manager=self.document.can_manage(self.request.user)
         )
 
         return super(InviteUserView, self).dispatch(request, *args, **kwargs)
@@ -65,10 +59,12 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
                 user.email = self.email_form.cleaned_data['email']
                 user.username = user.email
                 user.save()
-            self.document.add_create(user)
-            if self.form.cleaned_data['user_type'] == 'Admin':
-                self.document.add_change(user)
+            if self.form.cleaned_data['user_type'] == 'manager':
                 self.document.add_delete(user)
+            elif self.form.cleaned_data['user_type'] == 'collaborator':
+                self.project.add_invite(user)
+            else:
+                self.document.add_create(user)
 
             user.send_invite(settings.EMAIL_APP, 'email/invite_document', _('Invitation to collaborate'), user)
             messages.success(request, _('The invitation has been sent.'))

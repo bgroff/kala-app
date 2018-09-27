@@ -19,11 +19,9 @@ class DocumentView(LoginRequiredMixin, TemplateView):
             'project': self.project,
             'organization': self.project.organization,
             'document': self.document,
-            'can_change': self.document.has_change(self.request.user),
-            'can_create': self.has_change or self.has_create,
-            'can_invite': self.project.organization.has_change(self.request.user) or
-                          self.project.organization.has_create(self.request.user) or
-                          self.has_create or self.has_change
+            'can_manage': self.document.can_manage(self.request.user),
+            'can_create': self.document.can_create(self.request.user),
+            'can_invite': self.document.can_invite(self.request.user)
         }
 
     def dispatch(self, request, project_pk, document_pk, *args, **kwargs):
@@ -34,9 +32,7 @@ class DocumentView(LoginRequiredMixin, TemplateView):
                 'documentversion_set__user'
             ),
             pk=document_pk)
-        self.has_create = self.document.has_create(request.user)
-        self.has_change = self.document.has_change(request.user)
-        if not self.has_create and not self.has_change and not self.document.has_delete(request.user):
+        if not self.document.can_create(request.user):
             raise PermissionDenied(_('You do not have permissions to view this document.'))
         return super(DocumentView, self).dispatch(request, *args, **kwargs)
 
@@ -49,10 +45,7 @@ class ExportDocumentView(LoginRequiredMixin, View):
             Document.objects.active(),
             pk=document_pk)
 
-        has_create = self.document.has_create(request.user)
-        has_change = self.document.has_change(request.user)
-        has_delete = self.document.has_delete(request.user)
-        if not has_create and not has_change and not has_delete:
+        if not self.document.can_create(request.user):
             raise PermissionDenied(_('You do not have permissions to view this document.'))
         return super(ExportDocumentView, self).dispatch(request, *args, **kwargs)
 

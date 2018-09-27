@@ -29,20 +29,14 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
     def dispatch(self, request, pk, *args, **kwargs):
         self.organization = get_object_or_404(Organization.objects.active(), pk=pk)
 
-        self.can_invite = self.organization.has_change(self.request.user) or self.organization.has_create(self.request.user)
+        self.can_invite = self.organization.can_invite(self.request.user)
         if not self.can_invite:
             raise PermissionDenied(_('You do not have permission to invite users to this organization.'))
 
-        self.has_create = self.organization.has_create(request.user)
-        self.has_change = self.organization.has_change(request.user)
         self.email_form = EmailForm(request.POST or None)
         self.form = InviteUserForm(
             request.POST or None,
-            admin_permission=(
-                self.has_change and
-                self.has_create and
-                self.organization.has_delete(request.user)
-            )
+            manager=self.organization.can_manage(self.request.user)
         )
 
         return super(InviteUserView, self).dispatch(request, *args, **kwargs)
@@ -56,10 +50,12 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
                 user.email = self.email_form.cleaned_data['email']
                 user.username = user.email
                 user.save()
-            self.organization.add_create(user)
-            if self.form.cleaned_data['user_type'] == 'Admin':
-                self.organization.add_change(user)
+            if self.form.cleaned_data['user_type'] == 'manager':
                 self.organization.add_delete(user)
+            elif self.form.cleaned_data['user_type'] == 'collaborator':
+                self.organization.add_invite(user)
+            else:
+                self.organization.add_create(user)
 
             user.send_invite(settings.EMAIL_APP, 'email/invite_organization', _('Invitation to collaborate'), self.organization)
             messages.success(request, _('The invitation has been sent.'))

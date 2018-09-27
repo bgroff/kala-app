@@ -24,45 +24,19 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             'email_form': self.email_form,
             'project': self.project,
             'organization': self.project.organization,
-            'can_change': self.project.has_change(self.request.user),
-            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
-            'can_invite': self.project.organization.has_change(
-                self.request.user) or self.project.organization.has_create(self.request.user)
+            'can_manage': self.project.can_manage(self.request.user),
+            'can_create': self.project.can_create(self.request.user),
+            'can_invite': self.project.can_invite(self.request.user)
         }
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
-        if not Permissions.has_perms(
-                [
-                    'change_project',
-                    'add_project',
-                    'delete_project'
-                ], request.user, self.project.uuid) and not Permissions.has_perms([
-            'change_organization',
-            'add_organization',
-            'delete_organization'
-        ], request.user, self.project.organization.uuid) and not self.project.document_set.filter(
-            uuid__in=Permissions.objects.filter(
-                permission__codename__in=[
-                    'change_document',
-                    'add_document',
-                    'delete_document'
-                ], user=request.user).values_list('object_uuid', flat=True)).exists():
+        if not self.project.can_invite(self.request.user):
             raise PermissionDenied(
                 _('You do not have permission to view this project.')
             )
 
-        # Do we have permission to add people?
-        admin_permission = True if Permissions.has_perms(
-            ['change_project'],
-            request.user,
-            self.project.uuid
-        ) or Permissions.has_perms(
-            ['change_organization'],
-            request.user,
-            self.project.organization.uuid
-        ) else False
-        self.form = InviteUserForm(request.POST or None, admin_permission=admin_permission)
+        self.form = InviteUserForm(request.POST or None, manager=self.project.can_manage(self.request.user))
         self.email_form = EmailForm(request.POST or None)
         return super(InviteUserView, self).dispatch(request, *args, **kwargs)
 
@@ -75,10 +49,12 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
                 user.email = self.email_form.cleaned_data['email']
                 user.username = user.email
                 user.save()
-            self.project.add_create(user)
-            if self.form.cleaned_data['user_type'] == 'Admin':
-                self.project.add_change(user)
-                self.project.add_delete(user)
+            if self.form.cleaned_data['user_type'] == 'manager':
+                self.project.add_manage(user)
+            elif self.form.cleaned_data['user_type'] == 'collaborator':
+                self.project.add_invite(user)
+            else:
+                self.project.add_create(user)
 
             user.send_invite(settings.EMAIL_APP, 'email/invite_project', _('Invitation to collaborate'), user)
             messages.success(request, _('The invitation has been sent.'))

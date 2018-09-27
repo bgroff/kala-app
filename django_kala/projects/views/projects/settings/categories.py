@@ -19,8 +19,8 @@ class CategoriesView(LoginRequiredMixin, TemplateView):
             'categories': self.project.category_set.all(),
             'project': self.project,
             'organization': self.project.organization,
-            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
-            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
+            'can_create': self.project.can_create(self.request.user),
+            'can_invite': self.project.can_invite(self.request.user)
         }
 
     def dispatch(self, request, pk, category_pk=None, *args, **kwargs):
@@ -30,7 +30,7 @@ class CategoriesView(LoginRequiredMixin, TemplateView):
         return super(CategoriesView, self).dispatch(request, *args, **kwargs)
 
     def delete(self, *args, **kwargs):
-        if not self.project.has_delete(self.request.user):
+        if not self.project.can_manage(self.request.user):
             raise PermissionDenied(
                 _('You do not have permission to delete this category.')
             )
@@ -49,13 +49,13 @@ class NewCategoryView(LoginRequiredMixin, TemplateView):
             'form': self.form,
             'project': self.project,
             'organization': self.project.organization,
-            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
-            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
+            'can_create': self.project.can_create(self.request.user),
+            'can_invite': self.project.can_invite(self.request.user)
         }
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
-        if not self.project.has_change(request.user):
+        if not self.project.can_manage(request.user):
             raise PermissionDenied(_('You do not have permission to edit this project'))
 
         self.form = CategoryForm(request.POST or None, project=self.project)
@@ -77,10 +77,15 @@ class EditCategoryView(LoginRequiredMixin, TemplateView):
             'form': self.form,
             'project': self.project,
             'organization': self.project.organization,
+            'can_create': self.project.can_create(self.request.user),
+            'can_invite': self.project.can_invite(self.request.user)
         }
 
     def dispatch(self, request, project_pk, category_pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=project_pk)
+        if not self.project.can_manage(request.user):
+            raise PermissionDenied(_('You do not have permission to edit this project'))
+
         self.category = get_object_or_404(Category, pk=category_pk)
         self.form = CategoryForm(request.POST or None, instance=self.category, project=self.project)
         return super(EditCategoryView, self).dispatch(request, *args, **kwargs)

@@ -27,10 +27,10 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             user.username = user.email
             user.save()
             for organization in self.form.cleaned_data['organizations']:
-                organization.add_create(user)
-                if self.form.cleaned_data['user_type'] == 'Admin':
-                    organization.add_change(user)
+                if self.form.cleaned_data['user_type'] == 'Manager':
                     organization.add_delete(user)
+                else:
+                    organization.add_create(user)
 
             user.send_invite(settings.EMAIL_APP, 'email/invite_user', _('Invitation to collaborate'), user)
             messages.success(request, _('The invitation has been sent.'))

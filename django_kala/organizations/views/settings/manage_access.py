@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
-from organizations.forms.settings.manage_access import manage_access_forms
+from auth.forms.manage_access import manage_access_forms
 from organizations.models import Organization
 
 
@@ -17,8 +17,7 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
         return {
             'forms': self.forms,
             'organization': self.organization,
-            'can_invite': self.organization.has_change(self.request.user) or self.organization.has_create(
-                self.request.user),
+            'can_invite': self.organization.can_invite(self.request.user),
 
         }
 
@@ -27,10 +26,10 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
             Organization.objects.active(),
             pk=pk
         )
-        if not self.organization.has_change(request.user):
+        if not self.organization.can_manage(request.user):
             raise PermissionDenied(_('You do not have permission to edit this project'))
 
-        self.forms = manage_access_forms(request, self.organization)
+        self.forms = manage_access_forms(request, self.organization, 'organizations')
         return super(ManageAccessView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):

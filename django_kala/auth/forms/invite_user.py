@@ -4,7 +4,13 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class InviteUserForm(forms.ModelForm):
-    user_type = forms.ChoiceField(choices=[['User', _('User')], ['Admin', _('Admin')]])
+    user_type = forms.ChoiceField(
+        choices=[
+            ['creator', _('Creator')],
+            ['collaborator', _('Collaborator')],
+            ['manager', _('Manager')]
+        ]
+    )
 
     class Meta:
         model = get_user_model()

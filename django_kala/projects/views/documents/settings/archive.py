@@ -16,8 +16,8 @@ class ArchiveView(LoginRequiredMixin, TemplateView):
             'document': self.document,
             'project': self.project,
             'organization': self.project.organization,
-            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
-            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
+            'can_create': self.project.can_create(self.request.user),
+            'can_invite': self.project.can_invite(self.request.user)
         }
 
     def dispatch(self, request, project_pk, document_pk, *args, **kwargs):
@@ -28,7 +28,7 @@ class ArchiveView(LoginRequiredMixin, TemplateView):
             ),
             pk=document_pk
         )
-        if not self.document.has_delete(request.user):
+        if not self.document.can_manage(request.user):
             raise PermissionDenied(_('You do not have permission to archive this document'))
         self.project = self.document.project
 

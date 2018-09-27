@@ -22,11 +22,13 @@
                     <i class="book icon"></i>
                     {% trans 'Documents' %}
                 </a>
-                {% if can_change %}
+                {% if can_invite %}
                     <a class="item" href="{% url 'projects:project_invite_user' project.pk %}">
                         <i class="person icon"></i>
                         {% trans 'Invite User' %}
                     </a>
+                {% endif %}
+                {% if can_manage %}
                     <a class="item" href="{% url 'projects:details' project.pk %}">
                         <i class="gear icon"></i>
                         {% trans 'Settings' %}

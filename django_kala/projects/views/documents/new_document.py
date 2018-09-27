@@ -19,13 +19,13 @@ class NewDocumentView(LoginRequiredMixin, TemplateView):
             'version_form': self.version_form,
             'project': self.project,
             'organization': self.project.organization,
-            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
-            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
+            'can_create': self.project.can_create(self.request.user),
+            'can_invite': self.project.can_invite(self.request.user)
         }
 
     def dispatch(self, request, project_pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=project_pk)
-        if not self.project.has_create(request.user):
+        if not self.project.can_create(request.user):
             raise PermissionDenied(_('You do not have permission to create a new document for this project.'))
         self.form = NewDocumentForm(request.POST or None, project=self.project)
         self.version_form = NewDocumentVersionForm(

@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
-from projects.forms.documents.settings.manage_access import manage_access_forms
+from auth.forms.manage_access import manage_access_forms
 from documents.models import Document
 
 
@@ -19,8 +19,8 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
             'document': self.document,
             'project': self.project,
             'organization': self.project.organization,
-            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
-            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
+            'can_create': self.project.can_create(self.request.user),
+            'can_invite': self.project.can_invite(self.request.user)
 
         }
 
@@ -32,10 +32,10 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
             ),
             pk=document_pk
         )
-        if not self.document.has_change(request.user):
+        if not self.document.can_manage(request.user):
             raise PermissionDenied(_('You do not have permission to edit this project'))
 
-        self.forms = manage_access_forms(request, self.document)
+        self.forms = manage_access_forms(request, self.document, 'documents')
         self.project = self.document.project
         return super(ManageAccessView, self).dispatch(request, *args, **kwargs)
 

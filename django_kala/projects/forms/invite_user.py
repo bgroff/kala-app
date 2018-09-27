@@ -9,12 +9,16 @@ class EmailForm(forms.Form):
 
 class InviteUserForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        admin_permission = kwargs.pop('admin_permission')
+        manager = kwargs.pop('manager')
         super(InviteUserForm, self).__init__(*args, **kwargs)
-        if admin_permission:
-            user_type_choice = [['User', _('User')], ['Admin', _('Admin')]]
+        if manager:
+            user_type_choice = [
+            ['creator', _('Creator')],
+            ['collaborator', _('Collaborator')],
+            ['manager', _('Manager')]
+        ]
         else:
-            user_type_choice = [['User', 'User']]
+            user_type_choice = [['creator', _('Creator')]]
 
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True

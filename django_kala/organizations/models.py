@@ -104,26 +104,103 @@ class Organization(models.Model):
     def __str__(self):
         return self.name
 
-    def add_change(self, user):
-        perm = Permission.objects.get(codename='change_organization')
-        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+    def can(self, user, _permissions):
+        if user.is_superuser:
+            return True
+        # SELECT permission_id,
+        #        user_id,
+        #        object_uuid
+        # FROM   kala_auth_permissions
+        # WHERE  permission_id IN (SELECT auth_permission.id
+        #                          FROM   auth_permission
+        #                                 JOIN django_content_type
+        #                                   ON auth_permission.content_type_id =
+        #                                      django_content_type.id
+        #                          WHERE  codename IN ( {0} )
+        #                                 AND app_label = '{1}')
+        #        AND user_id = {2}
+        #        AND object_uuid = '{3}'.format((', '.join('"' + permission + '"' for permission in _permissions), 'organizations', user.id, str(self.uuid));
+        permissions = Permission.objects.filter(codename__in=_permissions, content_type__app_label='organizations')
+        Permissions.objects.filter(permission__in=permissions, user=user, object_uuid=self.uuid).exists()
+        from django.db import connection
+        print(connection.queries)
+        if Permissions.objects.filter(permission__in=permissions, user=user, object_uuid=self.uuid).exists():
+            return True
+        return False
 
-    def has_change(self, user):
-        perm = Permission.objects.get(codename='change_organization')
-        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
+    def can_create(self, user):
+        return self.can(user, [
+            'can_create',
+            'can_invite',
+            'can_manage'
+        ])
 
-    def add_delete(self, user):
-        perm = Permission.objects.get(codename='delete_organization')
-        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+    def can_invite(self, user):
+        return self.can(user, [
+            'can_invite',
+            'can_manage'
+        ])
 
-    def has_delete(self, user):
-        perm = Permission.objects.get(codename='delete_organization')
-        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
+    def can_manage(self, user):
+        return self.can(user, [
+            'can_manage'
+        ])
+
+    def add_permission(self, user, permission):
+        Permissions.objects.get_or_create(
+            permission=Permission.objects.get(
+                codename=permission,
+                content_type__app_label='organizations'
+            ),
+            user=user,
+            object_uuid=self.uuid
+        )
 
     def add_create(self, user):
-        perm = Permission.objects.get(codename='add_organization')
-        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
+        self.add_permission(
+            user,
+            'can_create'
+        )
 
-    def has_create(self, user):
-        perm = Permission.objects.get(codename='add_organization')
-        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
+    def add_invite(self, user):
+        self.add_permission(
+            user,
+            'can_invite'
+        )
+
+    def add_manage(self, user):
+        self.add_permission(
+            user,
+            'can_manage'
+        )
+
+    def delete_permission(self, user, permission):
+        try:
+            Permissions.objects.get(
+                permission=Permission.objects.get(
+                    codename=permission,
+                    content_type__app_label='organizations'
+                ),
+                user=user,
+                object_uuid=self.uuid
+            ).delete()
+        except Permissions.DoesNotExist:
+            return False
+
+    def delete_create(self, user):
+        self.delete_permission(
+            user,
+            'can_create'
+        )
+
+    def delete_invite(self, user):
+        self.delete_permission(
+            user,
+            'can_invite'
+        )
+
+    def delete_manage(self, user):
+        self.delete_permission(
+            user,
+            'can_manage'
+        )

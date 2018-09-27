@@ -54,29 +54,14 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'sort_form': self.sort_form,
             'version_count': versions.count(),
             'user_count': versions.distinct('user').count(),
-            'can_change': self.project.has_change(self.request.user),
-            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
-            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
+            'can_manage': self.project.can_manage(self.request.user),
+            'can_create': self.project.can_create(self.request.user),
+            'can_invite': self.project.organization.can_invite(self.request.user)
         }
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
-        if not Permissions.has_perms(
-                [
-                    'change_project',
-                    'add_project',
-                    'delete_project'
-                ], request.user, self.project.uuid) and not Permissions.has_perms([
-                    'change_organization',
-                    'add_organization',
-                    'delete_organization'
-                ], request.user, self.project.organization.uuid) and not self.project.document_set.filter(
-            uuid__in=Permissions.objects.filter(
-                permission__codename__in=[
-                    'change_document',
-                    'add_document',
-                    'delete_document'
-                ], user=request.user).values_list('object_uuid', flat=True)).exists():
+        if not self.project.can_create(user=self.request.user):
             raise PermissionDenied(
                 _('You do not have permission to view this project.')
             )
@@ -107,22 +92,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
 class ExportProjectView(LoginRequiredMixin, View):
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
-        if not Permissions.has_perms(
-                [
-                    'change_project',
-                    'add_project',
-                    'delete_project'
-                ], request.user, self.project.uuid) and not Permissions.has_perms([
-            'change_organization',
-            'add_organization',
-            'delete_organization'
-        ], request.user, self.project.organization.uuid) and not self.project.document_set.filter(
-            uuid__in=Permissions.objects.filter(
-                permission__codename__in=[
-                    'change_document',
-                    'add_document',
-                    'delete_document'
-                ], user=request.user).values_list('object_uuid', flat=True)).exists():
+        if not self.project.can_create(user=self.request.user):
             raise PermissionDenied(
                 _('You do not have permission to view this project.')
             )

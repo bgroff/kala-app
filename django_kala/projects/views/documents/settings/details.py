@@ -20,8 +20,8 @@ class DocumentDetailsView(LoginRequiredMixin, TemplateView):
             'document': self.document,
             'project': self.project,
             'organization': self.project.organization,
-            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
-            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
+            'can_create': self.project.can_create(self.request.user),
+            'can_invite': self.project.can_invite(self.request.user)
 
         }
 
@@ -29,7 +29,7 @@ class DocumentDetailsView(LoginRequiredMixin, TemplateView):
         self.project = get_object_or_404(Project.objects.active(), pk=project_pk)
         self.document = get_object_or_404(Document.objects.active(), pk=document_pk)
 
-        if not self.document.has_change(request.user):
+        if not self.document.can_manage(request.user):
             raise PermissionDenied(_('You do not have permission to edit this project'))
 
         self.form = DetailsForm(request.POST or None, instance=self.document, project=self.project)

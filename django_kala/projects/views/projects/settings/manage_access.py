@@ -18,16 +18,16 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
             'forms': self.forms,
             'project': self.project,
             'organization': self.project.organization,
-            'can_create': self.project.has_change(self.request.user) or self.project.has_create(self.request.user),
-            'can_invite': self.project.organization.has_change(self.request.user) or self.project.organization.has_create(self.request.user)
+            'can_create': self.project.can_create(self.request.user),
+            'can_invite': self.project.can_invite(self.request.user)
         }
 
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
-        if not self.project.has_change(request.user):
+        if not self.project.can_manage(request.user):
             raise PermissionDenied(_('You do not have permission to edit this project'))
 
-        self.forms = manage_access_forms(request, self.project)
+        self.forms = manage_access_forms(request, self.project, app_label='projects')
         return super(ManageAccessView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
