@@ -27,11 +27,11 @@ urlpatterns = [
         view=DocumentView.as_view()
     ),
 
-    path(
-        'projects/<int:pk>/permissions/',
-        name='project_permissions',
-        view=ProjectPermissionsView.as_view()
-    ),
+    # path(
+    #     'projects/<int:pk>/permissions/',
+    #     name='project_permissions',
+    #     view=ProjectPermissionsView.as_view()
+    # ),
     #
     # path(
     #     'projects/<int:project_pk>/documents/<int:document_pk>/settings',

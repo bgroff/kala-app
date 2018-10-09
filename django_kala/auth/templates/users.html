@@ -41,21 +41,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="ui labeled button">
-                    <div class="ui compact floating watch dropdown button" data-content="{% trans 'Choose display options' %}">
-                        <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> {% trans 'Sort' %}
-                        <i class="dropdown icon"></i>
-                        <div class="menu" id="sort-menu">
-                            <div class="item" data-value="not-watching">
-                                <h4 data-value="alphabetically">{% trans 'Alphabetically' %}</h4>
-                            </div>
-                            <div class="item">
-                                <h4 data-value="organization">{% trans 'Organization' %}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
             {% if request.user.is_superuser %}
                 <a class="ui positive compact icon button" href="{% url 'users:invite_user' %}">

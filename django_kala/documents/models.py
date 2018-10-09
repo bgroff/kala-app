@@ -7,7 +7,6 @@ from django.utils import timezone
 from uuid import uuid4
 from taggit.managers import TaggableManager
 
-from auth.models import Permissions
 from django_kala.managers import ActiveManager
 from .defs import get_icon_for_mime, get_alt_for_mime
 
@@ -121,28 +120,15 @@ class Document(models.Model):
     def can(self, user, _permissions):
         if user.is_superuser:
             return True
-        # SELECT permission_id,
-        #        user_id,
-        #        object_uuid
-        # FROM   kala_auth_permissions
-        # WHERE  permission_id IN (SELECT auth_permission.id
-        #                          FROM   auth_permission
-        #                                 JOIN django_content_type
-        #                                   ON auth_permission.content_type_id =
-        #                                      django_content_type.id
-        #                          WHERE  codename IN ( {0} )
-        #                                 AND app_label = '{1}')
-        #        AND user_id = {2}
-        #        AND object_uuid = '{3}'.format((', '.join('"' + permission + '"' for permission in _permissions), 'organizations', user.id, str(self.uuid));
-        permissions = Permission.objects.filter(codename__in=_permissions, content_type__app_label='organizations')
-        Permissions.objects.filter(permission__in=permissions, user=user, object_uuid=self.uuid).exists()
-        from django.db import connection
-        print(connection.queries)
-        if Permissions.objects.filter(permission__in=permissions, user=user, object_uuid=self.uuid).exists() \
-                or self.project.can(user, _permissions) \
-                or self.project.organization.can(user, _permissions):
-            return True
-        return False
+        return True if DocumentPermission.objects.filter(
+            permission__in=Permission.objects.filter(
+                codename__in=_permissions,
+                content_type__app_label='documents'
+            ),
+            user=user,
+            document=self).exists() \
+                       or self.project.can(user, _permissions) \
+                       or self.project.organization.can(user, _permissions) else False
 
     def can_create(self, user):
         return self.can(user, [
@@ -163,13 +149,13 @@ class Document(models.Model):
         ])
 
     def add_permission(self, user, permission):
-        Permissions.objects.get_or_create(
+        DocumentPermission.objects.get_or_create(
             permission=Permission.objects.get(
                 codename=permission,
                 content_type__app_label='documents'
             ),
             user=user,
-            object_uuid=self.uuid
+            document=self
         )
 
     def add_create(self, user):
@@ -192,15 +178,15 @@ class Document(models.Model):
 
     def delete_permission(self, user, permission):
         try:
-            Permissions.objects.get(
+            DocumentPermission.objects.get(
                 permission=Permission.objects.get(
                     codename=permission,
                     content_type__app_label='documents'
                 ),
                 user=user,
-                object_uuid=self.uuid
+                document=self
             ).delete()
-        except Permissions.DoesNotExist:
+        except DocumentPermission.DoesNotExist:
             return False
 
     def delete_create(self, user):
@@ -269,3 +255,12 @@ class DocumentVersion(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class DocumentPermission(models.Model):
+    document = models.ForeignKey(Document, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '{0} | {1} | {2}'.format(self.document, self.user, self.permission.codename)

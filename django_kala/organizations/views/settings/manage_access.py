@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
 from auth.forms.manage_access import manage_access_forms
-from organizations.models import Organization
+from organizations.models import Organization, OrganizationPermission
 
 
 class ManageAccessView(LoginRequiredMixin, TemplateView):
@@ -29,7 +29,7 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
         if not self.organization.can_manage(request.user):
             raise PermissionDenied(_('You do not have permission to edit this project'))
 
-        self.forms = manage_access_forms(request, self.organization, 'organizations')
+        self.forms = manage_access_forms(request, self.organization, OrganizationPermission, field='organization')
         return super(ManageAccessView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):

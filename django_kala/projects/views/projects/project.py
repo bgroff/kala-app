@@ -9,7 +9,6 @@ from django.utils.translation import ugettext as _
 from django.views import View
 from django.views.generic import TemplateView
 
-from auth.models import Permissions
 from documents.models import DocumentVersion
 from projects.forms import CategoryForm, SortForm
 from projects.models import Project
@@ -56,7 +55,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'user_count': versions.distinct('user').count(),
             'can_manage': self.project.can_manage(self.request.user),
             'can_create': self.project.can_create(self.request.user),
-            'can_invite': self.project.organization.can_invite(self.request.user)
+            'can_invite': self.project.can_invite(self.request.user)
         }
 
     def dispatch(self, request, pk, *args, **kwargs):

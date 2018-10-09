@@ -8,15 +8,8 @@ class UsersView(LoginRequiredMixin, TemplateView):
     template_name = 'users.html'
 
     def get_context_data(self, **kwargs):
-        users = self.request.user.get_users().prefetch_related('organizations')
+        users = self.request.user.get_users()
         organizations = self.request.user.get_organizations()
-
-        sort_order = self.request.GET.get('sort', None)
-        if sort_order:
-            if sort_order == 'alphabetically':
-                users = users.order_by('first_name')
-            else:
-                users = users.order_by('organizations__name')
 
         organization = self.request.GET.get('organization', None)
         if organization:

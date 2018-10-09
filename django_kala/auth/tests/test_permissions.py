@@ -43,7 +43,7 @@ def test_user_has_organization_permissions():
     user = UserFactory.create()
 
     organization = OrganizationFactory.create()
-    organization.add_change(user)
+    organization.add_create(user)
     project = ProjectFactory.create(organization=organization)
     document = DocumentFactory.create(project=project)
 
@@ -51,38 +51,47 @@ def test_user_has_organization_permissions():
     assert len(user.get_projects()) == 1
     assert len(user.get_documents()) == 1
 
-    assert organization.has_change(user) == True
-    assert organization.has_delete(user) == False
-    assert organization.has_create(user) == False
+    assert organization.can_create(user) == True
+    assert organization.can_invite(user) == False
+    assert organization.can_manage(user) == False
 
-    assert project.has_delete(user) == False
-    assert project.has_create(user) == False
-    assert project.has_change(user) == True
+    assert project.can_create(user) == True
+    assert project.can_invite(user) == False
+    assert project.can_manage(user) == False
 
-    assert document.has_delete(user) == False
-    assert document.has_create(user) == False
-    assert document.has_change(user) == True
+    assert document.can_create(user) == True
+    assert document.can_invite(user) == False
+    assert document.can_manage(user) == False
 
-    organization.add_delete(user)
+    organization.delete_create(user)
+    organization.add_invite(user)
 
-    assert project.has_delete(user) == True
-    assert project.has_create(user) == False
-    assert project.has_change(user) == True
+    assert organization.can_create(user) == True
+    assert organization.can_invite(user) == True
+    assert organization.can_manage(user) == False
 
-    assert document.has_delete(user) == True
-    assert document.has_create(user) == False
-    assert document.has_change(user) == True
+    assert project.can_create(user) == True
+    assert project.can_invite(user) == True
+    assert project.can_manage(user) == False
 
-    organization.add_create(user)
+    assert document.can_create(user) == True
+    assert document.can_invite(user) == True
+    assert document.can_manage(user) == False
 
-    assert project.has_delete(user) == True
-    assert project.has_create(user) == True
-    assert project.has_change(user) == True
+    organization.delete_invite(user)
+    organization.add_manage(user)
 
-    assert document.has_delete(user) == True
-    assert document.has_create(user) == True
-    assert document.has_change(user) == True
+    assert organization.can_create(user) == True
+    assert organization.can_invite(user) == True
+    assert organization.can_manage(user) == True
 
+    assert project.can_invite(user) == True
+    assert project.can_create(user) == True
+    assert project.can_manage(user) == True
+
+    assert document.can_invite(user) == True
+    assert document.can_create(user) == True
+    assert document.can_manage(user) == True
 
 
 @pytest.mark.django_db
@@ -91,37 +100,44 @@ def test_user_has_project_permissions():
 
     organization = OrganizationFactory.create()
     project = ProjectFactory.create(organization=organization)
-    project.add_change(user)
+    project.add_create(user)
     document = DocumentFactory.create(project=project)
 
     assert len(user.get_organizations()) == 1
     assert len(user.get_projects()) == 1
     assert len(user.get_documents()) == 1
-    assert organization.has_change(user) == False
-    assert organization.has_delete(user) == False
-    assert organization.has_create(user) == False
 
-    assert project.has_delete(user) == False
-    assert project.has_create(user) == False
-    assert project.has_change(user) == True
+    assert organization.can_manage(user) == False
+    assert organization.can_invite(user) == False
+    assert organization.can_create(user) == False
 
-    assert document.has_delete(user) == False
-    assert document.has_create(user) == False
-    assert document.has_change(user) == True
+    assert project.can_create(user) == True
+    assert project.can_invite(user) == False
+    assert project.can_manage(user) == False
 
-    project.add_delete(user)
-    assert project.has_delete(user) == True
+    assert document.can_create(user) == True
+    assert document.can_invite(user) == False
+    assert document.can_manage(user) == False
 
-    assert document.has_delete(user) == True
-    assert document.has_create(user) == False
-    assert document.has_change(user) == True
+    project.delete_create(user)
+    project.add_invite(user)
+    assert project.can_create(user) == True
+    assert project.can_invite(user) == True
+    assert project.can_manage(user) == False
 
-    project.add_create(user)
-    assert project.has_create(user) == True
+    assert document.can_create(user) == True
+    assert document.can_invite(user) == True
+    assert document.can_manage(user) == False
 
-    assert document.has_delete(user) == True
-    assert document.has_create(user) == True
-    assert document.has_change(user) == True
+    project.delete_create(user)
+    project.add_manage(user)
+    assert project.can_create(user) == True
+    assert project.can_invite(user) == True
+    assert project.can_manage(user) == True
+
+    assert document.can_invite(user) == True
+    assert document.can_create(user) == True
+    assert document.can_manage(user) == True
 
 
 @pytest.mark.django_db
@@ -131,25 +147,32 @@ def test_user_has_document_permissions():
     organization = OrganizationFactory.create()
     project = ProjectFactory.create(organization=organization)
     document = DocumentFactory.create(project=project)
-    document.add_change(user)
+    document.add_create(user)
 
     assert len(user.get_organizations()) == 1
     assert len(user.get_projects()) == 1
     assert len(user.get_documents()) == 1
-    assert organization.has_change(user) == False
-    assert organization.has_delete(user) == False
-    assert organization.has_create(user) == False
 
-    assert project.has_delete(user) == False
-    assert project.has_create(user) == False
-    assert project.has_change(user) == False
+    assert organization.can_manage(user) == False
+    assert organization.can_invite(user) == False
+    assert organization.can_create(user) == False
 
-    assert document.has_delete(user) == False
-    assert document.has_create(user) == False
-    assert document.has_change(user) == True
+    assert project.can_invite(user) == False
+    assert project.can_create(user) == False
+    assert project.can_manage(user) == False
 
-    document.add_delete(user)
-    assert document.has_delete(user) == True
+    assert document.can_create(user) == True
+    assert document.can_invite(user) == False
+    assert document.can_manage(user) == False
 
-    document.add_create(user)
-    assert document.has_create(user) == True
+    document.delete_create(user)
+    document.add_invite(user)
+    assert document.can_create(user) == True
+    assert document.can_invite(user) == True
+    assert document.can_manage(user) == False
+
+    document.delete_invite(user)
+    document.add_manage(user)
+    assert document.can_create(user) == True
+    assert document.can_invite(user) == True
+    assert document.can_manage(user) == True

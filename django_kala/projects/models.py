@@ -1,6 +1,5 @@
 from django.contrib.postgres.fields import JSONField
 
-from auth.models import Permissions
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
@@ -46,64 +45,27 @@ class Project(models.Model):
     def get_documents(self, user):
         if user.is_superuser:
             return self.document_set.filter(project=self)
-        if Permissions.has_perms([
-            'change_organization',
-            'add_organization',
-            'delete_organization'
-        ], user, self.organization.uuid) or Permissions.has_perms([
-            'change_project',
-            'add_project',
-            'delete_project'
-        ], user, self.uuid):
-            return self.document_set.all().prefetch_related('documentversion_set', 'documentversion_set__user')
-        else:
-            document__uuids = self.document_set.all().values_list('uuid', flat=True)
-            perm_uuids = Permissions.objects.filter(
-                user=user,
-                object_uuid__in=document__uuids
-            ).values_list('object_uuid', flat=True)
-            return self.document_set.filter(uuid__in=perm_uuids).prefetch_related('documentversion_set',
-                                                                                  'documentversion_set__user')
+        return self.document_set.filter(
+            project=self,
+            id__in=user.get_documents().values_list('id', flat=True)
+        )
 
     def get_users(self, user):
         if user.is_superuser:
             return User.objects.all()
-        # If you have permissions for the org, or permissions for the
-        # project, then you can see everyone in the org.
-        if Permissions.has_perms([
-            'change_organization',
-            'add_organization',
-            'delete_organization'
-        ], user, self.organization.uuid) or Permissions.has_perms([
-            'change_project',
-            'delete_project'
-        ], user, self.uuid):
-            return self.organization.user_set.all()
-        return None
+        return user.get_users()
 
     def can(self, user, _permissions):
         if user.is_superuser:
             return True
-        # SELECT permission_id,
-        #        user_id,
-        #        object_uuid
-        # FROM   kala_auth_permissions
-        # WHERE  permission_id IN (SELECT auth_permission.id
-        #                          FROM   auth_permission
-        #                                 JOIN django_content_type
-        #                                   ON auth_permission.content_type_id =
-        #                                      django_content_type.id
-        #                          WHERE  codename IN ( {0} )
-        #                                 AND app_label = '{1}')
-        #        AND user_id = {2}
-        #        AND object_uuid = '{3}'.format((', '.join('"' + permission + '"' for permission in _permissions), 'organizations', user.id, str(self.uuid));
-        permissions = Permission.objects.filter(codename__in=_permissions, content_type__app_label='projects')
-        Permissions.objects.filter(permission__in=permissions, user=user, object_uuid=self.uuid).exists()
-        from django.db import connection
-        print(connection.queries)
-        if Permissions.objects.filter(permission__in=permissions, user=user, object_uuid=self.uuid).exists() or self.organization.can(user, _permissions):
-            return True
-        return False
+
+        return True if ProjectPermission.objects.filter(
+            permission__in=Permission.objects.filter(
+                codename__in=_permissions,
+                content_type__app_label='projects'
+            ),
+            user=user,
+            project=self).exists() or self.organization.can(user, _permissions) else False
 
     def can_create(self, user):
         return self.can(user, [
@@ -124,13 +86,13 @@ class Project(models.Model):
         ])
 
     def add_permission(self, user, permission):
-        Permissions.objects.get_or_create(
+        ProjectPermission.objects.get_or_create(
             permission=Permission.objects.get(
                 codename=permission,
                 content_type__app_label='projects'
             ),
             user=user,
-            object_uuid=self.uuid
+            project=self
         )
 
     def add_create(self, user):
@@ -153,15 +115,15 @@ class Project(models.Model):
 
     def delete_permission(self, user, permission):
         try:
-            Permissions.objects.get(
+            ProjectPermission.objects.get(
                 permission=Permission.objects.get(
                     codename=permission,
                     content_type__app_label='projects'
                 ),
                 user=user,
-                object_uuid=self.uuid
+                project=self
             ).delete()
-        except Permissions.DoesNotExist:
+        except ProjectPermission.DoesNotExist:
             return False
 
     def delete_create(self, user):
@@ -181,6 +143,15 @@ class Project(models.Model):
             user,
             'can_manage'
         )
+
+
+class ProjectPermission(models.Model):
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return '{0} | {1} | {2}'.format(self.project, self.user, self.permission.codename)
 
 
 class Category(models.Model):

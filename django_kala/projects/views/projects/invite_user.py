@@ -8,7 +8,6 @@ from django.utils.translation import ugettext as _
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView
 
-from auth.models import Permissions
 from projects.models import Project
 from ...forms.invite_user import InviteUserForm, EmailForm
 

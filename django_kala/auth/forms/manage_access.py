@@ -1,21 +1,20 @@
 from django import forms
 
-from auth.models import Permissions
 from django.contrib.auth.models import Permission
 
 
-def manage_access_forms(request, obj, app_label):
+def manage_access_forms(request, obj, permission_class, field):
     forms = []
 
-    can_create = Permission.objects.get(codename='can_create', content_type__app_label=app_label)
-    can_invite = Permission.objects.get(codename='can_invite', content_type__app_label=app_label)
-    can_manage = Permission.objects.get(codename='can_manage', content_type__app_label=app_label)
+    can_create = Permission.objects.get(codename='can_create', content_type__app_label='{0}s'.format(field))
+    can_invite = Permission.objects.get(codename='can_invite', content_type__app_label='{0}s'.format(field))
+    can_manage = Permission.objects.get(codename='can_manage', content_type__app_label='{0}s'.format(field))
 
     users = request.user.get_users()
-    permissions = Permissions.objects.filter(
-        object_uuid=obj.uuid,
-        user__in=users,
-    ).select_related(
+    permissions = permission_class.objects.filter(**{
+            field: obj,
+            "user__in": users
+    }).select_related(
         'permission',
         'user'
     )
@@ -23,7 +22,7 @@ def manage_access_forms(request, obj, app_label):
     for user in users:
         forms.append(ManageAccessForm(
             request.POST or None,
-            organization=obj,
+            obj=obj,
             user=user,
             can_create=can_create,
             can_invite=can_invite,
@@ -40,7 +39,7 @@ class ManageAccessForm(forms.Form):
         self.can_invite = kwargs.pop('can_invite')
         self.can_manage = kwargs.pop('can_manage')
 
-        self.organization = kwargs.pop('organization')
+        self.obj = kwargs.pop('obj')
         self.user = kwargs.pop('user')
         self.permissions_dict = {}
         for permission in kwargs.pop('permissions'):
@@ -60,7 +59,7 @@ class ManageAccessForm(forms.Form):
             label='',
             initial=True if 'can_create' in self.permissions_dict.get(self.user.pk, []) else False,
             widget=forms.CheckboxInput(
-                attrs={'pk': self.organization.pk}
+                attrs={'pk': self.obj.pk}
             )
         )
         self.fields['can_invite_{0}'.format(self.user.pk)] = forms.BooleanField(
@@ -68,7 +67,7 @@ class ManageAccessForm(forms.Form):
             label='',
             initial=True if 'can_invite' in self.permissions_dict.get(self.user.pk, []) else False,
             widget=forms.CheckboxInput(
-                attrs={'pk': self.organization.pk}
+                attrs={'pk': self.obj.pk}
             )
         )
         self.fields['can_manage_{0}'.format(self.user.pk)] = forms.BooleanField(
@@ -76,25 +75,25 @@ class ManageAccessForm(forms.Form):
             label='',
             initial=True if 'can_manage' in self.permissions_dict.get(self.user.pk, []) else False,
             widget=forms.CheckboxInput(
-                attrs={'pk': self.organization.pk}
+                attrs={'pk': self.obj.pk}
             )
         )
 
     def save(self):
         if self.cleaned_data['can_create_{0}'.format(self.user.pk)]:
             if 'can_create' not in self.permissions_dict.get(self.user.pk, []):
-                self.organization.add_create(self.user)
+                self.obj.add_create(self.user)
         elif 'can_create' in self.permissions_dict.get(self.user.pk, []):
-            self.organization.delete_create(self.user)
+            self.obj.delete_create(self.user)
 
         if self.cleaned_data['can_invite_{0}'.format(self.user.pk)]:
             if 'can_invite' not in self.permissions_dict.get(self.user.pk, []):
-                self.organization.add_invite(self.user)
+                self.obj.add_invite(self.user)
         elif 'can_invite' in self.permissions_dict.get(self.user.pk, []):
-            self.organization.delete_invite(self.user)
+            self.obj.delete_invite(self.user)
 
         if self.cleaned_data['can_manage_{0}'.format(self.user.pk)]:
             if 'can_manage' not in self.permissions_dict.get(self.user.pk, []):
-                self.organization.add_manage(self.user)
+                self.obj.add_manage(self.user)
         elif 'can_manage' in self.permissions_dict.get(self.user.pk, []):
-            self.organization.delete_manage(self.user)
+            self.obj.delete_manage(self.user)

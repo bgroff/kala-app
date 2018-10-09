@@ -20,9 +20,8 @@ class DocumentDetailsView(LoginRequiredMixin, TemplateView):
             'document': self.document,
             'project': self.project,
             'organization': self.project.organization,
-            'can_create': self.project.can_create(self.request.user),
-            'can_invite': self.project.can_invite(self.request.user)
-
+            'can_create': self.document.can_create(self.request.user),
+            'can_invite': self.document.can_invite(self.request.user)
         }
 
     def dispatch(self, request, project_pk, document_pk, *args, **kwargs):

@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
 from projects.forms import manage_access_forms
-from projects.models import Project
+from projects.models import Project, ProjectPermission
 
 
 class ManageAccessView(LoginRequiredMixin, TemplateView):
@@ -27,7 +27,7 @@ class ManageAccessView(LoginRequiredMixin, TemplateView):
         if not self.project.can_manage(request.user):
             raise PermissionDenied(_('You do not have permission to edit this project'))
 
-        self.forms = manage_access_forms(request, self.project, app_label='projects')
+        self.forms = manage_access_forms(request, self.project, ProjectPermission, field='project')
         return super(ManageAccessView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):

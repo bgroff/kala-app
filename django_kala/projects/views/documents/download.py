@@ -17,7 +17,7 @@ class DocumentDownload(LoginRequiredMixin, View):
         self.document = get_object_or_404(Document, pk=document_pk)
         self.version = get_object_or_404(DocumentVersion, uuid=version_uuid)
 
-        if not self.document.can_create():
+        if not self.document.can_create(request.user):
             raise PermissionDenied(_('You do not have permissions to view this document.'))
 
         return super(DocumentDownload, self).dispatch(request, *args, **kwargs)

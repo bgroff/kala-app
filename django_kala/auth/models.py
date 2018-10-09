@@ -65,83 +65,59 @@ class User(AbstractUser):
         if self.is_superuser:
             return organizations.models.Organization.objects.all()
         return organizations.models.Organization.objects.filter(
-            uuid__in=Permissions.objects.filter(user=self, permission__codename='add_organization').values_list(
-                'object_uuid', flat=True))
+            id__in=organizations.models.OrganizationPermission.objects.filter(
+                user=self,
+                permission__codename='can_create'
+            ).values_list('organization__id', flat=True))
 
     def get_organizations(self):
         if self.is_superuser:
             return organizations.models.Organization.objects.active()
-        project_uuids = Permissions.objects.filter(
-            user=self,
-            permission__codename__in=[
-                'change_project',
-                'add_project',
-                'delete_project'
-            ]
-        ).values_list('object_uuid', flat=True)
-        project_org_uuids = projects.models.Project.objects.filter(
-            uuid__in=project_uuids
-        ).values_list('organization__uuid', flat=True)
-        org_uuids = Permissions.objects.filter(
-            user=self,
-            permission__codename__in=[
-                'change_organization',
-                'add_organization',
-                'delete_organization'
-            ]
-        ).values_list('object_uuid', flat=True)
-        document_project_uuids = Permissions.objects.filter(permission__codename__in=[
-            'change_document',
-            'add_document',
-            'delete_document'
-        ], user=self).values_list('object_uuid', flat=True)
-        document_projects = documents.models.Document.objects.filter(
-            uuid__in=document_project_uuids
-        ).values_list('project__organization__uuid', flat=True)
-        return organizations.models.Organization.objects.filter(
-            uuid__in=list(project_org_uuids) + list(org_uuids) + list(document_projects)
-        )
+        else:
+            return organizations.models.Organization.objects.filter(
+                id__in=set().union(*[
+                    list(organizations.models.OrganizationPermission.objects.filter(user=self).values_list('organization__id', flat=True)),
+                    list(projects.models.ProjectPermission.objects.filter(user=self).values_list('project__organization__id',flat=True).values_list('id',flat=True)),
+                    list(documents.models.DocumentPermission.objects.filter(user=self).values_list('document__project__organization__id', flat=True))
+                ])
+            )
 
     def get_projects(self):
         if self.is_superuser:
             return projects.models.Project.objects.active()
         else:
-            return projects.models.Project.objects.active().filter(
-                organization__id__in=self.get_organizations().values_list('pk', flat=True)
+            return projects.models.Project.objects.filter(
+                id__in=set().union(*[
+                    list(projects.models.ProjectPermission.objects.filter(user=self).values_list('project__id', flat=True)),
+                    list(projects.models.Project.objects.filter(organization__id__in=organizations.models.OrganizationPermission.objects.filter(user=self).values_list('organization__id', flat=True)).values_list('id', flat=True)),
+                    list(documents.models.DocumentPermission.objects.filter(user=self).values_list('document__project__id', flat=True))
+                ])
             )
 
     def get_documents(self):
         if self.is_superuser:
             return documents.models.Document.objects.all()
         else:
-            projects = self.get_organizations().values_list('project__uuid', flat=True)
-            document_uuids = documents.models.Document.objects.filter(
-                project__uuid__in=projects
-            ).values_list('uuid', flat=True)
-
-            perm_uuids = Permissions.objects.filter(
-                user=self,
-                object_uuid__in=document_uuids
-            ).values_list('object_uuid', flat=True)
-
             return documents.models.Document.objects.filter(
-                uuid__in=list(perm_uuids) + list(document_uuids)
-            ).prefetch_related(
-                'documentversion_set',
-                'documentversion_set__user',
-            ).select_related('project')
+                id__in=set().union(*[
+                    list(documents.models.DocumentPermission.objects.filter(user=self).values_list('document__id', flat=True)),
+                    list(documents.models.Document.objects.filter(project__id__in=projects.models.ProjectPermission.objects.filter(user=self).values_list('project__id', flat=True)).values_list('id', flat=True)),
+                    list(documents.models.Document.objects.filter(project__organization__id__in=organizations.models.OrganizationPermission.objects.filter(user=self).values_list('organization__id', flat=True)).values_list('id', flat=True))
+                ])
+            )
 
     def get_users(self):
         if self.is_superuser:
             return User.objects.all()
         else:
-            organization_uuids = self.get_organizations().values_list('uuid')
-
-            return User.objects.filter(pk__in=Permissions.perms_for_objects([
-                'change_organization',
-                'add_organization',
-                'delete_organization'
-            ], organization_uuids).distinct('user').values_list('user__pk', flat=True))
+            organization_ids = self.get_organizations().values_list('id')
+            return User.objects.filter(
+                pk__in=set().union(*[
+                    list(organizations.models.OrganizationPermission.objects.filter(organization__id__in=organization_ids).values_list('user__id', flat=True)),
+                    list(projects.models.ProjectPermission.objects.filter(project__organization__id__in=organization_ids).values_list('user_id', flat=True)),
+                    list(documents.models.DocumentPermission.objects.filter(document__project__organization__id__in=organization_ids).values_list('user_id', flat=True))
+                ])
+            )
 
     def send_invite(self, app, template, subject, object):
         template_txt = '{0}/{1}.txt'.format(app, template)
@@ -164,66 +140,5 @@ class User(AbstractUser):
             #html_message=render(None, template_html, context) if settings.USE_HTML_EMAIL else None
         )
 
-    def add_perm(self, perm, uuid):
-        Permissions.add_perm(perm=perm, user=self, uuid=uuid)
-
-    def has_perm(self, perm, uuid):
-        return Permissions.has_perm(perm=perm, user=self, uuid=uuid)
-
-    def add_read(self, user):
-        perm = Permission.objects.get(codename='change_user')
-        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
-
-    def has_read(self, user):
-        perm = Permission.objects.get(codename='change_user')
-        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
-
-    def add_delete(self, user):
-        perm = Permission.objects.get(codename='delete_user')
-        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
-
-    def has_delete(self, user):
-        perm = Permission.objects.get(codename='delete_user')
-        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
-
-    def add_create(self, user):
-        perm = Permission.objects.get(codename='add_user')
-        Permissions.add_perm(perm=perm, user=user, uuid=self.uuid)
-
-    def has_create(self, user):
-        perm = Permission.objects.get(codename='add_user')
-        return Permissions.has_perm(perm=perm, user=user, uuid=self.uuid)
-
     def __str__(self):  # pragma: no cover
         return "{0} {1}".format(self.first_name, self.last_name)
-
-
-class Permissions(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    permission = models.ForeignKey(Permission, on_delete=models.DO_NOTHING)
-    object_uuid = models.UUIDField()
-
-    @classmethod
-    def has_perm(cls, perm, user, uuid):
-        if user.is_superuser:
-            return True
-        try:
-            cls.objects.get(user=user, permission=perm, object_uuid=uuid)
-            return True
-        except Permissions.DoesNotExist:
-            return False
-        return False
-
-    @classmethod
-    def has_perms(cls, perms, user, uuid):
-        if user.is_superuser:
-            return True
-        return cls.objects.filter(user=user, permission__codename__in=perms, object_uuid=uuid).exists()
-
-    @classmethod
-    def add_perm(cls, perm, user, uuid):
-        cls.objects.create(user=user, permission=perm, object_uuid=uuid)
-
-    @classmethod
-    def perms_for_objects(cls, perms, uuids):
-        return cls.objects.filter(permission__codename__in=perms, object_uuid__in=uuids)
