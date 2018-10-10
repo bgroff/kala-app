@@ -2,65 +2,11 @@
 {% load i18n static kala_tags %}
 
 {% block content %}
-    <div class="repo ribbon">
-        <div class="ui container">
-            <div class="ui big breadcrumb">
-                <a class="section" href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
-                <div class="divider"> /</div>
-                <span class="active section">{{ project }}</span>
-            </div>
-        </div>
-    </div>
-
-    <div class="ui tabular menu">
-        <div class="ui container">
-            <a class="item" href="{% url 'projects:project' project.pk %}">
-                <i class="book icon"></i>
-                {% trans 'Documents' %}
-            </a>
-            <a class="item" href="{% url 'projects:project_invite_user' project.pk %}">
-                <i class="person icon"></i>
-                {% trans 'Invite User' %}
-            </a>
-            <a class="active item" href="{% url 'projects:details' project.pk %}">
-                <i class="gear icon"></i>
-                {% trans 'Settings' %}
-            </a>
-        </div>
-    </div>
-
+   {% include 'projects/includes/header.html' %}
 
     <div class="ui two column grid container">
-        <div class="four wide column">
-            <div class="ui vertical menu">
-                <div class="item">
-                    <div class="header">{% trans 'Project' %}</div>
-                    <div class="menu">
-                        <a class="item" href="{% url 'projects:details' project.pk %}">{% trans 'Details' %}</a>
-                        <a class="item" href="{% url 'projects:archive' project.pk %}">{% trans 'Archive' %}</a>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="header">{% trans 'People' %}</div>
-                    <div class="menu">
-                        <a class="item" href="{% url 'projects:manage_access' project.pk %}">{% trans 'Manage access' %}</a>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="header">{% trans 'Organizations' %}</div>
-                    <div class="menu">
-                        <a class="item" href="{% url 'projects:transfer_ownership' project.pk %}">{% trans 'Transfer ownership' %}</a>
-                    </div>
-                </div>
-                <div class="item">
-                    <div class="header">{% trans 'Categories'%}</div>
-                    <div class="menu">
-                        <a class="active item" href="{% url 'projects:categories' project.pk %}">{% trans 'Manage categories' %}</a>
-                        <a class="item" href="{% url 'projects:new_category' project.pk %}">{% trans 'New category' %}</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+       {% include 'projects/includes/sidebar.html' %}
+
         <div class="twelve wide column">
             {% if messages %}
                 <div class="ui success message">

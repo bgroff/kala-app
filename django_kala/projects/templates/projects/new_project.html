@@ -2,19 +2,21 @@
 {% load i18n static kala_tags %}
 
 {% block content %}
-    <div class="repo ribbon">
-        <div class="ui container">
-            <div class="ui big breadcrumb">
-                <h2 class="active section">{% trans 'New Project' %}</h2>
-            </div>
-        </div>
-        <div class="ui divider">
-        </div>
-    </div>
+   {% include 'projects/includes/header.html' %}
 
     <div class="ui one column grid container">
         <div class="twelve wide column">
-                    {% if messages %}
+            <div class="repo ribbon">
+                <div class="ui container">
+                    <div class="ui big breadcrumb">
+                        <h2 class="active section">{% trans 'New Project' %}</h2>
+                    </div>
+                </div>
+                <div class="ui divider">
+                </div>
+            </div>
+
+            {% if messages %}
                 <div class="ui success message">
                     <i class="close icon"></i>
                     <ul class="messages" style="margin-top: 0">

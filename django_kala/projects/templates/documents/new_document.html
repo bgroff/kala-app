@@ -2,31 +2,19 @@
 {% load i18n static kala_tags %}
 
 {% block content %}
-    <div class="repo ribbon">
-        <div class="ui container">
-            <div class="ui big breadcrumb">
-                <a class="section" href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
-                <div class="divider"> /</div>
-                <a class="section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
-                <div class="divider"> /</div>
-                <span class="active section">{% trans 'New Document' %}</span>
-            </div>
-        </div>
-    <div class="ui divider"></div>
-        {% if messages %}
-            <div class="ui success message">
-                <i class="close icon"></i>
-                <ul class="messages" style="margin-top: 0">
-                    {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
-    </div>
+   {% include 'projects/includes/header.html' %}
 
     <div class="ui one column grid container">
         <div class="twelve wide column">
+            <div class="repo ribbon">
+                <div class="ui container">
+                    <div class="ui big breadcrumb">
+                        <h2 class="active section">{% blocktrans %}New Document{% endblocktrans %}
+                        </h2>
+                    </div>
+                </div>
+                <div class="ui divider"></div>
+            </div>
             <form class="ui form {% if form.errors or version_form.errors %}error{% endif %}" enctype="multipart/form-data" method="post">
                 {% csrf_token %}
                 <div class="field">

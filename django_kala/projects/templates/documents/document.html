@@ -1,41 +1,12 @@
 {% extends 'base.html' %}
 {% load i18n static kala_tags %}
 
-{% block projects_class %}active{% endblock %}
+{% block search_bar %}
+    {% include 'projects/includes/project_search_bar.html' %}
+{% endblock %}
+
 {% block content %}
-    <div class="repo ribbon">
-        <div class="ui container">
-            <div class="ui big breadcrumb">
-                <a class="section" href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
-                <div class="divider"> /</div>
-                <a class="section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
-                <div class="divider"> /</div>
-                <span class="active section">{{ document }}</span>
-            </div>
-        </div>
-
-        <div class="ui tabular menu">
-            <div class="ui container">
-                <a class="active item">
-                    <i class="git branch icon"></i>
-                    {% trans 'Versions' %}
-                </a>
-                {% if can_invite %}
-                <a class="item" href="{% url 'projects:document_invite_user' project.pk document.pk %}">
-                    <i class="person icon"></i>
-                    {% trans 'Invite User' %}
-                </a>
-                {% endif %}
-                {% if can_manage %}
-                <a class="item" href="{% url 'projects:document_details' project.pk document.pk %}">
-                    <i class="gear icon"></i>
-                    {% trans 'Settings' %}
-                </a>
-                {% endif %}
-            </div>
-        </div>
-
-    </div>
+    {% include 'documents/includes/header.html' %}
 
     <div class="ui container">
         <div class="repo title">

@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<div class="four wide column">
+    <div class="four wide column">
+        <div class="ui vertical menu">
+            <div class="item">
+                <div class="header">{% trans 'Document' %}</div>
+                <div class="menu">
+                    <a class="item {% if request.resolver_match.url_name == 'document_details' %}active{% endif %}"
+                       href="{% url 'projects:document_details' document.project.pk document.pk %}">{% trans 'Details' %}</a>
+                    <a class="item {% if request.resolver_match.url_name == 'document_archive' %}active{% endif %}"
+                       href="{% url 'projects:document_archive' document.project.pk document.pk %}">{% trans 'Archive' %}</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="header">{% trans 'People' %}</div>
+                <div class="menu">
+                    <a class="item {% if request.resolver_match.url_name == 'document_manage_access' %}active{% endif %}"
+                       href="{% url 'projects:document_manage_access' document.project.pk document.pk %}">{% trans 'Manage access' %}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

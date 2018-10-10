@@ -6,38 +6,7 @@
 {% endblock %}
 
 {% block content %}
-    <div class="repo ribbon">
-        <div class="ui container">
-            <div class="ui big breadcrumb">
-                <a class="section"
-                   href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
-                <div class="divider"> /</div>
-                <span class="active section">{{ project }}</span>
-            </div>
-        </div>
-
-        <div class="ui tabular menu">
-            <div class="ui container">
-                <a class="active item">
-                    <i class="book icon"></i>
-                    {% trans 'Documents' %}
-                </a>
-                {% if can_invite %}
-                    <a class="item" href="{% url 'projects:project_invite_user' project.pk %}">
-                        <i class="person icon"></i>
-                        {% trans 'Invite User' %}
-                    </a>
-                {% endif %}
-                {% if can_manage %}
-                    <a class="item" href="{% url 'projects:details' project.pk %}">
-                        <i class="gear icon"></i>
-                        {% trans 'Settings' %}
-                    </a>
-                {% endif %}
-            </div>
-        </div>
-
-    </div>
+   {% include 'projects/includes/header.html' %}
 
     <div class="ui container">
         {% if messages %}
@@ -50,7 +19,6 @@
                 </ul>
             </div>
         {% endif %}
-        <!-- Repo Content -->
         <div class="ui four item top attached borderless stats menu">
             <a class="item">
                 <i class="book icon"></i>

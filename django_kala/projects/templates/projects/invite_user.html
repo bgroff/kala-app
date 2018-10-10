@@ -6,99 +6,72 @@
 {% endblock %}
 
 {% block content %}
-    <div class="repo ribbon">
-        <div class="ui container">
-            <div class="ui big breadcrumb">
-                <a class="section"
-                   href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
-                <div class="divider"> /</div>
-                <span class="active section">{{ project }}</span>
-            </div>
-        </div>
-
-        <div class="ui tabular menu">
-            <div class="ui container">
-                <a class="item" href="{% url 'projects:project' project.pk %}">
-                    <i class="book icon"></i>
-                    {% trans 'Documents' %}
-                </a>
-                {% if can_change %}
-                    <a class="active item" href="{% url 'projects:project_invite_user' project.pk %}">
-                        <i class="person icon"></i>
-                        {% trans 'Invite User' %}
-                    </a>
-                    <a class="item" href="{% url 'projects:details' project.pk %}">
-                        <i class="gear icon"></i>
-                        {% trans 'Settings' %}
-                    </a>
-                {% endif %}
-            </div>
-        </div>
-
-    </div>
+    {% include 'projects/includes/header.html' %}
 
     <div class="ui container">
-        <div class="repo ribbon">
-            <div class="ui container">
-                <div class="ui big breadcrumb">
-                    <h2 class="active section">
-                        {% trans 'Invite User' %}
-                    </h2>
-                </div>
-            </div>
-            <div class="ui divider"></div>
-            {% if messages %}
-                <div class="ui success message">
-                    <i class="close icon"></i>
-                    <ul class="messages" style="margin-top: 0">
-                        {% for message in messages %}
-                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endif %}
-        </div>
+
         <div class="ui one column grid container">
             <div class="twelve wide column">
+                <div class="repo ribbon">
+                    <div class="ui container">
+                        <div class="ui big breadcrumb">
+                            <h2 class="active section">
+                                {% trans 'Invite User' %}
+                            </h2>
+                        </div>
+                    </div>
+                    <div class="ui divider"></div>
+                    {% if messages %}
+                        <div class="ui success message">
+                            <i class="close icon"></i>
+                            <ul class="messages" style="margin-top: 0">
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                </div>
                 <form class="ui form {% if form.errors or email_form.errors %}error{% endif %}" method="post">
-                {% csrf_token %}
-                <div class="field">
-                    <label>{{ email_form.email.label }}</label>
-                    {{ email_form.email }}
-                    {% if email_form.email.errors %}
-                    <div class="ui error message">
-                        {{ email_form.email.errors }}
+                    {% csrf_token %}
+                    <div class="field">
+                        <label>{{ email_form.email.label }}</label>
+                        {{ email_form.email }}
+                        {% if email_form.email.errors %}
+                            <div class="ui error message">
+                                {{ email_form.email.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                <div class="field">
-                    <label>{{ form.first_name.label }}</label>
-                    {{ form.first_name }}
-                    {% if form.first_name.errors %}
-                    <div class="ui error message">
-                        {{ form.first_name.errors }}
+                    <div class="field">
+                        <label>{{ form.first_name.label }}</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <div class="ui error message">
+                                {{ form.first_name.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                <div class="field">
-                    <label>{{ form.last_name.label }}</label>
-                    {{ form.last_name }}
-                    {% if form.last_name.errors %}
-                    <div class="ui error message">
-                        {{ form.last_name.errors }}
+                    <div class="field">
+                        <label>{{ form.last_name.label }}</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <div class="ui error message">
+                                {{ form.last_name.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                <div class="field">
-                    <label>{{ form.user_type.label }}</label>
-                    {{ form.user_type }}
-                    {% if form.user_type.errors %}
-                    <div class="ui error message">
-                        {{ form.user_type.errors }}
+                    <div class="field">
+                        <label>{{ form.user_type.label }}</label>
+                        {{ form.user_type }}
+                        {% if form.user_type.errors %}
+                            <div class="ui error message">
+                                {{ form.user_type.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                    <button id="submit-button" class="ui button primary" type="submit">{% trans 'Invite user' %}</button>
+                    <button id="submit-button" class="ui button primary"
+                            type="submit">{% trans 'Invite user' %}</button>
                 </form>
             </div>
         </div>

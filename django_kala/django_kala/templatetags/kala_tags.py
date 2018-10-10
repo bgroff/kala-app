@@ -16,3 +16,18 @@ def pretty_user(user):
 @register.filter
 def users_projects(organization, user):
     return organization.get_projects(user)
+
+
+@register.filter(name='split')
+def split(value, arg):
+    return value.split(arg)
+
+
+@register.filter(name='header')
+def header(value):
+    parts = value.split('/')
+    if parts[-1] == 'invite_user':
+        return 'invite_user'
+    if parts[-2] == 'settings':
+        return 'settings'
+    return 'main'

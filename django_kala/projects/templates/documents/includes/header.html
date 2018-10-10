@@ -1,0 +1,33 @@
+{% load i18n kala_tags %}
+
+{% with active=request.path|header %}
+<div class="repo ribbon">
+    <div class="ui container">
+        <div class="ui big breadcrumb">
+            <a class="section"
+               href="{% url 'organizations:organization' project.organization.pk %}">{{ project.organization }}</a>
+            <div class="divider"> /</div>
+            <a class="section" href="{% url 'projects:project' project.pk %}">{{ project }}</a>
+            <div class="divider"> /</div>
+            <span class="active section">{{ document }}</span>
+        </div>
+    </div>
+
+    <div class="ui tabular menu">
+        <div class="ui container">
+            <a class="item {% if active == 'main' %}active{% endif %}" href="{% url 'projects:document' project.pk document.pk %}">
+                <i class="git branch icon"></i>
+                {% trans 'Versions' %}
+            </a>
+            <a class="item {% if active == 'invite_user' %}active{% endif %}" href="{% url 'projects:document_invite_user' project.pk document.pk %}">
+                <i class="person icon"></i>
+                {% trans 'Invite User' %}
+            </a>
+            <a class="item {% if active == 'settings' %}active{% endif %}" href="{% url 'projects:document_details' project.pk document.pk %}">
+                <i class="gear icon"></i>
+                {% trans 'Settings' %}
+            </a>
+        </div>
+    </div>
+</div>
+{% endwith %}
