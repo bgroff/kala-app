@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from django.contrib.auth.views import login, logout_then_login
+from django.contrib.auth.views import LoginView, logout_then_login
 from django.urls import path, include
 
 from .views import *
@@ -34,8 +34,7 @@ urlpatterns = [
 
     url(
        regex=r'^login/$',
-       view=login,
-       kwargs={'template_name': 'login.html'},
+       view=LoginView.as_view(redirect_authenticated_user=True, template_name='login.html'),
        name='login'
     ),
 
