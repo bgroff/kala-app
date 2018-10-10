@@ -66,7 +66,10 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             )
         self.categories_form = CategoryForm(request.GET or None, project=self.project)
         self.sort_form = SortForm(request.GET or None)
-        documents = self.project.get_documents(request.user)
+        documents = self.project.get_documents(request.user).prefetch_related(
+            'documentversion_set',
+            'documentversion_set__user'
+        )
         if 'search' in request.GET and request.GET['search'] != '':
             self.documents = documents.filter(
                 id__in=DocumentVersion.objects.annotate(
