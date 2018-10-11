@@ -1,8 +1,9 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView
 
@@ -11,7 +12,7 @@ from projects.models import Project
 from projects.forms.documents.settings.details import DetailsForm
 
 
-class DocumentDetailsView(LoginRequiredMixin, TemplateView):
+class DocumentDetailsView(TemplateView):
     template_name = 'documents/settings/details.html'
 
     def get_context_data(self, **kwargs):
@@ -19,12 +20,12 @@ class DocumentDetailsView(LoginRequiredMixin, TemplateView):
             'form': self.form,
             'document': self.document,
             'project': self.project,
-            'organization': self.project.organization,
-            'can_create': self.document.can_create(self.request.user),
-            'can_invite': self.document.can_invite(self.request.user)
+            'organization': self.project.organization
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, project_pk, document_pk, *args, **kwargs):
+        view = super(DocumentDetailsView, self)
         self.project = get_object_or_404(Project.objects.active(), pk=project_pk)
         self.document = get_object_or_404(Document.objects.active(), pk=document_pk)
 
@@ -32,7 +33,7 @@ class DocumentDetailsView(LoginRequiredMixin, TemplateView):
             raise PermissionDenied(_('You do not have permission to edit this project'))
 
         self.form = DetailsForm(request.POST or None, instance=self.document, project=self.project)
-        return super(DocumentDetailsView, self).dispatch(request, *args, **kwargs)
+        return view.dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         if self.form.is_valid():
