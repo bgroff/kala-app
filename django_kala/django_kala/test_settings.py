@@ -1,5 +1,7 @@
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
+from django_kala.functions import import_from_string
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -73,3 +75,9 @@ USE_L10N = True
 USE_TZ = True
 
 LOGIN_REDIRECT_URL = '/'
+
+PLATFORM_MANAGER = import_from_string(
+    'django_kala.platforms.test.manager.PlatformManager',
+    'PLATFORM_MANAGER'
+)
+

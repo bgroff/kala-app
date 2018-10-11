@@ -1,4 +1,4 @@
-from .functions import get_env_variable
+from django_kala.functions import get_env_variable
 
 # Django settings
 EMAIL_BACKEND = get_env_variable('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')

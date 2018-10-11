@@ -1,4 +1,4 @@
-from .functions import get_env_variable
+from django_kala.functions import get_env_variable
 
 # SECURITY WARNING: don't run with debug turned on in production!
 deployment = get_env_variable('DEPLOYMENT', True)

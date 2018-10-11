@@ -250,7 +250,7 @@ jQuery.extend({
 	noop: function() {},
 
 	// See test/unit/core.js for details concerning isFunction.
-	// Since version 1.3, DOM methods and functions like alert
+	// Since version 1.3, DOM methods and functionsas like alert
 	// aren't supported. They return false on IE (#2968).
 	isFunction: function( obj ) {
 		return jQuery.type(obj) === "function";
@@ -2479,7 +2479,7 @@ compile = Sizzle.compile = function( selector, match /* Internal Use Only */ ) {
 		cached = compilerCache[ selector + " " ];
 
 	if ( !cached ) {
-		// Generate a function of recursive functions that can be used to check each element
+		// Generate a function of recursive functionsas that can be used to check each element
 		if ( !match ) {
 			match = tokenize( selector );
 		}
@@ -2504,7 +2504,7 @@ compile = Sizzle.compile = function( selector, match /* Internal Use Only */ ) {
 
 /**
  * A low-level selection function that works with Sizzle's compiled
- *  selector functions
+ *  selector functionsas
  * @param {String|Function} selector A selector or a pre-compiled
  *  selector function built with Sizzle.compile
  * @param {Element} context
@@ -3468,7 +3468,7 @@ jQuery.extend({
 			return;
 		}
 
-		// If there are functions bound, to execute
+		// If there are functionsas bound, to execute
 		readyList.resolveWith( document, [ jQuery ] );
 
 		// Trigger any bound ready events
@@ -3555,7 +3555,7 @@ jQuery.ready.promise = function( obj ) {
 						// detach all dom ready events
 						detach();
 
-						// and execute any waiting functions
+						// and execute any waiting functionsas
 						jQuery.ready();
 					}
 				})();
@@ -4296,7 +4296,7 @@ function safeActiveElement() {
 }
 
 /*
- * Helper functions for managing events -- not part of the public interface.
+ * Helper functionsas for managing events -- not part of the public interface.
  * Props to Dean Edwards' addEvent library for many of the ideas.
  */
 jQuery.event = {
@@ -6709,7 +6709,7 @@ jQuery.extend({
 			}
 
 			// Fixes #8908, it can be done more correctly by specifing setters in cssHooks,
-			// but it would mean to define eight (for every problematic property) identical functions
+			// but it would mean to define eight (for every problematic property) identical functionsas
 			if ( !support.clearCloneStyle && value === "" && name.indexOf("background") === 0 ) {
 				style[ name ] = "inherit";
 			}
@@ -10029,7 +10029,7 @@ jQuery.fn.load = function( url, params, callback ) {
 
 
 
-// Attach a bunch of functions for handling common AJAX events
+// Attach a bunch of functionsas for handling common AJAX events
 jQuery.each( [ "ajaxStart", "ajaxStop", "ajaxComplete", "ajaxError", "ajaxSuccess", "ajaxSend" ], function( i, type ) {
 	jQuery.fn[ type ] = function( fn ) {
 		return this.on( type, fn );

@@ -1,8 +1,7 @@
 # Database
 # https://docs.djangoproject.com/en/1.10/ref/settings/#databases
 
-from django.core.exceptions import ImproperlyConfigured
-from .functions import get_env_variable
+from django_kala.functions import get_env_variable
 
 
 DATABASE_USER = get_env_variable('DATABASE_USER')

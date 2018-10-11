@@ -18,7 +18,7 @@ from .basecamp import BASECAMP
 from .celery import *
 from .databases import DATABASES
 from .email import *
-from .functions import get_env_variable
+from django_kala.functions import get_env_variable
 from .middleware import MIDDLEWARE
 from .platforms import *
 from .storage import *

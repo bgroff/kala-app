@@ -1,4 +1,4 @@
-from ..functions import get_env_variable, import_from_string
+from django_kala.functions import get_env_variable, import_from_string
 
 PLATFORM = get_env_variable('PLATFORM', default='local')
 if PLATFORM == 'local':

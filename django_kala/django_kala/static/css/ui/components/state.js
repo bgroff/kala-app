@@ -615,7 +615,7 @@ $.fn.state.settings = {
   onDeactivate   : function() {},
   onChange       : function() {},
 
-  // state test functions
+  // state test functionsas
   activateTest   : function() { return true; },
   deactivateTest : function() { return true; },
 

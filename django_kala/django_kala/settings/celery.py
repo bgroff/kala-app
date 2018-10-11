@@ -1,4 +1,4 @@
-from .functions import get_env_variable
+from django_kala.functions import get_env_variable
 
 EXPORT_QUEUE = get_env_variable('EXPORT_QUEUE', default='exports')
 
