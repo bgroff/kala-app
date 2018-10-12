@@ -3,13 +3,13 @@ from django.urls import reverse
 from rest_framework.status import HTTP_200_OK, HTTP_302_FOUND
 
 from projects.models import Category
-from . import setup, login, user_permissions_test
+from projects.views.documents.tests import setup, login, user_permissions_test_manage
 
 
 @pytest.mark.django_db
 def test_user_permissions_for_document_details():
     user, organization, project, document, client = setup()
-    user_permissions_test(
+    user_permissions_test_manage(
         view='projects:document_details',
         client=client,
         user=user,

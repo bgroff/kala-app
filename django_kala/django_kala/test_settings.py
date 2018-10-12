@@ -81,3 +81,5 @@ PLATFORM_MANAGER = import_from_string(
     'PLATFORM_MANAGER'
 )
 
+EXPORT_QUEUE = 'test'
+CELERY_BROKER_URL = 'memory://'
