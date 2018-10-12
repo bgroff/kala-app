@@ -31,3 +31,18 @@ def header(value):
     if parts[-2] == 'settings':
         return 'settings'
     return 'main'
+
+
+@register.filter(name='can_create')
+def can_create(obj, user):
+    return obj.can_create(user)
+
+
+@register.filter(name='can_invite')
+def can_invite(obj, user):
+    return obj.can_invite(user)
+
+
+@register.filter(name='can_manage')
+def can_manage(obj, user):
+    return obj.can_manage(user)

@@ -81,7 +81,7 @@
                     </div>
                 </div>
             </div>
-            {% if can_create %}
+            {% if project|can_create:request.user %}
                 <a class="ui positive compact icon button" href="{% url 'projects:new_document' project.pk %}">
                     + {% trans 'New document' %}
                 </a>

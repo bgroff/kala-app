@@ -18,14 +18,18 @@
             <i class="book icon"></i>
             {% trans 'Documents' %}
         </a>
+        {% if project|can_invite:request.user %}
         <a class="item {% if active == 'invite_user' %}active{% endif %}" href="{% url 'projects:project_invite_user' project.pk %}">
             <i class="person icon"></i>
             {% trans 'Invite User' %}
         </a>
+        {% endif %}
+        {% if project|can_manage:request.user %}
         <a class="item {% if active == 'settings' %}active{% endif %}" href="{% url 'projects:details' project.pk %}">
             <i class="gear icon"></i>
             {% trans 'Settings' %}
         </a>
+        {% endif %}
     </div>
 </div>
 {% endwith %}

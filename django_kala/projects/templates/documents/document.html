@@ -15,7 +15,7 @@
                     {% trans 'Download ZIP' %}
                 </a>
             </div>
-            {% if can_create %}
+            {% if document|can_create:request.user %}
             <a class="ui positive compact icon button" href="{% url 'projects:new_version' project.pk document.pk %}">
                 + {% trans 'New version' %}
             </a>
