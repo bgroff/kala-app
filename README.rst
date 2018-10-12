@@ -15,13 +15,7 @@
 Kala: Project Management in Django
 **********************************
 
-Kala is a project management application written in Python on the Django web framework. The intent is for the Kala to
-act as a drop in replacement for Basecamp. Kala can import your projects and files from an existing Basecamp
-installation. As of the writing of this document, Kala only supports files and file versions, although adding additional
-components should relatively straight forward.
-
-Basecamp is a registered trademark of 37signals, LLC and Kala has no affiliation with either.
-
+Kala is a project management application written in Python on the Django web framework. Organizations can use Kala to group their documents based on functional divisions and by projects within those divisions. The user documentation has a longer description of the intended usage.
 
 Kala is the Hawaiian name for surgeonfish and is the mascot for the Kala project management software.
 
@@ -30,7 +24,7 @@ Kala is the Hawaiian name for surgeonfish and is the mascot for the Kala project
 Main Features
 =============
 
-* People, Companies and Projects can all provide access control
+* Users, Organizations and Projects can all provide access control
 * Written in Python 3 and Django
 * MIT License, use as you please
 * Easy to use (IMHO)
