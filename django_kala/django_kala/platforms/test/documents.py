@@ -1,7 +1,7 @@
 class DocumentHandler():
 
     def get_document_url(self, document):
-        return ''
+        return 'http://localhost/test_download'
 
     def upload_export(self, export_path):
         return {}
