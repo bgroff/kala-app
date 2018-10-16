@@ -83,3 +83,8 @@ PLATFORM_MANAGER = import_from_string(
 
 EXPORT_QUEUE = 'test'
 CELERY_BROKER_URL = 'memory://'
+EMAIL_APP = 'kala'
+USE_HTML_EMAIL = False
+APPLICATION_URL = 'http://localhost'
+HELP_EMAIL = 'test.help'
+FROM_EMAIL = 'test.help@test'

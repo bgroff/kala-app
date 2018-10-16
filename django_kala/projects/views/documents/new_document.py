@@ -18,9 +18,7 @@ class NewDocumentView(LoginRequiredMixin, TemplateView):
             'form': self.form,
             'version_form': self.version_form,
             'project': self.project,
-            'organization': self.project.organization,
-            'can_create': self.project.can_create(self.request.user),
-            'can_invite': self.project.can_invite(self.request.user)
+            'organization': self.project.organization
         }
 
     def dispatch(self, request, project_pk, *args, **kwargs):

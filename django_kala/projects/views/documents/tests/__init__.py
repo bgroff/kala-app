@@ -151,3 +151,72 @@ def user_permissions_test_create(view, client, user, organization, project, docu
     response = client.get(reverse(view, args=args))
     assert response.status_code == HTTP_200_OK
     document.delete_invite(user)
+
+
+def user_permissions_test_invite(view, client, user, organization, project, document, args):
+    # Not logged in should redirect to the login page
+    response = client.get(reverse(view, args=args), follow=True)
+    assert response.redirect_chain[0][0] == '{0}?next={1}'.format(
+        reverse('users:login'),
+        reverse(view, args=args)
+    )
+    assert response.redirect_chain[0][1] == HTTP_302_FOUND
+
+    assert login(client, user)
+
+    response = client.get(reverse(view, args=args))
+    assert response.status_code == HTTP_403_FORBIDDEN
+
+    # Test correct permissions
+    organization.add_manage(user)
+    response = client.get(reverse(view, args=args))
+    assert response.status_code == HTTP_200_OK
+    organization.delete_manage(user)
+
+    project.add_manage(user)
+    response = client.get(reverse(view, args=args))
+    assert response.status_code == HTTP_200_OK
+    project.delete_manage(user)
+
+    document.add_manage(user)
+    response = client.get(reverse(view, args=args))
+    assert response.status_code == HTTP_200_OK
+    document.delete_manage(user)
+
+    # Super user does what they want
+    user.is_superuser = True
+    user.save()
+    response = client.get(reverse(view, args=args))
+    assert response.status_code == HTTP_200_OK
+    user.is_superuser = False
+    user.save()
+
+    organization.add_create(user)
+    response = client.get(reverse(view, args=args))
+    assert response.status_code == HTTP_403_FORBIDDEN
+    organization.delete_create(user)
+
+    organization.add_invite(user)
+    response = client.get(reverse(view, args=args))
+    assert response.status_code == HTTP_200_OK
+    organization.delete_invite(user)
+
+    project.add_create(user)
+    response = client.get(reverse(view, args=args))
+    assert response.status_code == HTTP_403_FORBIDDEN
+    project.delete_create(user)
+
+    project.add_invite(user)
+    response = client.get(reverse(view, args=args))
+    assert response.status_code == HTTP_200_OK
+    project.delete_invite(user)
+
+    document.add_create(user)
+    response = client.get(reverse(view, args=args))
+    assert response.status_code == HTTP_403_FORBIDDEN
+    document.delete_create(user)
+
+    document.add_invite(user)
+    response = client.get(reverse(view, args=args))
+    assert response.status_code == HTTP_200_OK
+    document.delete_invite(user)
