@@ -11,3 +11,6 @@ class DocumentHandler():
 
     def retrieve_document(self, document):
         pass
+
+    def upload_document(self, content, key):
+        pass
