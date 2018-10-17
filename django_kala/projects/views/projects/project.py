@@ -52,14 +52,11 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'organization': self.project.organization,
             'sort_form': self.sort_form,
             'version_count': versions.count(),
-            'user_count': versions.distinct('user').count(),
-            'can_manage': self.project.can_manage(self.request.user),
-            'can_create': self.project.can_create(self.request.user),
-            'can_invite': self.project.can_invite(self.request.user)
+            'user_count': versions.distinct('user').count()
         }
 
     def dispatch(self, request, pk, *args, **kwargs):
-        self.project = get_object_or_404(Project.objects.active(), pk=pk)
+        self.project = get_object_or_404(Project.objects.active().prefetch_related('category_set'), pk=pk)
         if not self.project.can_create(user=self.request.user):
             raise PermissionDenied(
                 _('You do not have permission to view this project.')

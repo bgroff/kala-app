@@ -65,6 +65,7 @@ SECRET_KEY = 'foobar'
 DOCUMENT_ROOT = ''
 import os
 STATIC_ROOT = os.path.join(os.path.dirname(__file__) + '/..', 'static/')
+MEDIA_ROOT = '/tmp'
 
 TIME_ZONE = 'Pacific/Honolulu'
 
@@ -88,3 +89,4 @@ USE_HTML_EMAIL = False
 APPLICATION_URL = 'http://localhost'
 HELP_EMAIL = 'test.help'
 FROM_EMAIL = 'test.help@test'
+EXPORT_DIRECTORY = '/tmp/test_exports/'

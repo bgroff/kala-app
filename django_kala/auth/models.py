@@ -70,15 +70,21 @@ class User(AbstractUser):
                 permission__codename='can_create'
             ).values_list('organization__id', flat=True))
 
-    def get_organizations(self):
+    def get_organizations(self, permission=None):
         if self.is_superuser:
             return organizations.models.Organization.objects.active()
         else:
+            kwargs = {
+                'user': self
+            }
+            if permission:
+                kwargs['permission__codename__in'] = permission
+
             return organizations.models.Organization.objects.filter(
                 id__in=set().union(*[
-                    list(organizations.models.OrganizationPermission.objects.filter(user=self).values_list('organization__id', flat=True)),
-                    list(projects.models.ProjectPermission.objects.filter(user=self).values_list('project__organization__id',flat=True).values_list('id',flat=True)),
-                    list(documents.models.DocumentPermission.objects.filter(user=self).values_list('document__project__organization__id', flat=True))
+                    list(organizations.models.OrganizationPermission.objects.filter(**kwargs).values_list('organization__id', flat=True)),
+                    list(projects.models.ProjectPermission.objects.filter(**kwargs).values_list('project__organization__id',flat=True).values_list('id',flat=True)),
+                    list(documents.models.DocumentPermission.objects.filter(**kwargs).values_list('document__project__organization__id', flat=True))
                 ])
             )
 

@@ -22,10 +22,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             'form': self.form,
             'email_form': self.email_form,
             'project': self.project,
-            'organization': self.project.organization,
-            'can_manage': self.project.can_manage(self.request.user),
-            'can_create': self.project.can_create(self.request.user),
-            'can_invite': self.project.can_invite(self.request.user)
+            'organization': self.project.organization
         }
 
     def dispatch(self, request, pk, *args, **kwargs):
