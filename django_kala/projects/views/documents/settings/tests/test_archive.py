@@ -33,7 +33,7 @@ def test_archive():
         },
         follow=True
     )
-    assert response.redirect_chain[0][0] == reverse('projects:document_archive', args=[project.pk, document.pk])
+    assert response.redirect_chain[0][0] == reverse('projects:project', args=[project.pk])
     assert response.redirect_chain[0][1] == HTTP_302_FOUND
 
     document.refresh_from_db()
