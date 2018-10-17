@@ -38,10 +38,9 @@ class ArchiveView(TemplateView):
         self.document.set_active(False)
         return redirect(
             reverse(
-                'projects:document_archive',
+                'projects:project',
                 args=[
                     self.document.project.pk,
-                    self.document.pk
                 ]
             )
         )
