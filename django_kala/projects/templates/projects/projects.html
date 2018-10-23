@@ -13,6 +13,7 @@
 
     <div class="ui container">
 
+        {% if can_create %}
         <div class="repo title">
             <a href="{% url 'projects:new_project' %}">
                 <div class="ui positive compact icon button">
@@ -20,6 +21,7 @@
                 </div>
             </a>
         </div>
+        {% endif %}
         <div class="ui divider">
         </div>
         <div class="twelve wide column">
