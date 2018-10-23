@@ -66,8 +66,7 @@ class User(AbstractUser):
             return organizations.models.Organization.objects.all()
         return organizations.models.Organization.objects.filter(
             id__in=organizations.models.OrganizationPermission.objects.filter(
-                user=self,
-                permission__codename='can_create'
+                user=self
             ).values_list('organization__id', flat=True))
 
     def get_organizations(self, permission=None):
