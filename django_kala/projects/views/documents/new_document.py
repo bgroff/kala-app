@@ -1,16 +1,17 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView
 
-from projects.models import Project
 from projects.forms.documents.new_document import NewDocumentForm, NewDocumentVersionForm
+from projects.models import Project
 
 
-class NewDocumentView(LoginRequiredMixin, TemplateView):
+class NewDocumentView(TemplateView):
     template_name = 'documents/new_document.html'
 
     def get_context_data(self, **kwargs):
@@ -21,6 +22,7 @@ class NewDocumentView(LoginRequiredMixin, TemplateView):
             'organization': self.project.organization
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, project_pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=project_pk)
         if not self.project.can_create(request.user):
