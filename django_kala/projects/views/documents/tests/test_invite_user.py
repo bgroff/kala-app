@@ -29,7 +29,6 @@ def test_document_invite_user_no_data():
     document.add_manage(user)
     assert login(client, user)
 
-    # Send an invalid payload
     response = client.post(
         path=reverse('projects:document_invite_user', args=[project.pk, document.pk]),
         data={
@@ -45,7 +44,6 @@ def test_document_invite_user():
     document.add_manage(user)
     assert login(client, user)
 
-    # Send an invalid payload
     response = client.post(
         path=reverse('projects:document_invite_user', args=[project.pk, document.pk]),
         data={
@@ -70,7 +68,6 @@ def test_document_invite_user_as_collaborator():
     document.add_manage(user)
     assert login(client, user)
 
-    # Send an invalid payload
     response = client.post(
         path=reverse('projects:document_invite_user', args=[project.pk, document.pk]),
         data={
@@ -82,7 +79,6 @@ def test_document_invite_user_as_collaborator():
         follow=True
     )
     assert response.status_code == HTTP_200_OK
-
     new_user = User.objects.get(email='test.user@test.com')
     assert document.can_create(new_user)
     assert document.can_invite(new_user)
@@ -95,7 +91,6 @@ def test_document_invite_user_as_manager():
     document.add_manage(user)
     assert login(client, user)
 
-    # Send an invalid payload
     response = client.post(
         path=reverse('projects:document_invite_user', args=[project.pk, document.pk]),
         data={
@@ -120,7 +115,6 @@ def test_document_invite_user_sends_email():
     document.add_manage(user)
     assert login(client, user)
 
-    # Send an invalid payload
     response = client.post(
         path=reverse('projects:document_invite_user', args=[project.pk, document.pk]),
         data={
