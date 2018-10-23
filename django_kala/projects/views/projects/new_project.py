@@ -1,15 +1,16 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
 from projects.forms import NewProjectForm
 
 
-class NewProjectView(LoginRequiredMixin, TemplateView):
+class NewProjectView(TemplateView):
     template_name = 'projects/new_project.html'
 
     def get_context_data(self, **kwargs):
@@ -17,6 +18,7 @@ class NewProjectView(LoginRequiredMixin, TemplateView):
             'form': self.form,
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.organizations = request.user.get_organizations_with_create()
         if not self.organizations:

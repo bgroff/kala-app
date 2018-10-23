@@ -1,20 +1,21 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.urls import reverse
-from django.utils.translation import ugettext as _
 from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
 from projects.models import Project
 from ...forms.invite_user import InviteUserForm, EmailForm
 
-
 User = get_user_model()
 
-class InviteUserView(LoginRequiredMixin, TemplateView):
+
+class InviteUserView(TemplateView):
     template_name = 'projects/invite_user.html'
 
     def get_context_data(self, **kwargs):
@@ -25,6 +26,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             'organization': self.project.organization
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
         if not self.project.can_invite(self.request.user):
