@@ -7,5 +7,6 @@ class ProjectsView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         return {
+            'can_create': True if self.request.user.get_organizations_with_create() else False,
             'organizations': self.request.user.get_organizations(),
         }
