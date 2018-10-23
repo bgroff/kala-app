@@ -4,15 +4,13 @@ from rest_framework.status import HTTP_302_FOUND, HTTP_403_FORBIDDEN, HTTP_200_O
 
 from auth.tests.factories import UserFactory
 from organizations.tests.factories import OrganizationFactory
-from projects.tests.factories import ProjectFactory
 
 
 def setup():
     user = UserFactory.create()
     organization = OrganizationFactory.create()
-    project = ProjectFactory.create(organization=organization)
 
-    return user, organization, project, Client()
+    return user, organization, Client()
 
 
 def login(client, user):
@@ -21,7 +19,7 @@ def login(client, user):
     return client.login(username=user.email, password='test')
 
 
-def user_permissions_test_manage(view, client, user, organization, project, args):
+def user_permissions_test_manage(view, client, user, organization, args):
     # Not logged in should redirect to the login page
     response = client.get(reverse(view, args=args), follow=True)
     assert response.redirect_chain[0][0] == '{0}?next={1}'.format(
@@ -40,11 +38,6 @@ def user_permissions_test_manage(view, client, user, organization, project, args
     response = client.get(reverse(view, args=args))
     assert response.status_code == HTTP_200_OK
     organization.delete_manage(user)
-
-    project.add_manage(user)
-    response = client.get(reverse(view, args=args))
-    assert response.status_code == HTTP_200_OK
-    project.delete_manage(user)
 
     # Super user does what they want
     user.is_superuser = True
@@ -62,15 +55,9 @@ def user_permissions_test_manage(view, client, user, organization, project, args
     organization.delete_create(user)
     organization.delete_invite(user)
 
-    project.add_create(user)
-    project.add_invite(user)
-    response = client.get(reverse(view, args=args))
-    assert response.status_code == HTTP_403_FORBIDDEN
-    project.delete_create(user)
-    project.delete_invite(user)
 
 
-def user_permissions_test_create(view, client, user, organization, project, args):
+def user_permissions_test_create(view, client, user, organization, args):
     # Not logged in should redirect to the login page
     response = client.get(reverse(view, args=args), follow=True)
     assert response.redirect_chain[0][0] == '{0}?next={1}'.format(
@@ -90,11 +77,6 @@ def user_permissions_test_create(view, client, user, organization, project, args
     assert response.status_code == HTTP_200_OK
     organization.delete_manage(user)
 
-    project.add_manage(user)
-    response = client.get(reverse(view, args=args))
-    assert response.status_code == HTTP_200_OK
-    project.delete_manage(user)
-
     # Super user does what they want
     user.is_superuser = True
     user.save()
@@ -113,18 +95,8 @@ def user_permissions_test_create(view, client, user, organization, project, args
     assert response.status_code == HTTP_200_OK
     organization.delete_invite(user)
 
-    project.add_create(user)
-    response = client.get(reverse(view, args=args))
-    assert response.status_code == HTTP_200_OK
-    project.delete_create(user)
 
-    project.add_invite(user)
-    response = client.get(reverse(view, args=args))
-    assert response.status_code == HTTP_200_OK
-    project.delete_invite(user)
-
-
-def user_permissions_test_invite(view, client, user, organization, project, args):
+def user_permissions_test_invite(view, client, user, organization, args):
     # Not logged in should redirect to the login page
     response = client.get(reverse(view, args=args), follow=True)
     assert response.redirect_chain[0][0] == '{0}?next={1}'.format(
@@ -144,11 +116,6 @@ def user_permissions_test_invite(view, client, user, organization, project, args
     assert response.status_code == HTTP_200_OK
     organization.delete_manage(user)
 
-    project.add_manage(user)
-    response = client.get(reverse(view, args=args))
-    assert response.status_code == HTTP_200_OK
-    project.delete_manage(user)
-
     # Super user does what they want
     user.is_superuser = True
     user.save()
@@ -166,13 +133,3 @@ def user_permissions_test_invite(view, client, user, organization, project, args
     response = client.get(reverse(view, args=args))
     assert response.status_code == HTTP_200_OK
     organization.delete_invite(user)
-
-    project.add_create(user)
-    response = client.get(reverse(view, args=args))
-    assert response.status_code == HTTP_403_FORBIDDEN
-    project.delete_create(user)
-
-    project.add_invite(user)
-    response = client.get(reverse(view, args=args))
-    assert response.status_code == HTTP_200_OK
-    project.delete_invite(user)
