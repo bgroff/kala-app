@@ -18,7 +18,10 @@ class InviteUserForm(forms.ModelForm):
             ['manager', _('Manager')]
         ]
         else:
-            user_type_choice = [['creator', _('Creator')]]
+            user_type_choice = [
+                ['creator', _('Creator')],
+                ['collaborator', _('Collaborator')],
+            ]
 
         self.fields['first_name'].required = True
         self.fields['last_name'].required = True
