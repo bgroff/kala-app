@@ -85,38 +85,6 @@ class Document(models.Model):
     def list_versions(self):
         return self.documentversion_set.all()
 
-    def get_users(self, user):
-        if user.is_superuser:
-            return User.objects.all()
-        # If you have permissions for the org, or permissions for the
-        # project, then you can see everyone in the org.
-        if Permissions.has_perms([
-            'change_organization',
-            'add_organization',
-            'delete_organization'
-        ], user, self.project.organization.uuid) or Permissions.has_perms([
-            'add_project',
-            'change_project',
-            'delete_project'
-        ], user, self.project.uuid):
-            return self.project.organization.user_set.all()
-        if Permissions.has_perms([
-            'add_document',
-            'change_document',
-            'delete_document'
-        ], user, self.uuid):
-            project_users = DocumentVersion.objects.filter(
-                document__project=self.project
-            ).prefetch_related(
-                'document_set'
-            ).select_related(
-                'user_id'
-            ).values_list(
-                'user_id', flat=True
-            )
-            return User.objects.filter(id__in=project_users)
-        return None
-
     def can(self, user, _permissions):
         if user.is_superuser:
             return True

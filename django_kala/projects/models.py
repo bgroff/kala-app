@@ -50,11 +50,6 @@ class Project(models.Model):
             id__in=user.get_documents().values_list('id', flat=True)
         )
 
-    def get_users(self, user):
-        if user.is_superuser:
-            return User.objects.all()
-        return user.get_users()
-
     def can(self, user, _permissions):
         if user.is_superuser:
             return True
@@ -150,7 +145,7 @@ class ProjectPermission(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
 
-    def __str__(self):
+    def __str__(self): # pragma: no cover
         return '{0} | {1} | {2}'.format(self.project, self.user, self.permission.codename)
 
 

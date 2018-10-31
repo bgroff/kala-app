@@ -42,7 +42,6 @@ def test_project_manage_access():
     )
     assert response.redirect_chain[0][0] == reverse('projects:manage_access', args=[project.pk])
     assert response.redirect_chain[0][1] == HTTP_302_FOUND
-    print(ProjectPermission.objects.all())
     assert project.can_create(other_user) == True
 
     # Remove Create

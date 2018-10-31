@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from rest_framework.status import HTTP_200_OK, HTTP_302_FOUND
 
-from organizations.views.tests import setup, user_permissions_test_invite, login
+from organizations.views.tests import setup, login
 
 User = get_user_model()
 
