@@ -1,8 +1,9 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
@@ -10,17 +11,16 @@ from auth.forms.manage_access import manage_access_forms
 from organizations.models import Organization, OrganizationPermission
 
 
-class ManageAccessView(LoginRequiredMixin, TemplateView):
+class ManageAccessView(TemplateView):
     template_name = 'organizations/settings/manage_access.html'
 
     def get_context_data(self, **kwargs):
         return {
             'forms': self.forms,
             'organization': self.organization,
-            'can_invite': self.organization.can_invite(self.request.user),
-
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.organization = get_object_or_404(
             Organization.objects.active(),

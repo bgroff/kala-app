@@ -1,25 +1,26 @@
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView
 
-from organizations.models import Organization
 from organizations.forms import DetailsForm
+from organizations.models import Organization
 
 
-class DetailsView(LoginRequiredMixin, TemplateView):
+class DetailsView(TemplateView):
     template_name = 'organizations/settings/details.html'
 
     def get_context_data(self, **kwargs):
         return {
             'form': self.form,
             'organization': self.organization,
-            'can_invite': self.organization.can_invite(self.request.user),
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.organization = get_object_or_404(Organization.objects.active(), pk=pk)
         if not self.organization.can_manage(request.user):

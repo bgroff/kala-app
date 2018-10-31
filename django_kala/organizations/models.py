@@ -14,14 +14,6 @@ import datetime
 User = get_user_model()
 
 
-class OrganizationsWithProjectManager(models.Manager):
-    def get_query_set(self):
-        return super(OrganizationsWithProjectManager, self).get_query_set().filter(
-            is_active=True,
-            pk__in=Project.objects.active().values('organization__pk')
-        )
-
-
 class Organization(models.Model):
     name = models.CharField(max_length=255, unique=True)
     uuid = models.UUIDField(unique=True, db_index=True, default=uuid4)
@@ -41,7 +33,6 @@ class Organization(models.Model):
     is_active = models.BooleanField(default=True)
 
     objects = ActiveManager()
-    with_projects = OrganizationsWithProjectManager()
 
     class Meta:
         ordering = ['name']
@@ -64,12 +55,6 @@ class Organization(models.Model):
             return Project.objects.active().filter(organization=self)
         else:
             return Project.objects.filter(id__in=user.get_projects().values_list('id', flat=True), organization=self)
-
-    def get_people(self, user):
-        if user.is_superuser:
-            return User.objects.all()
-        else:
-            return user.get_users()
 
     def __str__(self):
         return self.name
@@ -170,5 +155,5 @@ class OrganizationPermission(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
 
-    def __str__(self):
+    def __str__(self): # pragma: no cover
         return '{0} | {1} | {2}'.format(self.organization, self.user, self.permission.codename)

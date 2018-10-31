@@ -1,21 +1,21 @@
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import redirect, get_object_or_404
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
 from organizations.models import Organization
 from projects.forms.invite_user import InviteUserForm, EmailForm
 
-
 User = get_user_model()
 
 
-class InviteUserView(LoginRequiredMixin, TemplateView):
+class InviteUserView(TemplateView):
     template_name = 'organizations/invite_user.html'
 
     def get_context_data(self, **kwargs):
@@ -26,6 +26,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             'can_invite': self.can_invite,
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.organization = get_object_or_404(Organization.objects.active(), pk=pk)
 
@@ -51,7 +52,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
                 user.username = user.email
                 user.save()
             if self.form.cleaned_data['user_type'] == 'manager':
-                self.organization.add_delete(user)
+                self.organization.add_manage(user)
             elif self.form.cleaned_data['user_type'] == 'collaborator':
                 self.organization.add_invite(user)
             else:
