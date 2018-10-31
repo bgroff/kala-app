@@ -1,10 +1,11 @@
 from django.conf import settings
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchVector
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, InvalidPage
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views import View
 from django.views.generic import TemplateView
@@ -15,7 +16,7 @@ from projects.models import Project
 from projects.tasks.export_project import ExportProjectTask
 
 
-class ProjectView(LoginRequiredMixin, TemplateView):
+class ProjectView(TemplateView):
     template_name = 'projects/project.html'
 
     def get_context_data(self, **kwargs):
@@ -55,6 +56,7 @@ class ProjectView(LoginRequiredMixin, TemplateView):
             'user_count': versions.distinct('user').count()
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active().prefetch_related('category_set'), pk=pk)
         if not self.project.can_create(user=self.request.user):
@@ -88,7 +90,9 @@ class ProjectView(LoginRequiredMixin, TemplateView):
         return super(ProjectView, self).dispatch(request, *args, **kwargs)
 
 
-class ExportProjectView(LoginRequiredMixin, View):
+class ExportProjectView(View):
+
+    @method_decorator(login_required)
     def dispatch(self, request, pk, *args, **kwargs):
         self.project = get_object_or_404(Project.objects.active(), pk=pk)
         if not self.project.can_create(user=self.request.user):
