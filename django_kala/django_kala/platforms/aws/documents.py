@@ -34,7 +34,7 @@ class DocumentHandler():
             ClientMethod='get_object',
             Params={
                 'Bucket': settings.S3_STORAGE_BUCKET,
-                'Key': 'exports/{0}'.format(export.details['Key']),
+                'Key': '{0}'.format(export.details['Key']),
                 'ResponseContentDisposition': 'attachment; filename="{0}"'.format(export.name),
             }
         )
