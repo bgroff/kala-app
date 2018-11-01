@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchVector
 from django.core.exceptions import PermissionDenied
@@ -104,6 +105,7 @@ class ExportProjectView(View):
     def get(self, request, *args, **kwargs):
         task = ExportProjectTask()
         task.apply_async([self.project.pk, request.user.pk], queue=settings.EXPORT_QUEUE)
+        messages.success(_('You project has been scheduled for export. You will receive a download notification shortly.'))
 
         return redirect(
             reverse(

@@ -60,5 +60,14 @@ class ExportProjectTask(Task):
         # Cleanup the temp files.
         self.cleanup()
 
+        # TODO: this will need to be refactored when a notification is in place.
+        # Send a notification to download
+        user.send_invite(
+            settings.EMAIL_APP,
+            'project_export',
+            'Project Export',
+            export
+        )
+
     def cleanup(self):
         shutil.rmtree(self.path)
