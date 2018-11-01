@@ -12,6 +12,6 @@ class ExportView(View):
 
     @method_decorator(login_required)
     def get(self, request, token, *args, **kwargs):
-        export = get_object_or_404(Export.objects.active(), pk=pk)
+        export = get_object_or_404(Export, key=token)
         manager = settings.PLATFORM_MANAGER()
         return redirect(manager.get_export_url(export))
