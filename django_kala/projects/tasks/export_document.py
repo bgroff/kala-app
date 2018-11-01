@@ -22,7 +22,7 @@ class ExportDocumentTask(Task):
         manager = settings.PLATFORM_MANAGER()
 
         # If the user does not have change or create priviliages, fail.
-        if not document.has_change(user) and not document.has_create(user):
+        if not document.can_create(user):
             # TODO: this should be logged
             return False
 

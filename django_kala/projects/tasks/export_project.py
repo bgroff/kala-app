@@ -21,7 +21,7 @@ class ExportProjectTask(Task):
         manager = settings.PLATFORM_MANAGER()
 
         # If the user does not have change or create priviliages, fail.
-        if not project.has_change(user) and not project.has_create(user):
+        if not project.can_create(user):
             # TODO: this should be logged
             return False
 
