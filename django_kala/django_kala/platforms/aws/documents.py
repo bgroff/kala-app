@@ -54,7 +54,8 @@ class DocumentHandler():
             Bucket=settings.S3_STORAGE_BUCKET,
             Key=key,
             ExtraArgs={
-                'Expires': expires
+                'Expires': expires,
+                'ServerSideEncryption': 'AES256'
             }
         )
 
