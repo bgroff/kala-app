@@ -2,6 +2,7 @@ from celery.task import Task
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
+from django.utils.translation import ugettext as _
 
 from projects.models import Project, Export
 
@@ -64,8 +65,8 @@ class ExportProjectTask(Task):
         # Send a notification to download
         user.send_invite(
             settings.EMAIL_APP,
-            'project_export',
-            'Project Export',
+            'email/project_export',
+            _('Project Export'),
             export
         )
 

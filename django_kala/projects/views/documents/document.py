@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404, redirect
@@ -52,6 +53,7 @@ class ExportDocumentView(View):
     def get(self, request, *args, **kwargs):
         task = ExportDocumentTask()
         task.apply_async([self.document.pk, request.user.pk], queue=settings.EXPORT_QUEUE)
+        messages.success(request, _('Your document has been scheduled for export. You will receive a download notification shortly.'))
 
         return redirect(
             reverse(

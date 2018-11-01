@@ -2,6 +2,7 @@ from celery.task import Task
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.utils.crypto import get_random_string
+from django.utils.translation import ugettext as _
 
 from documents.models import Document
 from projects.models import Export
@@ -66,8 +67,8 @@ class ExportDocumentTask(Task):
         # Send a notification to download
         user.send_invite(
             settings.EMAIL_APP,
-            'document_export',
-            'Document Export',
+            'email/document_export',
+            _('Document Export'),
             export
         )
 
