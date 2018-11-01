@@ -1,4 +1,7 @@
+import datetime
+
 from django.conf import settings
+from django.utils import timezone
 from uuid import uuid4
 
 import boto3
@@ -25,7 +28,8 @@ class DocumentHandler():
             Body=content,
             Bucket=settings.S3_STORAGE_BUCKET,
             Key='media/documents/{0}'.format(key),
-            ServerSideEncryption='AES256'
+            ServerSideEncryption='AES256',
+
         )
 
     def get_export_url(self, export):
@@ -42,12 +46,16 @@ class DocumentHandler():
 
     def upload_export(self, export_path):
         key = 'exports/{0}'.format(uuid4())
+        expires = timezone.now() + datetime.timedelta(days=settings.EXPORT_EXPIRATION_IN_DAYS)
 
         s3 = boto3.resource('s3')
         s3.meta.client.upload_file(
-            export_path,
-            settings.S3_STORAGE_BUCKET,
-            key
+            Filename=export_path,
+            Bucket=settings.S3_STORAGE_BUCKET,
+            Key=key,
+            ExtraArgs={
+                'Expires': expires
+            }
         )
 
         return {'Key': key}
