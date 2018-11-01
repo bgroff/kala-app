@@ -13,3 +13,4 @@ export DATABASE_HOST=localhost
 export HOST_NAME=localhost
 
 bash $WORKING_DIR/deploy/provision/provision.sh
+bash $WORKING_DIR/deploy/provision/rabbitmq.sh
