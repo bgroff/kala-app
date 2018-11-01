@@ -53,4 +53,9 @@ urlpatterns = [
         name='password_reset_confirm'
     ),
 
+    path(
+        'export_download/<token>',
+        ExportView.as_view(),
+        name='download_export'
+    ),
 ]
