@@ -1,15 +1,16 @@
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.urls import reverse
-from django.utils.translation import ugettext as _
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
+from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
 from ..forms.invite_user import InviteUserForm
 
 
-class InviteUserView(LoginRequiredMixin, TemplateView):
+class InviteUserView(TemplateView):
     template_name = 'invite_user.html'
 
     def get_context_data(self, **kwargs):
@@ -17,6 +18,7 @@ class InviteUserView(LoginRequiredMixin, TemplateView):
             'form': self.form
         }
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         self.form = InviteUserForm(request.POST or None)
         return super(InviteUserView, self).dispatch(request, *args, **kwargs)
