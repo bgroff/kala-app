@@ -57,7 +57,7 @@ class ExportDocumentTask(Task):
             name=export_path.split('/')[-1],
             user=user,
             details=export_details,
-            key=get_random_string(length=255)
+            key=get_random_string(length=78)
         )
 
         # Cleanup the temp files.
