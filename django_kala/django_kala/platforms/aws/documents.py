@@ -69,7 +69,8 @@ class DocumentHandler():
 
     def delete_document(self, document):
         s3 = boto3.resource('s3')
-        s3.Object(
-            settings.S3_STORAGE_BUCKET,
-            'media/documents/{0}'.format(document.uuid)
-        ).delete()
+        for version in document.documentversion_set.all():
+            s3.Object(
+                settings.S3_STORAGE_BUCKET,
+                'media/documents/{0}'.format(version.uuid)
+            ).delete()
