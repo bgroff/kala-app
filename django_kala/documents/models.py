@@ -31,9 +31,6 @@ class Document(models.Model):
         db_table = 'kala_documents'
 
     def set_active(self, active):
-        manager = settings.PLATFORM_MANAGER()
-        manager.archive_document(self) if active else manager.retrieve_document(self)
-
         self.is_active = active
         if not self.is_active:
             self.removed = timezone.now().date()
