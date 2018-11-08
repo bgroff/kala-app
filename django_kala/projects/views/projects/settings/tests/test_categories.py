@@ -22,7 +22,7 @@ def test_user_permissions_for_project_categories():
 @pytest.mark.django_db
 def test_user_permissions_for_deleting_project_category():
     user, organization, project, client = setup()
-    category = Category.objects.create(name='Test Category', project=project, type='test')
+    category = Category.objects.create(name='Test Category', project=project)
     user_permissions_test_manage(
         view='projects:delete_category',
         client=client,
@@ -49,7 +49,7 @@ def test_user_permissions_for_creating_project_category():
 @pytest.mark.django_db
 def test_user_permissions_for_editing_project_category():
     user, organization, project, client = setup()
-    category = Category.objects.create(name='Test Category', project=project, type='test')
+    category = Category.objects.create(name='Test Category', project=project)
     user_permissions_test_manage(
         view='projects:edit_category',
         client=client,
@@ -66,7 +66,7 @@ def test_editing_project_category():
     project.add_manage(user)
     assert login(client, user)
 
-    category = Category.objects.create(name='Test Category', project=project, type='test')
+    category = Category.objects.create(name='Test Category', project=project)
     response = client.post(
         path=reverse('projects:edit_category', args=[project.pk, category.pk]),
         data={
@@ -135,7 +135,7 @@ def test_deleting_project_category():
     project.add_manage(user)
     assert login(client, user)
 
-    category = Category.objects.create(name='Test Category', project=project, type='test')
+    category = Category.objects.create(name='Test Category', project=project)
     assert len(project.category_set.all()) == 1
     response = client.delete(
         path=reverse('projects:delete_category', args=[project.pk, category.pk]),

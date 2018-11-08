@@ -27,7 +27,7 @@ def test_updated_details():
     assert login(client, user)
 
     # Valid case
-    category = Category.objects.create(name='Test Category', project=project, type='test')
+    category = Category.objects.create(name='Test Category', project=project)
     response = client.post(
         path=reverse('projects:document_details', args=[project.pk, document.pk]),
         data={
