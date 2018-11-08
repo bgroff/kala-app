@@ -44,8 +44,8 @@ class Project(models.Model):
 
     def get_documents(self, user):
         if user.is_superuser:
-            return self.document_set.filter(project=self)
-        return self.document_set.filter(
+            return self.document_set.active().filter(project=self)
+        return self.document_set.active().filter(
             project=self,
             id__in=user.get_documents().values_list('id', flat=True)
         )
