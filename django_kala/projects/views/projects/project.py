@@ -25,7 +25,7 @@ class ProjectView(TemplateView):
         for document in self.documents:
             for version in document.documentversion_set.all():
                 version_ids.append(str(version.uuid))
-        versions = DocumentVersion.objects.filter(uuid__in=version_ids).order_by('user_id')
+        versions = DocumentVersion.objects.active().filter(uuid__in=version_ids).order_by('user_id')
 
         sort_order = self.request.GET.get('sort', None)
         if sort_order:
