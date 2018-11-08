@@ -2,27 +2,7 @@
 {% load i18n static kala_tags %}
 
 {% block content %}
-    <div class="repo ribbon">
-        <div class="ui container">
-            <div class="ui big breadcrumb">
-                <a class="section">{{ organization }}</a>
-            </div>
-        </div>
-    </div>
-
-    <div class="ui tabular menu">
-        <div class="ui container">
-            <a class="active item" href="{% url 'organizations:invite_user' organization.pk %}">
-                <i class="person icon"></i>
-                {% trans 'Invite User' %}
-            </a>
-            <a class="item" href="{% url 'organizations:details' organization.pk %}">
-                <i class="gear icon"></i>
-                {% trans 'Settings' %}
-            </a>
-        </div>
-    </div>
-
+   {% include 'includes/header.html' %}
 
      <div class="ui container">
         <div class="repo ribbon">

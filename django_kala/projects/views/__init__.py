@@ -1,4 +1,5 @@
 from .projects.settings.archive import ArchiveView
+from .projects.settings.delete import DeleteView
 from .projects.settings.categories import CategoriesView, NewCategoryView, EditCategoryView
 from .projects.settings.details import DetailsView
 from .projects.settings.manage_access import ManageAccessView
@@ -12,6 +13,7 @@ from .documents.invite_user import InviteUserView as DocumentInviteUserView
 from .documents.settings.details import DocumentDetailsView
 from .documents.settings.manage_access import ManageAccessView as DocumentManageAccessView
 from .documents.settings.archive import ArchiveView as DocumentArchiveView
+from .documents.settings.delete import DeleteView as DocumentDeleteView
 from .projects.new_project import NewProjectView
 from .projects.project import ProjectView, ExportProjectView
 from .projects.projects import ProjectsView

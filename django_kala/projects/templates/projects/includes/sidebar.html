@@ -7,6 +7,7 @@
             <div class="menu">
                 <a class="item {% if request.resolver_match.url_name == 'details' %}active{% endif %}" href="{% url 'projects:details' project.pk %}">{% trans 'Details' %}</a>
                 <a class="item {% if request.resolver_match.url_name == 'archive' %}active{% endif %}" href="{% url 'projects:archive' project.pk %}">{% trans 'Archive' %}</a>
+                <a class="item {% if request.resolver_match.url_name == 'delete' %}active{% endif %}" href="{% url 'projects:delete' project.pk %}">{% trans 'Delete' %}</a>
             </div>
         </div>
         <div class="item">

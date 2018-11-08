@@ -15,11 +15,11 @@
            <form class="ui form" method="post">
                 {% csrf_token %}
                 <div class="field">
-                    <label>{% trans 'Re-enter documents name to archive the document' %}</label>
-                    <input id="projectName" type="text" name="documentName" placeholder="Document Name" required>
+                    <label>{% trans 'Re-enter documents name to delete the document' %}</label>
+                    <input id="documentName" type="text" name="documentName" placeholder="Document Name" required>
                 </div>
                   <div class="ui error message"></div>
-                <div class="ui submit button primary">{% trans 'Archive document' %}</div>
+                <div class="ui submit button negative">{% trans 'Delete document' %}</div>
             </form>
         </div>
     </div>
@@ -30,7 +30,7 @@
         $('.ui.form')
             .form({
                 fields: {
-                    projectName: {
+                    documentName: {
                         rules: [
                             {
                                 type: 'isExactly[{{ document.name }}]',

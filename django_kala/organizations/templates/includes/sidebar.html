@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<div class="four wide column">
+    <div class="ui vertical menu">
+        <div class="item">
+            <div class="header">{% trans 'Organization' %}</div>
+            <div class="menu">
+                <a class="item {% if request.resolver_match.url_name == 'details' %}active{% endif %}"
+                   href="{% url 'organizations:details' organization.pk %}">{% trans 'Details' %}</a>
+                <a class="item {% if request.resolver_match.url_name == 'archive' %}active{% endif %}"
+                   href="{# {% url 'organizations:archive' organization.pk %}#}">{% trans 'Archive' %}</a>
+                <a class="item {% if request.resolver_match.url_name == 'delete' %}active{% endif %}"
+                   href="{% url 'organizations:delete' organization.pk %}">{% trans 'Delete' %}</a>
+            </div>
+        </div>
+        <div class="item">
+            <div class="header">{% trans 'People' %}</div>
+            <div class="menu">
+                <a class="item {% if request.resolver_match.url_name == 'manage_access' %}active{% endif %}"
+                   href="{% url 'organizations:manage_access' organization.pk %}">{% trans 'Manage access' %}</a>
+            </div>
+        </div>
+    </div>
+</div>

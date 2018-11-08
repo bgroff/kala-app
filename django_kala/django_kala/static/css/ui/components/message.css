@@ -12,6 +12,7 @@
 /*******************************
             Message
 *******************************/
+@charset "utf-8";
 
 .ui.message {
   position: relative;

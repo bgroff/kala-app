@@ -17,7 +17,7 @@ class UsersView(LoginRequiredMixin, TemplateView):
                 organization = Organization.objects.get(name=organization)
                 organization_users = self.request.user.get_users()
                 if organization_users:
-                    users = users.filter(pk__in=organization_users.values_list('pk'))
+                    users = users.active().filter(pk__in=organization_users.values_list('pk'))
                 else:
                     users = []
             except Exception as e:

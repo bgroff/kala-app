@@ -6,20 +6,20 @@
 {% endblock %}
 
 {% block content %}
-   {% include 'documents/includes/header.html' %}
+   {% include 'projects/includes/header.html' %}
 
     <div class="ui two column grid container">
-        {% include 'documents/includes/sidebar.html' %}
+        {% include 'projects/includes/sidebar.html' %}
 
         <div class="twelve wide column">
            <form class="ui form" method="post">
                 {% csrf_token %}
                 <div class="field">
-                    <label>{% trans 'Re-enter documents name to archive the document' %}</label>
-                    <input id="projectName" type="text" name="documentName" placeholder="Document Name" required>
+                    <label>{% trans 'Re-enter projects name to delete the project' %}</label>
+                    <input id="projectName" type="text" name="projectName" placeholder="Project Name" required>
                 </div>
                   <div class="ui error message"></div>
-                <div class="ui submit button primary">{% trans 'Archive document' %}</div>
+                <div class="ui submit button negative">{% trans 'Delete project' %}</div>
             </form>
         </div>
     </div>
@@ -33,8 +33,8 @@
                     projectName: {
                         rules: [
                             {
-                                type: 'isExactly[{{ document.name }}]',
-                                prompt: 'You must enter the document name as it appears in the application.'
+                                type: 'isExactly[{{ project.name }}]',
+                                prompt: 'You must enter the project name as it appears in the application.'
                             }
                         ]
                     }

@@ -63,8 +63,8 @@ class User(AbstractUser):
 
     def get_organizations_with_create(self):
         if self.is_superuser:
-            return organizations.models.Organization.objects.all()
-        return organizations.models.Organization.objects.filter(
+            return organizations.models.Organization.objects.active()
+        return organizations.models.Organization.objects.active().filter(
             id__in=organizations.models.OrganizationPermission.objects.filter(
                 user=self
             ).values_list('organization__id', flat=True))
@@ -79,7 +79,7 @@ class User(AbstractUser):
             if permission:
                 kwargs['permission__codename__in'] = permission
 
-            return organizations.models.Organization.objects.filter(
+            return organizations.models.Organization.objects.active().filter(
                 id__in=set().union(*[
                     list(organizations.models.OrganizationPermission.objects.filter(**kwargs).values_list('organization__id', flat=True)),
                     list(projects.models.ProjectPermission.objects.filter(**kwargs).values_list('project__organization__id',flat=True).values_list('id',flat=True)),
@@ -91,7 +91,7 @@ class User(AbstractUser):
         if self.is_superuser:
             return projects.models.Project.objects.active()
         else:
-            return projects.models.Project.objects.filter(
+            return projects.models.Project.objects.active().filter(
                 id__in=set().union(*[
                     list(projects.models.ProjectPermission.objects.filter(user=self).values_list('project__id', flat=True)),
                     list(projects.models.Project.objects.filter(organization__id__in=organizations.models.OrganizationPermission.objects.filter(user=self).values_list('organization__id', flat=True)).values_list('id', flat=True)),
@@ -101,9 +101,9 @@ class User(AbstractUser):
 
     def get_documents(self):
         if self.is_superuser:
-            return documents.models.Document.objects.all()
+            return documents.models.Document.objects.active()
         else:
-            return documents.models.Document.objects.filter(
+            return documents.models.Document.objects.active().filter(
                 id__in=set().union(*[
                     list(documents.models.DocumentPermission.objects.filter(user=self).values_list('document__id', flat=True)),
                     list(documents.models.Document.objects.filter(project__id__in=projects.models.ProjectPermission.objects.filter(user=self).values_list('project__id', flat=True)).values_list('id', flat=True)),

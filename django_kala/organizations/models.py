@@ -54,7 +54,7 @@ class Organization(models.Model):
         if user.is_superuser:
             return Project.objects.active().filter(organization=self)
         else:
-            return Project.objects.filter(id__in=user.get_projects().values_list('id', flat=True), organization=self)
+            return Project.objects.active().filter(id__in=user.get_projects().values_list('id', flat=True), organization=self)
 
     def __str__(self):
         return self.name

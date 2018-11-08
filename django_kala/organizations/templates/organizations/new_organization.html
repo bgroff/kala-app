@@ -2,103 +2,105 @@
 {% load i18n static kala_tags %}
 
 {% block content %}
-    <div class="repo ribbon">
-        <div class="ui container">
-            <div class="ui big breadcrumb">
-                <h2 class="active section">{% trans 'New Organization' %}</h2>
-            </div>
-        </div>
-        <div class="ui divider">
-        </div>
-    </div>
-
-    <div class="ui one column grid container">
+    <div class="ui container">
         <div class="twelve wide column">
-            <form class="ui form {% if form.errors %}error{% endif %}" method="post">
-                {% csrf_token %}
-                <div class="field">
-                    <label>{{ form.name.label }}</label>
-                    {{ form.name }}
-                    {% if form.name.errors %}
-                    <div class="ui error message">
-                        {{ form.name.errors }}
+            <div class="repo ribbon">
+                <div class="ui container">
+                    <div class="ui big breadcrumb">
+                        <h2 class="active section">{% trans 'New Organization' %}</h2>
                     </div>
-                    {% endif %}
                 </div>
-                <div class="field">
-                    <label>{{ form.address.label }}</label>
-                    {{ form.address }}
-                    {% if form.address.errors %}
-                    <div class="ui error message">
-                        {{ form.address.errors }}
+                <div class="ui divider">
+                </div>
+            </div>
+
+            <div class="twelve wide column">
+                <form class="ui form {% if form.errors %}error{% endif %}" method="post">
+                    {% csrf_token %}
+                    <div class="field">
+                        <label>{{ form.name.label }}</label>
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <div class="ui error message">
+                                {{ form.name.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                <div class="field">
-                    <label>{{ form.address1.label }}</label>
-                    {{ form.address1 }}
-                    {% if form.address1.errors %}
-                    <div class="ui error message">
-                        {{ form.address1.errors }}
+                    <div class="field">
+                        <label>{{ form.address.label }}</label>
+                        {{ form.address }}
+                        {% if form.address.errors %}
+                            <div class="ui error message">
+                                {{ form.address.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                <div class="field">
-                    <label>{{ form.city.label }}</label>
-                    {{ form.city }}
-                    {% if form.city.errors %}
-                    <div class="ui error message">
-                        {{ form.city.errors }}
+                    <div class="field">
+                        <label>{{ form.address1.label }}</label>
+                        {{ form.address1 }}
+                        {% if form.address1.errors %}
+                            <div class="ui error message">
+                                {{ form.address1.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                <div class="field">
-                    <label>{{ form.state.label }}</label>
-                    {{ form.state }}
-                    {% if form.state.errors %}
-                    <div class="ui error message">
-                        {{ form.state.errors }}
+                    <div class="field">
+                        <label>{{ form.city.label }}</label>
+                        {{ form.city }}
+                        {% if form.city.errors %}
+                            <div class="ui error message">
+                                {{ form.city.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                <div class="field">
-                    <label>{{ form.zip.label }}</label>
-                    {{ form.zip }}
-                    {% if form.zip.errors %}
-                    <div class="ui error message">
-                        {{ form.zip.errors }}
+                    <div class="field">
+                        <label>{{ form.state.label }}</label>
+                        {{ form.state }}
+                        {% if form.state.errors %}
+                            <div class="ui error message">
+                                {{ form.state.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                <div class="field">
-                    <label>{{ form.country.label }}</label>
-                    {{ form.country }}
-                    {% if form.country.errors %}
-                    <div class="ui error message">
-                        {{ form.country.errors }}
+                    <div class="field">
+                        <label>{{ form.zip.label }}</label>
+                        {{ form.zip }}
+                        {% if form.zip.errors %}
+                            <div class="ui error message">
+                                {{ form.zip.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                <div class="field">
-                    <label>{{ form.phone.label }}</label>
-                    {{ form.phone }}
-                    {% if form.phone.errors %}
-                    <div class="ui error message">
-                        {{ form.phone.errors }}
+                    <div class="field">
+                        <label>{{ form.country.label }}</label>
+                        {{ form.country }}
+                        {% if form.country.errors %}
+                            <div class="ui error message">
+                                {{ form.country.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                <div class="field">
-                    <label>{{ form.website.label }}</label>
-                    {{ form.website }}
-                    {% if form.phone.errors %}
-                    <div class="ui error message">
-                        {{ form.website.errors }}
+                    <div class="field">
+                        <label>{{ form.phone.label }}</label>
+                        {{ form.phone }}
+                        {% if form.phone.errors %}
+                            <div class="ui error message">
+                                {{ form.phone.errors }}
+                            </div>
+                        {% endif %}
                     </div>
-                    {% endif %}
-                </div>
-                <button class="ui button primary" type="submit">{% trans 'Create ogranization' %}</button>
-            </form>
+                    <div class="field">
+                        <label>{{ form.website.label }}</label>
+                        {{ form.website }}
+                        {% if form.phone.errors %}
+                            <div class="ui error message">
+                                {{ form.website.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+                    <button class="ui button primary" type="submit">{% trans 'Create ogranization' %}</button>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

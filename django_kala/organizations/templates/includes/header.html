@@ -1,0 +1,28 @@
+{% load i18n kala_tags %}
+
+{% with active=request.path|header %}
+<div class="repo ribbon">
+    <div class="ui container">
+        <div class="ui big breadcrumb">
+            <a class="section">{{ organization }}</a>
+        </div>
+    </div>
+</div>
+
+<div class="ui tabular menu">
+    <div class="ui container">
+    {% if organization|can_invite:request.user %}
+        <a class="item" {% if active == 'main' %}active{% endif %}" href="{% url 'organizations:invite_user' organization.pk %}">
+            <i class="person icon"></i>
+            {% trans 'Invite User' %}
+        </a>
+    {% endif %}
+    {% if organization|can_manage:request.user %}
+        <a class="item {% if active == 'settings' %}active{% endif %}" href="{% url 'organizations:details' organization.pk %}">
+            <i class="gear icon"></i>
+            {% trans 'Settings' %}
+        </a>
+    {% endif %}
+    </div>
+</div>
+{% endwith %}

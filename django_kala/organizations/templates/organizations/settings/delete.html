@@ -1,25 +1,21 @@
 {% extends 'base.html' %}
 {% load i18n static kala_tags %}
 
-{% block search_bar %}
-    {% include 'projects/includes/project_search_bar.html' %}
-{% endblock %}
-
 {% block content %}
-   {% include 'documents/includes/header.html' %}
+   {% include 'includes/header.html' %}
 
     <div class="ui two column grid container">
-        {% include 'documents/includes/sidebar.html' %}
+        {% include 'includes/sidebar.html' %}
 
         <div class="twelve wide column">
            <form class="ui form" method="post">
                 {% csrf_token %}
                 <div class="field">
-                    <label>{% trans 'Re-enter documents name to archive the document' %}</label>
-                    <input id="projectName" type="text" name="documentName" placeholder="Document Name" required>
+                    <label>{% trans 'Re-enter organizations name to delete the organization' %}</label>
+                    <input id="organizationName" type="text" name="organizationName" placeholder="organization Name" required>
                 </div>
                   <div class="ui error message"></div>
-                <div class="ui submit button primary">{% trans 'Archive document' %}</div>
+                <div class="ui submit button negative">{% trans 'Delete organization' %}</div>
             </form>
         </div>
     </div>
@@ -30,11 +26,11 @@
         $('.ui.form')
             .form({
                 fields: {
-                    projectName: {
+                    organizationName: {
                         rules: [
                             {
-                                type: 'isExactly[{{ document.name }}]',
-                                prompt: 'You must enter the document name as it appears in the application.'
+                                type: 'isExactly[{{ organization.name }}]',
+                                prompt: 'You must enter the organization name as it appears in the application.'
                             }
                         ]
                     }

@@ -16,7 +16,9 @@ class Home(LoginRequiredMixin, TemplateView):
         return {
             'organizations': self.request.user.get_organizations(),
             'documents': Document.objects.active().filter(
-                pk__in=DocumentVersion.objects.filter(user=get_user(self.request)).values('document__pk'))[:10],
+                pk__in=DocumentVersion.objects.filter(
+                    user=get_user(self.request)
+                ).values_list('document__id', flat=True))[:10],
         }
 
 

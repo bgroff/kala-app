@@ -64,5 +64,12 @@ class DocumentHandler():
     def archive_document(self, document):
         raise NotImplementedError()
 
-    def retrieve_document(self, document):
+    def restore_document(self, document):
         raise NotImplementedError()
+
+    def delete_document(self, document):
+        s3 = boto3.resource('s3')
+        s3.Object(
+            settings.S3_STORAGE_BUCKET,
+            'media/documents/{0}'.format(document.uuid)
+        ).delete()
