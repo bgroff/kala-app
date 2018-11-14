@@ -76,11 +76,11 @@ urlpatterns = [
         name='document_details'
     ),
 
-    url(
-        regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/archive',
-        view=DocumentArchiveView.as_view(),
-        name='document_archive'
-    ),
+    # url(
+    #     regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/archive',
+    #     view=DocumentArchiveView.as_view(),
+    #     name='document_archive'
+    # ),
 
     url(
         regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/delete',
@@ -100,11 +100,11 @@ urlpatterns = [
         name='details'
     ),
 
-    url(
-        regex=r'^(?P<pk>\d+)/settings/archive$',
-        view=ArchiveView.as_view(),
-        name='archive'
-    ),
+    # url(
+    #     regex=r'^(?P<pk>\d+)/settings/archive$',
+    #     view=ArchiveView.as_view(),
+    #     name='archive'
+    # ),
 
     url(
         regex=r'^(?P<pk>\d+)/settings/delete',

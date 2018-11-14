@@ -7,8 +7,8 @@
             <div class="menu">
                 <a class="item {% if request.resolver_match.url_name == 'details' %}active{% endif %}"
                    href="{% url 'organizations:details' organization.pk %}">{% trans 'Details' %}</a>
-                <a class="item {% if request.resolver_match.url_name == 'archive' %}active{% endif %}"
-                   href="{# {% url 'organizations:archive' organization.pk %}#}">{% trans 'Archive' %}</a>
+{#                <a class="item {% if request.resolver_match.url_name == 'archive' %}active{% endif %}"#}
+{#                   href="{% url 'organizations:archive' organization.pk %}">{% trans 'Archive' %}</a>#}
                 <a class="item {% if request.resolver_match.url_name == 'delete' %}active{% endif %}"
                    href="{% url 'organizations:delete' organization.pk %}">{% trans 'Delete' %}</a>
             </div>

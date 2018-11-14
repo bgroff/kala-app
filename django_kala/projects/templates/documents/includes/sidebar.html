@@ -8,8 +8,8 @@
                 <div class="menu">
                     <a class="item {% if request.resolver_match.url_name == 'document_details' %}active{% endif %}"
                        href="{% url 'projects:document_details' document.project.pk document.pk %}">{% trans 'Details' %}</a>
-                    <a class="item {% if request.resolver_match.url_name == 'document_archive' %}active{% endif %}"
-                       href="{% url 'projects:document_archive' document.project.pk document.pk %}">{% trans 'Archive' %}</a>
+{#                    <a class="item {% if request.resolver_match.url_name == 'document_archive' %}active{% endif %}"#}
+{#                       href="{% url 'projects:document_archive' document.project.pk document.pk %}">{% trans 'Archive' %}</a>#}
                     <a class="item {% if request.resolver_match.url_name == 'document_delete' %}active{% endif %}"
                        href="{% url 'projects:document_delete' document.project.pk document.pk %}">{% trans 'Delete' %}</a>
                 </div>
