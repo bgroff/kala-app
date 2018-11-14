@@ -118,6 +118,9 @@
                 {% block search_bar %}
                     {% include 'includes/search_bar.html' %}
                 {% endblock %}
+                <a class="item" href="{% url 'home' %}">
+                    <b>{% trans 'Home' %}</b>
+                </a>
                 <a class="item" href="{% url 'projects:projects' %}">
                     <b>{% trans 'Projects' %}</b>
                 </a>
