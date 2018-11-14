@@ -95,6 +95,12 @@ urlpatterns = [
     ),
 
     url(
+        regex=r'^(?P<project_pk>\d+)/(?P<document_pk>\d+)/settings/transfer_ownership$',
+        view=DocumentTransferOwnershipView.as_view(),
+        name='document_transfer_ownership'
+    ),
+
+    url(
         regex=r'^(?P<pk>\d+)/settings/details$',
         view=DetailsView.as_view(),
         name='details'

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load i18n static kala_tags %}
+
+{% block content %}
+   {% include 'documents/includes/header.html' %}
+
+    <div class="ui two column grid container">
+       {% include 'documents/includes/sidebar.html' %}
+
+        <div class="twelve wide column">
+            {% if messages %}
+                <div class="ui success message">
+                    <i class="close icon"></i>
+                    <ul class="messages" style="margin-top: 0">
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <form id="form" class="ui form" method="post">
+                {% csrf_token %}
+                <div class="field">
+                    <label>{{ form.project.label }}</label>
+                    {{ form.project }}
+                </div>
+                <button id="submit-button" class="ui button primary" type="button">{% trans 'Transfer ownership' %}</button>
+            </form>
+            <div class="ui basic modal">
+                <div class="ui icon header">
+                    <i class="organization icon"></i>
+                    {% trans 'Transfer Document Ownership' %}
+                </div>
+                <div class="content">
+                    <p>{% trans 'Are you sure that you want to transfer this document to another project?' %}</p>
+                </div>
+                <div class="actions">
+                    <div class="ui red basic cancel inverted button">
+                        <i class="trashcan icon"></i>
+                        {% trans 'No' %}
+                    </div>
+                    <div class="ui green ok inverted button">
+                        <i class="check icon"></i>
+                        {% trans 'Yes' %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        $('.ui.basic.modal')
+            .modal({
+                onApprove: function () {
+                    $('#form').submit();
+                }
+            })
+            .modal('attach events', '#submit-button', 'show')
+        ;
+
+        $('select.search.dropdown')
+            .dropdown()
+        ;
+    </script>
+{% endblock scripts %}

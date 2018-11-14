@@ -87,15 +87,20 @@ class User(AbstractUser):
                 ])
             )
 
-    def get_projects(self):
+    def get_projects(self, permission=None):
         if self.is_superuser:
             return projects.models.Project.objects.active()
         else:
+            kwargs = {
+                'user': self
+            }
+            if permission:
+                kwargs['permission__codename__in'] = permission
             return projects.models.Project.objects.active().filter(
                 id__in=set().union(*[
-                    list(projects.models.ProjectPermission.objects.filter(user=self).values_list('project__id', flat=True)),
-                    list(projects.models.Project.objects.filter(organization__id__in=organizations.models.OrganizationPermission.objects.filter(user=self).values_list('organization__id', flat=True)).values_list('id', flat=True)),
-                    list(documents.models.DocumentPermission.objects.filter(user=self).values_list('document__project__id', flat=True))
+                    list(projects.models.ProjectPermission.objects.filter(**kwargs).values_list('project__id', flat=True)),
+                    list(projects.models.Project.objects.filter(organization__id__in=organizations.models.OrganizationPermission.objects.filter(**kwargs).values_list('organization__id', flat=True)).values_list('id', flat=True)),
+                    list(documents.models.DocumentPermission.objects.filter(**kwargs).values_list('document__project__id', flat=True))
                 ])
             )
 

@@ -15,6 +15,13 @@
                 </div>
             </div>
             <div class="item">
+                <div class="header">{% trans 'Projects' %}</div>
+                <div class="menu">
+                    <a class="item {% if request.resolver_match.url_name == 'document_transfer_ownership' %}active{% endif %}"
+                       href="{% url 'projects:document_transfer_ownership' document.project.pk document.pk %}">{% trans 'Transfer ownership' %}</a>
+                </div>
+            </div>
+            <div class="item">
                 <div class="header">{% trans 'People' %}</div>
                 <div class="menu">
                     <a class="item {% if request.resolver_match.url_name == 'document_manage_access' %}active{% endif %}"
