@@ -4,15 +4,24 @@
 <div class="repo ribbon">
     <div class="ui container">
         <div class="ui big breadcrumb">
-            <a class="section">{{ organization }}</a>
+            <a class="section"
+               href="{% url 'organizations:organizations' %}">{% trans 'Organizations' %}</a>
+            <div class="divider"> /</div>
+            <span class="active section">{{ organization }}</span>
         </div>
     </div>
 </div>
 
 <div class="ui tabular menu">
     <div class="ui container">
+    {% if organization|can_create:request.user %}
+        <a class="item{% if active == 'main' %} active{% endif %}" href="{% url 'organizations:organization' organization.pk %}">
+            <i class="checklist icon"></i>
+            {% trans 'Projects' %}
+        </a>
+    {% endif %}
     {% if organization|can_invite:request.user %}
-        <a class="item" {% if active == 'main' %}active{% endif %}" href="{% url 'organizations:invite_user' organization.pk %}">
+        <a class="item{% if active == 'invite_user' %} active{% endif %}" href="{% url 'organizations:invite_user' organization.pk %}">
             <i class="person icon"></i>
             {% trans 'Invite User' %}
         </a>

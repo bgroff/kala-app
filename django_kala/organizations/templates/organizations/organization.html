@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% load i18n static kala_tags %}
+
+{% block content %}
+   {% include 'includes/header.html' %}
+
+    <div class="ui container">
+        {% if messages %}
+            <div class="ui success message">
+                <i class="close icon"></i>
+                <ul class="messages" style="margin-top: 0">
+                    {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+
+        <div class="repo title">
+            <div class="repo options">
+{#                <a class="ui compact button" href="{% url 'projects:export_project' project.pk %}">#}
+{#                    {% trans 'Download ZIP' %}#}
+{#                </a>#}
+{#                <div class="ui labeled button">#}
+{#                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">#}
+{#                        <input type="hidden" value="watching">#}
+{#                        <i class="checklist icon"></i> {% trans 'Filter' %}#}
+{#                        <i class="dropdown icon"></i>#}
+{#                        <div class="menu" id="category-menu">#}
+{#                            <div class="item">#}
+{#                                <h4 data-value="">{% trans 'No Filter' %}</h4>#}
+{#                            </div>#}
+{#                            {% for category in project.category_set.all %}#}
+{#                                <div class="item">#}
+{#                                    <h4 data-value="{{ category }}">{{ category }}</h4>#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="ui labeled button">#}
+{#                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">#}
+{#                        <input type="hidden" value="watching">#}
+{#                        <i class="checklist icon"></i> {% trans 'Sort' %}#}
+{#                        <i class="dropdown icon"></i>#}
+{#                        <div class="menu" id="sort-menu">#}
+{#                            <div class="item">#}
+{#                                <h4 data-value="Alphabetically">{% trans 'Alphabetically' %}</h4>#}
+{#                            </div>#}
+{#                            <div class="item">#}
+{#                                <h4 data-value="Date">{% trans 'Date' %}</h4>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+            {% if organization|can_create:request.user %}
+                <a class="ui positive compact icon button" href="{% url 'projects:new_project' %}">
+                    + {% trans 'New project' %}
+                </a>
+            {% else %}
+                <p>{% trans 'You do not have permission to create new projects for this organization.' %}</p>
+            {% endif %}
+        </div>
+        <div class="ui divider">
+        </div>
+        <div class="ui container">
+            <div class="ui cards">
+                {% for project in projects %}
+                    <div class="ui card">
+{#                        <a href="{% url 'projects:project' project.pk %}">#}
+{#                            <div class="ui fade reveal image">#}
+{#                                <img class="visible content" style="background-color: #f3f3f3"#}
+{#                                     src="{% static project.get_icon %}"#}
+{#                                     alt="{{ project.get_alt }}">#}
+{#                                <img class="hidden content" src="{% static "images/icons/android-download.png" %}"#}
+{#                                     alt="{{ project.get_alt }}">#}
+{#                            </div>#}
+{#                        </a>#}
+                        <div class="content">
+                            <a class="header" style="word-wrap: break-word;"
+                               href="{% url 'projects:project' project.pk %}">{{ project.name }}</a>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="ui container">{% trans 'There are no documents uploaded for this project.' %}</div>
+                {% endfor %}
+
+            </div>
+
+            <div class="ui divider"></div>
+
+            <div class="ui pagination menu">
+                {% for page in page_range %}
+                    <a class="{% if page == current_page %}active{% endif %} item"
+                       href="{% url 'organizations:organization' organization.pk %}?page={{ page }}">
+                        {{ page }}
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+{% endblock content %}
+
+{% block scripts %}
+    <script>
+        var queryParameters = {}, queryString = location.search.substring(1),
+            re = /([^&=]+)=([^&]*)/g, m;
+
+        // Creates a map with the query string parameters
+        while (m = re.exec(queryString)) {
+            queryParameters[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+        }
+
+        $('.dropdown')
+            .dropdown({
+                direction: 'upward'
+            })
+        ;
+    </script>
+{% endblock scripts %}

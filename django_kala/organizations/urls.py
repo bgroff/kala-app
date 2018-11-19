@@ -12,7 +12,7 @@ urlpatterns = [
 
     url(
         regex=r'^(?P<pk>\d+)/$',
-        view=OrganizationsView.as_view(),
+        view=OrganizationView.as_view(),
         name='organization',
     ),
 
