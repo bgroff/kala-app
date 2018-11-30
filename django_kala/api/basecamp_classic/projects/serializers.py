@@ -27,7 +27,7 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = [
-            'id', 'name', 'type', 'project'
+            'id', 'name', 'project'
         ]
 
     def validate_project(self, project):

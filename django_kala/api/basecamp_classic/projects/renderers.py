@@ -200,7 +200,10 @@ class XMLCategoryRenderer(BaseRenderer):
             xml.endElement('name')
 
             xml.startElement('type', {})
-            xml.characters(smart_text(category.type))
+            try:
+                xml.characters(smart_text(category.type))
+            except AttributeError:
+                xml.characters(smart_text(''))
             xml.endElement('type')
 
             xml.startElement('project-id', {})
