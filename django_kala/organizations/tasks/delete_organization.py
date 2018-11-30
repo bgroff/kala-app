@@ -1,8 +1,8 @@
 from celery.task import Task
+from django.conf import settings
 from django.contrib.auth import get_user_model
 
 from organizations.models import Organization
-from projects.tasks.delete_project import DeleteProjectTask
 
 User = get_user_model()
 
@@ -16,7 +16,9 @@ class DeleteOrganizationTask(Task):
             # TODO: Log this
             return
         for project in self.organization.project_set.all():
-            DeleteProjectTask().apply_async([project.pk, user.pk])
+            for document in project.document_set.all():
+                manager = settings.PLATFORM_MANAGER()
+                manager.delete_document(document)
 
     def on_success(self, retval, task_id, args, kwargs):
         self.organization.delete()

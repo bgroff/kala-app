@@ -1,4 +1,5 @@
 from celery.task import Task
+from django.conf import settings
 from django.contrib.auth import get_user_model
 
 from projects.models import Project
@@ -16,7 +17,8 @@ class DeleteProjectTask(Task):
             # TODO: Log this
             return
         for document in self.project.document_set.all():
-            DeleteDocumentTask().apply_async([document.pk, user.pk])
+            manager = settings.PLATFORM_MANAGER()
+            manager.delete_document(document)
 
     def on_success(self, retval, task_id, args, kwargs):
         self.project.delete()
