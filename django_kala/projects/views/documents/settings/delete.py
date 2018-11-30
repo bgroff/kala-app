@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -38,7 +39,7 @@ class DeleteView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         self.document.set_active(False)
-        DeleteDocumentTask().apply_async([self.document.pk, request.user.pk])
+        DeleteDocumentTask().apply_async([self.document.pk, request.user.pk], queue=settings.DELETE_QUEUE)
         messages.success(request, _('The document has been delete.'))
         return redirect(
             reverse(

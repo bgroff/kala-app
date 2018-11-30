@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -35,7 +36,7 @@ class DeleteView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         self.project.set_active(False)
-        DeleteProjectTask().apply_async([self.project.pk, request.user.pk])
+        DeleteProjectTask().apply_async([self.project.pk, request.user.pk], queue=settings.DELETE_QUEUE)
         messages.success(request, _('The project has been delete.'))
         return redirect(
             reverse(

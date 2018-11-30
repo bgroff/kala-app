@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -32,7 +33,7 @@ class DeleteView(TemplateView):
 
     def post(self, request, *args, **kwargs):
         self.organization.set_active(False)
-        DeleteOrganizationTask().apply_async([self.organization.pk, request.user.pk])
+        DeleteOrganizationTask().apply_async([self.organization.pk, request.user.pk], queue=settings.DELETE_QUEUE)
         messages.success(request, _('The organization has been delete.'))
         return redirect(
             reverse(
