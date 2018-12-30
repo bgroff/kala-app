@@ -43,7 +43,7 @@ this is the page to look in.
 
 
 If you are an administrator this page also allows you to **Invite Users** by clicking the **Invite users** button, then
-filling out the user details. Once the form has been subitted successfully, the new user will be sent an email with 
+filling out the user details. Once the form has been submitted successfully, the new user will be sent an email with
 instructions for creating a password.
 
 .. image:: _imgs/users_form.png
@@ -52,7 +52,7 @@ instructions for creating a password.
 The form requires the administrator to fill in the email address, first name, last name, and selecting
 a Organization that the User will be in, then by clicking on the "Invite User" button, a new User will be created.
 You can then edit the details of the User by clicking the Users name link. **Editing a Person** from
-this page will take you to the "User Detials" page, which is described below.
+this page will take you to the "User Details" page, which is described below.
 
 .. image:: _imgs/users_profile.png
 
@@ -62,7 +62,7 @@ Edit Profile
 ++++++++++++
 
 Editing your own profile is the same process as editing other users profile (if you are an administrator).
-If you click the dropdown in the top right corner of the screen, and click on the "Your Profile" link, you
+If you click the drop-down in the top right corner of the screen, and click on the "Your Profile" link, you
 will be taken to your profile. Change the information that needs to be updated and then click the "Update details"
 button.
 

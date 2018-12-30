@@ -43,6 +43,6 @@ settings section. Click on the "Transfer ownership" and select the Organization 
 
 .. image:: _imgs/project_settings.png
 
-Managers can also **maange access** for the Project by clicking on the "Manage acess" link in the navigation bar.
+Managers can also **manage access** for the Project by clicking on the "Manage access" link in the navigation bar.
 
 .. image:: _imgs/project_manage_access.png

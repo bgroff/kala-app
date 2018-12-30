@@ -30,6 +30,6 @@ Inviting Users
 
 Once you have clicked the Organizations name, you can then Invite Users to the Organization if you have the proper Permissions.
 After submitting the form, the User will be sent an email with instructions on how to create a password (if they do not already have one).
-Users can be invited to be a manager by selecting the Manager user type in the dropdown.
+Users can be invited to be a manager by selecting the Manager user type in the drop-down.
 
 .. image:: _imgs/invite_user_organization.png

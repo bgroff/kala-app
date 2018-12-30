@@ -12,6 +12,6 @@ the description, click upload.
 
 .. image:: _imgs/new_version.png
 
-Managers can also **maange access** for the Document by clicking on the "Manage acess" link in the navigation bar of the settings page.
+Managers can also **manage access** for the Document by clicking on the "Manage access" link in the navigation bar of the settings page.
 
 .. image:: _imgs/document_manage_access.png
