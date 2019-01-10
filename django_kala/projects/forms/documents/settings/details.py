@@ -9,7 +9,8 @@ class DetailsForm(forms.ModelForm):
         super(DetailsForm, self).__init__(*args, **kwargs)
         self.fields['category'] = forms.ModelChoiceField(
             queryset=self.project.category_set.all(),
-            widget=forms.Select(attrs={'class': 'ui search dropdown'})
+            widget=forms.Select(attrs={'class': 'ui search dropdown'}),
+            required=False,
         )
 
     class Meta:

@@ -44,7 +44,9 @@
                 </div>
                 <div class="field">
                     <label>{{ form.tags.label }}</label>
-                    {{ form.tags }}
+                    <input type="hidden" name="tags" id="id_tags">
+                    <input type="text" name="tags_input" id="id_tags_input" onkeyup="return handleTags(event)" placeholder="Type the tag, then press enter">
+                    <div style="display: inline-block; padding-top: 10px;" id="tags"></div>
                     {% if form.tags.errors %}
                     <div class="ui error message">
                         {{ form.tags.errors }}
@@ -62,5 +64,43 @@
         $('select.search.dropdown')
             .dropdown()
         ;
+    </script>
+    <script type="application/ecmascript">
+        let tags = [];
+        window.addEventListener('keydown', function (e) {
+            if (e.keyIdentifier === 'U+000A' || e.keyIdentifier === 'Enter' || e.keyCode === 13) {
+                if (e.target.nodeName === 'INPUT' && e.target.id === 'id_tags_input') {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        }, true);
+
+        function handleTags(event) {
+            event.preventDefault();
+            if (event.which === 13) {
+                let tagValue = $('#id_tags_input').val();
+                tags.push(tagValue);
+                $('#tags').append('<a class="ui blue tag label">' + tagValue + '<span class="delete icon" onclick="deleteTag(this)">X</span></a>');
+                $('#id_tags').val(tags.join(','));
+                $('#id_tags_input').val("");
+            }
+        }
+
+        function deleteTag(element) {
+            let index = $(element).parent().index();
+            tags.splice(index, 1);
+            $("#tags").children().eq(index).remove();
+            $('#id_tags').val(tags.join(','));
+        }
+
+        $(document).ready(function () {
+            {% for tag in document.tags.all %}
+                var tagValue = "{{ tag }}";
+                tags.push(tagValue);
+                $('#tags').append('<a class="ui blue tag label">' + tagValue + '<span class="delete icon" onclick="deleteTag(this)">X</span></a>');
+                $('#id_tags').val(tags.join(','));
+            {% endfor %}
+        })
     </script>
 {% endblock scripts %}
