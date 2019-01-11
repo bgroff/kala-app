@@ -74,7 +74,8 @@ class SearchView(LoginRequiredMixin, TemplateView):
                     'description',
                     'user__first_name',
                     'user__last_name',
-                    'user__username'
+                    'user__username',
+                    'document__tags__name'
                 )
             ).filter(
                 search=request.GET.get('search', '')
