@@ -21,3 +21,16 @@ documents that you have permissions to view.
 
 In addition to the search box, there is also the "Add Resources" button in the top right corner (the + button).
 If you click this button then you can add Organizations and Projects if you have the correct permissions.
+
+---------------------------
+Breadcrumbs & Resource Menu
+---------------------------
+
+When the user has navigated to a particular resource, they will be presented with both a breadcrumb, as well as, a menu
+at the top of the page. To illustrate, here is what a documents breadcrumb and top menu might look like for a manager.
+
+.. image:: _imgs/document_bread_crumb.png
+
+The breadcrumb shows the containing resources, in this example, the Project and the Organization. These are links that
+the user can use to navigate to a higher resource quickly, if needed. The top menu shows all of the operations that are
+available for the resource and current user.
