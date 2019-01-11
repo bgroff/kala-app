@@ -16,7 +16,7 @@ on this below.
 .. image:: _imgs/home.png
 
 You can also use the search box in the top navigation bar to search for documents based on the document name,
-the author, and the description text of the document. Using the search box at this level will search over all of the
+the author, tags, and the description text of the document. Using the search box at this level will search over all of the
 documents that you have permissions to view.
 
 In addition to the search box, there is also the "Add Resources" button in the top right corner (the + button).

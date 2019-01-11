@@ -22,8 +22,8 @@ Project Page
 
 Once you have selected a Project to work on from the Projects Page, you will be taken to the Project page. This is
 where you can interact with the Project's resources. In the Documents tab, you can **upload** a new Document by choosing
-the file to upload, the giving the file a description. Once you have done this, you can click the "Upload Document"
-button to upload the new Document.
+the file to upload, the giving the file a description, and optionally add document specific tags. Once you have done
+this, you can click the "Upload Document" button to upload the new Document.
 
 .. image:: _imgs/new_document.png
 
