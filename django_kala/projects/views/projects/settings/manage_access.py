@@ -15,10 +15,29 @@ class ManageAccessView(TemplateView):
     template_name = 'projects/settings/manage_access.html'
 
     def get_context_data(self, **kwargs):
+        permissions = ProjectPermission.objects.filter(**{
+            'project': self.project,
+            "user__in": self.request.user.get_users()
+        }).select_related(
+            'permission',
+            'user'
+        )
+
+        users = [{
+            'user': user,
+            'can_create': True if 'can_create' in permissions.filter(user=user).values_list(
+                'permission__codename', flat=True) else False,
+            'can_invite': True if 'can_invite' in permissions.filter(user=user).values_list(
+                'permission__codename', flat=True) else False,
+            'can_manage': True if 'can_manage' in permissions.filter(user=user).values_list(
+                'permission__codename', flat=True) else False,
+        } for user in self.request.user.get_users()]
+
         return {
             'forms': self.forms,
             'project': self.project,
-            'organization': self.project.organization
+            'organization': self.project.organization,
+            'users': users
         }
 
     @method_decorator(login_required)

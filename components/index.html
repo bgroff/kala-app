@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>Hello React!</title>
+        <script type="application/ecmascript">
+            const users = [
+                {
+                    name: "Adam Helman",
+                    id: 93,
+                    can_create: false,
+                    can_invite: false,
+                    can_manage: false,
+                    index: 0
+                },
+                {
+                    name: "Alan Lulloff",
+                    id: 24,
+                    can_create: false,
+                    can_invite: true,
+                    can_manage: false,
+                    index: 1
+                },
+            ]
+        </script>
+    </head>
+    <body>
+        <div id="user-form"></div>
+
+        <!-- Dependencies -->
+        <script src="./node_modules/react/umd/react.development.js"></script>
+        <script src="./node_modules/react-dom/umd/react-dom.development.js"></script>
+
+        <!-- Main -->
+        <script src="./dist/bundle.js"></script>
+    </body>
+
+</html>
+
