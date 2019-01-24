@@ -2,10 +2,10 @@
 {% load i18n static kala_tags %}
 
 {% block content %}
-   {% include 'projects/includes/header.html' %}
+    {% include 'projects/includes/header.html' %}
 
     <div class="ui two column grid container">
-       {% include 'projects/includes/sidebar.html' %}
+        {% include 'projects/includes/sidebar.html' %}
 
         <div class="twelve wide column">
             {% if messages %}
@@ -18,7 +18,7 @@
                     </ul>
                 </div>
             {% endif %}
-        {{ form.errors }}
+            {{ form.errors }}
             <form id="form" class="ui form" method="post">
                 {% csrf_token %}
                 <div id="user-form"></div>
@@ -32,6 +32,9 @@
 
 {% block scripts %}
     <script>
+        $('.ui.dropdown')
+            .dropdown()
+        ;
         var users = [
             {% for user in users %}
                 {

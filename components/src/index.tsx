@@ -1,8 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { UserForm} from "./components/UserForm";
-import {UsersProps} from "./interfaces/Users";
+import {UserForm} from "./components/UserForm";
+import {UsersProps} from "./components/UserForm";
 
 declare var users: UsersProps;
 
