@@ -2,7 +2,6 @@ import * as React from "react";
 import { UserFormField } from "./UserFormField";
 import { UserFormUI } from "./UserFormUI";
 import ReactPaginate from 'react-paginate';
-import { render } from "react-dom";
 
 export interface UserProps {
     name: string,
@@ -15,15 +14,15 @@ export interface UserProps {
 
 export interface UsersProps extends Array<UserProps> { }
 export interface UsersList { users: UsersProps }
-export interface FormState { users: any, usersPerPage: number, numberOfPages: number, pagedUsers: UsersProps }
+export interface FormState { users: any, numberOfPages: number, pagedUsers: UsersProps }
+const usersPerPage: number = 10;
 
 export class UserForm extends React.Component<UsersList, FormState> {
     constructor(props: UsersList) {
         super(props);
         this.state = {
-            usersPerPage: 10,
-            numberOfPages: Math.ceil(props.users.length / 10),
-            pagedUsers: this.props.users.slice(0, 10),
+            numberOfPages: Math.ceil(props.users.length / usersPerPage),
+            pagedUsers: this.props.users.slice(0, usersPerPage),
             users: this.props.users.reduce((users: any, user: UserProps) => {
                 users[user.id] = {
                     can_create: user.can_create,
@@ -36,7 +35,6 @@ export class UserForm extends React.Component<UsersList, FormState> {
 
         this.setUserPermissions = this.setUserPermissions.bind(this);
         this.handlePageClick = this.handlePageClick.bind(this);
-        this.handlePerPageChange = this.handlePerPageChange.bind(this);
     }
 
     setUserPermissions(key: number, permissions: object) {
@@ -47,18 +45,8 @@ export class UserForm extends React.Component<UsersList, FormState> {
 
     handlePageClick(data: any) {
         let selected = data.selected;
-        let offset = Math.ceil(selected * this.state.usersPerPage);
-        this.setState({ pagedUsers: this.props.users.slice(offset, offset + this.state.usersPerPage) });
-    };
-
-    handlePerPageChange(e: any) {
-        var usersPerPage = e.currentTarget.value;
-        this.setState({
-            usersPerPage: usersPerPage, 
-            numberOfPages: Math.ceil(this.props.users.length / usersPerPage),
-            pagedUsers: this.props.users.slice(0, usersPerPage)
-        });
-        console.log(this.state);
+        let offset = Math.ceil(selected * usersPerPage);
+        this.setState({ pagedUsers: this.props.users.slice(offset, offset + usersPerPage) });
     };
 
     render() {
@@ -70,12 +58,6 @@ export class UserForm extends React.Component<UsersList, FormState> {
                 can_invite={this.state.users[user.id].can_invite}
                 can_manage={this.state.users[user.id].can_manage}
                 onPermissionChange={this.setUserPermissions} />)}
-            <select className="ui dropdown" onChange={this.handlePerPageChange}>
-                <option value="">Users per page</option>
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="30">30</option>
-            </select>
             <table className="ui very basic table">
                 <thead>
                     <tr>
