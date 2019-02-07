@@ -36,28 +36,32 @@ export class UserFormUI extends React.Component<UserProps, {}> {
         this.props.onPermissionChange(this.props.id, {
             can_create: "False",
             can_invite: "False",
-            can_manage: "False"
+            can_manage: "False",
+            state: "none",
         });
     }
     setCreateUserPermission(e: any) {
         this.setState(state => this.props.onPermissionChange(this.props.id, {
             can_create: "True",
             can_invite: "False",
-            can_manage: "False"
+            can_manage: "False",
+            state: "can_create",
         }));
     }
     setInviteUserPermission(e: any) {
         this.props.onPermissionChange(this.props.id, {
             can_create: "False",
             can_invite: "True",
-            can_manage: "False"
+            can_manage: "False",
+            state: "can_invite",
         });
     }
     setManageUserPermission(e: any) {
         this.props.onPermissionChange(this.props.id, {
             can_create: "False",
             can_invite: "False",
-            can_manage: "True"
+            can_manage: "True",
+            state: "can_manage",
         });
     }
 
