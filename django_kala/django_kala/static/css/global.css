@@ -15,6 +15,9 @@ a:hover b {
   color: inherit;
 }
 
+ul.ui.pagination.menu {
+  padding: 0;
+}
 
 /*--------------
    Page Header
