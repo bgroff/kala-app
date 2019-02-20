@@ -8,16 +8,30 @@ from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
 from auth.forms.manage_access import manage_access_forms
+from django_kala.functions import create_user_permissions
 from organizations.models import Organization, OrganizationPermission
+
+import json
 
 
 class ManageAccessView(TemplateView):
     template_name = 'organizations/settings/manage_access.html'
 
     def get_context_data(self, **kwargs):
+        permissions = OrganizationPermission.objects.filter(**{
+            'organization': self.organization,
+            'user__in': self.request.user.get_users()
+        }).select_related(
+            'permission',
+            'user'
+        )
+
+        users = create_user_permissions(permissions, self.request.user.get_users())
+
         return {
             'forms': self.forms,
             'organization': self.organization,
+            'users': json.dumps(users),
         }
 
     @method_decorator(login_required)

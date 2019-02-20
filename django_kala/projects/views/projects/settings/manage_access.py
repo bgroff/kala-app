@@ -7,18 +7,32 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
+from django_kala.functions import create_user_permissions
 from projects.forms import manage_access_forms
 from projects.models import Project, ProjectPermission
+
+import json
 
 
 class ManageAccessView(TemplateView):
     template_name = 'projects/settings/manage_access.html'
 
     def get_context_data(self, **kwargs):
+        permissions = ProjectPermission.objects.filter(**{
+            'project': self.project,
+            'user__in': self.request.user.get_users()
+        }).select_related(
+            'permission',
+            'user'
+        )
+
+        users = create_user_permissions(permissions, self.request.user.get_users())
+
         return {
             'forms': self.forms,
             'project': self.project,
-            'organization': self.project.organization
+            'organization': self.project.organization,
+            'users': json.dumps(users)
         }
 
     @method_decorator(login_required)
