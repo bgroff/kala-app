@@ -25,45 +25,7 @@
             {% endif %}
             <form id="form" class="ui form" method="post">
                 {% csrf_token %}
-                <table class="ui very basic table">
-                    <thead>
-                    <tr>
-                        <th>{% trans 'Name' %}</th>
-                        <th>{% trans 'Manage access' %}</th>
-                    </tr>
-                    </thead>
-                    {% for form in forms %}
-                        <tr>
-                            <td>
-                                <h4 class="ui header">
-                                    <div class="content">
-                                        {{ form.user }}
-                                    </div>
-                                </h4>
-                            </td>
-                            <td>
-                                <input type="hidden"
-                                       id="{% for field in form %}{% if 'can_create' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
-                                       name="{% for field in form %}{% if 'can_create' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
-                                       value="{% for field in form %}{% if 'can_create' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
-                                <input type="hidden"
-                                       id="{% for field in form %}{% if 'can_invite' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
-                                       name="{% for field in form %}{% if 'can_invite' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
-                                       value="{% for field in form %}{% if 'can_invite' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
-                                <input type="hidden"
-                                       id="{% for field in form %}{% if 'can_manage' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"
-                                       name="{% for field in form %}{% if 'can_manage' in field.name %}{{ field.name }}{% endif %}{% endfor %}"
-                                       value="{% for field in form %}{% if 'can_manage' in field.name %}{{ field.initial }}{% endif %}{% endfor %}">
-                                <div class="ui buttons">
-                                    <button type="button" class="ui button {% if form.is_empty %}active{% endif %}" data-value="none_{% for field in form %}{% if 'can_create' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="circle slash icon"></i>None</button>
-                                    <button type="button" class="ui button {% for field in form %}{% if 'can_create' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'can_create' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="plus icon"></i>Create</button>
-                                    <button type="button" class="ui button {% for field in form %}{% if 'can_invite' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'can_invite' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="megaphone icon"></i>Invite</button>
-                                    <button type="button" class="ui button {% for field in form %}{% if 'can_manage' in field.name %}{% if field.initial %}active{% endif %}{% endif %}{% endfor %}" data-value="{% for field in form %}{% if 'can_manage' in field.name %}{{ field.auto_id }}{% endif %}{% endfor %}"><i class="briefcase icon"></i>Manage</button>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </table>
+                <div id="user-form"></div>
                 <div class="field"></div>
                 <button class="ui button primary" type="submit">{% trans 'Manage access' %}</button>
             </form>
@@ -77,30 +39,7 @@
         $('.ui.checkbox')
             .checkbox()
         ;
- var
-    $buttons = $('.ui.buttons .button'),
-    handler = {
-      activate: function() {
-        $(this)
-          .addClass('active')
-          .siblings()
-          .removeClass('active')
-        ;
-        let val = $(this).data('value');
-        let parts = val.split('_');
-        $("#id_can_create_" + parts[parts.length - 1]).val("False");
-        $("#id_can_invite_" + parts[parts.length - 1]).val("False");
-        $("#id_can_manage_" + parts[parts.length - 1]).val("False");
-        if (parts[0] !== "none") {
-            $("#" + val).val("True")
-        }
-      }
-
-    }
-  ;
-
-  $buttons
-    .on('click', handler.activate)
-  ;
+        var users = {{ users|safe }};
     </script>
+    <script src="/static/javascript/bundle.js"></script>
 {% endblock %}

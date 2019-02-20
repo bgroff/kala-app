@@ -7,6 +7,7 @@ from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
 
+from django_kala.functions import create_user_permissions
 from projects.forms import manage_access_forms
 from projects.models import Project, ProjectPermission
 
@@ -19,48 +20,13 @@ class ManageAccessView(TemplateView):
     def get_context_data(self, **kwargs):
         permissions = ProjectPermission.objects.filter(**{
             'project': self.project,
-            "user__in": self.request.user.get_users()
+            'user__in': self.request.user.get_users()
         }).select_related(
             'permission',
             'user'
         )
-        permissions_dict = {}
-        for permission in permissions:
-            try:
-                permissions_dict[permission.user.pk].append(permission.permission.codename)
-            except KeyError:
-                permissions_dict[permission.user.pk] = [permission.permission.codename]
 
-        users = []
-        for user in self.request.user.get_users():
-            state = 'none'
-            try:
-                if 'can_create' in permissions_dict[user.pk]:
-                    state = 'can_create'
-            except KeyError:
-                pass
-            try:
-                if 'can_invite' in permissions_dict[user.pk]:
-                    state = 'can_invite'
-            except KeyError:
-                pass
-            try:
-                if 'can_manage' in permissions_dict[user.pk]:
-                    state = 'can_manage'
-            except KeyError:
-                pass
-
-            users.append(
-                {
-                    'name': str(user),
-                    'id': user.pk,
-                    'state': state,
-
-                    'can_create': "True" if 'can_create' == state else "False",
-                    'can_invite': "True" if 'can_invite' == state else "False",
-                    'can_manage': "True" if 'can_manage' == state else "False",
-                }
-            )
+        users = create_user_permissions(permissions, self.request.user.get_users())
 
         return {
             'forms': self.forms,
