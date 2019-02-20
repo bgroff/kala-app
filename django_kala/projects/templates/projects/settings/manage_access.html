@@ -35,18 +35,7 @@
         $('.ui.dropdown')
             .dropdown()
         ;
-        var users = [
-            {% for user in users %}
-                {
-                    name: "{{ user.user|safe }}",
-                    id: {{ user.user.id }},
-                    can_create: "{% if user.can_create %}True{% else %}False{% endif %}",
-                    can_invite: "{% if user.can_invite %}True{% else %}False{% endif %}",
-                    can_manage: "{% if user.can_manage %}True{% else %}False{% endif %}",
-                    state: "{% if user.can_create %}can_create{% elif user.can_invite %}can_invite{% elif user.can_manage %}can_manage{% else %}none{% endif %}",
-                },
-            {% endfor %}
-        ];
+        var users = {{ users|safe }};
     </script>
     <script src="/static/javascript/bundle.js"></script>
 

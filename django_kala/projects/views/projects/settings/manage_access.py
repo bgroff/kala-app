@@ -10,6 +10,8 @@ from django.views.generic import TemplateView
 from projects.forms import manage_access_forms
 from projects.models import Project, ProjectPermission
 
+import json
+
 
 class ManageAccessView(TemplateView):
     template_name = 'projects/settings/manage_access.html'
@@ -22,22 +24,49 @@ class ManageAccessView(TemplateView):
             'permission',
             'user'
         )
+        permissions_dict = {}
+        for permission in permissions:
+            try:
+                permissions_dict[permission.user.pk].append(permission.permission.codename)
+            except KeyError:
+                permissions_dict[permission.user.pk] = [permission.permission.codename]
 
-        users = [{
-            'user': user,
-            'can_create': True if 'can_create' in permissions.filter(user=user).values_list(
-                'permission__codename', flat=True) else False,
-            'can_invite': True if 'can_invite' in permissions.filter(user=user).values_list(
-                'permission__codename', flat=True) else False,
-            'can_manage': True if 'can_manage' in permissions.filter(user=user).values_list(
-                'permission__codename', flat=True) else False,
-        } for user in self.request.user.get_users()]
+        users = []
+        for user in self.request.user.get_users():
+            state = 'none'
+            try:
+                if 'can_create' in permissions_dict[user.pk]:
+                    state = 'can_create'
+            except KeyError:
+                pass
+            try:
+                if 'can_invite' in permissions_dict[user.pk]:
+                    state = 'can_invite'
+            except KeyError:
+                pass
+            try:
+                if 'can_manage' in permissions_dict[user.pk]:
+                    state = 'can_manage'
+            except KeyError:
+                pass
+
+            users.append(
+                {
+                    'name': str(user),
+                    'id': user.pk,
+                    'state': state,
+
+                    'can_create': "True" if 'can_create' == state else "False",
+                    'can_invite': "True" if 'can_invite' == state else "False",
+                    'can_manage': "True" if 'can_manage' == state else "False",
+                }
+            )
 
         return {
             'forms': self.forms,
             'project': self.project,
             'organization': self.project.organization,
-            'users': users
+            'users': json.dumps(users)
         }
 
     @method_decorator(login_required)
