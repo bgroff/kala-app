@@ -13,3 +13,5 @@ django_kala/django_kala/static/admin
 django_kala/django_kala/static/debug_toolbar
 django_kala/django_kala/static/rest_framework
 deploy/build
+components/dist/
+components/node_modules/
