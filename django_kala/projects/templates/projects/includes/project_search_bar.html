@@ -1,5 +1,5 @@
 {% load i18n %}
-<form method="get">
+<form method="get" action="{% url 'projects:project' project.pk %}">
     <div class="ui small labeled input">
         <div class="ui label">
             {% trans 'Project documents' %}

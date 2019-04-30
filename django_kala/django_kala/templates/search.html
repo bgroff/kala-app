@@ -40,45 +40,6 @@
             <div class="ui inverted red segment"></div>
         </div>
 
-        <div class="repo title">
-            <div class="repo options">
-                <div class="ui compact button">
-                    {% trans 'Download ZIP' %}
-                </div>
-                <div class="ui labeled button">
-                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
-                        <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> {% trans 'Filter' %}
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            {% for category in project.category_set.all %}
-                                <div class="item" data-value="not-watching">
-                                    <h4>{{ category }}</h4>
-                                </div>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <div class="ui labeled button">
-                    <div class="ui compact floating watch dropdown button" data-content="Choose display options">
-                        <input type="hidden" value="watching">
-                        <i class="checklist icon"></i> Sort
-                        <i class="dropdown icon"></i>
-                        <div class="menu">
-                            <div class="item" data-value="not-watching">
-                                <h4>{% trans 'Alphabetically' %}</h4>
-                            </div>
-                            <div class="item" data-value="watching">
-                                <h4>{% trans 'Date' %}</h4>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-                    <a class="ui positive compact icon button"">
-                + {% trans 'New document' %}
-            </a>
-        </div>
         <div class="ui divider">
         </div>
         <div class="ui container">

@@ -61,7 +61,7 @@
         let tags = [];
         window.addEventListener('keydown', function (e) {
             if (e.keyIdentifier === 'U+000A' || e.keyIdentifier === 'Enter' || e.keyCode === 13) {
-                if (e.target.nodeName === 'INPUT' && e.target.type === 'text') {
+                if (e.target.nodeName === 'INPUT' && e.target.type === 'text' && e.target.name != 'search') {
                     e.preventDefault();
                     return false;
                 }
@@ -72,10 +72,12 @@
             event.preventDefault();
             if (event.which === 13) {
                 let tagValue = $('#id_tags_input').val();
-                tags.push(tagValue);
-                $('#tags').append('<a class="ui blue tag label">' + tagValue + '<span class="delete icon" onclick="deleteTag(this)">X</span></a>');
-                $('#id_tags').val(tags.join(','));
-                $('#id_tags_input').val("");
+                if (tagValue != '') {
+                    tags.push(tagValue);
+                    $('#tags').append('<a class="ui blue tag label">' + tagValue + '<span class="delete icon" onclick="deleteTag(this)">X</span></a>');
+                    $('#id_tags').val(tags.join(','));
+                    $('#id_tags_input').val("");
+                }
             }
         }
 
