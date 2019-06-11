@@ -71,6 +71,8 @@ export class UserFormUI extends React.Component<UserProps, {}> {
                 <h4 className="ui header">
                     <div className="content">
                         {this.props.name}
+                        <a className="ui blue label">Blue</a>
+                        <a className="ui black label">Black</a>
                     </div>
                 </h4>
             </td>

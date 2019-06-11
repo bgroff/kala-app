@@ -10,6 +10,8 @@ export interface UserProps {
     can_create: string,
     can_invite: string,
     can_manage: string,
+    project_permission?: string,
+    organization_permission?: string,
     state: string,
     onPermissionChange: (key: number, permissions: object) => object
 }

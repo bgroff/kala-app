@@ -58,7 +58,3 @@ class DocumentView(APIView):
 #         permissions = self.queryset.filter(object_uuid=self.project.uuid)
 #         serializer = self.serializer_class(permissions, many=True)
 #         return Response(serializer.data)
-
-class DocumentPermissionsView(APIView):
-    pass
-
