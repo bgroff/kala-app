@@ -27,31 +27,42 @@ class DocumentPermissionSerializer(serializers.Serializer):
 
     def to_representation(self, obj):
         representation = {
-            'id': obj.id,
             'user': {
                 'id': obj.user_id,
                 'username': obj.username,
-                'first_name': obj.first_name,
-                'last_name': obj.last_name
+                'firstName': obj.first_name,
+                'lastName': obj.last_name
             }
         }
         if obj.document_permission:
-            representation['document_permission'] = obj.document_permission
+            representation['document'] = {
+                'id': obj.id,
+                self.format_permission(obj.document_permission): True
+            }
 
         if obj.project_permission:
-            representation['project_permission'] = obj.project_permission
+            representation['project'] = {
+                self.format_permission(obj.project_permission): True
+            }
         if obj.organization_permission:
-            representation['organization_permission'] = obj.organization_permission
+            representation['organization'] = {
+                self.format_permission(obj.organization_permission): True
+            }
         return representation
+
+    def format_permission(self, obj):
+        permission = obj.split('_')
+        permission = "{0}{1}".format(permission[0], permission[1].capitalize())
+        return permission
 
     def create(self, validated_data):
         user = self.context.get('user')
         document = self.context.get('document')
-        if validated_data['document_permission'] == 'can_invite':
+        if validated_data['document_permission'] == 'canInvite':
             return document.add_invite(user)
-        if validated_data['document_permission'] == 'can_create':
+        if validated_data['document_permission'] == 'canCreate':
             return document.add_create(user)
-        if validated_data['document_permission'] == 'can_manage':
+        if validated_data['document_permission'] == 'canManage':
             return document.add_manage(user)
 
         raise ValidationError('Could not parse the document permission')

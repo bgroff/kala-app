@@ -1,68 +1,15 @@
 import * as React from "react";
-import {UserProps} from "./UserForm";
+import {UserPermission, PermissionTypes} from "./UserForm";
 
 
-export class UserFormUI extends React.Component<UserProps, {}> {
-    constructor(props: UserProps) {
-        super(props);
+export class UserFormUI extends React.Component<UserPermission, {}> {
 
-        this.setNoUserPermision = this.setNoUserPermision.bind(this);
-        this.setCreateUserPermission = this.setCreateUserPermission.bind(this);
-        this.setInviteUserPermission = this.setInviteUserPermission.bind(this);
-        this.setManageUserPermission = this.setManageUserPermission.bind(this);
+    getButtonClass(active: boolean) {
+        return active ? "ui button active" : "ui button";
     }
 
-    getIdString(type: string, id: number) {
-        return "id_can_" + type + "_" + id;
-    }
-
-    getNameString(type: string, id: number) {
-        return "can_" + type + "_" + id;
-    }
-
-    getButtonClass(active: string) {
-        if (active === "None") {
-            return this.props.can_create === "True" ||
-                this.props.can_invite === "True" ||
-                this.props.can_manage === "True" ? "ui button" : "ui button active";
-        }
-        if (active === "True") {
-            return "ui button active";
-        }
-        return "ui button";
-    }
-
-    setNoUserPermision(e: any) {
-        this.props.onPermissionChange(this.props.id, {
-            can_create: "False",
-            can_invite: "False",
-            can_manage: "False",
-            state: "none",
-        });
-    }
-    setCreateUserPermission(e: any) {
-        this.setState(state => this.props.onPermissionChange(this.props.id, {
-            can_create: "True",
-            can_invite: "False",
-            can_manage: "False",
-            state: "can_create",
-        }));
-    }
-    setInviteUserPermission(e: any) {
-        this.props.onPermissionChange(this.props.id, {
-            can_create: "False",
-            can_invite: "True",
-            can_manage: "False",
-            state: "can_invite",
-        });
-    }
-    setManageUserPermission(e: any) {
-        this.props.onPermissionChange(this.props.id, {
-            can_create: "False",
-            can_invite: "False",
-            can_manage: "True",
-            state: "can_manage",
-        });
+    setPermision = (permission: PermissionTypes): void  => {
+        this.props.onPermissionChange(this.props.user.id, permission);
     }
 
     render() {
@@ -70,9 +17,7 @@ export class UserFormUI extends React.Component<UserProps, {}> {
             <td>
                 <h4 className="ui header">
                     <div className="content">
-                        {this.props.name}
-                        <a className="ui blue label">Blue</a>
-                        <a className="ui black label">Black</a>
+                        {this.props.user.firstName + " " + this.props.user.lastName}
                     </div>
                 </h4>
             </td>
@@ -81,29 +26,32 @@ export class UserFormUI extends React.Component<UserProps, {}> {
                 <div className="ui buttons">
                     <button
                         type="button"
-                        className={this.getButtonClass("None")}
-                        onClick={this.setNoUserPermision}>
+                        className={this.getButtonClass(this.props.document ? 
+                            !this.props.document.canCreate &&
+                            !this.props.document.canInvite &&
+                            !this.props.document.canManage : true)}
+                        onClick={() => this.setPermision(PermissionTypes.None)}>
                         <i className="circle slash icon"></i>
                         None
                     </button>
                     <button
                         type="button"
-                        className={this.getButtonClass(this.props.can_create)}
-                        onClick={this.setCreateUserPermission}>
+                        className={this.getButtonClass(this.props.document ? this.props.document.canCreate : false)}
+                        onClick={() => this.setPermision(PermissionTypes.Create)}>
                         <i className="plus icon"></i>
                         Create
                     </button>
                     <button
                         type="button"
-                        className={this.getButtonClass(this.props.can_invite)}
-                        onClick={this.setInviteUserPermission}>
+                        className={this.getButtonClass(this.props.document ? this.props.document.canInvite : false)}
+                        onClick={() => this.setPermision(PermissionTypes.Invite)}>
                         <i className="megaphone icon"></i>
                         Invite
                     </button>
                     <button
                         type="button"
-                        className={this.getButtonClass(this.props.can_manage)}
-                        onClick={this.setManageUserPermission}>
+                        className={this.getButtonClass(this.props.document ? this.props.document.canManage: false)}
+                        onClick={() => this.setPermision(PermissionTypes.Manage)}>
                         <i className="briefcase icon"></i>
                         Manage
                     </button>
