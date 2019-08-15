@@ -75860,10 +75860,10 @@ const semantic_ui_react_1 = __webpack_require__(/*! semantic-ui-react */ "./node
 const mobx_react_1 = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobx-react.module.js");
 var PermissionTypes;
 (function (PermissionTypes) {
-    PermissionTypes[PermissionTypes["None"] = 0] = "None";
-    PermissionTypes[PermissionTypes["Create"] = 1] = "Create";
-    PermissionTypes[PermissionTypes["Invite"] = 2] = "Invite";
-    PermissionTypes[PermissionTypes["Manage"] = 3] = "Manage";
+    PermissionTypes["None"] = "none";
+    PermissionTypes["Create"] = "canCreate";
+    PermissionTypes["Invite"] = "canInvite";
+    PermissionTypes["Manage"] = "canManage";
 })(PermissionTypes = exports.PermissionTypes || (exports.PermissionTypes = {}));
 class UserNameFilterInput extends React.Component {
     render() {
@@ -75887,11 +75887,8 @@ exports.UserFilterDropdownMenu = UserFilterDropdownMenu;
 let UserForm = class UserForm extends React.Component {
     constructor() {
         super(...arguments);
-        this.setUserPermissions = (id, permission) => {
-            console.log(id);
-            console.log(permission);
-            this.props.documentPermissionStore.setPermission(id, permission);
-            return permission;
+        this.setUserPermissions = (id, newPermission, oldPermission) => {
+            this.props.documentPermissionStore.setPermission(id, newPermission, oldPermission);
         };
         this.onFilterChange = (event, data) => {
             this.props.documentPermissionStore.setFilter(data.value);
@@ -75904,7 +75901,8 @@ let UserForm = class UserForm extends React.Component {
         };
     }
     componentWillMount() {
-        this.props.documentPermissionStore.fetchDocumentPermissions(4, 2660);
+        this.props.documentPermissionStore.init(4, 2660);
+        this.props.documentPermissionStore.fetchDocumentPermissions();
     }
     render() {
         return React.createElement("span", null,
@@ -75912,6 +75910,8 @@ let UserForm = class UserForm extends React.Component {
                 React.createElement("div", { className: "repo options" },
                     React.createElement(UserFilterDropdownMenu, { onFilterChange: this.onFilterChange })),
                 React.createElement(UserNameFilterInput, { onNameChange: this.onNameChange })),
+            React.createElement("div", { className: "ui section divider" }),
+            React.createElement(semantic_ui_react_1.Pagination, { activePage: this.props.documentPermissionStore.activePage, totalPages: this.props.documentPermissionStore.numberOfPages, onPageChange: this.handlePaginationChange }),
             React.createElement("table", { className: "ui very basic table" },
                 React.createElement("thead", null,
                     React.createElement("tr", null,
@@ -75947,8 +75947,21 @@ class UserFormUI extends React.Component {
     constructor() {
         super(...arguments);
         this.setPermision = (permission) => {
-            this.props.onPermissionChange(this.props.user.id, permission);
+            this.props.onPermissionChange(this.props.user.id, permission, this.getCurrentPermission());
         };
+    }
+    // Keep track of the current permission in case it needs to be reset.
+    // This could happen if the network request failed.
+    getCurrentPermission() {
+        if (!this.props.document)
+            return UserForm_1.PermissionTypes.None;
+        if (this.props.document.canCreate)
+            return UserForm_1.PermissionTypes.Create;
+        if (this.props.document.canInvite)
+            return UserForm_1.PermissionTypes.Invite;
+        if (this.props.document.canManage)
+            return UserForm_1.PermissionTypes.Manage;
+        return UserForm_1.PermissionTypes.None;
     }
     getButtonClass(active) {
         return active ? "ui button active" : "ui button";
@@ -75957,7 +75970,7 @@ class UserFormUI extends React.Component {
         return React.createElement("tr", null,
             React.createElement("td", null,
                 React.createElement("h4", { className: "ui header" },
-                    React.createElement("div", { className: "content" }, this.props.user.firstName + " " + this.props.user.lastName))),
+                    React.createElement("div", { className: "content" }, this.props.user.lastName + ", " + this.props.user.firstName))),
             React.createElement("td", null),
             React.createElement("td", null,
                 React.createElement("div", { className: "ui buttons" },
@@ -76006,7 +76019,7 @@ class RootComponent extends react_1.Component {
     }
 }
 exports.default = RootComponent;
-ReactDOM.render(React.createElement(RootComponent, null), document.getElementById("user-form"));
+ReactDOM.render(React.createElement(RootComponent, null), document.getElementById("document-permissions-form"));
 
 
 /***/ }),
@@ -76038,6 +76051,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 const mobx_1 = __webpack_require__(/*! mobx */ "./node_modules/mobx/lib/mobx.module.js");
 const UserForm_1 = __webpack_require__(/*! ../components/UserForm */ "./src/components/UserForm.tsx");
+const csrf_1 = __webpack_require__(/*! ../utilities/csrf */ "./src/utilities/csrf.tsx");
 class DocumentPermissionStore {
     constructor() {
         this.error = null;
@@ -76047,47 +76061,19 @@ class DocumentPermissionStore {
         this.currentPage = 1;
         this.search = "";
         this.filter = "no_filter";
-        this.setPermission = (id, permission) => {
-            const userIndex = this.permissions.findIndex(user => user.user.id = id);
-            switch (permission) {
-                case UserForm_1.PermissionTypes.None: {
-                    this.permissions[userIndex].document = {
-                        id: this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null,
-                    };
-                    break;
-                }
-                case UserForm_1.PermissionTypes.Create: {
-                    this.permissions[userIndex].document = {
-                        id: this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null,
-                        canCreate: true
-                    };
-                    break;
-                }
-                case UserForm_1.PermissionTypes.Invite: {
-                    this.permissions[userIndex].document = {
-                        id: this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null,
-                        canInvite: true
-                    };
-                    break;
-                }
-                case UserForm_1.PermissionTypes.Manage: {
-                    this.permissions[userIndex].document = {
-                        id: this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null,
-                        canManage: true
-                    };
-                    break;
-                }
-                default: break;
-            }
-            return true;
-        };
     }
-    fetchDocumentPermissions(projectId, documentId) {
+    init(projectId, documentId) {
+        console.log(window.location.pathname);
+        this.projectId = projectId;
+        this.documentId = documentId;
+        this.url = '/v1/projects/' + projectId + '/documents/' + documentId + '/permission';
+    }
+    fetchDocumentPermissions() {
         return __awaiter(this, void 0, void 0, function* () {
             this.isFetching = true;
             this.error = null;
             try {
-                const response = yield axios_1.default.get('/v1/projects/' + projectId + '/documents/' + documentId + '/permission');
+                const response = yield axios_1.default.get(this.url);
                 this.permissions = response.data;
                 this.isFetching = false;
             }
@@ -76098,36 +76084,46 @@ class DocumentPermissionStore {
         });
     }
     get numberOfPages() {
-        return Math.ceil(this.permissions.length / this.permissionsPerPage);
+        return Math.ceil(this.filteredUsers.length / this.permissionsPerPage);
     }
     get activePage() {
+        if (this.numberOfPages < this.currentPage) {
+            return this.numberOfPages;
+        }
         return this.currentPage;
     }
     setActivePage(activePage) {
         this.currentPage = activePage;
         return this.currentPage;
     }
-    get userPermissions() {
+    get filteredUsers() {
         let filteredUsers = this.permissions;
-        console.log("Computing userPermissions");
         if (this.search != "") {
             filteredUsers = filteredUsers.filter(user => user.user.lastName.toLowerCase().startsWith(this.search.toLowerCase()));
         }
-        if (this.filter === null) {
+        if (this.filter === UserForm_1.PermissionTypes.None) {
             filteredUsers = filteredUsers.filter(user => user.document === undefined);
         }
-        else if (this.filter === "can_create") {
-            filteredUsers = filteredUsers.filter(user => user.document.canCreate === true);
+        else if (this.filter === UserForm_1.PermissionTypes.Create) {
+            filteredUsers = filteredUsers.filter(user => (user.document && user.document.canCreate === true) ||
+                (user.project && user.project.canCreate === true) ||
+                (user.organization && user.organization.canCreate === true));
         }
-        else if (this.filter === "can_invite") {
-            filteredUsers = filteredUsers.filter(user => user.document.canInvite === true);
+        else if (this.filter === UserForm_1.PermissionTypes.Invite) {
+            filteredUsers = filteredUsers.filter(user => (user.document && user.document.canInvite === true) ||
+                (user.project && user.project.canInvite === true) ||
+                (user.organization && user.organization.canInvite === true));
         }
-        else if (this.filter === "can_manage") {
-            filteredUsers = filteredUsers.filter(user => user.document.canManage === true);
+        else if (this.filter === UserForm_1.PermissionTypes.Manage) {
+            filteredUsers = filteredUsers.filter(user => (user.document && user.document.canManage === true) ||
+                (user.project && user.project.canManage === true) ||
+                (user.organization && user.organization.canManage === true));
         }
-        let offset = Math.ceil((this.currentPage - 1) * this.permissionsPerPage);
-        console.log(filteredUsers.slice(offset, offset + this.permissionsPerPage));
-        return filteredUsers.slice(offset, offset + this.permissionsPerPage);
+        return filteredUsers;
+    }
+    get userPermissions() {
+        let offset = Math.ceil((this.activePage - 1) * this.permissionsPerPage);
+        return this.filteredUsers.slice(offset, offset + this.permissionsPerPage);
     }
     setFilter(filter) {
         this.filter = filter;
@@ -76136,6 +76132,46 @@ class DocumentPermissionStore {
     setSearch(search) {
         this.search = search;
         return this.search;
+    }
+    /**
+     * setPermission updates the users permission in the [[permissions]] array and then sends
+     * the request to the backend for action. If the backend is not successful then the old permission
+     * is reset.
+     *
+     * [[userIndex]] is the actioned user, this users permission is then replaced with the [[newPermission]].
+     * If the id is present in the permission object, then that user already has a permission. If this is the
+     * case then an put or delete can occur, otherwise the data must be posted to the endpoint.
+     */
+    setPermission(id, newPermission, oldPermission) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userIndex = this.permissions.findIndex(user => user.user.id === id);
+            const permissionId = this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null;
+            this.permissions[userIndex].document = {
+                id: permissionId,
+                permission: newPermission,
+                user_id: id,
+                document_id: this.documentId
+            };
+            this.permissions[userIndex].document[newPermission] = true;
+            try {
+                if (newPermission === UserForm_1.PermissionTypes.None) {
+                    yield axios_1.default.delete(this.url + "/" + permissionId, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].document = null;
+                }
+                else if (permissionId) {
+                    const response = yield axios_1.default.put(this.url + "/" + permissionId, this.permissions[userIndex].document, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].document = response.data.document;
+                }
+                else {
+                    delete this.permissions[userIndex].document.id;
+                    const response = yield axios_1.default.post(this.url, this.permissions[userIndex].document, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].document = response.data.document;
+                }
+            }
+            catch (error) {
+                console.log("failed");
+            }
+        });
     }
 }
 __decorate([
@@ -76173,6 +76209,9 @@ __decorate([
 ], DocumentPermissionStore.prototype, "setActivePage", null);
 __decorate([
     mobx_1.computed
+], DocumentPermissionStore.prototype, "filteredUsers", null);
+__decorate([
+    mobx_1.computed
 ], DocumentPermissionStore.prototype, "userPermissions", null);
 __decorate([
     mobx_1.action
@@ -76182,7 +76221,7 @@ __decorate([
 ], DocumentPermissionStore.prototype, "setSearch", null);
 __decorate([
     mobx_1.action
-], DocumentPermissionStore.prototype, "setPermission", void 0);
+], DocumentPermissionStore.prototype, "setPermission", null);
 exports.DocumentPermissionStore = DocumentPermissionStore;
 
 
@@ -76202,6 +76241,39 @@ const DocumentPermissionStore_1 = __webpack_require__(/*! ./DocumentPermissionSt
 exports.stores = {
     documentPermissionStore: new DocumentPermissionStore_1.DocumentPermissionStore()
 };
+
+
+/***/ }),
+
+/***/ "./src/utilities/csrf.tsx":
+/*!********************************!*\
+  !*** ./src/utilities/csrf.tsx ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+function getCSRF() {
+    return getCookie('csrftoken');
+}
+exports.getCSRF = getCSRF;
 
 
 /***/ })

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { action, computed, observable } from 'mobx'
-import { PermissionTypes, UserPermission } from '../components/UserForm';
-
+import { PermissionTypes, UserPermission, Permission } from '../components/UserForm';
+import { getCSRF } from "../utilities/csrf";
 
 export interface IDocumentPermissionStore {
     error: any;
@@ -10,14 +10,19 @@ export interface IDocumentPermissionStore {
     numberOfPages: number;
     activePage: number;
 
-    fetchDocumentPermissions(projectId: number, documentId: number): void;
-    setPermission(id: number, permission: PermissionTypes): boolean;
+    init(projectId: number, documentId: number): void;
+    fetchDocumentPermissions(): void;
+    setPermission(id: number, newPermission: PermissionTypes, oldPermission: PermissionTypes): void;
     setActivePage(activePage: number): number;
     setFilter(filter: string): string;
     setSearch(search: string): string;
 }
 
 export class DocumentPermissionStore implements IDocumentPermissionStore {
+    private url: string;
+    private projectId: number;
+    private documentId: number;
+
     @observable error: any = null;
     @observable isFetching = false;
     @observable permissions: UserPermission[] = [];
@@ -27,11 +32,18 @@ export class DocumentPermissionStore implements IDocumentPermissionStore {
     @observable filter: string = "no_filter";
     user: UserPermission;
 
-    @action async fetchDocumentPermissions(projectId: number, documentId: number) {
+    init(projectId: number, documentId: number) {
+        console.log(window.location.pathname);
+        this.projectId = projectId;
+        this.documentId = documentId;
+        this.url = '/v1/projects/' + projectId + '/documents/' + documentId + '/permission';
+    }
+
+    @action async fetchDocumentPermissions() {
         this.isFetching = true;
         this.error = null;
         try {
-            const response = await axios.get('/v1/projects/' + projectId + '/documents/' + documentId + '/permission');
+            const response = await axios.get(this.url);
             this.permissions = response.data;
             this.isFetching = false;
         } catch (error) {
@@ -41,11 +53,14 @@ export class DocumentPermissionStore implements IDocumentPermissionStore {
     }
 
     @computed get numberOfPages(): number {
-        return Math.ceil(this.permissions.length / this.permissionsPerPage);
+        return Math.ceil(this.filteredUsers.length / this.permissionsPerPage);
     }
 
 
     @computed get activePage(): number  {
+        if (this.numberOfPages < this.currentPage) {
+            return this.numberOfPages;
+        }
         return this.currentPage;
     }
 
@@ -54,26 +69,37 @@ export class DocumentPermissionStore implements IDocumentPermissionStore {
         return this.currentPage;
     }
 
-    @computed get userPermissions(): UserPermission[] {
+
+    @computed get filteredUsers(): UserPermission[] {
         let filteredUsers: UserPermission[] = this.permissions;
-        console.log("Computing userPermissions");
         if (this.search != "") {
             filteredUsers = filteredUsers.filter(user => user.user.lastName.toLowerCase().startsWith(this.search.toLowerCase()));
         }
 
-        if (this.filter === null) {
+        if (this.filter === PermissionTypes.None) {
             filteredUsers = filteredUsers.filter(user => user.document === undefined);
-        } else if (this.filter === "can_create") {
-            filteredUsers = filteredUsers.filter(user => user.document.canCreate === true);
-        } else if (this.filter === "can_invite") {
-            filteredUsers = filteredUsers.filter(user => user.document.canInvite === true);
-        } else if (this.filter === "can_manage") {
-            filteredUsers = filteredUsers.filter(user => user.document.canManage === true);
+        } else if (this.filter === PermissionTypes.Create) {
+            filteredUsers = filteredUsers.filter(user => 
+                (user.document && user.document.canCreate === true) ||
+                (user.project && user.project.canCreate === true) ||
+                (user.organization && user.organization.canCreate === true));
+        } else if (this.filter === PermissionTypes.Invite) {
+            filteredUsers = filteredUsers.filter(user => 
+                (user.document && user.document.canInvite === true) ||
+                (user.project && user.project.canInvite === true) ||
+                (user.organization && user.organization.canInvite === true));
+        } else if (this.filter === PermissionTypes.Manage) {
+            filteredUsers = filteredUsers.filter(user =>
+                (user.document && user.document.canManage === true) ||
+                (user.project && user.project.canManage === true) ||
+                (user.organization && user.organization.canManage === true));
         }
+        return filteredUsers;
+    }
 
-        let offset = Math.ceil((this.currentPage - 1) * this.permissionsPerPage);
-        console.log(filteredUsers.slice(offset, offset + this.permissionsPerPage));
-        return filteredUsers.slice(offset, offset + this.permissionsPerPage);
+    @computed get userPermissions(): UserPermission[] {
+        let offset = Math.ceil((this.activePage - 1) * this.permissionsPerPage);
+        return this.filteredUsers.slice(offset, offset + this.permissionsPerPage);
     }
 
     @action setFilter(filter: string) {
@@ -86,38 +112,52 @@ export class DocumentPermissionStore implements IDocumentPermissionStore {
         return this.search;
     }
 
-    @action setPermission = (id: number, permission: PermissionTypes): boolean => {
-        const userIndex = this.permissions.findIndex(user => user.user.id = id);
-        switch (permission) {
-            case PermissionTypes.None:  {
-                this.permissions[userIndex].document = {
-                    id: this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null,
-                };
-                break;
+    /**
+     * setPermission updates the users permission in the [[permissions]] array and then sends
+     * the request to the backend for action. If the backend is not successful then the old permission
+     * is reset.
+     * 
+     * [[userIndex]] is the actioned user, this users permission is then replaced with the [[newPermission]].
+     * If the id is present in the permission object, then that user already has a permission. If this is the 
+     * case then an put or delete can occur, otherwise the data must be posted to the endpoint.
+     */
+    @action async setPermission(id: number, newPermission: PermissionTypes, oldPermission: PermissionTypes) {
+        const userIndex: number = this.permissions.findIndex(user => user.user.id === id);
+        const permissionId: number = this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null;
+        this.permissions[userIndex].document = {
+            id: permissionId,
+            permission: newPermission,
+            user_id: id,
+            document_id: this.documentId
+        } as Permission;
+        this.permissions[userIndex].document[newPermission] = true;
+
+        try {
+            if (newPermission === PermissionTypes.None) {
+                await axios.delete(
+                    this.url + "/" + permissionId,
+                    {headers: {'X-CSRFToken': getCSRF()}}
+                );
+                this.permissions[userIndex].document = null;
             }
-            case PermissionTypes.Create: {
-                this.permissions[userIndex].document = {
-                    id: this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null,
-                    canCreate: true
-                };
-                break;
+            else if (permissionId) {
+                const response = await axios.put(
+                    this.url + "/" + permissionId,
+                    this.permissions[userIndex].document,
+                    {headers: {'X-CSRFToken': getCSRF()}}
+                );
+                this.permissions[userIndex].document = response.data.document;
+            } else {
+                delete this.permissions[userIndex].document.id;
+                const response = await axios.post(
+                    this.url,
+                    this.permissions[userIndex].document,
+                    {headers: {'X-CSRFToken': getCSRF()}}
+                );
+                this.permissions[userIndex].document = response.data.document;
             }
-            case PermissionTypes.Invite: {
-                this.permissions[userIndex].document = {
-                    id: this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null,
-                    canInvite: true
-                };
-                break;
-            }
-            case PermissionTypes.Manage: {
-                this.permissions[userIndex].document = {
-                    id: this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null,
-                    canManage: true
-                };
-                break;
-            }
-            default: break;
+        } catch (error) {
+            console.log("failed");
         }
-        return true;
     }
 }

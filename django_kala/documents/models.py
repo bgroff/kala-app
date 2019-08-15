@@ -114,14 +114,25 @@ class Document(models.Model):
         ])
 
     def add_permission(self, user, permission):
-        return DocumentPermission.objects.get_or_create(
-            permission=Permission.objects.get(
-                codename=permission,
-                content_type__app_label='documents'
-            ),
-            user=user,
-            document=self
+        permission = Permission.objects.get(
+            codename=permission,
+            content_type__app_label='documents'
         )
+
+        try:
+            document_permission = DocumentPermission.objects.get(
+                user=user,
+                document=self
+            )
+            document_permission.permission = permission
+            document_permission.save()
+        except DocumentPermission.DoesNotExist:
+            document_permission = DocumentPermission.objects.create(
+                user=user,
+                document=self,
+                permission=permission
+            )
+        return document_permission
 
     def add_create(self, user):
         return self.add_permission(

@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from api.v1.projects.settings.views import DocumentPermissionsView
+from api.v1.projects.settings.views import DocumentPermissionsView, DocumentPermissionView
 from .views import *
 
 urlpatterns = [
@@ -34,29 +34,10 @@ urlpatterns = [
         view=DocumentPermissionsView.as_view()
     ),
 
-    # path(
-    #     'projects/<int:pk>/permissions/',
-    #     name='project_permissions',
-    #     view=ProjectPermissionsView.as_view()
-    # ),
-    #
-    # path(
-    #     'projects/<int:project_pk>/documents/<int:document_pk>/settings',
-    #     include([
-    #         path('archive'),
-    #         path('access'),
-    #         path('ownership'),
-    #     ]),
-    # ),
-    #
-    # path(
-    #     'projects/<int:pk>/settings/',
-    #     include([
-    #         path('archive'),
-    #         path('categories'),
-    #         path('access'),
-    #         path('ownership'),
-    #     ]),
-    # ),
+    path(
+        'projects/<int:project_pk>/documents/<int:document_pk>/permission/<int:pk>',
+        name='document',
+        view=DocumentPermissionView.as_view()
+    ),
 
 ]

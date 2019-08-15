@@ -20,5 +20,5 @@ export default class RootComponent extends Component {
 ReactDOM.render(
     <RootComponent/>,
 
-    document.getElementById("user-form")
+    document.getElementById("document-permissions-form")
 );

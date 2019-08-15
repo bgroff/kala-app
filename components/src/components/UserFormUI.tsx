@@ -3,13 +3,22 @@ import {UserPermission, PermissionTypes} from "./UserForm";
 
 
 export class UserFormUI extends React.Component<UserPermission, {}> {
+    // Keep track of the current permission in case it needs to be reset.
+    // This could happen if the network request failed.
+    private getCurrentPermission(): PermissionTypes {
+        if (!this.props.document) return PermissionTypes.None;
+        if (this.props.document.canCreate) return PermissionTypes.Create;
+        if (this.props.document.canInvite) return PermissionTypes.Invite;
+        if (this.props.document.canManage) return PermissionTypes.Manage;
+        return PermissionTypes.None;
+    }
 
     getButtonClass(active: boolean) {
         return active ? "ui button active" : "ui button";
     }
 
     setPermision = (permission: PermissionTypes): void  => {
-        this.props.onPermissionChange(this.props.user.id, permission);
+        this.props.onPermissionChange(this.props.user.id, permission, this.getCurrentPermission());
     }
 
     render() {
@@ -17,7 +26,7 @@ export class UserFormUI extends React.Component<UserPermission, {}> {
             <td>
                 <h4 className="ui header">
                     <div className="content">
-                        {this.props.user.firstName + " " + this.props.user.lastName}
+                        {this.props.user.lastName + ", " + this.props.user.firstName}
                     </div>
                 </h4>
             </td>

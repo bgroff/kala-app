@@ -6,10 +6,10 @@ import { IDocumentPermissionStore } from "../stores/DocumentPermissionStore";
 
 
 export enum PermissionTypes {
-    None,
-    Create,
-    Invite,
-    Manage,
+    None = "none",
+    Create = "canCreate",
+    Invite = "canInvite",
+    Manage = "canManage",
 }
 
 export interface User {
@@ -23,7 +23,8 @@ export interface Permission {
     id: number,
     canCreate?: boolean,
     canInvite?: boolean,
-    canManage?: boolean
+    canManage?: boolean,
+    none?: boolean // really only here to keep the compiler happy.
 }
 
 export interface UserPermission {
@@ -32,7 +33,7 @@ export interface UserPermission {
     project?: Permission,
     organization?: Permission
 
-    onPermissionChange: (id: number, permission: PermissionTypes) => object // Switch to enum
+    onPermissionChange(id: number, newPermission: PermissionTypes, oldPermission: PermissionTypes): void; // Switch to enum
 }
 
 interface UserFormProps {
@@ -79,14 +80,12 @@ export class UserFilterDropdownMenu extends React.Component<UserFilterDropdown, 
 export class UserForm extends React.Component<UserFormProps> {
 
     componentWillMount() {
-        this.props.documentPermissionStore.fetchDocumentPermissions(4, 2660)
+        this.props.documentPermissionStore.init(4, 2660);
+        this.props.documentPermissionStore.fetchDocumentPermissions()
     }
 
-    setUserPermissions = (id: number, permission: PermissionTypes) => {
-        console.log(id);
-        console.log(permission);
-        this.props.documentPermissionStore.setPermission(id, permission)
-        return permission;
+    setUserPermissions = (id: number, newPermission: PermissionTypes, oldPermission: PermissionTypes) => {
+        this.props.documentPermissionStore.setPermission(id, newPermission, oldPermission);
     }
 
     onFilterChange = (event: any, data: any) => {
@@ -109,6 +108,12 @@ export class UserForm extends React.Component<UserFormProps> {
                 </div>
                 <UserNameFilterInput onNameChange={this.onNameChange} />
             </div>
+            <div className="ui section divider"/>
+            <Pagination
+                activePage={this.props.documentPermissionStore.activePage}
+                totalPages={this.props.documentPermissionStore.numberOfPages}
+                onPageChange={this.handlePaginationChange}
+            />
             <table className="ui very basic table">
                 <thead>
                     <tr>
