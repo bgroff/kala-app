@@ -75901,7 +75901,7 @@ let UserForm = class UserForm extends React.Component {
         };
     }
     componentWillMount() {
-        this.props.documentPermissionStore.init(4, 2660);
+        this.props.documentPermissionStore.init();
         this.props.documentPermissionStore.fetchDocumentPermissions();
     }
     render() {
@@ -76019,6 +76019,10 @@ class RootComponent extends react_1.Component {
     }
 }
 exports.default = RootComponent;
+// ReactDOM.render(
+//     <RootComponent/>,
+//     document.getElementById("user-form")
+// );
 ReactDOM.render(React.createElement(RootComponent, null), document.getElementById("document-permissions-form"));
 
 
@@ -76062,11 +76066,12 @@ class DocumentPermissionStore {
         this.search = "";
         this.filter = "no_filter";
     }
-    init(projectId, documentId) {
-        console.log(window.location.pathname);
-        this.projectId = projectId;
-        this.documentId = documentId;
-        this.url = '/v1/projects/' + projectId + '/documents/' + documentId + '/permission';
+    init() {
+        const path = window.location.pathname.split('/');
+        this.projectId = path[2];
+        this.documentId = path[3];
+        this.url = '/v1/projects/' + this.projectId + '/documents/' + this.documentId + '/permission';
+        console.log(this.url);
     }
     fetchDocumentPermissions() {
         return __awaiter(this, void 0, void 0, function* () {

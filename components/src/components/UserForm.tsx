@@ -80,7 +80,7 @@ export class UserFilterDropdownMenu extends React.Component<UserFilterDropdown, 
 export class UserForm extends React.Component<UserFormProps> {
 
     componentWillMount() {
-        this.props.documentPermissionStore.init(4, 2660);
+        this.props.documentPermissionStore.init();
         this.props.documentPermissionStore.fetchDocumentPermissions()
     }
 

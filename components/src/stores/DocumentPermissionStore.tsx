@@ -10,7 +10,7 @@ export interface IDocumentPermissionStore {
     numberOfPages: number;
     activePage: number;
 
-    init(projectId: number, documentId: number): void;
+    init(): void;
     fetchDocumentPermissions(): void;
     setPermission(id: number, newPermission: PermissionTypes, oldPermission: PermissionTypes): void;
     setActivePage(activePage: number): number;
@@ -32,11 +32,12 @@ export class DocumentPermissionStore implements IDocumentPermissionStore {
     @observable filter: string = "no_filter";
     user: UserPermission;
 
-    init(projectId: number, documentId: number) {
-        console.log(window.location.pathname);
-        this.projectId = projectId;
-        this.documentId = documentId;
-        this.url = '/v1/projects/' + projectId + '/documents/' + documentId + '/permission';
+    init() {
+        const path: any[] = window.location.pathname.split('/');
+        this.projectId = path[2];
+        this.documentId = path[3];
+        this.url = '/v1/projects/' + this.projectId + '/documents/' + this.documentId + '/permission';
+        console.log(this.url);
     }
 
     @action async fetchDocumentPermissions() {
