@@ -1,36 +1,13 @@
 import axios from 'axios'
-import { action, computed, observable } from 'mobx'
-import { PermissionTypes, UserPermission, Permission } from '../components/UserForm';
+import { action } from 'mobx'
+import { PermissionTypes, Permission } from '../components/UserForm';
 import { getCSRF } from "../utilities/csrf";
+import { PermissionStore, IPermissionStore } from './PermissionStore';
 
-export interface IDocumentPermissionStore {
-    error: any;
-    isFetching: boolean;
-    userPermissions: UserPermission[];
-    numberOfPages: number;
-    activePage: number;
 
-    init(): void;
-    fetchDocumentPermissions(): void;
-    setPermission(id: number, newPermission: PermissionTypes, oldPermission: PermissionTypes): void;
-    setActivePage(activePage: number): number;
-    setFilter(filter: string): string;
-    setSearch(search: string): string;
-}
-
-export class DocumentPermissionStore implements IDocumentPermissionStore {
-    private url: string;
+export class DocumentPermissionStore extends PermissionStore implements IPermissionStore {
     private projectId: number;
     private documentId: number;
-
-    @observable error: any = null;
-    @observable isFetching = false;
-    @observable permissions: UserPermission[] = [];
-    @observable permissionsPerPage: number = 30;
-    @observable currentPage: number = 1;
-    @observable search: string = "";
-    @observable filter: string = "no_filter";
-    user: UserPermission;
 
     init() {
         const path: any[] = window.location.pathname.split('/');
@@ -38,79 +15,6 @@ export class DocumentPermissionStore implements IDocumentPermissionStore {
         this.documentId = path[3];
         this.url = '/v1/projects/' + this.projectId + '/documents/' + this.documentId + '/permission';
         console.log(this.url);
-    }
-
-    @action async fetchDocumentPermissions() {
-        this.isFetching = true;
-        this.error = null;
-        try {
-            const response = await axios.get(this.url);
-            this.permissions = response.data;
-            this.isFetching = false;
-        } catch (error) {
-            this.error = error;
-            this.isFetching = false;
-        }
-    }
-
-    @computed get numberOfPages(): number {
-        return Math.ceil(this.filteredUsers.length / this.permissionsPerPage);
-    }
-
-
-    @computed get activePage(): number  {
-        if (this.numberOfPages < this.currentPage) {
-            return this.numberOfPages;
-        }
-        return this.currentPage;
-    }
-
-    @action setActivePage(activePage: number): number  {
-        this.currentPage = activePage;
-        return this.currentPage;
-    }
-
-
-    @computed get filteredUsers(): UserPermission[] {
-        let filteredUsers: UserPermission[] = this.permissions;
-        if (this.search != "") {
-            filteredUsers = filteredUsers.filter(user => user.user.lastName.toLowerCase().startsWith(this.search.toLowerCase()));
-        }
-
-        if (this.filter === PermissionTypes.None) {
-            filteredUsers = filteredUsers.filter(user => user.document === undefined);
-        } else if (this.filter === PermissionTypes.Create) {
-            filteredUsers = filteredUsers.filter(user => 
-                (user.document && user.document.canCreate === true) ||
-                (user.project && user.project.canCreate === true) ||
-                (user.organization && user.organization.canCreate === true));
-        } else if (this.filter === PermissionTypes.Invite) {
-            filteredUsers = filteredUsers.filter(user => 
-                (user.document && user.document.canInvite === true) ||
-                (user.project && user.project.canInvite === true) ||
-                (user.organization && user.organization.canInvite === true));
-        } else if (this.filter === PermissionTypes.Manage) {
-            filteredUsers = filteredUsers.filter(user =>
-                (user.document && user.document.canManage === true) ||
-                (user.project && user.project.canManage === true) ||
-                (user.organization && user.organization.canManage === true));
-        }
-        return filteredUsers;
-    }
-
-    @computed get userPermissions(): UserPermission[] {
-        let offset = Math.ceil((this.activePage - 1) * this.permissionsPerPage);
-        return this.filteredUsers.slice(offset, offset + this.permissionsPerPage);
-    }
-
-    @action setFilter(filter: string) {
-        this.filter = filter;
-        return this.filter;
-    }
-
-    @action setSearch(search: string) {
-        this.search = search;
-        return this.search;
     }
 
     /**

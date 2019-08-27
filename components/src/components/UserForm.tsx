@@ -2,7 +2,8 @@ import * as React from "react";
 import { UserFormUI } from "./UserFormUI";
 import { Dropdown, Input, Pagination } from 'semantic-ui-react'
 import { inject, observer } from "mobx-react";
-import { IDocumentPermissionStore } from "../stores/DocumentPermissionStore";
+import { IPermissionStore } from "../stores/PermissionStore";
+import { DocumentPermissionStore } from "../stores/DocumentPermissionStore";
 
 
 export enum PermissionTypes {
@@ -37,7 +38,9 @@ export interface UserPermission {
 }
 
 interface UserFormProps {
-    documentPermissionStore?: IDocumentPermissionStore
+    permissionStore?: IPermissionStore
+    documentPermissionStore?: DocumentPermissionStore
+
 }
 
 export interface UserFilterDropdown {
@@ -75,29 +78,23 @@ export class UserFilterDropdownMenu extends React.Component<UserFilterDropdown, 
     }
 }
 
-@inject('documentPermissionStore')
-@observer
 export class UserForm extends React.Component<UserFormProps> {
-
-    componentWillMount() {
-        this.props.documentPermissionStore.init();
-        this.props.documentPermissionStore.fetchDocumentPermissions()
-    }
+    permissionStore: IPermissionStore;
 
     setUserPermissions = (id: number, newPermission: PermissionTypes, oldPermission: PermissionTypes) => {
-        this.props.documentPermissionStore.setPermission(id, newPermission, oldPermission);
+        this.permissionStore.setPermission(id, newPermission, oldPermission);
     }
 
     onFilterChange = (event: any, data: any) => {
-        this.props.documentPermissionStore.setFilter(data.value);
+        this.permissionStore.setFilter(data.value);
     }
 
     onNameChange = (event: any, data: any) => {
-        this.props.documentPermissionStore.setSearch(data.value);
+        this.permissionStore.setSearch(data.value);
     }
 
     handlePaginationChange = (event: any, data: any) => {
-        this.props.documentPermissionStore.setActivePage(data.activePage);
+        this.permissionStore.setActivePage(data.activePage);
     };
 
     render() {
@@ -110,8 +107,8 @@ export class UserForm extends React.Component<UserFormProps> {
             </div>
             <div className="ui section divider"/>
             <Pagination
-                activePage={this.props.documentPermissionStore.activePage}
-                totalPages={this.props.documentPermissionStore.numberOfPages}
+                activePage={this.permissionStore.activePage}
+                totalPages={this.permissionStore.numberOfPages}
                 onPageChange={this.handlePaginationChange}
             />
             <table className="ui very basic table">
@@ -124,7 +121,7 @@ export class UserForm extends React.Component<UserFormProps> {
                 </thead>
                 <tbody>
 
-                    {this.props.documentPermissionStore.userPermissions.map((user, index) => <UserFormUI
+                    {this.permissionStore.userPermissions.map((user, index) => <UserFormUI
                         key={index}
                         onPermissionChange={this.setUserPermissions}
                         {...user}
@@ -132,8 +129,8 @@ export class UserForm extends React.Component<UserFormProps> {
                 </tbody>
             </table>
             <Pagination
-                activePage={this.props.documentPermissionStore.activePage}
-                totalPages={this.props.documentPermissionStore.numberOfPages}
+                activePage={this.permissionStore.activePage}
+                totalPages={this.permissionStore.numberOfPages}
                 onPageChange={this.handlePaginationChange}
             />
         </span>;

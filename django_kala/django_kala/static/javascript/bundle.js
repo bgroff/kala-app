@@ -75838,10 +75838,10 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ "./src/components/UserForm.tsx":
-/*!*************************************!*\
-  !*** ./src/components/UserForm.tsx ***!
-  \*************************************/
+/***/ "./src/components/DocumentUserForm.tsx":
+/*!*********************************************!*\
+  !*** ./src/components/DocumentUserForm.tsx ***!
+  \*********************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -75854,10 +75854,38 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const UserForm_1 = __webpack_require__(/*! ./UserForm */ "./src/components/UserForm.tsx");
+const mobx_react_1 = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobx-react.module.js");
+let DocumentUserForm = class DocumentUserForm extends UserForm_1.UserForm {
+    componentWillMount() {
+        this.permissionStore = this.props.documentPermissionStore;
+        console.log(this.props.permissionStore);
+        this.permissionStore.init();
+        this.permissionStore.fetchPermissions();
+    }
+};
+DocumentUserForm = __decorate([
+    mobx_react_1.inject('documentPermissionStore'),
+    mobx_react_1.observer
+], DocumentUserForm);
+exports.DocumentUserForm = DocumentUserForm;
+
+
+/***/ }),
+
+/***/ "./src/components/UserForm.tsx":
+/*!*************************************!*\
+  !*** ./src/components/UserForm.tsx ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const UserFormUI_1 = __webpack_require__(/*! ./UserFormUI */ "./src/components/UserFormUI.tsx");
 const semantic_ui_react_1 = __webpack_require__(/*! semantic-ui-react */ "./node_modules/semantic-ui-react/dist/es/index.js");
-const mobx_react_1 = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobx-react.module.js");
 var PermissionTypes;
 (function (PermissionTypes) {
     PermissionTypes["None"] = "none";
@@ -75884,25 +75912,21 @@ class UserFilterDropdownMenu extends React.Component {
     }
 }
 exports.UserFilterDropdownMenu = UserFilterDropdownMenu;
-let UserForm = class UserForm extends React.Component {
+class UserForm extends React.Component {
     constructor() {
         super(...arguments);
         this.setUserPermissions = (id, newPermission, oldPermission) => {
-            this.props.documentPermissionStore.setPermission(id, newPermission, oldPermission);
+            this.permissionStore.setPermission(id, newPermission, oldPermission);
         };
         this.onFilterChange = (event, data) => {
-            this.props.documentPermissionStore.setFilter(data.value);
+            this.permissionStore.setFilter(data.value);
         };
         this.onNameChange = (event, data) => {
-            this.props.documentPermissionStore.setSearch(data.value);
+            this.permissionStore.setSearch(data.value);
         };
         this.handlePaginationChange = (event, data) => {
-            this.props.documentPermissionStore.setActivePage(data.activePage);
+            this.permissionStore.setActivePage(data.activePage);
         };
-    }
-    componentWillMount() {
-        this.props.documentPermissionStore.init();
-        this.props.documentPermissionStore.fetchDocumentPermissions();
     }
     render() {
         return React.createElement("span", null,
@@ -75911,21 +75935,17 @@ let UserForm = class UserForm extends React.Component {
                     React.createElement(UserFilterDropdownMenu, { onFilterChange: this.onFilterChange })),
                 React.createElement(UserNameFilterInput, { onNameChange: this.onNameChange })),
             React.createElement("div", { className: "ui section divider" }),
-            React.createElement(semantic_ui_react_1.Pagination, { activePage: this.props.documentPermissionStore.activePage, totalPages: this.props.documentPermissionStore.numberOfPages, onPageChange: this.handlePaginationChange }),
+            React.createElement(semantic_ui_react_1.Pagination, { activePage: this.permissionStore.activePage, totalPages: this.permissionStore.numberOfPages, onPageChange: this.handlePaginationChange }),
             React.createElement("table", { className: "ui very basic table" },
                 React.createElement("thead", null,
                     React.createElement("tr", null,
                         React.createElement("th", null, "Name"),
                         React.createElement("th", null),
                         React.createElement("th", null, "Manage acess"))),
-                React.createElement("tbody", null, this.props.documentPermissionStore.userPermissions.map((user, index) => React.createElement(UserFormUI_1.UserFormUI, Object.assign({ key: index, onPermissionChange: this.setUserPermissions }, user))))),
-            React.createElement(semantic_ui_react_1.Pagination, { activePage: this.props.documentPermissionStore.activePage, totalPages: this.props.documentPermissionStore.numberOfPages, onPageChange: this.handlePaginationChange }));
+                React.createElement("tbody", null, this.permissionStore.userPermissions.map((user, index) => React.createElement(UserFormUI_1.UserFormUI, Object.assign({ key: index, onPermissionChange: this.setUserPermissions }, user))))),
+            React.createElement(semantic_ui_react_1.Pagination, { activePage: this.permissionStore.activePage, totalPages: this.permissionStore.numberOfPages, onPageChange: this.handlePaginationChange }));
     }
-};
-UserForm = __decorate([
-    mobx_react_1.inject('documentPermissionStore'),
-    mobx_react_1.observer
-], UserForm);
+}
 exports.UserForm = UserForm;
 
 
@@ -76008,14 +76028,14 @@ exports.UserFormUI = UserFormUI;
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-const UserForm_1 = __webpack_require__(/*! ./components/UserForm */ "./src/components/UserForm.tsx");
+const DocumentUserForm_1 = __webpack_require__(/*! ./components/DocumentUserForm */ "./src/components/DocumentUserForm.tsx");
 const mobx_react_1 = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobx-react.module.js");
 const index_1 = __webpack_require__(/*! ./stores/index */ "./src/stores/index.ts");
 const react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 class RootComponent extends react_1.Component {
     render() {
         return (React.createElement(mobx_react_1.Provider, Object.assign({}, index_1.stores),
-            React.createElement(UserForm_1.UserForm, null)));
+            React.createElement(DocumentUserForm_1.DocumentUserForm, null)));
     }
 }
 exports.default = RootComponent;
@@ -76056,7 +76076,92 @@ const axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js"
 const mobx_1 = __webpack_require__(/*! mobx */ "./node_modules/mobx/lib/mobx.module.js");
 const UserForm_1 = __webpack_require__(/*! ../components/UserForm */ "./src/components/UserForm.tsx");
 const csrf_1 = __webpack_require__(/*! ../utilities/csrf */ "./src/utilities/csrf.tsx");
-class DocumentPermissionStore {
+const PermissionStore_1 = __webpack_require__(/*! ./PermissionStore */ "./src/stores/PermissionStore.tsx");
+class DocumentPermissionStore extends PermissionStore_1.PermissionStore {
+    init() {
+        const path = window.location.pathname.split('/');
+        this.projectId = path[2];
+        this.documentId = path[3];
+        this.url = '/v1/projects/' + this.projectId + '/documents/' + this.documentId + '/permission';
+        console.log(this.url);
+    }
+    /**
+     * setPermission updates the users permission in the [[permissions]] array and then sends
+     * the request to the backend for action. If the backend is not successful then the old permission
+     * is reset.
+     *
+     * [[userIndex]] is the actioned user, this users permission is then replaced with the [[newPermission]].
+     * If the id is present in the permission object, then that user already has a permission. If this is the
+     * case then an put or delete can occur, otherwise the data must be posted to the endpoint.
+     */
+    setPermission(id, newPermission, oldPermission) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userIndex = this.permissions.findIndex(user => user.user.id === id);
+            const permissionId = this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null;
+            this.permissions[userIndex].document = {
+                id: permissionId,
+                permission: newPermission,
+                user_id: id,
+                document_id: this.documentId
+            };
+            this.permissions[userIndex].document[newPermission] = true;
+            try {
+                if (newPermission === UserForm_1.PermissionTypes.None) {
+                    yield axios_1.default.delete(this.url + "/" + permissionId, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].document = null;
+                }
+                else if (permissionId) {
+                    const response = yield axios_1.default.put(this.url + "/" + permissionId, this.permissions[userIndex].document, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].document = response.data.document;
+                }
+                else {
+                    delete this.permissions[userIndex].document.id;
+                    const response = yield axios_1.default.post(this.url, this.permissions[userIndex].document, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].document = response.data.document;
+                }
+            }
+            catch (error) {
+                console.log("failed");
+            }
+        });
+    }
+}
+__decorate([
+    mobx_1.action
+], DocumentPermissionStore.prototype, "setPermission", null);
+exports.DocumentPermissionStore = DocumentPermissionStore;
+
+
+/***/ }),
+
+/***/ "./src/stores/PermissionStore.tsx":
+/*!****************************************!*\
+  !*** ./src/stores/PermissionStore.tsx ***!
+  \****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+const mobx_1 = __webpack_require__(/*! mobx */ "./node_modules/mobx/lib/mobx.module.js");
+const UserForm_1 = __webpack_require__(/*! ../components/UserForm */ "./src/components/UserForm.tsx");
+class PermissionStore {
     constructor() {
         this.error = null;
         this.isFetching = false;
@@ -76067,13 +76172,8 @@ class DocumentPermissionStore {
         this.filter = "no_filter";
     }
     init() {
-        const path = window.location.pathname.split('/');
-        this.projectId = path[2];
-        this.documentId = path[3];
-        this.url = '/v1/projects/' + this.projectId + '/documents/' + this.documentId + '/permission';
-        console.log(this.url);
     }
-    fetchDocumentPermissions() {
+    fetchPermissions() {
         return __awaiter(this, void 0, void 0, function* () {
             this.isFetching = true;
             this.error = null;
@@ -76149,85 +76249,58 @@ class DocumentPermissionStore {
      */
     setPermission(id, newPermission, oldPermission) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userIndex = this.permissions.findIndex(user => user.user.id === id);
-            const permissionId = this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null;
-            this.permissions[userIndex].document = {
-                id: permissionId,
-                permission: newPermission,
-                user_id: id,
-                document_id: this.documentId
-            };
-            this.permissions[userIndex].document[newPermission] = true;
-            try {
-                if (newPermission === UserForm_1.PermissionTypes.None) {
-                    yield axios_1.default.delete(this.url + "/" + permissionId, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
-                    this.permissions[userIndex].document = null;
-                }
-                else if (permissionId) {
-                    const response = yield axios_1.default.put(this.url + "/" + permissionId, this.permissions[userIndex].document, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
-                    this.permissions[userIndex].document = response.data.document;
-                }
-                else {
-                    delete this.permissions[userIndex].document.id;
-                    const response = yield axios_1.default.post(this.url, this.permissions[userIndex].document, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
-                    this.permissions[userIndex].document = response.data.document;
-                }
-            }
-            catch (error) {
-                console.log("failed");
-            }
         });
     }
 }
 __decorate([
     mobx_1.observable
-], DocumentPermissionStore.prototype, "error", void 0);
+], PermissionStore.prototype, "error", void 0);
 __decorate([
     mobx_1.observable
-], DocumentPermissionStore.prototype, "isFetching", void 0);
+], PermissionStore.prototype, "isFetching", void 0);
 __decorate([
     mobx_1.observable
-], DocumentPermissionStore.prototype, "permissions", void 0);
+], PermissionStore.prototype, "permissions", void 0);
 __decorate([
     mobx_1.observable
-], DocumentPermissionStore.prototype, "permissionsPerPage", void 0);
+], PermissionStore.prototype, "permissionsPerPage", void 0);
 __decorate([
     mobx_1.observable
-], DocumentPermissionStore.prototype, "currentPage", void 0);
+], PermissionStore.prototype, "currentPage", void 0);
 __decorate([
     mobx_1.observable
-], DocumentPermissionStore.prototype, "search", void 0);
+], PermissionStore.prototype, "search", void 0);
 __decorate([
     mobx_1.observable
-], DocumentPermissionStore.prototype, "filter", void 0);
+], PermissionStore.prototype, "filter", void 0);
 __decorate([
     mobx_1.action
-], DocumentPermissionStore.prototype, "fetchDocumentPermissions", null);
+], PermissionStore.prototype, "fetchPermissions", null);
 __decorate([
     mobx_1.computed
-], DocumentPermissionStore.prototype, "numberOfPages", null);
+], PermissionStore.prototype, "numberOfPages", null);
 __decorate([
     mobx_1.computed
-], DocumentPermissionStore.prototype, "activePage", null);
+], PermissionStore.prototype, "activePage", null);
 __decorate([
     mobx_1.action
-], DocumentPermissionStore.prototype, "setActivePage", null);
+], PermissionStore.prototype, "setActivePage", null);
 __decorate([
     mobx_1.computed
-], DocumentPermissionStore.prototype, "filteredUsers", null);
+], PermissionStore.prototype, "filteredUsers", null);
 __decorate([
     mobx_1.computed
-], DocumentPermissionStore.prototype, "userPermissions", null);
+], PermissionStore.prototype, "userPermissions", null);
 __decorate([
     mobx_1.action
-], DocumentPermissionStore.prototype, "setFilter", null);
+], PermissionStore.prototype, "setFilter", null);
 __decorate([
     mobx_1.action
-], DocumentPermissionStore.prototype, "setSearch", null);
+], PermissionStore.prototype, "setSearch", null);
 __decorate([
     mobx_1.action
-], DocumentPermissionStore.prototype, "setPermission", null);
-exports.DocumentPermissionStore = DocumentPermissionStore;
+], PermissionStore.prototype, "setPermission", null);
+exports.PermissionStore = PermissionStore;
 
 
 /***/ }),
