@@ -80,7 +80,7 @@ class DocumentPermissionsView(CreateAPIView, ListAPIView):
                            (select codename from auth_permission where id = organizations_organizationpermission.permission_id) as organization_permission
                     FROM   kala_user
                            LEFT JOIN documents_documentpermission
-                                  ON documents_documentpermission.user_id = kala_user.id
+                                  ON documents_documentpermission.user_id = kala_user.id AND documents_documentpermission.document_id = %s
                            LEFT JOIN kala_documents
                                   ON kala_documents.id = %s
                            LEFT JOIN kala_projects
@@ -93,8 +93,8 @@ class DocumentPermissionsView(CreateAPIView, ListAPIView):
                            LEFT JOIN organizations_organizationpermission
                                   ON organizations_organizationpermission.organization_id = kala_projects.organization_id
                                      AND organizations_organizationpermission.user_id = kala_user.id
-                    WHERE document_id = %s OR kala_user.id in %s ORDER BY last_name;
-                    """, [self.document.id, self.document.project.id, self.document.project.organization.id, self.document.id, tuple(self.available_users)])
+                     OR kala_user.id in %s ORDER BY last_name;
+                    """, [self.document.id, self.document.id, self.document.project.id, self.document.project.organization.id, tuple(self.available_users)])
             return cursor.fetchall()
 
 
