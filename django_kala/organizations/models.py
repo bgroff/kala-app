@@ -91,29 +91,40 @@ class Organization(models.Model):
         ])
 
     def add_permission(self, user, permission):
-        OrganizationPermission.objects.get_or_create(
-            permission=Permission.objects.get(
-                codename=permission,
-                content_type__app_label='organizations'
-            ),
-            user=user,
-            organization=self
+        permission = Permission.objects.get(
+            codename=permission,
+            content_type__app_label='organizations'
         )
 
+        try:
+            organization_permission = OrganizationPermission.objects.get(
+                user=user,
+                organization=self
+            )
+            organization_permission.permission = permission
+            organization_permission.save()
+        except OrganizationPermission.DoesNotExist:
+            organization_permission = OrganizationPermission.objects.create(
+                user=user,
+                organization=self,
+                permission=permission
+            )
+        return organization_permission
+
     def add_create(self, user):
-        self.add_permission(
+        return self.add_permission(
             user,
             'can_create'
         )
 
     def add_invite(self, user):
-        self.add_permission(
+        return self.add_permission(
             user,
             'can_invite'
         )
 
     def add_manage(self, user):
-        self.add_permission(
+        return self.add_permission(
             user,
             'can_manage'
         )

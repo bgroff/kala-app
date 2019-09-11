@@ -75859,9 +75859,9 @@ const mobx_react_1 = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-
 let DocumentUserForm = class DocumentUserForm extends UserForm_1.UserForm {
     componentWillMount() {
         this.permissionStore = this.props.documentPermissionStore;
-        console.log(this.props.permissionStore);
         this.permissionStore.init();
         this.permissionStore.fetchPermissions();
+        this.higherOrderType = UserForm_1.HigherOrderType.Document;
     }
 };
 DocumentUserForm = __decorate([
@@ -75869,6 +75869,76 @@ DocumentUserForm = __decorate([
     mobx_react_1.observer
 ], DocumentUserForm);
 exports.DocumentUserForm = DocumentUserForm;
+
+
+/***/ }),
+
+/***/ "./src/components/OrganizationUserForm.tsx":
+/*!*************************************************!*\
+  !*** ./src/components/OrganizationUserForm.tsx ***!
+  \*************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const UserForm_1 = __webpack_require__(/*! ./UserForm */ "./src/components/UserForm.tsx");
+const mobx_react_1 = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobx-react.module.js");
+let OrganizationUserForm = class OrganizationUserForm extends UserForm_1.UserForm {
+    componentWillMount() {
+        this.permissionStore = this.props.organizationPermissionStore;
+        this.permissionStore.init();
+        this.permissionStore.fetchPermissions();
+        this.higherOrderType = UserForm_1.HigherOrderType.Organization;
+    }
+};
+OrganizationUserForm = __decorate([
+    mobx_react_1.inject('organizationPermissionStore'),
+    mobx_react_1.observer
+], OrganizationUserForm);
+exports.OrganizationUserForm = OrganizationUserForm;
+
+
+/***/ }),
+
+/***/ "./src/components/ProjectUserForm.tsx":
+/*!********************************************!*\
+  !*** ./src/components/ProjectUserForm.tsx ***!
+  \********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const UserForm_1 = __webpack_require__(/*! ./UserForm */ "./src/components/UserForm.tsx");
+const mobx_react_1 = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobx-react.module.js");
+let ProjectUserForm = class ProjectUserForm extends UserForm_1.UserForm {
+    componentWillMount() {
+        this.permissionStore = this.props.projectPermissionStore;
+        this.permissionStore.init();
+        this.permissionStore.fetchPermissions();
+        this.higherOrderType = UserForm_1.HigherOrderType.Project;
+    }
+};
+ProjectUserForm = __decorate([
+    mobx_react_1.inject('projectPermissionStore'),
+    mobx_react_1.observer
+], ProjectUserForm);
+exports.ProjectUserForm = ProjectUserForm;
 
 
 /***/ }),
@@ -75893,6 +75963,12 @@ var PermissionTypes;
     PermissionTypes["Invite"] = "canInvite";
     PermissionTypes["Manage"] = "canManage";
 })(PermissionTypes = exports.PermissionTypes || (exports.PermissionTypes = {}));
+var HigherOrderType;
+(function (HigherOrderType) {
+    HigherOrderType[HigherOrderType["Organization"] = 0] = "Organization";
+    HigherOrderType[HigherOrderType["Project"] = 1] = "Project";
+    HigherOrderType[HigherOrderType["Document"] = 2] = "Document";
+})(HigherOrderType = exports.HigherOrderType || (exports.HigherOrderType = {}));
 class UserNameFilterInput extends React.Component {
     render() {
         return React.createElement(semantic_ui_react_1.Input, { placeholder: 'Search', onChange: this.props.onNameChange });
@@ -75942,7 +76018,7 @@ class UserForm extends React.Component {
                         React.createElement("th", null, "Name"),
                         React.createElement("th", null),
                         React.createElement("th", null, "Manage acess"))),
-                React.createElement("tbody", null, this.permissionStore.userPermissions.map((user, index) => React.createElement(UserFormUI_1.UserFormUI, Object.assign({ key: index, onPermissionChange: this.setUserPermissions }, user))))),
+                React.createElement("tbody", null, this.permissionStore.userPermissions.map((user, index) => React.createElement(UserFormUI_1.UserFormUI, Object.assign({ key: index, onPermissionChange: this.setUserPermissions, higherOrderType: this.higherOrderType }, user))))),
             React.createElement(semantic_ui_react_1.Pagination, { activePage: this.permissionStore.activePage, totalPages: this.permissionStore.numberOfPages, onPageChange: this.handlePaginationChange }));
     }
 }
@@ -75973,40 +76049,123 @@ class UserFormUI extends React.Component {
     // Keep track of the current permission in case it needs to be reset.
     // This could happen if the network request failed.
     getCurrentPermission() {
-        if (!this.props.document)
-            return UserForm_1.PermissionTypes.None;
-        if (this.props.document.canCreate)
-            return UserForm_1.PermissionTypes.Create;
-        if (this.props.document.canInvite)
-            return UserForm_1.PermissionTypes.Invite;
-        if (this.props.document.canManage)
-            return UserForm_1.PermissionTypes.Manage;
+        if (this.props.higherOrderType === UserForm_1.HigherOrderType.Organization) {
+            if (!this.props.organization)
+                return UserForm_1.PermissionTypes.None;
+            if (this.props.organization.canCreate != null)
+                return UserForm_1.PermissionTypes.Create;
+            if (this.props.organization.canInvite != null)
+                return UserForm_1.PermissionTypes.Invite;
+            if (this.props.organization.canManage != null)
+                return UserForm_1.PermissionTypes.Manage;
+        }
+        if (this.props.higherOrderType === UserForm_1.HigherOrderType.Project) {
+            if (!this.props.project)
+                return UserForm_1.PermissionTypes.None;
+            if (this.props.project.canCreate != null)
+                return UserForm_1.PermissionTypes.Create;
+            if (this.props.project.canInvite != null)
+                return UserForm_1.PermissionTypes.Invite;
+            if (this.props.project.canManage != null)
+                return UserForm_1.PermissionTypes.Manage;
+        }
+        if (this.props.higherOrderType === UserForm_1.HigherOrderType.Document) {
+            if (!this.props.document)
+                return UserForm_1.PermissionTypes.None;
+            if (this.props.document.canCreate != null)
+                return UserForm_1.PermissionTypes.Create;
+            if (this.props.document.canInvite != null)
+                return UserForm_1.PermissionTypes.Invite;
+            if (this.props.document.canManage != null)
+                return UserForm_1.PermissionTypes.Manage;
+        }
         return UserForm_1.PermissionTypes.None;
     }
-    getButtonClass(active) {
-        return active ? "ui button active" : "ui button";
+    getButtonClass(permission) {
+        if (this.props.higherOrderType === UserForm_1.HigherOrderType.Organization) {
+            if (!this.props.organization)
+                return UserForm_1.PermissionTypes.None === permission ? "ui button active" : "ui button";
+            if (UserForm_1.PermissionTypes.Create === permission && this.props.organization.canCreate != null)
+                return "ui button active";
+            if (UserForm_1.PermissionTypes.Invite === permission && this.props.organization.canInvite != null)
+                return "ui button active";
+            if (UserForm_1.PermissionTypes.Manage === permission && this.props.organization.canManage != null)
+                return "ui button active";
+        }
+        if (this.props.higherOrderType === UserForm_1.HigherOrderType.Project) {
+            if (!this.props.project)
+                return UserForm_1.PermissionTypes.None === permission ? "ui button active" : "ui button";
+            if (UserForm_1.PermissionTypes.Create === permission && this.props.project.canCreate != null)
+                return "ui button active";
+            if (UserForm_1.PermissionTypes.Invite === permission && this.props.project.canInvite != null)
+                return "ui button active";
+            if (UserForm_1.PermissionTypes.Manage === permission && this.props.project.canManage != null)
+                return "ui button active";
+        }
+        if (this.props.higherOrderType === UserForm_1.HigherOrderType.Document) {
+            if (!this.props.document)
+                return UserForm_1.PermissionTypes.None === permission ? "ui button active" : "ui button";
+            if (UserForm_1.PermissionTypes.Create === permission && this.props.document.canCreate != null)
+                return "ui button active";
+            if (UserForm_1.PermissionTypes.Invite === permission && this.props.document.canInvite != null)
+                return "ui button active";
+            if (UserForm_1.PermissionTypes.Manage === permission && this.props.document.canManage != null)
+                return "ui button active";
+        }
+        return "ui button";
+    }
+    getExtraContent() {
+        var returnString;
+        if (this.props.higherOrderType === UserForm_1.HigherOrderType.Document) {
+            if (this.props.organization) {
+                if (this.props.organization.canCreate)
+                    return React.createElement("i", { className: "circular organization icon link", "data-content": "This user has organization create permissions", "data-variation": "tiny" });
+                if (this.props.organization.canInvite)
+                    return React.createElement("i", { className: "circular organization icon link", "data-content": "This user has organization invite permissions", "data-variation": "tiny" });
+                if (this.props.organization.canManage)
+                    return React.createElement("i", { className: "circular organization icon link", "data-content": "This user has organization manage permissions", "data-variation": "tiny" });
+            }
+            if (this.props.project) {
+                if (this.props.project.canCreate)
+                    return React.createElement("i", { className: "circular checklist icon link", "data-content": "This user has project create permissions", "data-variation": "tiny" });
+                if (this.props.project.canInvite)
+                    return React.createElement("i", { className: "circular checklist icon link", "data-content": "This user has project invite permissions", "data-variation": "tiny" });
+                if (this.props.project.canManage)
+                    return React.createElement("i", { className: "circular checklist icon link", "data-content": "This user has project manage permissions", "data-variation": "tiny" });
+            }
+        }
+        if (this.props.higherOrderType === UserForm_1.HigherOrderType.Project) {
+            if (this.props.organization) {
+                if (this.props.organization.canCreate)
+                    return React.createElement("i", { className: "circular organization icon link", "data-content": "This user has organization create permissions", "data-variation": "tinu" });
+                if (this.props.organization.canInvite)
+                    return React.createElement("i", { className: "circular organization icon link", "data-content": "This user has organization invite permissions", "data-variation": "tiny" });
+                if (this.props.organization.canManage)
+                    return React.createElement("i", { className: "circular organization icon link", "data-content": "This user has organization manage permissions", "data-variation": "tiny" });
+            }
+        }
+        return returnString;
     }
     render() {
         return React.createElement("tr", null,
             React.createElement("td", null,
                 React.createElement("h4", { className: "ui header" },
-                    React.createElement("div", { className: "content" }, this.props.user.lastName + ", " + this.props.user.firstName))),
+                    React.createElement("div", { className: "content" },
+                        React.createElement("span", { className: "ui tooltip" }, this.getExtraContent()),
+                        this.props.user.lastName + ", " + this.props.user.firstName))),
             React.createElement("td", null),
             React.createElement("td", null,
                 React.createElement("div", { className: "ui buttons" },
-                    React.createElement("button", { type: "button", className: this.getButtonClass(this.props.document ?
-                            !this.props.document.canCreate &&
-                                !this.props.document.canInvite &&
-                                !this.props.document.canManage : true), onClick: () => this.setPermision(UserForm_1.PermissionTypes.None) },
+                    React.createElement("button", { type: "button", className: this.getButtonClass(UserForm_1.PermissionTypes.None), onClick: () => this.setPermision(UserForm_1.PermissionTypes.None) },
                         React.createElement("i", { className: "circle slash icon" }),
                         "None"),
-                    React.createElement("button", { type: "button", className: this.getButtonClass(this.props.document ? this.props.document.canCreate : false), onClick: () => this.setPermision(UserForm_1.PermissionTypes.Create) },
+                    React.createElement("button", { type: "button", className: this.getButtonClass(UserForm_1.PermissionTypes.Create), onClick: () => this.setPermision(UserForm_1.PermissionTypes.Create) },
                         React.createElement("i", { className: "plus icon" }),
                         "Create"),
-                    React.createElement("button", { type: "button", className: this.getButtonClass(this.props.document ? this.props.document.canInvite : false), onClick: () => this.setPermision(UserForm_1.PermissionTypes.Invite) },
+                    React.createElement("button", { type: "button", className: this.getButtonClass(UserForm_1.PermissionTypes.Invite), onClick: () => this.setPermision(UserForm_1.PermissionTypes.Invite) },
                         React.createElement("i", { className: "megaphone icon" }),
                         "Invite"),
-                    React.createElement("button", { type: "button", className: this.getButtonClass(this.props.document ? this.props.document.canManage : false), onClick: () => this.setPermision(UserForm_1.PermissionTypes.Manage) },
+                    React.createElement("button", { type: "button", className: this.getButtonClass(UserForm_1.PermissionTypes.Manage), onClick: () => this.setPermision(UserForm_1.PermissionTypes.Manage) },
                         React.createElement("i", { className: "briefcase icon" }),
                         "Manage"))));
     }
@@ -76029,21 +76188,41 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 const ReactDOM = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 const DocumentUserForm_1 = __webpack_require__(/*! ./components/DocumentUserForm */ "./src/components/DocumentUserForm.tsx");
+const ProjectUserForm_1 = __webpack_require__(/*! ./components/ProjectUserForm */ "./src/components/ProjectUserForm.tsx");
 const mobx_react_1 = __webpack_require__(/*! mobx-react */ "./node_modules/mobx-react/dist/mobx-react.module.js");
 const index_1 = __webpack_require__(/*! ./stores/index */ "./src/stores/index.ts");
 const react_1 = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-class RootComponent extends react_1.Component {
+const OrganizationUserForm_1 = __webpack_require__(/*! ./components/OrganizationUserForm */ "./src/components/OrganizationUserForm.tsx");
+class DocumentRootComponent extends react_1.Component {
     render() {
         return (React.createElement(mobx_react_1.Provider, Object.assign({}, index_1.stores),
             React.createElement(DocumentUserForm_1.DocumentUserForm, null)));
     }
 }
-exports.default = RootComponent;
-// ReactDOM.render(
-//     <RootComponent/>,
-//     document.getElementById("user-form")
-// );
-ReactDOM.render(React.createElement(RootComponent, null), document.getElementById("document-permissions-form"));
+exports.DocumentRootComponent = DocumentRootComponent;
+class ProjectRootComponent extends react_1.Component {
+    render() {
+        return (React.createElement(mobx_react_1.Provider, Object.assign({}, index_1.stores),
+            React.createElement(ProjectUserForm_1.ProjectUserForm, null)));
+    }
+}
+exports.ProjectRootComponent = ProjectRootComponent;
+class OrganizationRootComponent extends react_1.Component {
+    render() {
+        return (React.createElement(mobx_react_1.Provider, Object.assign({}, index_1.stores),
+            React.createElement(OrganizationUserForm_1.OrganizationUserForm, null)));
+    }
+}
+exports.OrganizationRootComponent = OrganizationRootComponent;
+if (document.getElementById("document-permissions-form")) {
+    ReactDOM.render(React.createElement(DocumentRootComponent, null), document.getElementById("document-permissions-form"));
+}
+if (document.getElementById("project-permissions-form")) {
+    ReactDOM.render(React.createElement(ProjectRootComponent, null), document.getElementById("project-permissions-form"));
+}
+if (document.getElementById("organization-permissions-form")) {
+    ReactDOM.render(React.createElement(OrganizationRootComponent, null), document.getElementById("organization-permissions-form"));
+}
 
 
 /***/ }),
@@ -76083,7 +76262,6 @@ class DocumentPermissionStore extends PermissionStore_1.PermissionStore {
         this.projectId = path[2];
         this.documentId = path[3];
         this.url = '/v1/projects/' + this.projectId + '/documents/' + this.documentId + '/permission';
-        console.log(this.url);
     }
     /**
      * setPermission updates the users permission in the [[permissions]] array and then sends
@@ -76130,6 +76308,90 @@ __decorate([
     mobx_1.action
 ], DocumentPermissionStore.prototype, "setPermission", null);
 exports.DocumentPermissionStore = DocumentPermissionStore;
+
+
+/***/ }),
+
+/***/ "./src/stores/OrganizationPermissionStore.tsx":
+/*!****************************************************!*\
+  !*** ./src/stores/OrganizationPermissionStore.tsx ***!
+  \****************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+const mobx_1 = __webpack_require__(/*! mobx */ "./node_modules/mobx/lib/mobx.module.js");
+const UserForm_1 = __webpack_require__(/*! ../components/UserForm */ "./src/components/UserForm.tsx");
+const csrf_1 = __webpack_require__(/*! ../utilities/csrf */ "./src/utilities/csrf.tsx");
+const PermissionStore_1 = __webpack_require__(/*! ./PermissionStore */ "./src/stores/PermissionStore.tsx");
+class OrganizationPermissionStore extends PermissionStore_1.PermissionStore {
+    init() {
+        const path = window.location.pathname.split('/');
+        this.organizationId = path[2];
+        this.url = '/v1/organizations/' + this.organizationId + '/permission';
+    }
+    /**
+     * setPermission updates the users permission in the [[permissions]] array and then sends
+     * the request to the backend for action. If the backend is not successful then the old permission
+     * is reset.
+     *
+     * [[userIndex]] is the actioned user, this users permission is then replaced with the [[newPermission]].
+     * If the id is present in the permission object, then that user already has a permission. If this is the
+     * case then an put or delete can occur, otherwise the data must be posted to the endpoint.
+     */
+    setPermission(id, newPermission, oldPermission) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userIndex = this.permissions.findIndex(user => user.user.id === id);
+            const permissionId = this.permissions[userIndex].organization ? this.permissions[userIndex].organization.id : null;
+            this.permissions[userIndex].organization = {
+                id: permissionId,
+                permission: newPermission,
+                user_id: id,
+                organization_id: this.organizationId
+            };
+            this.permissions[userIndex].organization[newPermission] = true;
+            try {
+                if (newPermission === UserForm_1.PermissionTypes.None) {
+                    yield axios_1.default.delete(this.url + "/" + permissionId, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].organization = null;
+                }
+                else if (permissionId) {
+                    const response = yield axios_1.default.put(this.url + "/" + permissionId, this.permissions[userIndex].organization, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].organization = response.data.organization;
+                }
+                else {
+                    delete this.permissions[userIndex].organization.id;
+                    const response = yield axios_1.default.post(this.url, this.permissions[userIndex].organization, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].organization = response.data.organization;
+                }
+            }
+            catch (error) {
+                console.log("failed");
+            }
+        });
+    }
+}
+__decorate([
+    mobx_1.action
+], OrganizationPermissionStore.prototype, "setPermission", null);
+exports.OrganizationPermissionStore = OrganizationPermissionStore;
 
 
 /***/ }),
@@ -76210,17 +76472,17 @@ class PermissionStore {
             filteredUsers = filteredUsers.filter(user => user.document === undefined);
         }
         else if (this.filter === UserForm_1.PermissionTypes.Create) {
-            filteredUsers = filteredUsers.filter(user => (user.document && user.document.canCreate === true) ||
+            filteredUsers = filteredUsers.filter(user => (user.document ? user.document && user.document.canCreate === true : false) ||
                 (user.project && user.project.canCreate === true) ||
                 (user.organization && user.organization.canCreate === true));
         }
         else if (this.filter === UserForm_1.PermissionTypes.Invite) {
-            filteredUsers = filteredUsers.filter(user => (user.document && user.document.canInvite === true) ||
+            filteredUsers = filteredUsers.filter(user => (user.document ? user.document && user.document.canInvite === true : false) ||
                 (user.project && user.project.canInvite === true) ||
                 (user.organization && user.organization.canInvite === true));
         }
         else if (this.filter === UserForm_1.PermissionTypes.Manage) {
-            filteredUsers = filteredUsers.filter(user => (user.document && user.document.canManage === true) ||
+            filteredUsers = filteredUsers.filter(user => (user.document ? user.document && user.document.canManage === true : false) ||
                 (user.project && user.project.canManage === true) ||
                 (user.organization && user.organization.canManage === true));
         }
@@ -76305,6 +76567,90 @@ exports.PermissionStore = PermissionStore;
 
 /***/ }),
 
+/***/ "./src/stores/ProjectPermissionStore.tsx":
+/*!***********************************************!*\
+  !*** ./src/stores/ProjectPermissionStore.tsx ***!
+  \***********************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const axios_1 = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+const mobx_1 = __webpack_require__(/*! mobx */ "./node_modules/mobx/lib/mobx.module.js");
+const UserForm_1 = __webpack_require__(/*! ../components/UserForm */ "./src/components/UserForm.tsx");
+const csrf_1 = __webpack_require__(/*! ../utilities/csrf */ "./src/utilities/csrf.tsx");
+const PermissionStore_1 = __webpack_require__(/*! ./PermissionStore */ "./src/stores/PermissionStore.tsx");
+class ProjectPermissionStore extends PermissionStore_1.PermissionStore {
+    init() {
+        const path = window.location.pathname.split('/');
+        this.projectId = path[2];
+        this.url = '/v1/projects/' + this.projectId + '/permission';
+    }
+    /**
+     * setPermission updates the users permission in the [[permissions]] array and then sends
+     * the request to the backend for action. If the backend is not successful then the old permission
+     * is reset.
+     *
+     * [[userIndex]] is the actioned user, this users permission is then replaced with the [[newPermission]].
+     * If the id is present in the permission object, then that user already has a permission. If this is the
+     * case then an put or delete can occur, otherwise the data must be posted to the endpoint.
+     */
+    setPermission(id, newPermission, oldPermission) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userIndex = this.permissions.findIndex(user => user.user.id === id);
+            const permissionId = this.permissions[userIndex].project ? this.permissions[userIndex].project.id : null;
+            this.permissions[userIndex].project = {
+                id: permissionId,
+                permission: newPermission,
+                user_id: id,
+                project_id: this.projectId
+            };
+            this.permissions[userIndex].project[newPermission] = true;
+            try {
+                if (newPermission === UserForm_1.PermissionTypes.None) {
+                    yield axios_1.default.delete(this.url + "/" + permissionId, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].project = null;
+                }
+                else if (permissionId) {
+                    const response = yield axios_1.default.put(this.url + "/" + permissionId, this.permissions[userIndex].project, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].project = response.data.project;
+                }
+                else {
+                    delete this.permissions[userIndex].project.id;
+                    const response = yield axios_1.default.post(this.url, this.permissions[userIndex].project, { headers: { 'X-CSRFToken': csrf_1.getCSRF() } });
+                    this.permissions[userIndex].project = response.data.project;
+                }
+            }
+            catch (error) {
+                console.log("failed");
+            }
+        });
+    }
+}
+__decorate([
+    mobx_1.action
+], ProjectPermissionStore.prototype, "setPermission", null);
+exports.ProjectPermissionStore = ProjectPermissionStore;
+
+
+/***/ }),
+
 /***/ "./src/stores/index.ts":
 /*!*****************************!*\
   !*** ./src/stores/index.ts ***!
@@ -76316,8 +76662,12 @@ exports.PermissionStore = PermissionStore;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const DocumentPermissionStore_1 = __webpack_require__(/*! ./DocumentPermissionStore */ "./src/stores/DocumentPermissionStore.tsx");
+const ProjectPermissionStore_1 = __webpack_require__(/*! ./ProjectPermissionStore */ "./src/stores/ProjectPermissionStore.tsx");
+const OrganizationPermissionStore_1 = __webpack_require__(/*! ./OrganizationPermissionStore */ "./src/stores/OrganizationPermissionStore.tsx");
 exports.stores = {
-    documentPermissionStore: new DocumentPermissionStore_1.DocumentPermissionStore()
+    documentPermissionStore: new DocumentPermissionStore_1.DocumentPermissionStore(),
+    projectPermissionStore: new ProjectPermissionStore_1.ProjectPermissionStore(),
+    organizationPermissionStore: new OrganizationPermissionStore_1.OrganizationPermissionStore()
 };
 
 

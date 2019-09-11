@@ -73,17 +73,17 @@ export class PermissionStore implements IPermissionStore {
             filteredUsers = filteredUsers.filter(user => user.document === undefined);
         } else if (this.filter === PermissionTypes.Create) {
             filteredUsers = filteredUsers.filter(user => 
-                (user.document && user.document.canCreate === true) ||
+                (user.document ? user.document && user.document.canCreate === true : false) ||
                 (user.project && user.project.canCreate === true) ||
                 (user.organization && user.organization.canCreate === true));
         } else if (this.filter === PermissionTypes.Invite) {
             filteredUsers = filteredUsers.filter(user => 
-                (user.document && user.document.canInvite === true) ||
+                (user.document ? user.document && user.document.canInvite === true : false) ||
                 (user.project && user.project.canInvite === true) ||
                 (user.organization && user.organization.canInvite === true));
         } else if (this.filter === PermissionTypes.Manage) {
             filteredUsers = filteredUsers.filter(user =>
-                (user.document && user.document.canManage === true) ||
+                (user.document ? user.document && user.document.canManage === true : false ) ||
                 (user.project && user.project.canManage === true) ||
                 (user.organization && user.organization.canManage === true));
         }

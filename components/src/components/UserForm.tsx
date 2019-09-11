@@ -1,9 +1,10 @@
 import * as React from "react";
 import { UserFormUI } from "./UserFormUI";
 import { Dropdown, Input, Pagination } from 'semantic-ui-react'
-import { inject, observer } from "mobx-react";
 import { IPermissionStore } from "../stores/PermissionStore";
 import { DocumentPermissionStore } from "../stores/DocumentPermissionStore";
+import { ProjectPermissionStore } from "../stores/ProjectPermissionStore";
+import { OrganizationPermissionStore } from "../stores/OrganizationPermissionStore";
 
 
 export enum PermissionTypes {
@@ -11,6 +12,12 @@ export enum PermissionTypes {
     Create = "canCreate",
     Invite = "canInvite",
     Manage = "canManage",
+}
+
+export enum HigherOrderType {
+    Organization,
+    Project,
+    Document
 }
 
 export interface User {
@@ -32,15 +39,17 @@ export interface UserPermission {
     user: User,
     document?: Permission,
     project?: Permission,
-    organization?: Permission
+    organization?: Permission,
+    higherOrderType: HigherOrderType,
 
     onPermissionChange(id: number, newPermission: PermissionTypes, oldPermission: PermissionTypes): void; // Switch to enum
 }
 
 interface UserFormProps {
-    permissionStore?: IPermissionStore
-    documentPermissionStore?: DocumentPermissionStore
-
+    permissionStore?: IPermissionStore,
+    documentPermissionStore?: DocumentPermissionStore,
+    projectPermissionStore?: ProjectPermissionStore,
+    organizationPermissionStore?: OrganizationPermissionStore
 }
 
 export interface UserFilterDropdown {
@@ -80,6 +89,7 @@ export class UserFilterDropdownMenu extends React.Component<UserFilterDropdown, 
 
 export class UserForm extends React.Component<UserFormProps> {
     permissionStore: IPermissionStore;
+    higherOrderType: HigherOrderType;
 
     setUserPermissions = (id: number, newPermission: PermissionTypes, oldPermission: PermissionTypes) => {
         this.permissionStore.setPermission(id, newPermission, oldPermission);
@@ -124,6 +134,7 @@ export class UserForm extends React.Component<UserFormProps> {
                     {this.permissionStore.userPermissions.map((user, index) => <UserFormUI
                         key={index}
                         onPermissionChange={this.setUserPermissions}
+                        higherOrderType={this.higherOrderType}
                         {...user}
                          />)}
                 </tbody>

@@ -17,10 +17,10 @@ urlpatterns = [
         include(project_urls),
     ),
 
-    # url(
-    #     r'^',
-    #     include(organization_urls),
-    # ),
+    url(
+        r'^',
+        include(organization_urls),
+    ),
 ]
 
 

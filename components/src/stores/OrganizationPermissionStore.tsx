@@ -5,15 +5,13 @@ import { getCSRF } from "../utilities/csrf";
 import { PermissionStore, IPermissionStore } from './PermissionStore';
 
 
-export class DocumentPermissionStore extends PermissionStore implements IPermissionStore {
-    private projectId: number;
-    private documentId: number;
+export class OrganizationPermissionStore extends PermissionStore implements IPermissionStore {
+    private organizationId: number;
 
     init() {
         const path: any[] = window.location.pathname.split('/');
-        this.projectId = path[2];
-        this.documentId = path[3];
-        this.url = '/v1/projects/' + this.projectId + '/documents/' + this.documentId + '/permission';
+        this.organizationId = path[2];
+        this.url = '/v1/organizations/' + this.organizationId + '/permission';
     }
 
     /**
@@ -27,14 +25,14 @@ export class DocumentPermissionStore extends PermissionStore implements IPermiss
      */
     @action async setPermission(id: number, newPermission: PermissionTypes, oldPermission: PermissionTypes) {
         const userIndex: number = this.permissions.findIndex(user => user.user.id === id);
-        const permissionId: number = this.permissions[userIndex].document ? this.permissions[userIndex].document.id : null;
-        this.permissions[userIndex].document = {
+        const permissionId: number = this.permissions[userIndex].organization ? this.permissions[userIndex].organization.id : null;
+        this.permissions[userIndex].organization = {
             id: permissionId,
             permission: newPermission,
             user_id: id,
-            document_id: this.documentId
+            organization_id: this.organizationId
         } as Permission;
-        this.permissions[userIndex].document[newPermission] = true;
+        this.permissions[userIndex].organization[newPermission] = true;
 
         try {
             if (newPermission === PermissionTypes.None) {
@@ -42,23 +40,23 @@ export class DocumentPermissionStore extends PermissionStore implements IPermiss
                     this.url + "/" + permissionId,
                     {headers: {'X-CSRFToken': getCSRF()}}
                 );
-                this.permissions[userIndex].document = null;
+                this.permissions[userIndex].organization = null;
             }
             else if (permissionId) {
                 const response = await axios.put(
                     this.url + "/" + permissionId,
-                    this.permissions[userIndex].document,
+                    this.permissions[userIndex].organization,
                     {headers: {'X-CSRFToken': getCSRF()}}
                 );
-                this.permissions[userIndex].document = response.data.document;
+                this.permissions[userIndex].organization = response.data.organization;
             } else {
-                delete this.permissions[userIndex].document.id;
+                delete this.permissions[userIndex].organization.id;
                 const response = await axios.post(
                     this.url,
-                    this.permissions[userIndex].document,
+                    this.permissions[userIndex].organization,
                     {headers: {'X-CSRFToken': getCSRF()}}
                 );
-                this.permissions[userIndex].document = response.data.document;
+                this.permissions[userIndex].organization = response.data.organization;
             }
         } catch (error) {
             console.log("failed");

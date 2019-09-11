@@ -2,14 +2,13 @@ import { UserForm, HigherOrderType } from "./UserForm";
 import { inject, observer } from "mobx-react";
 
 
-@inject('documentPermissionStore')
+@inject('projectPermissionStore')
 @observer
-export class DocumentUserForm extends UserForm {
+export class ProjectUserForm extends UserForm {
     componentWillMount() {
-        this.permissionStore = this.props.documentPermissionStore;
+        this.permissionStore = this.props.projectPermissionStore;
         this.permissionStore.init();
         this.permissionStore.fetchPermissions();
-        this.higherOrderType = HigherOrderType.Document;
+        this.higherOrderType = HigherOrderType.Project;
     }
-
 }
