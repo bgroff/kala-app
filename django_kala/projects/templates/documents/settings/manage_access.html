@@ -23,12 +23,7 @@
                     </ul>
                 </div>
             {% endif %}
-            <form id="form" class="ui form" method="post">
-                {% csrf_token %}
-                <div id="user-form"></div>
-                <div class="field"></div>
-                <button class="ui button primary" type="submit">{% trans 'Manage access' %}</button>
-            </form>
+            <div id="document-permissions-form"></div>
         </div>
     </div>
 
@@ -39,7 +34,10 @@
         $('.ui.checkbox')
             .checkbox()
         ;
-        var users = {{ users|safe }};
+        $('.tooltip > i')
+          .popup({
+          })
+        ;
     </script>
     <script src="/static/javascript/bundle.js"></script>
 {% endblock %}

@@ -81,29 +81,40 @@ class Project(models.Model):
         ])
 
     def add_permission(self, user, permission):
-        ProjectPermission.objects.get_or_create(
-            permission=Permission.objects.get(
-                codename=permission,
-                content_type__app_label='projects'
-            ),
-            user=user,
-            project=self
+        permission = Permission.objects.get(
+            codename=permission,
+            content_type__app_label='projects'
         )
 
+        try:
+            project_permission = ProjectPermission.objects.get(
+                user=user,
+                project=self
+            )
+            project_permission.permission = permission
+            project_permission.save()
+        except ProjectPermission.DoesNotExist:
+            project_permission = ProjectPermission.objects.create(
+                user=user,
+                project=self,
+                permission=permission
+            )
+        return project_permission
+
     def add_create(self, user):
-        self.add_permission(
+        return self.add_permission(
             user,
             'can_create'
         )
 
     def add_invite(self, user):
-        self.add_permission(
+        return self.add_permission(
             user,
             'can_invite'
         )
 
     def add_manage(self, user):
-        self.add_permission(
+        return self.add_permission(
             user,
             'can_manage'
         )

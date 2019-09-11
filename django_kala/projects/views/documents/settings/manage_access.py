@@ -1,3 +1,4 @@
+from auth.forms.manage_access import manage_access_forms
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
@@ -6,12 +7,7 @@ from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView
-
-from auth.forms.manage_access import manage_access_forms
-from django_kala.functions import create_user_permissions
 from documents.models import Document, DocumentPermission
-
-import json
 
 
 class ManageAccessView(TemplateView):
@@ -25,14 +21,12 @@ class ManageAccessView(TemplateView):
             'permission',
             'user'
         )
-        users = create_user_permissions(permissions, self.request.user.get_users())
 
         return {
             'forms': self.forms,
             'document': self.document,
             'project': self.project,
             'organization': self.project.organization,
-            'users': json.dumps(users)
         }
 
 

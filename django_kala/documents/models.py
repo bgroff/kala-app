@@ -114,29 +114,40 @@ class Document(models.Model):
         ])
 
     def add_permission(self, user, permission):
-        DocumentPermission.objects.get_or_create(
-            permission=Permission.objects.get(
-                codename=permission,
-                content_type__app_label='documents'
-            ),
-            user=user,
-            document=self
+        permission = Permission.objects.get(
+            codename=permission,
+            content_type__app_label='documents'
         )
 
+        try:
+            document_permission = DocumentPermission.objects.get(
+                user=user,
+                document=self
+            )
+            document_permission.permission = permission
+            document_permission.save()
+        except DocumentPermission.DoesNotExist:
+            document_permission = DocumentPermission.objects.create(
+                user=user,
+                document=self,
+                permission=permission
+            )
+        return document_permission
+
     def add_create(self, user):
-        self.add_permission(
+        return self.add_permission(
             user,
             'can_create'
         )
 
     def add_invite(self, user):
-        self.add_permission(
+        return self.add_permission(
             user,
             'can_invite'
         )
 
     def add_manage(self, user):
-        self.add_permission(
+        return self.add_permission(
             user,
             'can_manage'
         )
@@ -151,6 +162,7 @@ class Document(models.Model):
                 user=user,
                 document=self
             ).delete()
+            return True
         except DocumentPermission.DoesNotExist:
             return False
 
