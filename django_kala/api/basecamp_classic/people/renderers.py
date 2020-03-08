@@ -1,7 +1,6 @@
 from io import StringIO
 
 from django.db.models import QuerySet
-from django.utils.six import iteritems
 from django.utils.xmlutils import SimplerXMLGenerator
 from django.utils.encoding import smart_text
 from rest_framework.renderers import BaseRenderer
