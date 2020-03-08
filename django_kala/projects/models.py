@@ -172,4 +172,4 @@ class Export(models.Model):
     name = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     key = models.CharField(max_length=255)
-    details = JSONField(default={})
+    details = JSONField(default=dict)
