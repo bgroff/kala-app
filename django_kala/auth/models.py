@@ -136,7 +136,7 @@ class User(AbstractUser):
         context = {
             'object': object,
             'user': self,
-            'uid': urlsafe_base64_encode(force_bytes(self.pk)).decode(),
+            'uid': urlsafe_base64_encode(force_bytes(self.pk)),
             'token': default_token_generator.make_token(self),
             'application_url': settings.APPLICATION_URL,
             'help_email': settings.HELP_EMAIL,
