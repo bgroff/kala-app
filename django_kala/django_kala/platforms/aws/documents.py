@@ -15,7 +15,7 @@ class DocumentHandler():
             ClientMethod='get_object',
             Params={
                 'Bucket': settings.S3_STORAGE_BUCKET,
-                'Key': 'media/documents/{0}'.format(document.uuid),
+                'Key': '{0}/media/documents/{1}'.format(settings.S3_STORAGE_PREFIX, document.uuid),
                 'ResponseContentDisposition': 'attachment; filename="{0}"'.format(document.name),
             }
         )
@@ -27,7 +27,7 @@ class DocumentHandler():
             ACL='private',
             Body=content,
             Bucket=settings.S3_STORAGE_BUCKET,
-            Key='media/documents/{0}'.format(key),
+            Key='{0}/media/documents/{1}'.format(settings.S3_STORAGE_PREFIX, key),
             ServerSideEncryption='AES256',
 
         )
@@ -45,7 +45,7 @@ class DocumentHandler():
         return url
 
     def upload_export(self, export_path):
-        key = 'exports/{0}'.format(uuid4())
+        key = '{0}/exports/{1}'.format(settings.S3_STORAGE_PREFIX, uuid4())
         expires = timezone.now() + datetime.timedelta(days=settings.EXPORT_EXPIRATION_IN_DAYS)
 
         s3 = boto3.resource('s3')
@@ -72,5 +72,5 @@ class DocumentHandler():
         for version in document.documentversion_set.all():
             s3.Object(
                 settings.S3_STORAGE_BUCKET,
-                'media/documents/{0}'.format(version.uuid)
+                '{0}/media/documents/{1}'.format(settings.S3_STORAGE_PREFIX, version.uuid)
             ).delete()

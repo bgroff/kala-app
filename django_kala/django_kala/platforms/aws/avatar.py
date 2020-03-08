@@ -8,13 +8,14 @@ class AvatarUploader():
         client.put_object(
             ACL='public-read',
             Body=file.read(),
-            Key='avatars/{0}.png'.format(user.uuid),
+            Key='{0}/avatars/{1}.png'.format(settings.S3_STORAGE_PREFIX, user.uuid),
             Bucket=settings.S3_STORAGE_BUCKET
         )
 
-        user.avatar_url = 'https://s3-{0}.amazonaws.com/{1}/avatars/{2}.png'.format(
-            settings.AWS_REGION,
+        user.avatar_url = 'https://{0}.s3-{1}.amazonaws.com/{2}/avatars/{3}.png'.format(
             settings.S3_STORAGE_BUCKET,
+            'us-west-2',#settings.AWS_REGION,
+            settings.S3_STORAGE_PREFIX,
             user.uuid
         )
         user.save()
