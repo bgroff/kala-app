@@ -57,9 +57,9 @@ urlpatterns = [
 ]
 
 if settings.DEBUG:
-    import debug_toolbar
+    # import debug_toolbar
     urlpatterns = [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        # url(r'^__debug__/', include(debug_toolbar.urls)),
         url(r'^404/$', page_not_found, {'exception': Exception()}),
         url(r'^403/$', permission_denied, {'exception': Exception()}),
         url(r'^500/$', server_error, ),
