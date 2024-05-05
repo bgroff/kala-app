@@ -10,8 +10,7 @@ from django.template import loader
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from django.utils.translation import ugettext_lazy as _
-from django_localflavor_us.models import PhoneNumberField
+from django.utils.translation import gettext_lazy as _
 from timezone_field import TimeZoneField
 
 import documents
@@ -27,6 +26,7 @@ class KalaUserManager(UserManager):
 
 
 class User(AbstractUser):
+    id = models.AutoField(primary_key=True)
     email = models.EmailField(_('email address'), unique=True)
 
     uuid = models.UUIDField(unique=True, db_index=True, default=uuid4)
@@ -36,10 +36,10 @@ class User(AbstractUser):
     access_new_projects = models.BooleanField(default=False)
 
     # Phone numbers
-    fax = PhoneNumberField(null=True, blank=True)
-    home = PhoneNumberField(null=True, blank=True)
-    mobile = PhoneNumberField(null=True, blank=True)
-    office = PhoneNumberField(null=True, blank=True)
+    fax = models.CharField(max_length=255, null=True, blank=True)
+    home = models.CharField(max_length=255, null=True, blank=True)
+    mobile = models.CharField(max_length=255, null=True, blank=True)
+    office = models.CharField(max_length=255, null=True, blank=True)
     ext = models.CharField(max_length=10, null=True, blank=True)
 
     last_updated = models.DateTimeField(auto_now=True)

@@ -1,21 +1,21 @@
-from django.conf.urls import url
+from django.urls import path
 from .views import *
 
 urlpatterns = [
-   url(
-       regex=r'^companies.xml$',
+   path(
+       'companies.xml',
        view=CompaniesView.as_view(),
        name='companies'
    ),
 
-   url(
-       regex=r'^companies/(?P<pk>\d+).xml$',
+   path(
+       'companies/<int:pk>.xml',
        view=CompanyView.as_view(),
        name='company'
    ),
 
-   url(
-       regex=r'^companies/(?P<pk>\d+)/people.xml$',
+   path(
+       'companies/<int:pk>/people.xml',
        view=PeopleView.as_view(),
        name='people'
    ),

@@ -1,4 +1,4 @@
-FROM registry.access.redhat.com/ubi9/python-39
+FROM registry.access.redhat.com/ubi9/python-311
 
 # Copy in your requirements file
 ADD requirements.txt /requirements.txt

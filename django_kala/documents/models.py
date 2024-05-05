@@ -14,6 +14,7 @@ User = get_user_model()
 
 
 class Document(models.Model):
+    id = models.AutoField(primary_key=True)
     project = models.ForeignKey('projects.Project', on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     date = models.DateTimeField(default=timezone.now)
@@ -235,6 +236,7 @@ class DocumentVersion(models.Model):
 
 
 class DocumentPermission(models.Model):
+    id = models.AutoField(primary_key=True)
     document = models.ForeignKey(Document, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     permission = models.ForeignKey(Permission, on_delete=models.CASCADE)

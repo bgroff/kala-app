@@ -1,9 +1,9 @@
 boto3
-celery==4.2.2
+celery
 dateparser
-Django>=3.0,<3.1
+Django>=5,<6
 django-countries
-django-localflavor-us
+django-localflavor
 django-taggit
 django-timezone-field
 djangorestframework

@@ -1,4 +1,3 @@
-from celery.task import Task
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
@@ -8,7 +7,7 @@ from projects.tasks.delete_document import DeleteDocumentTask
 User = get_user_model()
 
 
-class DeleteProjectTask(Task):
+class DeleteProjectTask():
 
     def run(self, *args, **kwargs):
         self.project = Project.objects.get(pk=args[0])

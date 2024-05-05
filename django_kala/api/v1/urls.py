@@ -1,6 +1,5 @@
-from django.conf.urls import url, include
+from django.urls import path, include
 
-from .auth import urls as auth_urls
 from .projects import urls as project_urls
 from .organizations import urls as organization_urls
 
@@ -12,13 +11,13 @@ urlpatterns = [
     #     include(auth_urls),
     # ),
 
-    url(
-        r'^',
+    path(
+        '',
         include(project_urls),
     ),
 
-    url(
-        r'^',
+    path(
+        '',
         include(organization_urls),
     ),
 ]

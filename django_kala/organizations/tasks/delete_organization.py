@@ -1,4 +1,3 @@
-from celery.task import Task
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
@@ -7,7 +6,8 @@ from organizations.models import Organization
 User = get_user_model()
 
 
-class DeleteOrganizationTask(Task):
+# TODO: let this work with Celery
+class DeleteOrganizationTask():
 
     def run(self, *args, **kwargs):
         self.organization = Organization.objects.get(pk=args[0])

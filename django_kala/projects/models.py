@@ -1,5 +1,3 @@
-from django.contrib.postgres.fields import JSONField
-
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
@@ -14,6 +12,7 @@ User = get_user_model()
 
 
 class Project(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     description = models.TextField()
     tags = TaggableManager(blank=True)
@@ -152,6 +151,7 @@ class Project(models.Model):
 
 
 class ProjectPermission(models.Model):
+    id = models.AutoField(primary_key=True)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     permission = models.ForeignKey(Permission, on_delete=models.CASCADE)
@@ -161,6 +161,7 @@ class ProjectPermission(models.Model):
 
 
 class Category(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
@@ -169,7 +170,8 @@ class Category(models.Model):
 
 
 class Export(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     key = models.CharField(max_length=255)
-    details = JSONField(default=dict)
+    details = models.JSONField(default=dict)

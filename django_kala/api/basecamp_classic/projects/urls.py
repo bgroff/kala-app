@@ -1,33 +1,33 @@
-from django.conf.urls import url
+from django.urls import path
 from .views import *
 
 urlpatterns = [
-   url(
-       regex=r'^projects.xml$',
+   path(
+       'projects.xml',
        view=ProjectsView.as_view(),
        name='projects'
    ),
 
-   url(
-       regex=r'^projects/(?P<pk>\d+).xml$',
+   path(
+       'projects/<int:pk>.xml',
        view=ProjectView.as_view(),
        name='company'
    ),
 
-   url(
-       regex=r'^projects/(?P<pk>\d+)/people.xml$',
+   path(
+       'projects/<int:pk>/people.xml',
        view=PeopleView.as_view(),
        name='people'
    ),
 
-   url(
-       regex=r'^projects/(?P<pk>\d+)/categories.xml$',
+   path(
+       'projects/<int:pk>/categories.xml',
        view=CategoriesView.as_view(),
        name='categories'
    ),
 
-   url(
-       regex=r'^projects/(?P<pk>\d+)/attachments.xml$',
+   path(
+       'projects/<int:pk>/attachments.xml',
        view=DocumentsView.as_view(),
        name='documents'
    ),

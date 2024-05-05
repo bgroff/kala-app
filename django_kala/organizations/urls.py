@@ -1,47 +1,47 @@
-from django.conf.urls import url
+from django.urls import path
 from .views import *
 
 app_name='organizations'
 
 urlpatterns = [
-    url(
-        regex=r'^$',
+    path(
+        '',
         view=OrganizationsView.as_view(),
         name='organizations',
     ),
 
-    url(
-        regex=r'^(?P<pk>\d+)/$',
+    path(
+        '<int:pk>/',
         view=OrganizationView.as_view(),
         name='organization',
     ),
 
-    url(
-        regex=r'^(?P<pk>\d+)/invite_user$',
+    path(
+        '<int:pk>/invite_user',
         view=InviteUserView.as_view(),
         name='invite_user',
     ),
 
-    url(
-        regex=r'^new$',
+    path(
+        'new',
         view=NewOrganizationView.as_view(),
         name='new_organization',
     ),
 
-    url(
-        regex=r'^(?P<pk>\d+)/settings/details$',
+    path(
+        '<int:pk>/settings/details',
         view=DetailsView.as_view(),
         name='details'
     ),
 
-    url(
-        regex=r'^(?P<pk>\d+)/settings/delete',
+    path(
+        '<int:pk>/settings/delete',
         view=DeleteView.as_view(),
         name='delete'
     ),
 
-    url(
-        regex=r'^(?P<pk>\d+)/settings/manage_access',
+    path(
+        '<int:pk>/settings/manage_access',
         view=ManageAccessView.as_view(),
         name='manage_access'
     ),

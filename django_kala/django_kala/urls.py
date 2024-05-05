@@ -1,56 +1,56 @@
 from django.conf import settings
-from django.conf.urls import url, include
+from django.urls import path, include
 from django.views.defaults import page_not_found, permission_denied, server_error
 
 from .views import Home, SearchView, LicenseView, UserDocumentationView
 
 
 urlpatterns = [
-    url(
-        regex=r'^$',
+    path(
+        '',
         view=Home.as_view(),
         name='home'
     ),
 
-    url(
-        regex=r'^search/$',
+    path(
+        'search/',
         view=SearchView.as_view(),
         name='search'
     ),
 
-    url(
-        r'^',
+    path(
+        'api/classic',
         include('api.basecamp_classic.urls'),
     ),
 
-    url(
-        r'^v1/',
+    path(
+        'api/v1/',
         include('api.v1.urls'),
     ),
 
-    url(
-        r'^organizations/',
+    path(
+        'organizations/',
         include('organizations.urls'),
     ),
 
-    url(
-        r'^accounts/',
+    path(
+        'accounts/',
         include('auth.urls'),
     ),
 
-    url(
-        r'^projects/',
+    path(
+        'projects/',
         include('projects.urls'),
     ),
 
-    url(
-        regex=r'^license$',
+    path(
+        'license',
         view=LicenseView.as_view(),
         name='license',
     ),
 
-    url(
-        regex=r'^user_documentation$',
+    path(
+        'user_documentation',
         view=UserDocumentationView.as_view(),
         name='user_documentation',
     ),
@@ -60,8 +60,8 @@ if settings.DEBUG:
     # import debug_toolbar
     urlpatterns = [
         # url(r'^__debug__/', include(debug_toolbar.urls)),
-        url(r'^404/$', page_not_found, {'exception': Exception()}),
-        url(r'^403/$', permission_denied, {'exception': Exception()}),
-        url(r'^500/$', server_error, ),
+        path('404/', page_not_found, {'exception': Exception()}),
+        path('403/', permission_denied, {'exception': Exception()}),
+        path('500/', server_error, ),
 
     ] + urlpatterns

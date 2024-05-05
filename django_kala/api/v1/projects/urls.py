@@ -1,6 +1,7 @@
-from django.urls import path, include
+from django.urls import path
 
-from api.v1.projects.settings.views import DocumentPermissionsView, DocumentPermissionView, ProjectPermissionsView, ProjectPermissionView
+from api.v1.projects.settings.views import DocumentPermissionsView, DocumentPermissionView, ProjectPermissionsView, \
+    ProjectPermissionView
 from .views import *
 
 urlpatterns = [

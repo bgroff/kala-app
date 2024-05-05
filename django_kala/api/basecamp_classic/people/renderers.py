@@ -2,7 +2,7 @@ from io import StringIO
 
 from django.db.models import QuerySet
 from django.utils.xmlutils import SimplerXMLGenerator
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from rest_framework.renderers import BaseRenderer
 
 
@@ -53,111 +53,111 @@ class XMLPeopleRenderer(BaseRenderer):
     def render_person(self, user, request_user, xml):
             xml.startElement('person', {})
             xml.startElement('id', {'type': 'integer'})
-            xml.characters(smart_text(user.id))
+            xml.characters(smart_str(user.id))
             xml.endElement('id')
             xml.startElement('uuid', {'type': 'uuid'})
-            xml.characters(smart_text(user.uuid))
+            xml.characters(smart_str(user.uuid))
             xml.endElement('uuid')
             xml.startElement('created-at', {'type': 'datetime'})
-            xml.characters(smart_text(user.date_joined.isoformat()))
+            xml.characters(smart_str(user.date_joined.isoformat()))
             xml.endElement('created-at')
             xml.startElement('first-name', {})
-            xml.characters(smart_text(user.first_name))
+            xml.characters(smart_str(user.first_name))
             xml.endElement('first-name')
             xml.startElement('last-name', {})
-            xml.characters(smart_text(user.last_name))
+            xml.characters(smart_str(user.last_name))
             xml.endElement('last-name')
             xml.startElement('title', {})
             try:
-                xml.characters(smart_text(user.title if user.title else ''))
+                xml.characters(smart_str(user.title if user.title else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('title')
             xml.startElement('email-address', {})
-            xml.characters(smart_text(user.email))
+            xml.characters(smart_str(user.email))
             xml.endElement('email-address')
             xml.startElement('im-handle', {})
             try:
-                xml.characters(smart_text(user.im_handle if user.im_handle else ''))
+                xml.characters(smart_str(user.im_handle if user.im_handle else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('im-handle')
             xml.startElement('im-service', {})
             try:
-                xml.characters(smart_text(user.im_service if user.im_service else ''))
+                xml.characters(smart_str(user.im_service if user.im_service else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('im-service')
             xml.startElement('phone-number-office', {})
             try:
-                xml.characters(smart_text(user.phone if user.phone else ''))
+                xml.characters(smart_str(user.phone if user.phone else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('phone-number-office')
             xml.startElement('phone-number-office-ext', {})
             try:
-                xml.characters(smart_text(user.ext if user.ext else ''))
+                xml.characters(smart_str(user.ext if user.ext else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('phone-number-office-ext')
             xml.startElement('phone-number-mobile', {})
             try:
-                xml.characters(smart_text(user.phone_mobile if user.phone_mobile else ''))
+                xml.characters(smart_str(user.phone_mobile if user.phone_mobile else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('phone-number-mobile')
             xml.startElement('phone-number-home', {})
             try:
-                xml.characters(smart_text(user.phone_home if user.phone_home else ''))
+                xml.characters(smart_str(user.phone_home if user.phone_home else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('phone-number-home')
             xml.startElement('phone-number-fax', {})
             try:
-                xml.characters(smart_text(user.phone_fax if user.phone_fax else ''))
+                xml.characters(smart_str(user.phone_fax if user.phone_fax else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('phone-number-fax')
             xml.startElement('company-id', {'type': 'integer'})
             try:
-                xml.characters(smart_text(user.organizations.first().id if user.organizations.first() else ''))
+                xml.characters(smart_str(user.organizations.first().id if user.organizations.first() else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('company-id')
             xml.startElement('client-id', {'type': 'integer'})
             try:
-                xml.characters(smart_text(user.client.id if user.client.id else ''))
+                xml.characters(smart_str(user.client.id if user.client.id else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('client-id')
             xml.startElement('avatar-url', {})
             try:
-                xml.characters(smart_text(user.avatar_url if user.avatar_url else ''))
+                xml.characters(smart_str(user.avatar_url if user.avatar_url else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('avatar-url')
             if request_user.is_superuser:
                 xml.startElement('user-name', {})
-                xml.characters(smart_text(user.username))
+                xml.characters(smart_str(user.username))
                 xml.endElement('user-name')
 
                 xml.startElement('administrator', {'type': 'boolean'})
-                xml.characters(smart_text(str(user.is_superuser).lower()))
+                xml.characters(smart_str(str(user.is_superuser).lower()))
                 xml.endElement('administrator')
 
                 xml.startElement('deleted', {'type': 'boolean'})
-                xml.characters(smart_text(str(not user.is_active)).lower())
+                xml.characters(smart_str(str(not user.is_active)).lower())
                 xml.endElement('deleted')
 
                 xml.startElement('has-access-to-new-projects', {'type': 'boolean'})
                 try:
                     xml.characters(
-                        smart_text(
+                        smart_str(
                             str(user.access_new_projects).lower() if user.access_new_projects else str(False).lower()
                         )
                     )
                 except AttributeError:
-                    xml.characters(smart_text(''))
+                    xml.characters(smart_str(''))
                 xml.endElement('has-access-to-new-projects')
             xml.endElement('person')
 
@@ -167,7 +167,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('id', {'type': 'integer'})
             for error in data['id']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('id')
 
@@ -175,7 +175,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('uuid', {'type': 'uuid'})
             for error in data['uuid']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('uuid')
 
@@ -183,7 +183,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('user-name', {})
             for error in data['username']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('user-name')
 
@@ -191,7 +191,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('first-name', {})
             for error in data['first_name']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('first-name')
 
@@ -199,7 +199,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('last-name', {})
             for error in data['last_name']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('last-name')
 
@@ -207,7 +207,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('title', {})
             for error in data['title']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('title')
 
@@ -215,7 +215,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('email-address', {})
             for error in data['email']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('email-address')
 
@@ -223,7 +223,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('im-handler', {})
             for error in data['im_handler']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('im-handler')
 
@@ -231,7 +231,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('im-service', {})
             for error in data['im_service']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('im-service')
 
@@ -239,7 +239,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('phone-number-office', {})
             for error in data['phone']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('phone-number-office')
 
@@ -247,7 +247,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('phone-number-office-ext', {})
             for error in data['ext']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('phone-number-office-ext')
 
@@ -255,7 +255,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('phone-number-mobile', {})
             for error in data['mobile']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('phone-number-mobile')
 
@@ -263,7 +263,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('phone-number-home', {})
             for error in data['home']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('phone-number-home')
 
@@ -271,7 +271,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('phone-number-fax', {})
             for error in data['fax']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('phone-number-fax')
 
@@ -279,7 +279,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('company-id', {})
             for error in data['companies']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('company-id')
 
@@ -287,7 +287,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('client-id', {})
             for error in data['client']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('client-id')
 
@@ -295,7 +295,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('avatar-url', {})
             for error in data['avatar_url']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('avatar-url')
 
@@ -303,7 +303,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('administrator', {})
             for error in data['is_superuser']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('administrator')
 
@@ -311,7 +311,7 @@ class XMLPeopleRenderer(BaseRenderer):
             xml.startElement('has-access-to-new-projects', {})
             for error in data['access_new_projects']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('has-access-to-new-projects')
 

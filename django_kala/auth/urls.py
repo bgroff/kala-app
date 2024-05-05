@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 from django.contrib.auth.views import LoginView, logout_then_login
 from django.urls import path, include
 
@@ -7,39 +7,44 @@ from .views import *
 app_name='users'
 
 urlpatterns = [
-    url(regex=r'^$',
-       view=UsersView.as_view(),
-       name='users',
+    path(
+        '',
+        view=UsersView.as_view(),
+        name='users',
     ),
 
-    url(regex=r'^invite_user$',
-       view=InviteUserView.as_view(),
-       name='invite_user',
+    path(
+        'invite_user',
+        view=InviteUserView.as_view(),
+        name='invite_user',
     ),
 
-    url(regex=r'^(?P<pk>\d+)/settings/details$',
-       view=DetailsView.as_view(),
-       name='details',
+    path(
+        '<int:pk>/settings/details',
+        view=DetailsView.as_view(),
+        name='details',
     ),
 
-    url(regex=r'^(?P<pk>\d+)/settings/avatar',
-       view=AvatarView.as_view(),
-       name='avatar',
+    path(
+        '<int:pk>/settings/avatar',
+        view=AvatarView.as_view(),
+        name='avatar',
     ),
 
-    url(regex=r'^(?P<pk>\d+)/settings/password',
-       view=PasswordView.as_view(),
-       name='password',
+    path(
+        '<int:pk>/settings/password',
+        view=PasswordView.as_view(),
+        name='password',
     ),
 
-    url(
-       regex=r'^login/$',
+    path(
+       'login/',
        view=LoginView.as_view(redirect_authenticated_user=True, template_name='login.html'),
        name='login'
     ),
 
-    url(
-       regex=r'^logout/$',
+    path(
+       'logout/',
        view=logout_then_login,
        kwargs={'login_url': '/accounts/login'},
        name='logout'

@@ -2,7 +2,7 @@ from io import StringIO
 
 from django.db.models import QuerySet
 from django.utils.xmlutils import SimplerXMLGenerator
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from rest_framework.renderers import BaseRenderer
 
 
@@ -55,53 +55,53 @@ class XMLDocumentRenderer(BaseRenderer):
         xml.startElement('document', {})
 
         xml.startElement('id', {'type': 'integer'})
-        xml.characters(smart_text(version.uuid))
+        xml.characters(smart_str(version.uuid))
         xml.endElement('id')
 
         xml.startElement('collection', {'type': 'integer'})
-        xml.characters(smart_text(document.id))
+        xml.characters(smart_str(document.id))
         xml.endElement('collection')
 
         xml.startElement('name', {})
-        xml.characters(smart_text(document.name))
+        xml.characters(smart_str(document.name))
         xml.endElement('name')
 
         xml.startElement('byte-size', {})
-        xml.characters(smart_text(version.size))
+        xml.characters(smart_str(version.size))
         xml.endElement('byte-size')
 
         xml.startElement('created-on', {})
-        xml.characters(smart_text(version.created.isoformat()))
+        xml.characters(smart_str(version.created.isoformat()))
         xml.endElement('created-on')
 
         xml.startElement('person-id', {'type': 'integer'})
-        xml.characters(smart_text(version.user.pk))
+        xml.characters(smart_str(version.user.pk))
         xml.endElement('person-id')
 
         xml.startElement('collection', {'type': 'integer'})
-        xml.characters(smart_text(document.pk))
+        xml.characters(smart_str(document.pk))
         xml.endElement('collection')
 
         xml.startElement('project-id', {'type': 'integer'})
-        xml.characters(smart_text(document.project.pk))
+        xml.characters(smart_str(document.project.pk))
         xml.endElement('project-id')
 
         xml.startElement('download-url', {})
-        xml.characters(smart_text(version.url))
+        xml.characters(smart_str(version.url))
         xml.endElement('download-url')
 
         xml.startElement('category-id', {'type': 'integer'})
         try:
-            xml.characters(smart_text(document.category.id if document.category else ''))
+            xml.characters(smart_str(document.category.id if document.category else ''))
         except AttributeError:
-            xml.characters(smart_text(''))
+            xml.characters(smart_str(''))
         xml.endElement('category-id')
 
         xml.startElement('description', {})
         try:
-            xml.characters(smart_text(document.description if document.description else ''))
+            xml.characters(smart_str(document.description if document.description else ''))
         except AttributeError:
-            xml.characters(smart_text(''))
+            xml.characters(smart_str(''))
         xml.endElement('description')
 
         xml.endElement('document')
@@ -112,7 +112,7 @@ class XMLDocumentRenderer(BaseRenderer):
             xml.startElement('id', {'type': 'integer'})
             for error in data['id']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('id')
 
@@ -120,7 +120,7 @@ class XMLDocumentRenderer(BaseRenderer):
             xml.startElement('name', {})
             for error in data['name']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('name')
 
@@ -128,7 +128,7 @@ class XMLDocumentRenderer(BaseRenderer):
             xml.startElement('byte-size', {})
             for error in data['size']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('byte-size')
 
@@ -136,7 +136,7 @@ class XMLDocumentRenderer(BaseRenderer):
             xml.startElement('created-on', {})
             for error in data['address']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('created-on')
 
@@ -144,7 +144,7 @@ class XMLDocumentRenderer(BaseRenderer):
             xml.startElement('person-id', {})
             for error in data['user']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('person-id')
 
@@ -152,7 +152,7 @@ class XMLDocumentRenderer(BaseRenderer):
             xml.startElement('project-id', {})
             for error in data['project']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('project')
 
@@ -160,7 +160,7 @@ class XMLDocumentRenderer(BaseRenderer):
             xml.startElement('download-url', {})
             for error in data['url']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('download-url')
 
@@ -168,7 +168,7 @@ class XMLDocumentRenderer(BaseRenderer):
             xml.startElement('category-id', {})
             for error in data['category']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('category-id')
 

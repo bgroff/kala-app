@@ -2,7 +2,6 @@ from django.contrib.auth import get_user_model
 from django.conf import settings
 from django.contrib.auth.models import Permission
 from django.db import models
-from django_localflavor_us.models import PhoneNumberField
 from timezone_field import TimeZoneField
 from uuid import uuid4
 
@@ -15,6 +14,7 @@ User = get_user_model()
 
 
 class Organization(models.Model):
+    id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255, unique=True)
     uuid = models.UUIDField(unique=True, db_index=True, default=uuid4)
     address = models.CharField(max_length=255, null=True, blank=True)
@@ -23,8 +23,8 @@ class Organization(models.Model):
     state = models.CharField(max_length=80, null=True, blank=True)
     zip = models.CharField(max_length=25, null=True, blank=True)
     country = models.CharField(max_length=80, null=True, blank=True, default='US')
-    fax = PhoneNumberField(null=True, blank=True)
-    phone = PhoneNumberField(null=True, blank=True)
+    fax = models.CharField(max_length=255, null=True, blank=True)
+    phone = models.CharField(max_length=255, null=True, blank=True)
     locale = models.CharField(max_length=2, null=True, blank=True, default='en')
     removed = models.DateField(null=True)
     timezone = TimeZoneField(default=settings.TIME_ZONE)
@@ -162,6 +162,7 @@ class Organization(models.Model):
 
 
 class OrganizationPermission(models.Model):
+    id = models.AutoField(primary_key=True)
     organization = models.ForeignKey(Organization, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     permission = models.ForeignKey(Permission, on_delete=models.CASCADE)

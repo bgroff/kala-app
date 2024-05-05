@@ -3,7 +3,6 @@
 from django.conf import settings
 from django.db import migrations, models
 import django.db.models.deletion
-import django_localflavor_us.models
 import timezone_field.fields
 import uuid
 
@@ -30,8 +29,8 @@ class Migration(migrations.Migration):
                 ('state', models.CharField(blank=True, max_length=80, null=True)),
                 ('zip', models.CharField(blank=True, max_length=25, null=True)),
                 ('country', models.CharField(blank=True, default='US', max_length=80, null=True)),
-                ('fax', django_localflavor_us.models.PhoneNumberField(blank=True, max_length=20, null=True)),
-                ('phone', django_localflavor_us.models.PhoneNumberField(blank=True, max_length=20, null=True)),
+                ('fax', models.CharField(blank=True, max_length=20, null=True)),
+                ('phone', models.CharField(blank=True, max_length=20, null=True)),
                 ('locale', models.CharField(blank=True, default='en', max_length=2, null=True)),
                 ('removed', models.DateField(null=True)),
                 ('timezone', timezone_field.fields.TimeZoneField(default='UTC')),

@@ -2,7 +2,7 @@ from io import StringIO
 
 from django.db.models import QuerySet
 from django.utils.xmlutils import SimplerXMLGenerator
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from rest_framework.renderers import BaseRenderer
 
 
@@ -53,64 +53,64 @@ class XMLProjectRenderer(BaseRenderer):
     def render_projects(self, project, request_user, xml):
             xml.startElement('project', {})
             xml.startElement('id', {'type': 'integer'})
-            xml.characters(smart_text(project.id))
+            xml.characters(smart_str(project.id))
             xml.endElement('id')
 
             xml.startElement('name', {})
-            xml.characters(smart_text(project.name))
+            xml.characters(smart_str(project.name))
             xml.endElement('name')
 
             xml.startElement('announcement', {})
             try:
-                xml.characters(smart_text(project.announcement if project.announcement else ''))
+                xml.characters(smart_str(project.announcement if project.announcement else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('announcement')
 
             xml.startElement('show-announcements', {})
             try:
-                xml.characters(smart_text(project.show_announcements if project.show_announcements else ''))
+                xml.characters(smart_str(project.show_announcements if project.show_announcements else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('show-announcements')
             xml.startElement('show-writeboards', {})
             try:
-                xml.characters(smart_text(project.show_writeboards if project.show_writeboards else ''))
+                xml.characters(smart_str(project.show_writeboards if project.show_writeboards else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('show-writeboards')
             xml.startElement('start-page', {})
             try:
-                xml.characters(smart_text(project.start_page if project.start_page else ''))
+                xml.characters(smart_str(project.start_page if project.start_page else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('start-page')
             xml.startElement('status', {})
             try:
-                xml.characters(smart_text(project.status if project.status else ''))
+                xml.characters(smart_str(project.status if project.status else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('status')
             xml.startElement('created-on', {'type': 'date'})
             try:
-                xml.characters(smart_text(project.created if project.created else ''))
+                xml.characters(smart_str(project.created if project.created else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('created-on')
             xml.startElement('last-changed-on', {'type': 'date'})
             try:
-                xml.characters(smart_text(project.changed if project.changed else ''))
+                xml.characters(smart_str(project.changed if project.changed else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('last-changed-on')
 
             xml.startElement('company', {})
 
             xml.startElement('id', {'type': 'integer'})
-            xml.characters(smart_text(project.organization.id))
+            xml.characters(smart_str(project.organization.id))
             xml.endElement('id')
             xml.startElement('name', {})
-            xml.characters(smart_text(project.organization.name))
+            xml.characters(smart_str(project.organization.name))
             xml.endElement('name')
 
             xml.endElement('company')
@@ -123,7 +123,7 @@ class XMLProjectRenderer(BaseRenderer):
             xml.startElement('id', {'type': 'integer'})
             for error in data['id']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('id')
 
@@ -131,7 +131,7 @@ class XMLProjectRenderer(BaseRenderer):
             xml.startElement('name', {})
             for error in data['name']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('name')
 
@@ -139,7 +139,7 @@ class XMLProjectRenderer(BaseRenderer):
             xml.startElement('company', {})
             for error in data['company']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('company')
 
@@ -192,29 +192,29 @@ class XMLCategoryRenderer(BaseRenderer):
     def render_category(self, category, request_user, xml):
             xml.startElement('category', {})
             xml.startElement('id', {'type': 'integer'})
-            xml.characters(smart_text(category.id))
+            xml.characters(smart_str(category.id))
             xml.endElement('id')
 
             xml.startElement('name', {})
-            xml.characters(smart_text(category.name))
+            xml.characters(smart_str(category.name))
             xml.endElement('name')
 
             xml.startElement('type', {})
             try:
-                xml.characters(smart_text(category.type))
+                xml.characters(smart_str(category.type))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('type')
 
             xml.startElement('project-id', {})
-            xml.characters(smart_text(category.project_id))
+            xml.characters(smart_str(category.project_id))
             xml.endElement('project-id')
 
             xml.startElement('elements-count', {})
             try:
-                xml.characters(smart_text(category.elements_count if category.elements_count else ''))
+                xml.characters(smart_str(category.elements_count if category.elements_count else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('elements-count')
 
             xml.endElement('category')
@@ -225,7 +225,7 @@ class XMLCategoryRenderer(BaseRenderer):
             xml.startElement('id', {'type': 'integer'})
             for error in data['id']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('id')
 
@@ -233,7 +233,7 @@ class XMLCategoryRenderer(BaseRenderer):
             xml.startElement('name', {})
             for error in data['name']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('name')
 
@@ -241,7 +241,7 @@ class XMLCategoryRenderer(BaseRenderer):
             xml.startElement('type', {})
             for error in data['type']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('type')
 
@@ -249,7 +249,7 @@ class XMLCategoryRenderer(BaseRenderer):
             xml.startElement('project', {})
             for error in data['project']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('project')
 

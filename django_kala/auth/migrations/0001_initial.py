@@ -4,7 +4,6 @@ import auth.models
 import django.contrib.auth.validators
 from django.db import migrations, models
 import django.utils.timezone
-import django_localflavor_us.models
 import timezone_field.fields
 import uuid
 
@@ -36,10 +35,10 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(blank=True, max_length=255, null=True)),
                 ('timezone', timezone_field.fields.TimeZoneField(blank=True, default='UTC')),
                 ('access_new_projects', models.BooleanField(default=False)),
-                ('fax', django_localflavor_us.models.PhoneNumberField(blank=True, max_length=20, null=True)),
-                ('home', django_localflavor_us.models.PhoneNumberField(blank=True, max_length=20, null=True)),
-                ('mobile', django_localflavor_us.models.PhoneNumberField(blank=True, max_length=20, null=True)),
-                ('office', django_localflavor_us.models.PhoneNumberField(blank=True, max_length=20, null=True)),
+                ('fax', models.CharField(blank=True, max_length=20, null=True)),
+                ('home', models.CharField(blank=True, max_length=20, null=True)),
+                ('mobile', models.CharField(blank=True, max_length=20, null=True)),
+                ('office', models.CharField(blank=True, max_length=20, null=True)),
                 ('ext', models.CharField(blank=True, max_length=10, null=True)),
                 ('last_updated', models.DateTimeField(auto_now=True)),
                 ('removed', models.DateField(null=True)),

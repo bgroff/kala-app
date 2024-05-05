@@ -1,5 +1,4 @@
-from django.contrib.auth import login as auth_login
-from django.contrib.auth.views import INTERNAL_RESET_SESSION_TOKEN, PasswordResetConfirmView as DjangoPasswordResetConfirmView
+from django.contrib.auth.views import PasswordResetConfirmView as DjangoPasswordResetConfirmView
 from django.urls import reverse_lazy
 
 

@@ -2,7 +2,7 @@ from io import StringIO
 
 from django.db.models import QuerySet
 from django.utils.xmlutils import SimplerXMLGenerator
-from django.utils.encoding import smart_text
+from django.utils.encoding import smart_str
 from rest_framework.renderers import BaseRenderer
 
 
@@ -53,76 +53,76 @@ class XMLCompaniesRenderer(BaseRenderer):
     def render_company(self, company, request_user, xml):
             xml.startElement('company', {})
             xml.startElement('id', {'type': 'integer'})
-            xml.characters(smart_text(company.id))
+            xml.characters(smart_str(company.id))
             xml.endElement('id')
             xml.startElement('uuid', {'type': 'uuid'})
-            xml.characters(smart_text(company.uuid))
+            xml.characters(smart_str(company.uuid))
             xml.endElement('uuid')
             xml.startElement('name', {})
-            xml.characters(smart_text(company.name))
+            xml.characters(smart_str(company.name))
             xml.endElement('name')
 
             xml.startElement('web-site', {})
             try:
-                xml.characters(smart_text(company.website if company.website else ''))
+                xml.characters(smart_str(company.website if company.website else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('web-site')
 
             xml.startElement('address-one', {})
             try:
-                xml.characters(smart_text(company.address if company.address else ''))
+                xml.characters(smart_str(company.address if company.address else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('address-one')
             xml.startElement('address-two', {})
             try:
-                xml.characters(smart_text(company.address1 if company.address1 else ''))
+                xml.characters(smart_str(company.address1 if company.address1 else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('address-two')
             xml.startElement('city', {})
             try:
-                xml.characters(smart_text(company.city if company.city else ''))
+                xml.characters(smart_str(company.city if company.city else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('city')
             xml.startElement('state', {})
             try:
-                xml.characters(smart_text(company.state if company.state else ''))
+                xml.characters(smart_str(company.state if company.state else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('state')
             xml.startElement('zip', {})
             try:
-                xml.characters(smart_text(company.zip if company.zip else ''))
+                xml.characters(smart_str(company.zip if company.zip else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('zip')
             xml.startElement('country', {})
             try:
-                xml.characters(smart_text(company.country if company.country else ''))
+                xml.characters(smart_str(company.country if company.country else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('country')
             xml.startElement('time-zone', {})
             try:
-                xml.characters(smart_text(company.timezone if company.timezone else ''))
+                xml.characters(smart_str(company.timezone if company.timezone else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('time-zone')
 
             xml.startElement('phone-number-office', {})
             try:
-                xml.characters(smart_text(company.phone if company.phone else ''))
+                xml.characters(smart_str(company.phone if company.phone else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('phone-number-office')
             xml.startElement('phone-number-fax', {})
             try:
-                xml.characters(smart_text(company.fax if company.fax else ''))
+                xml.characters(smart_str(company.fax if company.fax else ''))
             except AttributeError:
-                xml.characters(smart_text(''))
+                xml.characters(smart_str(''))
             xml.endElement('phone-number-fax')
 
             xml.endElement('company')
@@ -133,7 +133,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('id', {'type': 'integer'})
             for error in data['id']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('id')
 
@@ -141,7 +141,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('uuid', {'type': 'uuid'})
             for error in data['uuid']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('uuid')
 
@@ -149,7 +149,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('name', {})
             for error in data['name']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('name')
 
@@ -157,7 +157,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('web-site', {})
             for error in data['website']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('web-site')
 
@@ -165,7 +165,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('address-one', {})
             for error in data['address']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('address-one')
 
@@ -173,7 +173,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('address-two', {})
             for error in data['address1']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('address1')
 
@@ -181,7 +181,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('city', {})
             for error in data['city']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('city')
 
@@ -189,7 +189,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('state', {})
             for error in data['state']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('state')
 
@@ -197,7 +197,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('zip', {})
             for error in data['zip']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('zip')
 
@@ -205,7 +205,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('country', {})
             for error in data['country']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('country')
 
@@ -213,7 +213,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('time-zone', {})
             for error in data['timezone']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('time-zone')
 
@@ -221,7 +221,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('locale', {})
             for error in data['locale']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('locale')
 
@@ -229,7 +229,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('phone-number-office', {})
             for error in data['phone']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('phone-number-office')
 
@@ -237,7 +237,7 @@ class XMLCompaniesRenderer(BaseRenderer):
             xml.startElement('phone-number-fax', {})
             for error in data['fax']:
                 xml.startElement('error', {})
-                xml.characters(smart_text(error))
+                xml.characters(smart_str(error))
                 xml.endElement('error')
             xml.endElement('phone-number-fax')
 
