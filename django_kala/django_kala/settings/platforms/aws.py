@@ -1,6 +1,12 @@
 from django_kala.functions import get_env_variable
 
-S3_MEDIA_URL = get_env_variable('S3_MEDIA_URL', '')
-S3_STORAGE_BUCKET = get_env_variable('S3_STORAGE_BUCKET', '')
-AWS_REGION = get_env_variable('AWS_REGION', 'us-west-1')
-S3_STORAGE_PREFIX = get_env_variable('S3_STORAGE_PREFIX', '')
+KALA_STORAGE_ENDPOINT = get_env_variable('KALA_STORAGE_ENDPOINT', 'http://minio:9000')
+KALA_STORAGE_BUCKET = get_env_variable('KALA_STORAGE_BUCKET', 'kala-docs')
+KALA_STORAGE_PREFIX = get_env_variable('KALA_STORAGE_PREFIX', '')
+
+KALA_STORAGE_REGION = get_env_variable('KALA_STORAGE_REGION', 'us-west-1')
+
+KALA_STORAGE_AUTHENTICATION_TYPE = get_env_variable('KALA_STORAGE_AUTHENTICATION_TYPE', 'credentials')
+KALA_STORAGE_ACCESS_KEY = get_env_variable('KALA_ACCESS_KEY', 'minioadmin')
+KALA_STORAGE_SECRET_KEY = get_env_variable('KALA_SECRET_KEY', 'minioadmin')
+

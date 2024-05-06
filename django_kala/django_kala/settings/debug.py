@@ -16,3 +16,4 @@ if type(deployment) is str:
         EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 else:
     DEBUG = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

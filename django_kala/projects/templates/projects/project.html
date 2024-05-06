@@ -95,13 +95,13 @@
             <div class="ui cards">
                 {% for document in documents %}
                     <div class="ui card">
-                        <a href="{% url 'projects:download' project.pk document.pk document.documentversion_set.all.0.uuid %}">
+                        <a href="{% url 'projects:download' project.pk document.pk document.get_latest.uuid %}">
                             <div class="ui fade reveal image">
                                 <img class="visible content" style="background-color: #f3f3f3"
-                                     src="{% static document.documentversion_set.all.0.get_icon %}"
-                                     alt="{{ document.documentversion_set.all.0.get_alt }}">
+                                     src="{% static document.get_latest.get_icon %}"
+                                     alt="{{ document.get_latest.get_alt }}">
                                 <img class="hidden content" src="{% static "images/icons/android-download.png" %}"
-                                     alt="{{ document.documentversion_set.all.0.get_alt }}">
+                                     alt="{{ document.get_latest.get_alt }}">
                             </div>
                         </a>
                         <div class="content">

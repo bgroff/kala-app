@@ -8,36 +8,46 @@ import boto3
 
 
 class DocumentHandler():
+    def get_s3_client(self):
+        config = {
+            'region_name': settings.KALA_STORAGE_REGION,
+        }
+
+        if settings.KALA_STORAGE_ENDPOINT:
+            config['endpoint_url'] = settings.KALA_STORAGE_ENDPOINT
+
+        if settings.KALA_STORAGE_AUTHENTICATION_TYPE == 'credentials':
+            config['aws_access_key_id'] = settings.KALA_STORAGE_ACCESS_KEY
+            config['aws_secret_access_key'] = settings.KALA_STORAGE_SECRET_KEY
+
+        return boto3.client('s3', **config)
 
     def get_document_url(self, document):
-        s3 = boto3.client('s3')
-        url = s3.generate_presigned_url(
+        url = self.get_s3_client().generate_presigned_url(
             ClientMethod='get_object',
             Params={
-                'Bucket': settings.S3_STORAGE_BUCKET,
-                'Key': '{0}/media/documents/{1}'.format(settings.S3_STORAGE_PREFIX, document.uuid),
+                'Bucket': settings.KALA_STORAGE_BUCKET,
+                'Key': '{0}/media/documents/{1}'.format(settings.KALA_STORAGE_PREFIX, document.uuid),
                 'ResponseContentDisposition': 'attachment; filename="{0}"'.format(document.name),
             }
         )
         return url
 
     def upload_document(self, content, key):
-        s3 = boto3.client('s3')
-        s3.put_object(
+        self.get_s3_client().put_object(
             ACL='private',
             Body=content,
-            Bucket=settings.S3_STORAGE_BUCKET,
-            Key='{0}/media/documents/{1}'.format(settings.S3_STORAGE_PREFIX, key),
-            ServerSideEncryption='AES256',
+            Bucket=settings.KALA_STORAGE_BUCKET,
+            Key='{0}/media/documents/{1}'.format(settings.KALA_STORAGE_PREFIX, key),
+            # ServerSideEncryption='AES256',
 
         )
 
     def get_export_url(self, export):
-        s3 = boto3.client('s3')
-        url = s3.generate_presigned_url(
+        url = self.get_s3_client().generate_presigned_url(
             ClientMethod='get_object',
             Params={
-                'Bucket': settings.S3_STORAGE_BUCKET,
+                'Bucket': settings.KALA_STORAGE_BUCKET,
                 'Key': '{0}'.format(export.details['Key']),
                 'ResponseContentDisposition': 'attachment; filename="{0}"'.format(export.name),
             }
@@ -45,13 +55,12 @@ class DocumentHandler():
         return url
 
     def upload_export(self, export_path):
-        key = '{0}/exports/{1}'.format(settings.S3_STORAGE_PREFIX, uuid4())
+        key = '{0}/exports/{1}'.format(settings.KALA_STORAGE_BUCKET, uuid4())
         expires = timezone.now() + datetime.timedelta(days=settings.EXPORT_EXPIRATION_IN_DAYS)
 
-        s3 = boto3.resource('s3')
-        s3.meta.client.upload_file(
+        self.get_s3_client().meta.client.upload_file(
             Filename=export_path,
-            Bucket=settings.S3_STORAGE_BUCKET,
+            Bucket=settings.KALA_STORAGE_BUCKET,
             Key=key,
             ExtraArgs={
                 'Expires': expires,

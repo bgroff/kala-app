@@ -95,7 +95,24 @@
                 {% endif %}
             </div>
             <div class="user top right pointing ui dropdown item" data-content="{% trans 'View profile and more' %}">
-                <img class="ui mini rounded image" src="{{ request.user.avatar_url }}">
+<!--                <img class="ui mini rounded image" src="{{ request.user.avatar_url }}">-->
+                <svg fill="#000000" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
+                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                     width="16px" height="16px" viewBox="0 0 575.616 575.616"
+                     xml:space="preserve">
+                    <g>
+                        <g>
+                            <path d="M429.248,141.439C429.248,63.33,365.985,0,287.808,0c-78.109,0-141.439,63.33-141.439,141.439
+                                c0,78.11,63.33,141.439,141.439,141.439C365.988,282.878,429.248,219.549,429.248,141.439z M181.727,144.499
+                                c0,0-4.079-40.12,24.82-70.72c20.34,20.389,81.261,70.72,187.342,70.72c0,58.498-47.586,106.081-106.081,106.081
+                                S181.727,202.994,181.727,144.499z"/>
+                            <path d="M45.049,391.68v62.559v80.919c0,22.365,18.136,40.459,40.459,40.459h404.6c22.365,0,40.459-18.097,40.459-40.459v-80.919
+                                V391.68c0-44.688-36.193-80.919-80.919-80.919H377.91c-5.07,0-11.46,3.422-14.271,7.639l-70.735,99.982
+                                c-2.812,4.22-7.372,4.22-10.184,0l-70.738-99.986c-2.812-4.22-9.202-7.638-14.272-7.638h-71.742
+                                C81.319,310.758,45.049,346.991,45.049,391.68z"/>
+                        </g>
+                    </g>
+                </svg>
                 <i class="dropdown icon"></i>
                 <div class="menu">
                     <div class="user header">
@@ -152,7 +169,7 @@
         </div>
 {#        <i class="large github mark icon"></i>#}
         <div class="ui small horizontal list">
-            <div class="disabled item" href="#">&copy; 2018 Malolo Industries.</div>
+            <div class="disabled item" href="#">&copy; 2024 Malolo Industries.</div>
 {#            <a class="item" href="#">Terms</a>#}
 {#            <a class="item" href="#">Privacy</a>#}
 {#            <a class="item" href="#">Security</a>#}

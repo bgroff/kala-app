@@ -14,7 +14,7 @@ EMAIL_SSL_KEYFILE = get_env_variable('EMAIL_SSL_KEYFILE', default=False)
 EMAIL_TIMEOUT = get_env_variable('EMAIL_TIMEOUT', default=False)
 
 # Kala settings
-DEFAULT_FROM_EMAIL = get_env_variable('FROM_EMAIL', default='kala@maloloindustries.com')
+FROM_EMAIL = get_env_variable('FROM_EMAIL', default='kala@maloloindustries.com')
 HELP_EMAIL = get_env_variable('HELP_EMAIL', default='help')
 EMAIL_APP = get_env_variable('EMAIL_APP', default='kala') # Use this to customize the email templates.
 USE_HTML_EMAIL = get_env_variable('USE_HTML_EMAIL', default=False)
