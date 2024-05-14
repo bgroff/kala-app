@@ -16,11 +16,11 @@ services:
     depends_on:
       - db
     environment:
-      - DEPLOYMENT_ENVIRONMENT=development
-      - DATABASE_USER=kala
-      - DATABASE_PASSWORD=kala
-      - DATABASE_NAME=kala
-      - DATABASE_HOST=db
+      - KALA_DATABASE_USER=kala
+      - KALA_DATABASE_PASSWORD=kala
+      - KALA_DATABASE_NAME=kala
+      - KALA_DATABASE_HOST=db
+      - KALA_AUTHENTICATION_METHOD=login
   minio:
     image: quay.io/minio/minio
     ports:

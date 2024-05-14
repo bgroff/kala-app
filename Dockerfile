@@ -25,13 +25,12 @@ ADD django_kala /code/
 ENV DJANGO_SETTINGS_MODULE=django_kala.settings
 
 # Call collectstatic (customize the following line with the minimal environment variables needed for manage.py to run):
-ENV DATABASE_USER=''
-ENV DATABASE_PASSWORD=''
-ENV DATABASE_NAME=''
-ENV DEPLOYMENT_ENVIRONMENT=''
-ENV AUTHENTICATION_SCHEME='OIDC'
-ENV PLATFORM='aws'
-ENV HOST_NAME='localhost'
+ENV KALA_DATABASE_USER=''
+ENV KALA_DATABASE_PASSWORD=''
+ENV KALA_DATABASE_NAME=''
+ENV KALA_PLATFORM='aws'
+ENV KALA_HOST_NAME='localhost'
+ENV KALA_AUTHENTICATION_METHOD="login"
 
 RUN python manage.py collectstatic --noinput
 RUN cp -r /tmp/static /code/
