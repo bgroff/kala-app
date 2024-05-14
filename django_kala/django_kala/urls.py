@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.urls import path, include
+from django.utils.module_loading import import_string
 from django.views.defaults import page_not_found, permission_denied, server_error
+from mozilla_django_oidc.utils import import_from_settings
 
 from .views import Home, SearchView, LicenseView, UserDocumentationView
 
@@ -65,3 +67,14 @@ if settings.DEBUG:
         path('500/', server_error, ),
 
     ] + urlpatterns
+
+if settings.AUTHENTICATION_METHOD == 'oidc':
+    DEFAULT_AUTHENTICATE_CLASS = 'mozilla_django_oidc.views.OIDCAuthenticationRequestView'
+    AUTHENTICATE_CLASS_PATH = import_from_settings(
+        'OIDC_AUTHENTICATE_CLASS', DEFAULT_AUTHENTICATE_CLASS
+    )
+
+    OIDCAuthenticateClass = import_string(AUTHENTICATE_CLASS_PATH)
+    urlpatterns += [
+        path('oidc/', include('mozilla_django_oidc.urls')),
+    ]
