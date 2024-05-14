@@ -13,19 +13,17 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 
 from .apps import INSTALLED_APPS
-from .authentication import *
+from .auth import *
 from .basecamp import BASECAMP
 from .celery import *
 from .databases import DATABASES
+from .debug import *
 from .email import *
-from django_kala.functions import get_env_variable
 from .middleware import MIDDLEWARE
 from .platforms import *
 from .storage import *
 from .templates import TEMPLATES
 from .validators import AUTH_PASSWORD_VALIDATORS
-from .debug import *
-
 
 # Change this if you wish to use a different user model.
 AUTH_USER_MODEL = 'kala_auth.User'
@@ -39,7 +37,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = get_env_variable('SECRET_KEY', default='(e^h^f=)*li=uq3@u(965ghns0f1sd@v(i8hrc12d#0*-cnedu')
 
-ALLOWED_HOSTS = [get_env_variable('HOST_NAME')]
+ALLOWED_HOSTS = [get_env_variable("KALA_HOST_NAME", "localhost")]
 
 APPLICATION_URL = get_env_variable(
     'APPLICATION_URL',
@@ -74,6 +72,3 @@ LOCALE_PATHS = (
 STATIC_URL = '/static/'
 STATIC_ROOT = '/tmp/static/'
 MEDIA_ROOT = '/tmp/kala/'
-
-LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = '/accounts/login'

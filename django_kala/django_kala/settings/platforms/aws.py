@@ -1,6 +1,11 @@
 from django_kala.functions import get_env_variable
 
-KALA_STORAGE_ENDPOINT = get_env_variable('KALA_STORAGE_ENDPOINT', 'http://minio:9000')
+endpoint = get_env_variable('KALA_STORAGE_ENDPOINT', 'http://minio:9000')
+if endpoint is not '':
+    KALA_STORAGE_ENDPOINT = endpoint
+else:
+    KALA_STORAGE_ENDPOINT = None
+
 KALA_STORAGE_BUCKET = get_env_variable('KALA_STORAGE_BUCKET', 'kala-docs')
 KALA_STORAGE_PREFIX = get_env_variable('KALA_STORAGE_PREFIX', '')
 

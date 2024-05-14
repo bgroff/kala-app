@@ -9,6 +9,7 @@ INSTALLED_APPS = [
     'taggit',
     'celery',
     'localflavor',
+    'mozilla_django_oidc',
 
     'auth.apps.AuthConfig',
     'organizations.apps.OrganizationsConfig',

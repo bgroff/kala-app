@@ -7,6 +7,7 @@ django-localflavor
 django-taggit
 django-timezone-field
 djangorestframework
+mozilla_django_oidc
 packaging
 pillow
 psycopg2-binary
