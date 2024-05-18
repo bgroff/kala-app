@@ -12,7 +12,7 @@ EMAIL_USE_SSL = bool(get_env_variable('KALA_EMAIL_USE_SSL', default=False))
 EMAIL_SSL_CERTFILE = get_env_variable('KALA_EMAIL_SSL_CERTFILE', default=False)
 EMAIL_SSL_KEYFILE = get_env_variable('KALA_EMAIL_SSL_KEYFILE', default=False)
 
-timeout = get_env_variable('KALA_EMAIL_TIMEOUT', default=None)
+timeout = get_env_variable('KALA_EMAIL_TIMEOUT', default=10)
 EMAIL_TIMEOUT = int(timeout) if timeout is not None else None
 
 # Kala settings
