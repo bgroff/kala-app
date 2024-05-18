@@ -37,14 +37,13 @@ Main Features
 Development
 ===========
 
-In order to run the development environment, you should install vagrant. Once you have done that you can:
+In order to run the development environment, you should install docker and docker compose. Once you have done that you can:
 
 .. code-block:: bash
 
-    $ cd deploy
-    $ vagrant up
+    $ docker compose up
 
-You will now be able to open http://localhost:9090 and see the Kala application. There are two users created:
+You will now be able to open http://localhost:8080 and see the Kala application. There are two users created:
 
 teststaff@example.com and testuser@example.com both have the password set to test
 
