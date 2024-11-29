@@ -1,11 +1,3 @@
-.. image:: https://travis-ci.org/bgroff/kala-app.svg?branch=master
-     :target: https://travis-ci.org/bgroff/kala-app
-     :alt: TravisCI
-
-.. image:: https://requires.io/github/bgroff/kala-app/requirements.svg?branch=master
-     :target: https://requires.io/github/bgroff/kala-app/requirements/?branch=master
-     :alt: Requirements Status
-
 .. image:: https://readthedocs.org/projects/kala-app/badge/?version=latest
      :target: http://kala-app.readthedocs.io/en/latest/
      :alt: Readthedocs
