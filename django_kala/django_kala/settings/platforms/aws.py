@@ -1,7 +1,7 @@
 from django_kala.functions import get_env_variable
 
 endpoint = get_env_variable('KALA_STORAGE_ENDPOINT', 'http://minio:9000')
-if endpoint is not '':
+if endpoint != '':
     KALA_STORAGE_ENDPOINT = endpoint
 else:
     KALA_STORAGE_ENDPOINT = None

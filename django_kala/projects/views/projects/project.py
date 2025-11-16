@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.postgres.search import SearchVector
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator, InvalidPage
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
@@ -38,6 +39,16 @@ class ProjectView(TemplateView):
         if category:
             self.documents = self.documents.filter(category__name=category)
 
+        # Filter by tag if specified
+        tag = self.request.GET.get('tag', None)
+        if tag:
+            self.documents = self.documents.filter(tags__name=tag)
+
+        # Filter by file extension if specified
+        extension = self.request.GET.get('ext', None)
+        if extension:
+            self.documents = self.documents.filter(mime__icontains=extension)
+
         per_page = self.request.GET.get('per_page', 20)
         page = self.request.GET.get('page', 1)
         paginator = Paginator(self.documents, per_page)
@@ -45,6 +56,13 @@ class ProjectView(TemplateView):
             documents = paginator.page(page).object_list
         except InvalidPage:
             documents = paginator.page(1)
+
+        # Get all unique tags used in the project's documents
+        from taggit.models import Tag
+        all_project_documents = self.project.get_documents(self.request.user)
+        tag_ids = all_project_documents.values_list('tags', flat=True).distinct()
+        project_tags = Tag.objects.filter(id__in=tag_ids).order_by('name')
+
         return {
             'categories_form': self.categories_form,
             'documents': documents,
@@ -54,7 +72,8 @@ class ProjectView(TemplateView):
             'organization': self.project.organization,
             'sort_form': self.sort_form,
             'version_count': versions.count(),
-            'user_count': versions.distinct('user').count()
+            'user_count': versions.distinct('user').count(),
+            'project_tags': project_tags
         }
 
     @method_decorator(login_required)
@@ -71,17 +90,16 @@ class ProjectView(TemplateView):
             'documentversion_set__user'
         )
         if 'search' in request.GET and request.GET['search'] != '':
+            search_term = request.GET.get('search', '')
+            # Use Q objects with icontains for partial, case-insensitive matching
+            # This allows finding "CourseDeliveryStatus" when searching for "Delivery"
             self.documents = documents.filter(
-                id__in=DocumentVersion.objects.annotate(
-                    search=SearchVector(
-                        'name',
-                        'description',
-                        'user__first_name',
-                        'user__last_name',
-                        'user__username'
-                    )
-                ).filter(
-                    search=request.GET.get('search', '')
+                id__in=DocumentVersion.objects.filter(
+                    Q(name__icontains=search_term) |
+                    Q(description__icontains=search_term) |
+                    Q(user__first_name__icontains=search_term) |
+                    Q(user__last_name__icontains=search_term) |
+                    Q(user__username__icontains=search_term)
                 ).values_list('document_id', flat=True)
             ).filter(project=self.project).prefetch_related('documentversion_set', 'documentversion_set__user')
             self.sort_order = request.GET.get('search')

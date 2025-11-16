@@ -19,6 +19,29 @@
                 </ul>
             </div>
         {% endif %}
+
+        <div class="ui grid">
+            {% if project_tags %}
+            <div class="four wide column">
+                <div class="ui vertical fluid tabular menu">
+                    <div class="header item">
+                        <i class="tags icon"></i>
+                        {% trans 'Filter by Tag' %}
+                    </div>
+                    <a class="item{% if not request.GET.tag %} active{% endif %}" href="{% url 'projects:project' project.pk %}">
+                        {% trans 'All Documents' %}
+                    </a>
+                    {% for tag in project_tags %}
+                        <a class="item{% if request.GET.tag == tag.name %} active{% endif %}" href="?tag={{ tag.name|urlencode }}">
+                            <i class="tag icon"></i> {{ tag.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="twelve wide column">
+            {% else %}
+            <div class="sixteen wide column">
+            {% endif %}
         <div class="ui four item top attached borderless stats menu">
             <a class="item">
                 <i class="book icon"></i>
@@ -171,6 +194,8 @@
                 {% endfor %}
             </div>
         </div>
+            </div>
+        </div>
 
     </div>
 {% endblock content %}
@@ -190,12 +215,22 @@
                 direction: 'upward'
             })
         ;
-        $('#category-menu h4').click(function (item) {
-            queryParameters['category'] = item.toElement.dataset['value'];
+        $('#category-menu h4').click(function (event) {
+            var value = event.currentTarget.dataset['value'];
+            if (value) {
+                queryParameters['category'] = value;
+            } else {
+                // Remove category filter when "No Filter" is selected
+                delete queryParameters['category'];
+            }
+            // Reset to page 1 when filtering
+            delete queryParameters['page'];
             location.search = $.param(queryParameters);
         });
-        $('#sort-menu h4').click(function (item) {
-            queryParameters['sort'] = item.toElement.dataset['value'];
+        $('#sort-menu h4').click(function (event) {
+            queryParameters['sort'] = event.currentTarget.dataset['value'];
+            // Reset to page 1 when sorting
+            delete queryParameters['page'];
             location.search = $.param(queryParameters);
         });
     </script>

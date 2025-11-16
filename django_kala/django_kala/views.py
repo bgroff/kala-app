@@ -2,6 +2,7 @@ from django.contrib.auth import get_user
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.postgres.search import SearchVector
 from django.core.paginator import Paginator, InvalidPage
+from django.db.models import Q
 from django.views.generic import TemplateView
 
 from documents.defs import get_mimes_for_category
@@ -67,20 +68,24 @@ class SearchView(LoginRequiredMixin, TemplateView):
         self.sort_form = SortForm(request.GET or None)
 
         documents = request.user.get_documents()
-        self.documents = documents.filter(
-            id__in=DocumentVersion.objects.annotate(
-                search=SearchVector(
-                    'name',
-                    'description',
-                    'user__first_name',
-                    'user__last_name',
-                    'user__username',
-                    'document__tags__name'
-                )
-            ).filter(
-                search=request.GET.get('search', '')
-            ).values_list('document_id', flat=True)
-        ).prefetch_related('documentversion_set', 'documentversion_set__user')
+        search_term = request.GET.get('search', '')
+
+        if search_term:
+            # Use Q objects with icontains for partial, case-insensitive matching
+            # This allows finding "Security" within "SOP_123_Security.pdf"
+            self.documents = documents.filter(
+                id__in=DocumentVersion.objects.filter(
+                    Q(name__icontains=search_term) |
+                    Q(description__icontains=search_term) |
+                    Q(user__first_name__icontains=search_term) |
+                    Q(user__last_name__icontains=search_term) |
+                    Q(user__username__icontains=search_term) |
+                    Q(document__tags__name__icontains=search_term)
+                ).values_list('document_id', flat=True)
+            ).prefetch_related('documentversion_set', 'documentversion_set__user')
+        else:
+            self.documents = documents.prefetch_related('documentversion_set', 'documentversion_set__user')
+
         self.sort_order = request.GET.get('search')
 
         return super(SearchView, self).dispatch(request, *args, **kwargs)
