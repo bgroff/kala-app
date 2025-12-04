@@ -1,0 +1,16 @@
+{% load kala_tags %}
+{% smart_page_range page_range current_page as pages %}
+{% if pages|length > 1 %}
+<div class="ui pagination menu">
+    {% for page in pages %}
+        {% if page is None %}
+            <span class="item pagination-ellipsis">...</span>
+        {% else %}
+            <a class="{% if page == current_page|add:0 %}active{% endif %} item"
+               href="{{ base_url }}?page={{ page }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}">
+                {{ page }}
+            </a>
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}

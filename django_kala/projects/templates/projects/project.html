@@ -185,14 +185,9 @@
 
             <div class="ui divider"></div>
 
-            <div class="ui pagination menu">
-                {% for page in page_range %}
-                    <a class="{% if page == current_page %}active{% endif %} item"
-                       href="{% url 'projects:project' project.pk %}?page={{ page }}">
-                        {{ page }}
-                    </a>
-                {% endfor %}
-            </div>
+            {% with base_url=project.get_absolute_url %}
+                {% include 'includes/pagination.html' %}
+            {% endwith %}
         </div>
             </div>
         </div>

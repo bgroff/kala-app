@@ -19,6 +19,24 @@ ul.ui.pagination.menu {
   padding: 0;
 }
 
+.ui.pagination.menu {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.ui.pagination.menu .item {
+  flex: 1;
+  text-align: center;
+  justify-content: center;
+}
+
+.ui.pagination.menu .pagination-ellipsis {
+  pointer-events: none;
+  cursor: default;
+  color: #767676;
+}
+
 /*--------------
    Page Header
 ---------------*/
